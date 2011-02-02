@@ -3,7 +3,7 @@
 	require_once "utils.php";
 
 	function head($selnav = "home") {
-        $hunt=mktime(12,17,00,1,14,2011);
+        $hunt=mktime(12,00,00,1,13,2012);
         $now = time();
         $tth=$hunt-$now;
         $days=floor($tth/(60 * 60 * 24));
@@ -25,7 +25,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
 	
-	<title>Metaphysical Plant Writing Server</title>
+	<title>Hunt Writing Server</title>
 	
 	<script type='text/javascript' src='jquery-1.4.2.js'></script>
 	<script type='text/javascript' src='jquery.tablesorter.min.js'></script>
@@ -72,8 +72,7 @@
 	</div>
 	<div id="footer">
 		<hr />
-		<p>This is the website for the Metaphysical Plant writing team. Access is restricted to authorized users. For technical assistance, please contact the <a href="mailto:server-admin@puzzle2011.com">Server Administrators</a>.
-		This website is copyright &copy; 2010 by Kate Baker. The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
+		<p>This is the website for the hunt writing team. For technical assistance, please contact the <a href="mailto:memberjasper@googlegroups.com">Server Administrators</a>.  The original author of this software is Kate Baker.  The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
 	</div>
 </div>		
 </body>
