@@ -1,0 +1,53 @@
+.profilebox {
+	background-color: #E2E9EB;
+	border: 1px solid #999999;
+	padding: 10px;
+	width: 800px;
+	margin-bottom:15px;
+}
+
+.specprofilebox {
+	background-color: #F0D7B0;
+	border: 1px solid #999999;
+	padding: 10px;
+	width: 800px;
+	margin-bottom:15px;
+}
+
+.profileimg {
+	float:left;
+}
+
+.profiletxt {
+	margin-left:140px;
+}
+
+.profilename {
+ 	font-size:1.2em;
+	font-weight:bold;
+	display:block;
+}
+
+.profiletitle {
+	font-size:1em;
+	font-weight:bold;
+	color:#993300;
+	display:block;
+}
+
+.profilesect {
+	font-size:1em;
+	color:#000066;
+	display:block;
+	margin-top:7px;
+}
+
+.profilecontact {
+	font-size:0.8em;
+	color:#999999;
+	display:block;
+}
+
+.profilefooter {
+	clear:both;
+}
