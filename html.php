@@ -72,7 +72,7 @@
 	</div>
 	<div id="footer">
 		<hr />
-		<p>This is the website for the hunt writing team. For technical assistance, please contact the <a href="mailto:memberjasper@googlegroups.com">Server Administrators</a>.  The original author of this software is Kate Baker.  The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
+		<p>This is the website for the hunt writing team. For technical assistance, please contact the <a href="mailto:memberjasper@googlegroups.com">Server Administrators</a>.  The original author of this software is Kate Baker.  This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.  The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
 	</div>
 </div>		
 </body>
