@@ -36,7 +36,7 @@
 	<div id="header" style="margin-top:15px;">
           <div id="titletext" style="vertical-align:middle; margin-bottom:10px;">
 				<div style="text-align:left;width:auto;float:left;vertical-align:top;">
-                     <img src="images/servertitle.png" />
+                     <h1>Hunt authoring server</h1>
                 </div>
                 <div style="text-align:right;width:auto;float:right;vertical-align:top;">
                      <h3 style="margin-top:0;"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>
