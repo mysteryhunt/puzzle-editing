@@ -1,12 +1,7 @@
 <?php
 	require_once "html.php";
 	require_once "config.php";
-
-	define('DB_SERVER', 'localhost');
-	define('DB_USER', 'plant');
-	define('DB_PASS','formalwear');
-	
-	define('DB_NAME', 'toCodex');
+	require_once "secret.php";
 	
 	// Connect to database
 	if (($db = mysql_connect(DB_SERVER, DB_USER, DB_PASS)) == FALSE) {
