@@ -6,10 +6,10 @@
 	
 	// Start HTML
 	head();
-	
+
 	// If an email address is submitted, see if is on the team mailing list.
 	if (isset($_POST['checkEmail'])) {
-		$id = checkEmail($_POST['checkEmail']);
+		$id = checkEmail($_POST['checkEmail'], $_POST['username']);
 		if($id != FALSE) {
 			// If it is, allow the user to register.
 			registerForm($id);
@@ -45,10 +45,11 @@
 	function checkEmailForm()
 	{
 ?>
-		<h2> Please enter your email address </h2>
+		<h2> Please enter your email address and username</h2>
 		<form method="post" action="register.php">
-			<input type="text" name="checkEmail" />
-			<input type="submit" value="Submit" />
+		    E-mail address: <input type="text" name="checkEmail" /><br>
+		    Desired username: <input type="text" name="username" /><br>
+		    <input type="submit" value="Submit" />
 		</form>
 <?php
 	}
@@ -56,14 +57,19 @@
 	function registerForm($id)
 	{
 		echo "<h2>Registration</h2>";
-		
+
+		if (isset($_POST['username']))
+			$data['username'] = $_POST['username'];
+		if (isset($_POST['checkEmail']))
+			$data['email'] = $_POST['checkEmail'];
+
 		if (alreadyRegistered($id)) {
 			echo '<h3>You have already registered. You may edit your information, but must use the same password.</h3>';
 			$data = getPerson($id);
 		}
 ?>
 		<p> All information (other than your password) will be visible to all members of the team. </p>
-		
+
 		<script type="text/javascript">
 		//<![CDATA[
 			function validate(f) {
@@ -114,7 +120,7 @@
 				</tr>
 				<tr>
 					<td>Username*</td>
-					<td><input type="text" name="username" value="<?php echo $data['username']; ?>" /></td>
+					<td><input type="text" name="username" value="<?php echo $data['username'] ?>"/></td>
 				</tr>
 				<tr>
 					<td>Password*</td>
@@ -179,17 +185,26 @@
 	}
 	
 //------------------------------------------------------------------------
-	function checkEmail($email)
+	function checkEmail($email, $username)
 	{
 		$sql = sprintf("SELECT * FROM user_info WHERE email='%s'",
-						mysql_real_escape_string($email));
+			       mysql_real_escape_string($email));
 		$result = query_db($sql);
 
 		if (mysql_num_rows($result) == 1) {
 			$r = mysql_fetch_assoc($result);
 			return $r['uid'];
-		} else
-			return FALSE;
+		} else if (mysql_num_rows($result) == 0) {
+			$sql = sprintf("INSERT INTO user_info (username, email) VALUES ('%s', '%s')",
+				       mysql_real_escape_string($username),
+				       mysql_real_escape_string($email));
+			$result = query_db($sql);
+
+			$sql = "SELECT LAST_INSERT_ID()";
+			$result = query_db($sql);
+			$r = mysql_fetch_row($result);
+			return $r[0];
+		}
 	}
 	
 	function register($fname, $lname, $email, $username, $pass1, $pass2, $street, $city, $state, 
@@ -240,8 +255,8 @@
 		$favorite = $purifier->purify($favorite);
 		$occupation = $purifier->purify($occupation);
 		$bio = $purifier->purify($bio);
-			
-		$sql = sprintf("UPDATE user_info SET username='%s', password=AES_ENCRYPT('%s', '%s%s'),
+
+		$sql = sprintf("UPDATE user_info SET username = '%s', password=AES_ENCRYPT('%s', '%s%s'),
 						email='%s', first='%s', last='%s', street='%s', city='%s', state='%s',
 						country='%s', zip='%s', phone='%s', picture='%s', expertise='%s', favorite='%s',
 						occupation='%s', bio='%s' WHERE uid='%s'",
@@ -271,13 +286,6 @@
 		
 		if ($result == FALSE) {
 			mysql_query('ROLLBACK');
-			
-			// If query fails, see if it was because the username is already taken
-			$sql = sprintf("SELECT * FROM user_info WHERE username='%s'", mysql_real_escape_string($username));
-			$result = query_db($sql);
-			if (mysql_num_rows($result) > 0) {
-				return "Username $username already taken.";
-			}
 			return "Registration Failed";
 		} else {
 			mysql_query('COMMIT');
