@@ -86,6 +86,7 @@
 		$id = $p['uid'];
 		$uname = $p['username'];
 		$picture = $p['picture'];
+		$email = $p['email'];
 		
 		$pic = "<img src=\"nophoto.gif\" />";
 		if ($picture != "") {	
