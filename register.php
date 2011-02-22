@@ -246,13 +246,15 @@
 			$value = $data[$shortname];
 			$value = $purifier->purify($value);
 
-			$sql = sprintf("INSERT INTO user_info_values VALUES ('%s', '%s', '%s')",
-				       mysql_real_escape_string($id),
-				       mysql_real_escape_string($user_key_id),
-				       mysql_real_escape_string($value));
-			$res = mysql_query($sql);
-			if ($res == FALSE)
-				$failed = 1;
+			if ($data[$shortname] != "") {
+				$sql = sprintf("INSERT INTO user_info_values VALUES ('%s', '%s', '%s')",
+					       mysql_real_escape_string($id),
+					       mysql_real_escape_string($user_key_id),
+					       mysql_real_escape_string($value));
+				$res = mysql_query($sql);
+				if ($res == FALSE)
+					$failed = 1;
+			}
 		}
 
 		if ($failed == 1) {
