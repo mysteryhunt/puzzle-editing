@@ -95,13 +95,12 @@
 				$pic = "<img src=\"".$picsrc."\" />";
 		}
 						
-		$name = ($name == ' ') ? "No Name" : $name;
 		$jobNames = getUserJobsAsList($id);
 		?>		
 		<div class="<?php echo ($jobNames) ? "specprofilebox" : "profilebox"; ?>">
 			<div class="profileimg"><?php echo $pic ?></div>
 			<div class="profiletxt">
-				<span class="profilename"><?php echo "$name ($uname)"; ?></span>
+				<span class="profilename"><?php echo "$uname"; ?></span>
 				<span class="profiletitle"><?php echo $jobNames; ?></span>
 				<span class="profilecontact"><a href="mailto:<?php echo $email ?>"><?php echo $email ?></a>
 <?php
