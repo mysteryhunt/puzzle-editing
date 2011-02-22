@@ -81,7 +81,7 @@
 ?>
 			<tr>
 				<td><?php echo $answer['answer'] ?></td>
-				<td><?php if ($everything && $pid) { echo "<a href=\"puzzle?pid=$pid\">".$pid."</a></td><td>".getTitle($pid)."</td><td>".getStatusNameForPuzzle($pid)."</td><td>https://puzzle2011.com/writing/".getMostRecentDraftNameForPuzzle($pid);
+				<td><?php if ($everything && $pid) { echo "<a href=\"puzzle?pid=$pid\">".$pid."</a></td><td>".getTitle($pid)."</td><td>".getStatusNameForPuzzle($pid)."</td><td>http://ihtfp.us/editing/".getMostRecentDraftNameForPuzzle($pid);
 } else {
 				 echo ($pid ? "<a href=\"puzzle?pid=$pid\">". ($byTitle ? getTitle($pid) : "Puzzle $pid"). "</a>". ($byStatus ? " ".getStatusNameForPuzzle($pid) : ' ') . ($byDraft ? " " .getMostRecentDraftNameForPuzzle($pid) : ' ') : 'unassigned');}
 				?></td>
