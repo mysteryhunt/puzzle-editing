@@ -94,66 +94,32 @@
 				$pic = "<img src=\"".$picsrc."\" />";
 		}
 						
-			
-		
-		$name = $p['first'] . ' ' . $p['last'];
 		$name = ($name == ' ') ? "No Name" : $name;
-		$email = $p['email'];
-		$phone = $p['phone'] ? $p['phone'] : "No phone specified";
-		
-		$address1 = $p['street'];
-		
-		$address2 = $p['city'];
-		$address2 .= $p['state'] ? ', ' . $p['state'] : '';
-		$address2 .= $p['zip'] ? ' ' . $p['zip'] : '';
-		
-		$country = $p['country'];
-		
-		$fulladdress = "";	
-		if ($country) {
-			$fulladdress = $country;
-		}		
-		if ($address2) {
-			if ($fulladdress)
-				$fulladdress = ", $fulladdress";
-			$fulladdress = "$address2$fulladdress"; 
-		}		
-		if ($address1) {
-			if ($fulladdress)
-				$fulladdress = ", $fulladdress";
-			$fulladdress = "$address1$fulladdress"; 
-		}
-		
-		if ($fulladdress == "") { $fulladdress = "No address specified"; } 
-
-		
 		$jobNames = getUserJobsAsList($id);
-		
-		$occupation = $p['occupation'];
-		
-		$interests = $p['expertise'];
-		if ($interests != "") {
-			$interests = "<strong>Interests/Expertise</strong><br/>" . nl2br($interests);
-		}
-		
-		$favorite = $p['favorite'];
-		if ($favorite != "") {
-			$favorite = "<strong>Favorite Puzzles</strong><br/>" . nl2br($favorite);
-		}
-		
-		$bio = $p['bio'] ? "<strong>About me</strong><br/>" . $p['bio'] : "";
-		
 		?>		
 		<div class="<?php echo ($jobNames) ? "specprofilebox" : "profilebox"; ?>">
 			<div class="profileimg"><?php echo $pic ?></div>
 			<div class="profiletxt">
 				<span class="profilename"><?php echo "$name ($uname)"; ?></span>
 				<span class="profiletitle"><?php echo $jobNames; ?></span>
-				<span class="profilecontact"><a href="mailto:<?php echo $email ?>"><?php echo $email ?></a> <?php echo "| " . $phone . " | " . $fulladdress ?></span>
-				<span class="profilesect"><?php echo $occupation ?></span>
-				<span class="profilesect"><?php echo $interests ?></span>
-				<span class="profilesect"><?php echo $favorite ?></span>
-				<span class="profilesect"><?php echo $bio ?></span>
+				<span class="profilecontact"><a href="mailto:<?php echo $email ?>"><?php echo $email ?></a>
+<?php
+			$sql = "SELECT * FROM user_info_key";
+			$result = get_rows_null($sql);
+			foreach ($result as $r) {
+				$shortname = $r['shortname'];
+				$longname = $r['longname'];
+				$user_key_id = $r['id'];
+				$sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
+					       mysql_real_escape_string($id), mysql_real_escape_string($user_key_id));
+				$res = get_rows_null($sql);
+				if ($res[0]['value'] != "") {
+?>
+					<span class="profilesect"><?php echo "<b>$longname</b>: " . $res[0]['value']; ?></span>
+<?php
+				}
+			}
+?>
 			</div>
 			<div class="profilefooter"></div>
 		</div>

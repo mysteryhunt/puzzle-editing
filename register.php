@@ -20,10 +20,7 @@
 			checkEmailForm();
 		}
 	} else if(isset($_POST['register'])) {
-		$r = register($_POST['fname'], $_POST['lname'], $_POST['email'], $_POST['username'], $_POST['pass1'],
-					$_POST['pass2'], $_POST['street'], $_POST['city'], $_POST['state'], $_POST['postal'], 
-					$_POST['country'], $_POST['phone'], $_FILES['picture'], $_POST['id'], $_POST['interest'], $_POST['favorite'], 
-					$_POST['occupation'], $_POST['bio']);
+		$r = register();
 
 		if ($r === TRUE) {
 			echo '<h4> Registration Successful. </h4>';
@@ -107,14 +104,6 @@
 		<form enctype="multipart/form-data" method="post" action="<?php echo SELF; ?>" onsubmit="return validate(this)">
 			<table>
 				<tr>
-					<td>First Name*</td>
-					<td><input type="text" name="fname" value="<?php echo $data['first']; ?>" /></td>
-				</tr>
-				<tr>
-					<td>Last Name*</td>
-					<td><input type="text" name="lname" value="<?php echo $data['last']; ?>" /></td>
-				</tr>
-				<tr>
 					<td>Email Address* (Will not change address on mailing lists)</td>
 					<td><input type="text" name="email" value="<?php echo $data['email']; ?>"  /></td>
 				</tr>
@@ -131,52 +120,31 @@
 					<td><input type="password" name="pass2" /></td>
 				</tr>
 				<tr>
-					<td>Street Address</td>
-					<td><input type="text" name="street"  value="<?php echo $data['street']; ?>" /></td>
-				</tr>
-				<tr>
-					<td>City</td>
-					<td><input type="text" name="city"  value="<?php echo $data['city']; ?>" /></td>
-				</tr>
-				<tr>
-					<td>State</td>
-					<td><input type="text" name="state"  value="<?php echo $data['state']; ?>" /></td>
-				</tr>
-				<tr>
-					<td>Postal Code</td>
-					<td><input type="text" name="postal"  value="<?php echo $data['zip']; ?>" /></td>
-				</tr>
-				<tr>
-					<td>Country</td>
-					<td><input type="text" name="country"  value="<?php echo $data['country']; ?>" /></td>
-				</tr>
-				<tr>
-					<td>Phone Number</td>
-					<td><input type="text" name="phone"  value="<?php echo $data['phone']; ?>" /></td>
-				</tr>
-				<tr>
-					<td>Occupation/Employer</td>
-					<td><input type="text" name="occupation" value="<?php echo $data['occupation']; ?>" /></td>
-				</tr>
-				<tr>
 					<td>Upload a picture of yourself (jpg, png, gif)</td>
 					<td>
 						<input type="hidden" name="MAX_FILE_SIZE" value="10000000" />
 						<input type="file" name="picture" />
 					</td>
 				</tr>
+<?php
+			// Start by getting the list of rows of user_info_keys into arrays.
+			$sql = "SELECT id, shortname, longname FROM user_info_key";
+			$result = get_rows_null($sql);
+			foreach ($result as $r) {
+				$shortname = $r['shortname'];
+				$longname = $r['longname'];
+				$user_key_id = $r['id'];
+				$sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
+					       mysql_real_escape_string($id), mysql_real_escape_string($user_key_id));
+				$res = get_rows_null($sql);
+?>
 				<tr>
-					<td>What are your areas of interest and/or expertise?</td>
-					<td><textarea class="register" name="interest"><?php echo $data['expertise']; ?></textarea></td>
+					<td><?php echo $longname; ?></td>
+					<td><input type="text" name="<?php echo $shortname; ?>" value="<?php echo $res[0]['value']; ?>" /></td>
 				</tr>
-				<tr>
-					<td>What are your favorite puzzle types?</td>
-					<td><textarea class="register" name="favorite"><?php echo $data['favorite']; ?></textarea></td>
-				</tr>
-				<tr>
-					<td>Short Bio</td>
-					<td><textarea class="register" name="bio"><?php echo $data['bio']; ?></textarea></td>
-				</tr>
+<?php
+			}
+?>
 			</table>
 			<input type="hidden" name="id" value="<?php echo($id); ?>" />
 			<input type="submit" name="register" value="Register" />
@@ -207,28 +175,31 @@
 		}
 	}
 	
-	function register($fname, $lname, $email, $username, $pass1, $pass2, $street, $city, $state, 
-						$postal, $country, $phone, $picture, $id, $interest, $favorite, $occupation, $bio)
+	function register()
 	{
-		if ($fname == "") 
+		$data = $_POST;
+		$picture = $_FILES['picture'];
+		$id = $data['id'];
+
+		if ($data['fname'] == "")
 			return "First name may not be empty";
-		if ($lname == "")
+		if ($data['lname'] == "")
 			return "Last name may not be empty";
-		if ($email == "")
+		if ($data['email'] == "")
 			return "Email may not be empty";
-		if ($username == "")
+		if ($data['username'] == "")
 			return "Username may not be empty";
-		if ($pass1 == "" || $pass2 == "")
+		if ($data['pass1'] == "" || $data['pass2'] == "")
 			return "Passwords may not be empty";
-		if ($pass1 != $pass2)
+		if ($data['pass1'] != $data['pass2'])
 			return "Passwords do not match";
-		if (strlen($pass1) < 6)
+		if (strlen($data['pass1']) < 6)
 			return "Password must be at least 6 characters";
-		if ($id == "")
+		if ($data['id'] == "")
 			return "Error: missing id";
 		
 		if (alreadyRegistered($id)) {
-			if (!checkPassword($username, $pass1)) {
+			if (!checkPassword($data['username'], $data['pass1'])) {
 				return 'Incorrect Password. Please try again.';
 			}
 			if ($picture['name'] != '') {
@@ -241,50 +212,50 @@
 		}
 		
 		$purifier = new HTMLPurifier();
-		$username = $purifier->purify($username);
-		$email = $purifier->purify($email);
-		$fname = $purifier->purify($fname);
-		$lname = $purifier->purify($lname);
-		$street = $purifier->purify($street);
-		$city = $purifier->purify($city);
-		$state = $purifier->purify($state);
-		$country = $purifier->purify($country);
-		$postal = $purifier->purify($postal);
+		$id = $purifier->purify($id);
+		$username = $purifier->purify($data['username']);
 		$pic = $purifier->purify($pic);
-		$interest = $purifier->purify($interest);
-		$favorite = $purifier->purify($favorite);
-		$occupation = $purifier->purify($occupation);
-		$bio = $purifier->purify($bio);
+
+		mysql_query('START TRANSACTION');
+		$failed = 0;
 
 		$sql = sprintf("UPDATE user_info SET username = '%s', password=AES_ENCRYPT('%s', '%s%s'),
-						email='%s', first='%s', last='%s', street='%s', city='%s', state='%s',
-						country='%s', zip='%s', phone='%s', picture='%s', expertise='%s', favorite='%s',
-						occupation='%s', bio='%s' WHERE uid='%s'",
-						mysql_real_escape_string($username),
-						mysql_real_escape_string($pass1),
-						mysql_real_escape_string($username),
-						mysql_real_escape_string($pass1),
-						mysql_real_escape_string($email),
-						mysql_real_escape_string($fname),
-						mysql_real_escape_string($lname),
-						mysql_real_escape_string($street),
-						mysql_real_escape_string($city),
-						mysql_real_escape_string($state),
-						mysql_real_escape_string($country),
-						mysql_real_escape_string($postal),
-						mysql_real_escape_string($phone),
-						mysql_real_escape_string($pic),
-						mysql_real_escape_string($interest),
-						mysql_real_escape_string($favorite),
-						mysql_real_escape_string($occupation),
-						mysql_real_escape_string($bio),
-						mysql_real_escape_string($id));
-		
-		mysql_query('START TRANSACTION');
-		
+                               picture='%s' WHERE uid='%s'",
+			       mysql_real_escape_string($username), mysql_real_escape_string($data['pass1']),
+			       mysql_real_escape_string($username), mysql_real_escape_string($data['pass1']),
+			       mysql_real_escape_string($pic), mysql_real_escape_string($id));
+
 		$result = mysql_query($sql);
-		
-		if ($result == FALSE) {
+		if ($result == FALSE)
+			$failed = 1;
+
+		$sql = sprintf("DELETE from user_info_values WHERE person_id = '%s'", mysql_real_escape_string($id));
+		$result = mysql_query($sql);
+		if ($result == FALSE)
+			$failed = 1;
+
+		$sql = sprintf("SELECT id, shortname, longname FROM user_info_key");
+		$result = get_rows_null($sql);
+		if ($result == FALSE)
+			$failed = 1;
+
+		foreach ($result as $r) {
+			$shortname = $r['shortname'];
+			$longname = $r['longname'];
+			$user_key_id = $r['id'];
+			$value = $data[$shortname];
+			$value = $purifier->purify($value);
+
+			$sql = sprintf("INSERT INTO user_info_values VALUES ('%s', '%s', '%s')",
+				       mysql_real_escape_string($id),
+				       mysql_real_escape_string($user_key_id),
+				       mysql_real_escape_string($value));
+			$res = mysql_query($sql);
+			if ($res == FALSE)
+				$failed = 1;
+		}
+
+		if ($failed == 1) {
 			mysql_query('ROLLBACK');
 			return "Registration Failed";
 		} else {

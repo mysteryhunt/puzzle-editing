@@ -90,9 +90,9 @@ function displayTestingSummary()
 	}
 	echo "</style>\n";
 
-	$sql = sprintf("SELECT user_info.uid, first, last, comments.id, type, timestamp, pid FROM comments 
+	$sql = sprintf("SELECT user_info.uid, user_info.username, comments.id, type, timestamp, pid FROM comments
 			LEFT JOIN user_info on comments.uid = user_info.uid WHERE comments.type = 5 
-			ORDER BY user_info.last, user_info.first, comments.pid");
+			ORDER BY user_info.username, comments.pid");
 	$result = query_db($sql);
 	$r = mysql_fetch_assoc($result);
 	
@@ -121,7 +121,7 @@ function displayTestingSummary()
 		    if ($pid != $r['pid']) {
 				$pid = $r['pid'];
 			    $arr[$uid] .= "</span><br />\n" . "<span class=\"a" . $r['uid'] . "-" . $pid . "\">";
-			    $puzzlink = "https://puzzle2011.com/writing/puzzle?pid=" . $pid;
+			    $puzzlink = "https://ihtfp.us/editing/puzzle?pid=" . $pid;
 			    $arr[$uid] .= "<a href=\"" . $puzzlink . "\">" . $pid . "</a>: ";
 		    }
 		    $arr[$uid] .= "<a href=\"" . $puzzlink . "#comm" . $r['id'] . "\">" . $r['timestamp'] . "</a> &nbsp; ";

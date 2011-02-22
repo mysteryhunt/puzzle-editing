@@ -201,21 +201,27 @@ function getLastVisit($uid, $pid)
 	return get_element_null($sql);
 }
 
-
-
-
-
-
 // Get user's name. Return username if no name in database.
 function getUserName($uid)
 {
-	$sql = sprintf("SELECT first, last, username FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+	$sql = sprintf("SELECT value from user_info_values where user_info_key_id = " .
+		       "(select id from user_info_key where shortname = 'fname') AND " .
+		       "person_id = '%s'", mysql_real_escape_string($uid));
 	$result = get_row($sql);
-		
-	if ($result['first'] == '') {
+	$first = $result['value'];
+
+	$sql = sprintf("SELECT value from user_info_values where user_info_key_id = " .
+		       "(select id from user_info_key where shortname = 'lname') AND " .
+		       "person_id = '%s'", mysql_real_escape_string($uid));
+	$result = get_row($sql);
+	$last = $result['value'];
+
+	if ($first == '' || $last == '') {
+		$sql = sprintf("SELECT username FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+		$result = get_row($sql);
 		return $result['username'];
 	} else
-		return $result['first'] . ' ' . $result['last'];
+		return "$first $last";
 }
 
 function getEmail($uid)
@@ -224,11 +230,6 @@ function getEmail($uid)
 					mysql_real_escape_string($uid));
 	return get_element($sql);
 }
-
-
-
-
-
 
 // Get all authors of $pid
 // Return assoc array of [uid] => [name]
