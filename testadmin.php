@@ -121,7 +121,7 @@ function displayTestingSummary()
 		    if ($pid != $r['pid']) {
 				$pid = $r['pid'];
 			    $arr[$uid] .= "</span><br />\n" . "<span class=\"a" . $r['uid'] . "-" . $pid . "\">";
-			    $puzzlink = "https://ihtfp.us/editing/puzzle?pid=" . $pid;
+			    $puzzlink = URL . "/puzzle?pid=" . $pid;
 			    $arr[$uid] .= "<a href=\"" . $puzzlink . "\">" . $pid . "</a>: ";
 		    }
 		    $arr[$uid] .= "<a href=\"" . $puzzlink . "#comm" . $r['id'] . "\">" . $r['timestamp'] . "</a> &nbsp; ";

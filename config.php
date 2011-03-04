@@ -8,9 +8,11 @@
 
 	$dev = preg_match("/\/(.*)\/writing.*/", $_SERVER["SCRIPT_NAME"], $matches);
 	if ($dev) {
-	   define("URL", "http://ihtfp.us/" . $matches[1] . "/writing");
+           define("DEVMODE", TRUE);
+	   define("URL", "http://ihavetofashionpuzzles.com/" . $matches[1] . "/writing");
 	} else {
-	   define("URL", "http://ihtfp.us/editing");
+           define("DEVMODE", FALSE);
+	   define("URL", "http://ihavetofashionpuzzles.com/editing");
 	}
 
 	define("SELF", "$_SERVER[PHP_SELF]");

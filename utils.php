@@ -739,7 +739,7 @@ function emailComment($uid, $pid, $cleanComment)
 	$message = "$name commented on puzzle $pid:\n";
 	$message .= "$cleanComment";
 	$subject = "Comment on Puzzle $pid";
-	$link = "http://ihtfp.us/editing/puzzle?pid=$pid";
+	$link = URL . "/puzzle?pid=$pid";
 
 	$users = getSubbed($pid);
 	if ($users == NULL)
@@ -764,7 +764,7 @@ function sendEmail($uid, $subject, $message, $link)
 	$address = getEmail($uid);
 	$msg = $message . "\n\n" . $link;
 
-	if (URL == "http://ihtfp.us/editing")
+        if (!DEVMODE)
 		mail($address, $subject, $msg);
 }
 
@@ -1063,7 +1063,7 @@ function removeSpoiledUser($uid, $pid, $removeUser)
 		
 		$subject = "Spoiled on Puzzle $pid";
 		$message = "$name removed you as spoiled on puzzle $pid.";
-		$link = "http://ihtfp.us/editing/";
+		$link = URL;
 		sendEmail($user, $subject, $message, $link);
 	}
 	
@@ -1160,7 +1160,7 @@ function addSpoiledUser($uid, $pid, $addUser)
 		// Email new author
 		$subject = "Spoiled on Puzzle $pid";
 		$message = "$name added you as spoiled on puzzle $pid.";
-		$link = "http://ihtfp.us/editing/";
+		$link = URL;
 		sendEmail($user, $subject, $message, $link);
 	}
 		
@@ -1305,7 +1305,7 @@ function addAuthors($uid, $pid, $add)
 		// Email new author
 		$subject = "Author on Puzzle $pid";
 		$message = "$name added you as an author on puzzle $pid.";
-		$link = "http://ihtfp.us/editing/puzzle?pid=$pid";
+		$link = URL . "/puzzle?pid=$pid";
 		sendEmail($auth, $subject, $message, $link);
 	}
 		
@@ -1347,7 +1347,7 @@ function removeAuthors($uid, $pid, $remove)
 		// Email old author
 		$subject = "Author on Puzzle $pid";
 		$message = "$name removed you as an author on puzzle $pid.";
-		$link = "http://ihtfp.us/editing/author";
+		$link = URL . "/author";
 		sendEmail($auth, $subject, $message, $link);
 	}
 	
@@ -1386,7 +1386,7 @@ function addBlocked($uid, $pid, $add)
 		// Email new author
 		$subject = "Blocked on Puzzle $pid";
 		$message = "$name blocked you from puzzle $pid.";
-		$link = "http://ihtfp.us/editing/";
+		$link = URL;
 		sendEmail($user, $subject, $message, $link);
 	}
 		
@@ -1423,7 +1423,7 @@ function removeBlocked($uid, $pid, $remove)
 		// Email new author
 		$subject = "Blocked on Puzzle $pid";
 		$message = "$name removed you as blocked from puzzle $pid.";
-		$link = "http://ihtfp.us/editing/";
+		$link = URL;
 		sendEmail($user, $subject, $message, $link);
 	}
 		
@@ -1462,7 +1462,7 @@ function addOncallEditors($uid, $pid, $addOncall)
 		// Email new editor
 		$subject = "Editor on Puzzle $pid";
 		$message = "$name added you as an on-call editor to puzzle $pid.";
-		$link = "http://ihtfp.us/editing/editor";
+		$link = URL . "/editor";
 		sendEmail($editor, $subject, $message, $link);
 	}
 		
@@ -1502,7 +1502,7 @@ function removeOncallEditors($uid, $pid, $remove)
 		// Email old editor
 		$subject = "Editor on Puzzle $pid";
 		$message = "$name removed you as an on-call editor on puzzle $pid.";
-		$link = "http://ihtfp.us/editing/editor";
+		$link = URL . "/editor";
 		sendEmail($editor, $subject, $message, $link);
 	}
 	
@@ -1543,7 +1543,7 @@ function addEditors($uid, $pid, $add)
 		// Email new editor
 		$subject = "Editor on Puzzle $pid";
 		$message = "$name added you as an editor to puzzle $pid.";
-		$link = "http://ihtfp.us/editing/puzzle?pid=$pid";
+		$link = URL . "/puzzle?pid=$pid";
 		sendEmail($editor, $subject, $message, $link);
 	}
 		
@@ -1583,7 +1583,7 @@ function removeEditors($uid, $pid, $remove)
 		// Email old editor
 		$subject = "Editor on Puzzle $pid";
 		$message = "$name removed you as an editor on puzzle $pid.";
-		$link = "http://ihtfp.us/editing/editor";
+		$link = URL . "/editor";
 		sendEmail($editor, $subject, $message, $link);
 	}
 	
@@ -1782,7 +1782,7 @@ function emailTesters($pid, $status)
 		$message = "Puzzle $pid's status was changed to $statusName.";
 	}
 	
-	$link = "http://ihtfp.us/editing/testsolving";
+	$link = URL . "/testsolving";
 	
 	$testers = getCurrentTestersForPuzzle($pid);
 	foreach ($testers as $uid => $name) {
