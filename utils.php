@@ -1859,6 +1859,10 @@ function uploadFiles($uid, $pid, $type, $file) {
 				$ext = ".txt";
 				$filetype = "file";
 				break;
+			case "text/x-c++":
+				$ext = ".txt";
+				$filetype = "file";
+				break;
 			case "text/html":
 				$ext = ".html";
 				$filetype = "file";
