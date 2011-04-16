@@ -464,12 +464,14 @@ function changeTitleSummaryDescription($uid, $pid, $title, $summary, $descriptio
 		
 		// If title has changed, update it
 		$cleanTitle = $purifier->purify($title);
+		$cleanTitle = htmlspecialchars($cleanTitle);
 		if ($oldTitle !== $cleanTitle) {
 			updateTitle($uid, $pid, $oldTitle, $cleanTitle);
 		}
 		
 		// If summary has changed, update it
 		$cleanSummary = $purifier->purify($summary);
+		$cleanSummary = htmlspecialchars($cleanSummary);
 		if ($oldSummary !== $cleanSummary) {
 			updateSummary($uid, $pid, $oldSummary, $cleanSummary);
 		}
