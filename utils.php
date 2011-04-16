@@ -207,13 +207,13 @@ function getUserName($uid)
 	$sql = sprintf("SELECT value from user_info_values where user_info_key_id = " .
 		       "(select id from user_info_key where shortname = 'fname') AND " .
 		       "person_id = '%s'", mysql_real_escape_string($uid));
-	$result = get_row($sql);
+	$result = get_row_null($sql);
 	$first = $result['value'];
 
 	$sql = sprintf("SELECT value from user_info_values where user_info_key_id = " .
 		       "(select id from user_info_key where shortname = 'lname') AND " .
 		       "person_id = '%s'", mysql_real_escape_string($uid));
-	$result = get_row($sql);
+	$result = get_row_null($sql);
 	$last = $result['value'];
 
 	if ($first == '' || $last == '') {
