@@ -213,6 +213,17 @@
 		header("Location: " . URL . "/testsolving");
 		exit(0);
 	}
+
+	if (isset($_POST['TestAdminPuzzle'])) {
+		$uid = $_POST['uid'];
+		$pid = $_POST['pid'];
+
+		if (!addToTestAdminQueue($uid, $pid))
+                        $_SESSION['failedToAdd'] = TRUE;
+
+		header("Location: " . URL . "/testadmin");
+		exit(0);
+	}
 	
 	if (isset($_POST['getTestId'])) {
 		$uid = $_POST['uid'];

@@ -2316,6 +2316,13 @@ function isInTargetedTestsolving($pid)
 	return ($status == 5);
 }
 
+function isPuzzleInAddToTestAdminQueue($pid)
+{
+	$sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+			WHERE puzzle_idea.id='%s' AND pstatus.addToTestAdminQueue='1'", mysql_real_escape_string($pid));
+	return has_result($sql);
+}
+
 function isPuzzleInTesting($pid)
 {
 	$sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
@@ -2591,7 +2598,7 @@ function getPic($uid)
 function getPuzzlesNeedTestAdmin()
 {
 	$sql = "SELECT puzzle_idea.id FROM (puzzle_idea LEFT JOIN testAdminQueue ON puzzle_idea.id=testAdminQueue.pid) 
-			JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE testAdminQueue.uid IS NULL AND pstatus.inTesting=1";
+			JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE testAdminQueue.uid IS NULL AND pstatus.addToTestAdminQueue=1";
 	return get_elements_null($sql);
 }
 
@@ -2612,14 +2619,16 @@ function getPuzzleForTestAdminQueue($uid)
 function canTestAdminPuzzle($uid, $pid)
 {
 	return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) 
-			&& !isOnCallEditorOnPuzzle($uid, $pid) && !isTesterOnPuzzle($uid, $pid));
+		&& !isOnCallEditorOnPuzzle($uid, $pid)
+		&& !isTesterOnPuzzle($uid, $pid)
+		&& isPuzzleInAddToTestAdminQueue($pid));
 }
 
 function addToTestAdminQueue($uid, $pid)
 {
-	if (!canTestAdminPuzzle($uid, $pid))
+	if (!canTestAdminPuzzle($uid, $pid)) 
 		return FALSE;
-		
+
 	$sql = sprintf("INSERT INTO testAdminQueue (uid, pid) VALUES ('%s', '%s')",
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
 	query_db($sql);
