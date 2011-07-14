@@ -1743,7 +1743,15 @@ function changeStatus($uid, $pid, $status)
 {
 	if (!canChangeStatus($uid, $pid))
 		utilsError("You do not have permission to change statuses on puzzle $pid");
-	
+
+	$sql = sprintf("SELECT pstatus.inTesting FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = 
+                       pstatus.id WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+	query_db($sql);
+
+	$inTesting_before = get_element($sql);
+
+	echo "<br>inTesting_before is $inTesting_before<br>";
+
 	mysql_query('START TRANSACTION');
 	
 	$old = getStatusForPuzzle($pid);
@@ -1752,6 +1760,7 @@ function changeStatus($uid, $pid, $status)
 		return;
 	}
 
+	
 	$sql = sprintf("UPDATE puzzle_idea SET pstatus='%s' WHERE id='%s'",
 			mysql_real_escape_string($status), mysql_real_escape_string($pid));
 	query_db($sql);
@@ -1765,6 +1774,27 @@ function changeStatus($uid, $pid, $status)
 		emailTesters($pid, $status);
 		
 	mysql_query('COMMIT');
+
+	$sql = sprintf("SELECT pstatus.inTesting FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = 
+                       pstatus.id WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+	query_db($sql);
+	$inTesting_after = get_element($sql);
+
+	echo "<br>inTesting_after is $inTesting_after<br>";
+
+	if ($inTesting_before == "1" && $inTesting_after == "0") {
+	        echo "<br>inTesting changed from yes to no<br>";
+                // For every user that was testing this puzzle, mark the puzzle as doneTesting
+		$sql = sprintf("SELECT uid FROM test_queue WHERE pid = '%s'", mysql_real_escape_string($pid));
+		query_db($sql);
+		$users = get_elements_null($sql);
+		if ($users) {
+		   	foreach ($users as $user) {
+				echo "<br>Setting puzzle $pid done for user $user<br>";
+				doneTestingPuzzle($user, $pid);
+			}
+		}
+        }
 }
 
 function isStatusInTesting($sid)
@@ -2493,7 +2523,7 @@ function createFeedbackComment($done, $time, $tried, $liked)
 	<p>$time</p><br />
 	<p><strong>Describe what you tried.</p></strong>
 	<p>$tried</p><br />
-	<p><strong>What did you like/dislike about this puzzle?</strong></p>
+	<p><strong>What did you like/dislike about this puzzle? How hard do you think it is?</strong></p>
 	<p>$liked</p>";
 	
 	return $comment;
