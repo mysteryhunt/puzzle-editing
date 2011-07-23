@@ -233,10 +233,13 @@
 	}
 	
 	if (isset($_POST['getPuzz'])) {
-	 	$uid = $_POST['uid'];
-	 	
-		$pid = getNewPuzzleForEditor($uid);
-		if ($pid)
+		$uid = $_POST['uid'];
+		
+		$pid = $_POST['pid'];
+		if (!$pid)
+			$pid = getNewPuzzleForEditor($uid);
+
+		if ($pid && isEditorAvailable($uid, $pid))
 			addPuzzleToEditorQueue($uid, $pid);
 		else
 			$_SESSION['failedToAdd'] = TRUE;
