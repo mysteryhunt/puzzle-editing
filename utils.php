@@ -1794,6 +1794,8 @@ function changeStatus($uid, $pid, $status)
 				doneTestingPuzzle($user, $pid);
 			}
 		}
+		// Now, reset the number-of-testers count for the puzzle.
+		resetPuzzleTesterCount($pid);
         }
 }
 
@@ -2293,6 +2295,9 @@ function addPuzzleToTestQueue($uid, $pid)
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
 	query_db($sql);
 	mysql_query('COMMIT');
+
+        // For keeping track of how many testers have this puzzle open.
+        incrementPuzzleTesterCount($pid);
 }
 
 function getPuzzleToTest($uid)
@@ -2320,6 +2325,55 @@ function getPuzzleToTest($uid)
 	return key($sort);
 }
 
+function canUseMoreTesters($pid)
+{
+	$testers_limit = 4;
+
+	$sql = sprintf("SELECT tester_count FROM puzzle_tester_count WHERE pid='%s'", mysql_real_escape_string($pid));
+	$tester_count = get_elements_null($sql);
+
+	if (!$tester_count) {
+		// No entry in the DB means 0 testers.
+		return 1;
+	}
+
+	if ((int)$tester_count[0] >= $testers_limit) {
+		// We already have enough testers on this puzzle.
+		return NULL;
+	}
+	else {
+		// We can use more testers.
+		return 1;
+	}
+}
+
+function getCurrentPuzzleTesterCount($pid)
+{
+	$sql = sprintf("SELECT tester_count FROM puzzle_tester_count WHERE pid='%s'", mysql_real_escape_string($pid));
+	$tester_count = get_element_null($sql);
+	if (!$tester_count) {
+		return 0;
+	}
+	else {
+		return $tester_count;
+	}
+}
+
+function resetPuzzleTesterCount($pid)
+{
+	$sql = sprintf("UPDATE puzzle_tester_count SET tester_count = 0 WHERE pid='%s'", mysql_real_escape_string($pid));
+	query_db($sql);
+}
+
+function incrementPuzzleTesterCount($pid)
+{
+	$sql = sprintf("INSERT INTO puzzle_tester_count VALUES ('%s', 1)
+                   ON DUPLICATE KEY UPDATE tester_count = tester_count + 1",
+		   mysql_real_escape_string($pid));
+
+	query_db($sql);
+}
+
 function getAvailablePuzzlesToTestForUser($uid)
 {
 	$puzzles = getPuzzlesInTesting();
@@ -2328,9 +2382,11 @@ function getAvailablePuzzlesToTestForUser($uid)
 	
 	$available = NULL;
 	foreach ($puzzles as $pid) {
-		if (canTestPuzzle($uid, $pid) && !isInTargetedTestsolving($pid) 
-			&& !isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid)) {
-			
+		if (canTestPuzzle($uid, $pid) &&
+		    !isInTargetedTestsolving($pid) &&
+		    !isTesterOnPuzzle($uid, $pid) &&
+		    !isFormerTesterOnPuzzle($uid, $pid) &&
+		    canUseMoreTesters($pid)) {
 			$available[] = $pid;
 		}
 	}

@@ -21,16 +21,16 @@
 	$completed = array(8, 13, 6);
 	makeStatusTable($completed, 'Completed Puzzles', 'complete-stats');
 	
-	$testing = array(17, 4, 7, 5);
+	$testing = array(18, 17, 4, 7, 5);
 	makeStatusTable($testing, 'In Testing', 'testing-stats');
 	
-	$written = array(12, 3, 2);
+	$written = array(12, 2, 3);
 	makeStatusTable($written, 'Being Written', 'writing-stats');
 	
-	$ideas = array(1, 15);
+	$ideas = array(11, 15, 1);
 	makeStatusTable($ideas, 'Pending Ideas', 'pending-stats');
 	
-	$dead = array(9, 10, 11);
+	$dead = array(9, 10);
 	makeStatusTable($dead, 'Dead Ideas', 'dead-stats');
 	
 	$admin = array(16);

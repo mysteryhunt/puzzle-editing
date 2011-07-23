@@ -602,6 +602,10 @@ function displayTesters($uid, $pid)
 				<strong>Finished Testers:</strong> <?php echo getFinishedTestersAsList($pid); ?>
 			</td>
 		</tr>
+		<tr>
+			<td class='peopleInfo'>
+				<strong>Number of testers during this testsolving cycle:</strong> <?php echo getCurrentPuzzleTesterCount($pid); ?>
+		</tr>
 <?php
 }
 
