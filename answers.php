@@ -36,9 +36,6 @@
 		$rounds = getRounds($minihunt);
 ?>	
 		<table>
-			<tr>
-				<td><?php echo "{$minihunt['name']}: {$minihunt['answer']}"; ?></td>
-			</tr>
 <?php 
 		foreach($rounds as $round) {
 			if ($round['display']) {
