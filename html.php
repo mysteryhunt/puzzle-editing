@@ -87,7 +87,12 @@
 		$uname = $p['username'];
 		$picture = $p['picture'];
 		$email = $p['email'];
-		
+
+		if (strncmp($uname, "test", 4) == 0) {
+			// Ignore test users.
+			return;
+		}
+
 		$pic = "<img src=\"nophoto.gif\" />";
 		if ($picture != "") {	
 			$picsrc = "uploads/pictures/thumbs/$id.jpg";
