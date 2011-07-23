@@ -51,7 +51,7 @@
 			<?php }
 				  if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "admin") ? "selnav" : "nav" ?>" href="admin">Admin</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "author") ? "selnav" : "nav" ?>" href="author">Author Tools</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && (isEditor($_SESSION['uid']) || isOncallEditor($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor">Editor Tools</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor">Editor Tools</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving">Testsolving</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && (isLurker($_SESSION['uid']) || isTestingAdmin($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin">Testing Admin</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && !isBlind($_SESSION['uid'])) {?> <li class='nav'><a class="<?php echo ($selnav == "puzzlestats") ? "selnav" : "nav" ?>" href='puzzlestats'>Puzzle Stats</a></li> <?php } ?>
@@ -131,7 +131,7 @@
 <?php
 	}	
 	
-	function displayQueue($uid, $puzzles, $showStatus, $showSummary, $showAnswer, $showAuthors, $showEditors, $showNumEds, $add, $test = FALSE, $showTesters = FALSE)
+	function displayQueue($uid, $puzzles, $showStatus, $showSummary, $showAnswer, $showAuthors, $showEditors, $showNumEds, $test, $showTesters)
 	{
 		if ($puzzles == NULL) {
 			echo "<h4>No puzzles in queue</h4>";
@@ -175,18 +175,6 @@
 				echo "<td class='puzzidea'><a href='test?pid=$pid'>$pid</a></td>";
 			else
 				echo "<td class='puzzidea'><a href='puzzle?pid=$pid'>$pid</a></td>";
-
-			if ($add) {
-				echo "
-				<td>
-					<form action='form-submit.php' method='post'>
-						<input type='hidden' name='pid' value='$pid' />
-						<input type='hidden' name='uid' value='$uid' />
-						<input type='submit' name='$add' value='Add to Queue' />
-					</form>
-				</td>
-				";
-			}
 ?>
 				<td class='puzzidea'><?php echo $title; ?></td>
 				<?php if ($showStatus) {echo "<td class='puzzidea'>" . getStatusNameForPuzzle($pid) . "</td>";} ?>
@@ -257,8 +245,6 @@ function displayPuzzleStats($uid)
 	$userNumbers = getNumberOfPuzzlesForUser($uid);
 	
 	$editor = $userNumbers['editor'];
-	if ($userNumbers['oncall'] > 0)
-		$editor .= ' (+ ' . $userNumbers['oncall'] . ' on-call)';
 		
 	$tester = $userNumbers['currentTester'];
 	if ($userNumbers['doneTester'] > 0)

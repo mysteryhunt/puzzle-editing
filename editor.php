@@ -11,21 +11,14 @@
 	head("editor");
 		
 	// Check for editor permissions
-	if (!isEditor($uid) && !isOncallEditor($uid)) {
+	if (!isEditor($uid)) {
 		echo "You do not have permission for this page.";
 		foot();
 		exit(1);
 	}
-
+	
 	displayPuzzleStats($uid);
 	
-	echo '<h3>On Call</h3>';
-	$puzzles = getPuzzlesInOnCallEditorQueue($uid);
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, 'addToQueue');
-	
-	echo '<br />';
-	
-	echo '<h3>In Queue</h3>';
 	if (getNewPuzzleForEditor($uid) == FALSE) {
 		echo '<strong>No Puzzles To Add</strong>';
 	} else {
@@ -40,7 +33,7 @@
 	}
 		
 	$puzzles = getPuzzlesInEditorQueue($uid);
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE);
+	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE);
 
 	// End HTML
 	foot();

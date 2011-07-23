@@ -100,16 +100,6 @@
 		$pid = $_POST['pid'];
 		$uid = $_POST['uid'];
 		
-		if (isset($_POST['addOncallEd']))
-			$addOncall = $_POST['addOncallEd'];
-		else
-			$addOncall = NULL;
-			
-		if (isset($_POST['removeOncallEd']))
-			$removeOncall = $_POST['removeOncallEd'];
-		else
-			$removeOncall = NULL;
-		
 		if (isset($_POST['addEditor']))
 			$add = $_POST['addEditor'];
 		else
@@ -120,7 +110,7 @@
 		else
 			$remove = NULL;
 			
-		changeEditors($uid, $pid, $addOncall, $removeOncall, $add, $remove);
+		changeEditors($uid, $pid, $add, $remove);
 		
 		header("Location: " . URL . "/puzzle?pid=$pid");
 		exit(0);
@@ -251,15 +241,6 @@
 		else
 			$_SESSION['failedToAdd'] = TRUE;
 
-		header("Location: " . URL . "/editor.php");
-		exit(0);
-	}
-	
-	if (isset($_POST['addToQueue'])) {
-		$uid = $_POST['uid'];
-		$pid = $_POST['pid'];
-		addPuzzleToEditorQueueFromCall($uid, $pid);
-		
 		header("Location: " . URL . "/editor.php");
 		exit(0);
 	}

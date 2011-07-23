@@ -47,11 +47,6 @@ function isEditor($uid)
 	return hasPriv($uid, 'addToEditingQueue');
 }
 
-function isOncallEditor($uid)
-{
-	return hasPriv($uid, 'beOnCall');
-}
-
 function isTestingAdmin($uid)
 {
 	return hasPriv($uid, 'seeTesters');
@@ -99,13 +94,6 @@ function isAuthorOnPuzzle($uid, $pid)
 function isEditorOnPuzzle($uid, $pid)
 {
 	$sql = sprintf("SELECT * FROM editor_queue WHERE uid='%s' AND pid='%s'",
-			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-	return has_result($sql);
-}
-
-function isOncallEditorOnPuzzle($uid, $pid)
-{
-	$sql = sprintf("SELECT * FROM on_call WHERE on_call='%s' AND pid='%s'",
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
 	return has_result($sql);
 }
@@ -239,19 +227,11 @@ function getAuthorsForPuzzle($pid)
 	return getUsersForPuzzle($pid, $sql);
 }
 
-// Get all editors (not on-call) of $pid
+// Get all editors of $pid
 // Return assoc array of [uid] => [name]
 function getEditorsForPuzzle($pid)
 {
 	$sql = sprintf("SELECT uid FROM editor_queue WHERE pid='%s'", mysql_real_escape_string($pid));
-	return getUsersForPuzzle($pid, $sql);
-}
-
-// Get all on-call editors of $pid
-// Return assoc array of [uid] => [name]
-function getOncallEditorsForPuzzle($pid)
-{
-	$sql = sprintf("SELECT on_call FROM on_call WHERE pid='%s'", mysql_real_escape_string($pid));
 	return getUsersForPuzzle($pid, $sql);
 }
 
@@ -320,7 +300,6 @@ function getAuthorsAsList($pid)
 }
 
 // Get a comma-separated list of editor names
-// On-call editors as listed as (Bob on call)
 function getEditorsAsList($pid)
 {	
 	$sql = sprintf("SELECT uid FROM editor_queue WHERE pid='%s'",
@@ -328,18 +307,6 @@ function getEditorsAsList($pid)
 	$editors = get_elements_null($sql);
 
 	$names = getUserNamesAsList($editors);
-	
-	$sql = sprintf("SELECT on_call FROM on_call WHERE pid='%s'",
-			mysql_real_escape_string($pid));
-	$oncall = get_elements_null($sql);
-		
-	if ($oncall != NULL) {
-		foreach ($oncall as $uid) {
-			if ($names != '')
-				$names .= ', ';
-			$names .= '(' . getUserName($uid) . ' on call)';
-		}
-	}
 	
 	if ($names == '')
 		$names = '(none)';	
@@ -870,7 +837,7 @@ function getListsForUser($uid)
 
 function isAuthorAvailable($uid, $pid)
 {
-	return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isOncallEditorOnPuzzle($uid, $pid) && !isTesterOnPuzzle($uid, $pid));
+	return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isTesterOnPuzzle($uid, $pid));
 }
 
 
@@ -1206,41 +1173,11 @@ function addSpoiledList($uid, $pid, $addList)
 function isEditorAvailable($uid, $pid)
 {
 	return (isEditor($uid) && 
-			!isAuthorOnPuzzle($uid, $pid) && !isBlockedOnPuzzle($uid, $pid) &&
-			!isEditorOnPuzzle($uid, $pid) && !isOncallEditorOnPuzzle($uid, $pid) &&
+			!isAuthorOnPuzzle($uid, $pid) &&
+			!isBlockedOnPuzzle($uid, $pid) &&
+			!isEditorOnPuzzle($uid, $pid) &&
 			!isTesterOnPuzzle($uid, $pid));
 }
-
-// Get editors/other on-call folks who are not authors or editors on a puzzle
-// Return assoc of [uid] => [name]
-function getAvailableOncallEditorsForPuzzle($pid)
-{
-	// Get all users
-	$sql = 'SELECT uid FROM user_info';
-	$users = get_elements_null($sql);
-	
-	$editors = NULL;
-	if ($users != NULL) {
-		foreach ($users as $uid) {
-			if (isOncallEditorAvailable($uid, $pid)) {
-				$editors[$uid] = getUserName($uid);
-			}
-		}
-	}
-
-	// Sort by name
-	natcasesort($editors);
-	return $editors;
-}
-
-function isOncallEditorAvailable($uid, $pid)
-{	
-	return (isOncallEditor($uid) && 
-			!isAuthorOnPuzzle($uid, $pid) && !isBlockedOnPuzzle($uid, $pid) &&
-			!isEditorOnPuzzle($uid, $pid) && !isOncallEditorOnPuzzle($uid, $pid) &&
-			!isTesterOnPuzzle($uid, $pid));
-}
-
 
 
 // Add and remove puzzle authors
@@ -1259,11 +1196,9 @@ function changeAuthors($uid, $pid, $add, $remove)
 }
 
 // Add and remove puzzle editors
-function changeEditors($uid, $pid, $addOncall, $removeOncall, $add, $remove)
+function changeEditors($uid, $pid, $add, $remove)
 {
 	mysql_query('START TRANSACTION');
-	addOncallEditors($uid, $pid, $addOncall);
-	removeOncallEditors($uid, $pid, $removeOncall);
 	addEditors($uid, $pid, $add);
 	removeEditors($uid, $pid, $remove);
 	mysql_query('COMMIT');
@@ -1434,87 +1369,6 @@ function removeBlocked($uid, $pid, $remove)
 	addComment($uid, $pid, $comment, TRUE);
 }
 
-function addOncallEditors($uid, $pid, $addOncall)
-{		
-	if ($addOncall == NULL)
-		return;
-		
-	if (!canAddOncallEditor($uid, $pid))
-		utilsError("You do not have permission to add an on-call editor to puzzle $pid");
-		
-	$name = getUserName($uid);
-		
-	$comment = 'Added ';
-	foreach ($addOncall as $editor) {
-		// Check that this editor is available for this puzzle
-		if (!isOncallEditorAvailable($editor, $pid)) {
-			utilsError(getUserName($editor) . ' is not available.');
-		}
-		
-		// Add on-call editor to puzzle
-		$sql = sprintf("INSERT INTO on_call (pid, on_call, put_by) VALUES ('%s', '%s', '%s')",	
-				mysql_real_escape_string($pid), mysql_real_escape_string($editor), mysql_real_escape_string($uid));
-		query_db($sql);
-		
-		// Add to comment
-		if ($comment != 'Added ')
-			$comment .= ', ';
-		$comment .= getUserName($editor);
-		
-		// Email new editor
-		$subject = "Editor on Puzzle $pid";
-		$message = "$name added you as an on-call editor to puzzle $pid.";
-		$link = URL . "/editor";
-		sendEmail($editor, $subject, $message, $link);
-	}
-		
-	$comment .= ' as on-call editor';
-	if (count($addOncall) > 1)
-		$comment .= "s";
-		
-	addComment($uid, $pid, $comment, TRUE);
-}
-
-function removeOncallEditors($uid, $pid, $remove)
-{
-	if ($remove == NULL)
-		return;
-	
-	if (!canRemoveOncallEditor($uid, $pid))
-		utilsError("You do not have permission to remove on-call editors on puzzle $pid.");
-		
-	$name = getUserName($uid);
-		
-	$comment = 'Removed ';
-	foreach ($remove as $editor) {	
-		// Check that this editor is assigned to this puzzle
-		if (!isOncallEditorOnPuzzle($editor, $pid))
-			utilsError(getUserName($editor) . " is not an on-call editor on puzzle $pid");
-			
-		// Remove editor from puzzle
-		$sql = sprintf("DELETE FROM on_call WHERE on_call='%s' AND pid='%s'",
-				mysql_real_escape_string($editor), mysql_real_escape_string($pid));
-		query_db($sql);
-		
-		// Add to comment
-		if ($comment != 'Removed ')
-			$comment .= ', ';
-		$comment .= getUserName($editor);
-		
-		// Email old editor
-		$subject = "Editor on Puzzle $pid";
-		$message = "$name removed you as an on-call editor on puzzle $pid.";
-		$link = URL . "/editor";
-		sendEmail($editor, $subject, $message, $link);
-	}
-	
-	$comment .= ' as on-call editor';
-	if (count($remove) > 1)
-		$comment .= "s";
-		
-	addComment($uid, $pid, $comment, TRUE);
-}
-
 function addEditors($uid, $pid, $add)
 {
 	if ($add == NULL)
@@ -1532,7 +1386,7 @@ function addEditors($uid, $pid, $add)
 			utilsError(getUserName($editor) . ' is not available.');
 		}
 		
-		// Add on-call editor to puzzle
+		// Add editor to puzzle
 		$sql = sprintf("INSERT INTO editor_queue (uid, pid) VALUES ('%s', '%s')",	
 				mysql_real_escape_string($editor), mysql_real_escape_string($pid));
 		query_db($sql);
@@ -1618,7 +1472,7 @@ function canRemoveAuthor($uid, $pid)
 
 function canAddSpoiled($uid, $pid)
 {
-	return (isAuthorOnPuzzle($uid, $pid) || isLurker($uid));
+	return (isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isLurker($uid));
 }
 
 function canRemoveSpoiled($uid, $pid)
@@ -1636,24 +1490,14 @@ function canRemoveBlocked($uid, $pid)
 	return (isLurker($uid));
 }
 
-function canAddOncallEditor($uid, $pid)
+function canAddEditor($uid, $pid)
 {
 	return (isEditorOnPuzzle($uid, $pid) || isLurker($uid));
 }
 
-function canRemoveOncallEditor($uid, $pid)
-{
-	return (isLurker($uid));
-}
-
-function canAddEditor($uid, $pid)
-{
-	return (isLurker($uid));
-}
-
 function canRemoveEditor($uid, $pid)
 {
-	return (isLurker($uid));
+	return (isEditorOnPuzzle($uid, $pid) || isLurker($uid));
 }
 
 function canSeeTesters($uid, $pid)
@@ -2103,15 +1947,6 @@ function getNumTesters($pid)
 
 }
 
-function getPuzzlesInOncallEditorQueue($uid)
-{
-	$sql = sprintf("SELECT pid FROM on_call WHERE on_call='%s'",
-			mysql_real_escape_string($uid));
-	$puzzles = get_elements_null($sql);
-	
-	return sortByLastCommentDate($puzzles);
-}
-
 function getPuzzlesInEditorQueue($uid)
 {
 	$sql = sprintf("SELECT pid FROM editor_queue WHERE uid='%s'",
@@ -2256,24 +2091,6 @@ function addPuzzleToEditorQueue($uid, $pid)
 	
 	$comment = "Added to " . getUserName($uid) . "'s queue";
 	addComment($uid, $pid,$comment,TRUE);	
-	mysql_query('COMMIT');
-}
-
-function addPuzzleToEditorQueueFromCall($uid, $pid) 
-{	
-	mysql_query('START TRANSACTION');
-	
-	$sql = sprintf("INSERT INTO editor_queue (uid, pid) VALUES ('%s', '%s')",
-			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-	query_db($sql);
-	
-	$comment = "Added to " . getUserName($uid) . "'s queue";
-	addComment($uid, $pid,$comment,TRUE);	
-	
-	$sql = sprintf("DELETE FROM on_call WHERE on_call='%s' AND pid='%s'",
-			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-	query_db($sql);
-	
 	mysql_query('COMMIT');
 }
 
@@ -2629,7 +2446,6 @@ function getNumberOfPuzzlesForUser($uid)
 {
 	$numbers['author'] = 0;
 	$numbers['editor'] = 0;
-	$numbers['oncall'] = 0;
 	$numbers['spoiled'] = 0;
 	$numbers['blocked'] = 0;
 	$numbers['currentTester'] = 0;
@@ -2644,9 +2460,6 @@ function getNumberOfPuzzlesForUser($uid)
 		}
 		if (isEditorOnPuzzle($uid, $pid)) {
 			$numbers['editor']++;
-		}
-		if (isOncallEditorOnPuzzle($uid, $pid)) {
-			$numbers['oncall']++;
 		}
 		if (isBlockedOnPuzzle($uid, $pid)) {
 			$numbers['blocked']++;
@@ -2705,7 +2518,6 @@ function getPuzzleForTestAdminQueue($uid)
 function canTestAdminPuzzle($uid, $pid)
 {
 	return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) 
-		&& !isOnCallEditorOnPuzzle($uid, $pid)
 		&& !isTesterOnPuzzle($uid, $pid)
 		&& isPuzzleInAddToTestAdminQueue($pid));
 }

@@ -425,15 +425,13 @@ function displayEditors($uid, $pid)
 		<tr>
 			<td class='peopleInfo'>
 				<strong>Editors:</strong> <?php echo getEditorsAsList($pid); ?>
-				<?php if (canAddOncallEditor($uid, $pid) || canRemoveOncallEditor($uid, $pid) ||
-							canAddEditor($uid, $pid) || canRemoveEditor($uid, $pid))
+				<?php if (canAddEditor($uid, $pid) || canRemoveEditor($uid, $pid))
 					echo '&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>';
 				?>
 			</td>
 		</tr>
 <?php
-	if (canAddOncallEditor($uid, $pid) || canRemoveOncallEditor($uid, $pid) ||
-		canAddEditor($uid, $pid) || canRemoveEditor($uid, $pid)) {
+	if (canAddEditor($uid, $pid) || canRemoveEditor($uid, $pid)) {
 ?>
 		<tr>
 			<td>
@@ -441,26 +439,6 @@ function displayEditors($uid, $pid)
 					<form method="post" action="form-submit.php">
 					<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
 					<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-					<tr>
-<?php
-		if (canRemoveOncallEditor($uid, $pid)) {
-?>
-						<td>
-							<p><strong>Remove On-Call Editor(s):</strong></p>
-							<?php echo displayRemoveOncallEditor($pid); ?>
-						</td>
-<?php 
-		}
-		if (canAddOncallEditor($uid, $pid)) {
-?>
-						<td>
-							<p><strong>Add On-Call Editors(s):</strong></p>
-							<?php echo displayAddOncallEditor($pid); ?>
-						</td>
-<?php 
-		}
-?>
-					</tr>
 					<tr>
 <?php
 		if (canRemoveEditor($uid, $pid)) {
@@ -492,20 +470,6 @@ function displayEditors($uid, $pid)
 		</tr>
 <?php		
 	}
-}
-
-function displayRemoveOncallEditor($pid)
-{
-	$editors = getOncallEditorsForPuzzle($pid);
-	if ($editors != NULL)
-		makeOptionElements($editors, 'removeOncallEd');	
-}
-
-function displayAddOncallEditor($pid)
-{
-	$editors = getAvailableOncallEditorsForPuzzle($pid);
-	if ($editors != NULL)
-		makeOptionElements($editors, 'addOncallEd');	
 }
 
 function displayRemoveEditor($pid)
