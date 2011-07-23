@@ -1682,132 +1682,37 @@ function getFileListForPuzzle($pid, $type)
 }
 
 
-
-
 function uploadFiles($uid, $pid, $type, $file) {
-	if (!canUploadFiles($uid, $pid))
-		utilsError("You do not have permission to upload files on puzzle $pid");
-	
-	if ($type == 'draft' && !canAcceptDrafts($pid))
-		utilsError("This puzzle has been finalized. No new drafts can be uploaded.");
-		
-	//echo "upload file: uid=$uid pid=$pid type=$type file=" . $file['tmp_name'];
-		
-	$cid = -1;
-	$server = FALSE;
-	
-	$target_path = "uploads/puzzle_files/";
-	$ext = "";
-	$new_name = uniqid();
-	$target_path = $target_path . $new_name; 
-	$upload_valid = FALSE;
-	$filetype = "";
-	$upload_error = "";
-	
-	if (move_uploaded_file($file['tmp_name'], $target_path)) {
-	
-		$file_info = new finfo(FILEINFO_MIME);	
-		$mime_type = $file_info->buffer(file_get_contents($target_path)); 
- 		
-		$parse_mime = explode("; ", $mime_type);
-		if (is_array($parse_mime)) {
-			$mime_type = $parse_mime[0];
-		}
-		
-		switch ($mime_type) {
-    		case "image/jpeg":
-        		$ext = ".jpg";
-				$filetype = "file";
-        		break;
-    		case "image/png":
-        		$ext = ".png";
- 				$filetype = "file";
-        		break;
-    		case "image/gif":
-        		$ext = ".gif";
-				$filetype = "file";
-        		break;
-			case "application/pdf":
-				$ext = ".pdf";
-				$filetype = "file";
-				break;
-			case "text/plain":
-				$ext = ".txt";
-				$filetype = "file";
-				break;
-			case "text/x-c++":
-				$ext = ".txt";
-				$filetype = "file";
-				break;
-			case "text/html":
-				$ext = ".html";
-				$filetype = "file";
-				break;
-			case ($mime_type == "application/x-compressed" || $mime_type == "application/x-zip-compressed" || 
-			      $mime_type == "application/zip" || $mime_type == "multipart/x-zip"):
-				$ext = ".zip";
-				$filetype = "dir";
-				break;
-		}
-		
-		if ($filetype == "file") {
-			$new_path = $target_path . "_" . $filetype . $ext;
-			rename($target_path, $new_path);
-			$target_path = $new_path;
-			$upload_valid = TRUE;
-		}
-		else if ($filetype == "dir") {
-			
-			$new_path = $target_path . "_" . $filetype;
-     		$res = exec("/usr/bin/unzip $target_path -d $new_path");	
-			rmdirr($target_path);
-			$target_path = $new_path;
-     		
-			if ($res) {
-				if (file_exists($target_path . "/index.html") || file_exists($target_path . "/index.htm")) {
-					$upload_valid = TRUE;
-				}
-				else {
-					rmdirr($target_path);
-					$upload_error = "The zip file does not contain index.htm or index.html";
-				}
-         		
-     		} else {
-				rmdirr($target_path);
-				$upload_error = "Unable to open the zip file";
-     		}
-		}
-		else if ($mime_type == "application/x-tar") {
-			$upload_error = "Currently not supporting tar files.";
-		}
-		else {
-			$upload_error = "The uploaded file is not of a supported type. You uploaded: " . $mime_type;
-		}
-		
-		if ($type != "draft" && $type != "solution" && $type != "misc") {
-			$upload_valid = FALSE;
-			$upload_error = "The upload type is not specified correctly: " . $type;
-		}
-		
-		if ($upload_valid) {	
-			$sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
-					mysql_real_escape_string($target_path), mysql_real_escape_string($pid),
-					mysql_real_escape_string($uid), mysql_real_escape_string($cid), mysql_real_escape_string($type));
-			query_db($sql);
-
-			addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
-		}
-	
-    } else {
-    	$upload_error = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
+	if (!canUploadFiles($uid, $pid)) {
+		utilsError("You do not have permission to upload files on this puzzle.");
 	}
 
-	if ($upload_error != "") {
-		$_SESSION['upload_error'] = $upload_error;
+	if ($type == 'draft' && !canAcceptDrafts($pid)) {
+		utilsError("This puzzle has been finalized. No new drafts can be uploaded.");
+	}
+
+	if ($type != "draft" && $type != "solution" && $type != "misc") {
+		utilsError("The upload type is not specified correctly (internal error?): " . $type);
+	}
+
+	$target_path = "uploads/puzzle_files/" . uniqid();
+	$filename_parts = explode(".", $file['name']);
+	if (count($filename_parts) > 1) {
+		$target_path = $target_path . "." . end($filename_parts);
+	}
+
+	$upload_error = "";
+	if (move_uploaded_file($file['tmp_name'], $target_path)) {
+		$sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
+				mysql_real_escape_string($target_path), mysql_real_escape_string($pid),
+				mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
+		query_db($sql);
+
+		addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
+	} else {
+		$_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
 	}
 }
-	
-	
 	
 	
 function getComments($pid)
