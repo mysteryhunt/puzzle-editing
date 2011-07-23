@@ -161,7 +161,7 @@ function displayFeedbackForm($uid, $pid)
 		</tr>
 		<tr>
 			<td>
-			What did you like/dislike about this puzzle? <br />
+			What did you like/dislike about this puzzle? How hard do you think it is?<br />
 			<textarea style="width:50em; height: 25em;" name="liked"></textarea>
 			</td>
 		</tr>
