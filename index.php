@@ -24,8 +24,11 @@
 	// Put messages to the team here (separate for blind and non-blind solvers?)
 ?>
 <div class="team-updates">
+<b>Tuesday, July 19:</b><br/>
+Here's a link to the <a href="http://ihavetofashionpuzzles.com/wiki/index.php/Progress_Tracking">Progress Tracking</a> page on our wiki.<br>
+<br>
 <b>Wednesday, February 2:</b><br/>
-<br>Welcome to the hunt editing server!<br>
+Welcome to the hunt editing server!<br>
 </div>
 <h3 style="padding-bottom:0.5em;"><a href="updates.php">Past Updates</a></h3>
 <?	// End HTML
