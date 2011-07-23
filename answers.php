@@ -24,20 +24,16 @@
 	$byDraft = isset($_GET['draft']);
 	$everything = isset($_GET['everything']);
 	
-	$minihunts = getMinihunts();
-	foreach($minihunts as $minihunt) {
-		displayMinihunt($minihunt, $uid, $byTitle, $byStatus, $byDraft, $everything);
-		echo '<br />';
-	}
+	displayAnswers(1, $uid, $byTitle, $byStatus, $byDraft, $everything);
 	
 	// End HTML
 	foot();
 
 //------------------------------------------------------------------------
 
-	function displayMinihunt($minihunt, $uid, $byTitle, $byStatus, $byDraft, $everything)
+	function displayAnswers($minihunt, $uid, $byTitle, $byStatus, $byDraft, $everything)
 	{
-		$rounds = getRounds($minihunt['mid']);
+		$rounds = getRounds($minihunt);
 ?>	
 		<table>
 			<tr>
