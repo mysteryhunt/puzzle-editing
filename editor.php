@@ -19,20 +19,14 @@
 	
 	displayPuzzleStats($uid);
 	
-	if (getNewPuzzleForEditor($uid) == FALSE) {
-		echo '<strong>No Puzzles To Add</strong>';
-	} else {
-		if (isEditor($uid)) {
 ?>
-			<form action="form-submit.php" method="post">
-				<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-				Enter Puzzle ID to edit, or blank to get a random puzzle: <input type="text" name="pid" />
-				<input type="submit" name="getPuzz" value="Get Puzzle" />
-			</form>
+	<form action="form-submit.php" method="post">
+		<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+		Enter Puzzle ID to edit, or blank to get a random puzzle: <input type="text" name="pid" />
+		<input type="submit" name="getPuzz" value="Get Puzzle" />
+	</form>
 <?php
-		}
-	}
-		
+
 	$puzzles = getPuzzlesInEditorQueue($uid);
 	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE);
 
