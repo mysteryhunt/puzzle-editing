@@ -824,7 +824,7 @@ function getAvailableSpoiledListsForPuzzle($pid)
 
 function isUserSpoilable($uid, $pid)
 {
-	return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isUserSpoiledOnPuzzle($uid, $pid));
+	return (!isUserSpoiledOnPuzzle($uid, $pid));
 }
 
 
