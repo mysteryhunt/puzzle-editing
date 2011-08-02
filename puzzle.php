@@ -39,11 +39,7 @@
 	if (isAnyAuthorBlind($pid)) {
 	        echo '<style type="text/css">html {background-color: #B00000;}</style>';
 	}
-/*	
-	// Link to first unread comment
-	if (getLastCommentDate($pid) > $lastVisit)
-		echo '<p style="padding-bottom: 1em;"><a href="#firstUnread">Go To First Unread Comment</a></p>';
-*/	
+
 	// Hide puzzle info from testing admins, to prevent spoilage
 	$hidePuzzleInfo = (isTestingAdmin($uid) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid));
 	
@@ -768,7 +764,6 @@ function displayComments($uid, $pid, $lastVisit)
 	if ($comments == NULL)
 		return;
 	
-	$unread = FALSE;
 	foreach ($comments as $comment)
 	{
 		$id = $comment['id'];
@@ -782,10 +777,6 @@ function displayComments($uid, $pid, $lastVisit)
 			$name = getUserName($user);
 		
 		if ($lastVisit == NULL || strtotime($lastVisit) < strtotime($timestamp)) {
-			if ($unread == FALSE) {
-				echo '<a name="firstUnread"></a>';
-				$unread = TRUE;
-			}
 			echo "<tr class='comment-new' id='comm$id'>";
 		} else {
 			echo "<tr class='comment' id='comm$id'>";	
