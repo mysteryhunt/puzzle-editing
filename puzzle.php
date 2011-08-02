@@ -1,9 +1,4 @@
 <?php
-/*
- * To Do Before Pushing
- * 		create jobs table
- * 		turn back on sendEmail
- */
 	require_once "config.php";
 	require_once "html.php";
 	require_once "db-func.php";
