@@ -42,19 +42,19 @@
 <?php
 	}		
 	$testPuzzles = getActivePuzzlesInTestQueue($uid);
-	displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE);
+	displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE);
 	
 	echo '<br />';
 	
 	echo '<h3>Finished Testing</h3>';
 	$donePuzzles = getActiveDoneTestingPuzzlesForUser($uid);
-	displayQueue($uid, $donePuzzles, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE);
+	displayQueue($uid, $donePuzzles, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE);
 	
 	echo '<br />';
 	
 	echo '<h3>Puzzles Not Currently In Testing</h3>';
 	$inactivePuzzles = getInactiveTestPuzzlesForUser($uid);
-	displayQueue($uid, $inactivePuzzles, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE);
+	displayQueue($uid, $inactivePuzzles, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE);
 	
 	// End HTML
 	foot();

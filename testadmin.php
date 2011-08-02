@@ -68,7 +68,7 @@ function displayTestQueue($uid)
 	if ($puzzles == NULL) {
 		echo '<h3>No Puzzles Currently In Queue</h3>';
 	} else {
-		displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE);
+		displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, TRUE);
 	}
 }
 	

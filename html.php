@@ -131,7 +131,7 @@
 <?php
 	}	
 	
-	function displayQueue($uid, $puzzles, $showStatus, $showSummary, $showAnswer, $showAuthors, $showEditors, $showNumEds, $test, $showTesters)
+	function displayQueue($uid, $puzzles, $showStatus, $showSummary, $showAnswer, $showAuthors, $showEditors, $test, $showTesters)
 	{
 		if ($puzzles == NULL) {
 			echo "<h4>No puzzles in queue</h4>";
@@ -147,7 +147,6 @@
 				<?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
 				<?php if ($showAnswer) {echo '<th class="puzzidea">Answer</th>';} ?>
 				<?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
-				<?php if ($showNumEds) {echo '<th class="puzzidea"># Eds</th>';} ?>
 				<?php if ($showAuthors) {echo '<th class="puzzidea">Authors</th>';} ?>
 				<?php if ($showEditors) {echo '<th class="puzzidea">Editors</th>';} ?>
 				<?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
@@ -178,7 +177,6 @@
 				<?php if ($showSummary) {echo "<td class='puzzidea'>" . getSummary($pid) . "</td>";} ?>
 				<?php if ($showAnswer) {echo "<td class='puzzidea'>" . getAnswersForPuzzleAsList($pid) . "</td>";} ?>
 				<?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
-				<?php if ($showNumEds) {echo "<td class='puzzidea'>" . getNumEditors($pid) . "</td>";} ?>
 				<?php if ($showAuthors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
 				<?php if ($showEditors) {echo "<td class='puzzidea'>" . getEditorsAsList($pid) . "</td>";} ?>
 				<?php if ($showTesters) {echo "<td class='puzzidea'>" . getCurrentTestersAsList($pid) . "</td>";} ?>
