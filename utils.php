@@ -1452,12 +1452,12 @@ function removeEditors($uid, $pid, $remove)
 
 function canEditTSD($uid, $pid)
 {
-	return (isAuthorOnPuzzle($uid, $pid) || isLurker($uid, $pid)); 
+	return (isAuthorOnPuzzle($uid, $pid) || isLurker($uid)); 
 }
 
 function canChangeAnswers($uid, $pid)
 {
-	return (isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isLurker($uid, $pid));
+	return (isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isLurker($uid));
 }
 
 function canAddAuthor($uid, $pid)
