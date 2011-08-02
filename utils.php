@@ -527,27 +527,15 @@ function getAnswersForPuzzleAsList($pid)
 		return implode(', ', $answers);
 }
 
-// Get available answers for a user
+// Get available answers
 // Return an assoc array of type [aid] => [answer]
-function getAvailableAnswersForUser($uid)
+function getAvailableAnswers()
 {
-	$lists = getUserLists($uid);
-	
 	$answers = NULL;
-
-	// Assuming the user belongs to one or more lists, get the answers visible to those lists
-	if ($lists != NULL) {
-		foreach($lists as $list) {
-			$sql = sprintf("SELECT answers.aid, answers.answer FROM answer_lists 
-					LEFT JOIN answers ON answers.aid=answer_lists.aid WHERE lid='%s' AND answers.pid IS NULL",
-					mysql_real_escape_string($list));
-			$result = get_rows_null($sql);
-			
-			if ($result != NULL) {
-				foreach ($result as $r) {
-					$answers[$r['aid']] = $r['answer'];
-				}
-			}
+	$result = get_rows_null("SELECT aid, answer FROM answers WHERE pid IS NULL");
+	if ($result != NULL) {
+		foreach ($result as $r) {
+			$answers[$r['aid']] = $r['answer'];
 		}
 	}
 	
@@ -570,8 +558,8 @@ function addAnswers($uid, $pid, $add)
 	if ($add == NULL)
 		return;
 		
-	if (!canChangeAnswers($uid, $pid))
-		utilsError("You do not have permission to add answers to puzzle $pid");
+	if (!canChangeAnswers($uid))
+		utilsError("You do not have permission to add answers.");
 		
 	foreach ($add as $ans) {
 		// Check that this answer is available for assignment
@@ -597,8 +585,8 @@ function removeAnswers($uid, $pid, $remove)
 	if ($remove == NULL)
 		return;
 		
-	if (!canChangeAnswers($uid, $pid))
-		utilsError("You do not have permission to remove answers from puzzle $pid");
+	if (!canChangeAnswers($uid))
+		utilsError("You do not have permission to remove answers.");
 		
 	foreach ($remove as $ans) {	
 		// Check that this answer is assigned to this puzzle
@@ -645,20 +633,6 @@ function getAnswerWord($aid)
 		
 	return $ans;
 }
-
-
-
-
-// Get all the lists a user is on
-function getUserLists($uid)
-{
-	$sql = sprintf("SELECT lid FROM list_members WHERE uid='%s'",
-			mysql_real_escape_string($uid));
-	return get_elements_null($sql);
-}
-
-
-
 
 
 function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
@@ -1455,9 +1429,9 @@ function canEditTSD($uid, $pid)
 	return (isAuthorOnPuzzle($uid, $pid) || isLurker($uid)); 
 }
 
-function canChangeAnswers($uid, $pid)
+function canChangeAnswers($uid)
 {
-	return (isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isLurker($uid));
+	return hasPriv($uid, 'canEditAll');
 }
 
 function canAddAuthor($uid, $pid)

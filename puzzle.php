@@ -160,13 +160,13 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 function displayAnswers($uid, $pid)
 {
 	$currentAnswers =  getAnswersForPuzzle($pid);
-	$availableAnswers = getAvailableAnswersForUser($uid);
+	$availableAnswers = getAvailableAnswers();
 ?>
 		<tr class='hideFromTest'>
 			<td>
 				<strong>Answers: <?php echo getAnswersForPuzzleAsList($pid); ?></strong>
 <?php 
-	if (canChangeAnswers($uid, $pid) && ($currentAnswers != NULL || $availableAnswers != NULL)) { 
+	if (canChangeAnswers($uid) && ($currentAnswers != NULL || $availableAnswers != NULL)) { 
 ?>
 					&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
 			</td>
@@ -184,7 +184,7 @@ function displayAnswers($uid, $pid)
 ?>
 						<td>
 							<p><strong>Remove Answer(s):</strong></p>
-							<?php echo displayRemoveAns($pid); ?>
+							<?php makeOptionElements($currentAnswers, 'removeAns'); ?>
 						</td>
 <?php 
 		}
@@ -192,7 +192,7 @@ function displayAnswers($uid, $pid)
 ?>
 						<td>
 							<p><strong>Add Answer(s):</strong></p>
-							<?php echo displayAddAns($uid, $pid); ?>
+							<?php makeOptionElements($availableAnswers, 'addAns'); ?>
 						</td>
 <?php 
 		}
@@ -211,20 +211,6 @@ function displayAnswers($uid, $pid)
 			</td>
 		</tr>
 <?php
-}
-
-function displayRemoveAns($pid)
-{
-	$answers = getAnswersForPuzzle($pid);
-	if ($answers != NULL)
-		makeOptionElements($answers, 'removeAns');
-}
-
-function displayAddAns($uid, $pid)
-{
-	$answers = getAvailableAnswersForUser($uid);
-	if ($answers != NULL)
-		makeOptionElements($answers, 'addAns');
 }
 
 function editTitleSummaryDescription($uid, $pid, $title, $summary, $description)
