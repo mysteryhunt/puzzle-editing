@@ -142,7 +142,6 @@
 		<thead>
 			<tr>
 				<th class="puzzidea">ID</th>
-				<?php if ($add) {echo '<th class="puzzidea">Add to Queue</th>';} ?>
 				<th class="puzzidea">Title</th>
 				<?php if ($showStatus) {echo '<th class="puzzidea">Puzzle Status</th>';} ?>
 				<?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
