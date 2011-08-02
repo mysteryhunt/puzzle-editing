@@ -164,8 +164,6 @@
 			$lastComment = getLastCommentDate($pid);
 			$lastVisit = getLastVisit($uid, $pid);
 			
-			$authors = getAuthorsAsList($uid, $pid);
-			
 			if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test) 
 				echo '<tr class="puzz-new">';
 			else
