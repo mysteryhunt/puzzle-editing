@@ -2438,28 +2438,6 @@ function getPostProdForPuzzle($pid)
 	return get_element_null($sql);
 }
 
-function rmdirr ($dir) {
-    if (is_dir ($dir) && !is_link ($dir)) {
-        return cleardir ($dir) ? rmdir ($dir) : false;
-    }
-    return unlink ($dir);
-}
-
-function cleardir ($dir) {
-    if (!($dir = dir ($dir))) {
-        return false;
-    }
-    while (false !== $item = $dir->read()) {
-        if ($item != '.' && $item != '..' && !rmdirr ($dir->path . DIRECTORY_SEPARATOR . $item)) {
-            $dir->close();
-            return false;
-        }
-    }
-    $dir->close();
-    return true;
-}
-
-
 function utilsError($msg)
 {
 	mysql_query('ROLLBACK');
