@@ -6,7 +6,7 @@ html {
 
 body {
 	text-align: left;
-    font-family: calibri, 'lucida grande', tahoma, helvetica, arial, verdana, sans-serif;
+	font-family: calibri, 'lucida grande', tahoma, helvetica, arial, verdana, sans-serif;
 	color: #000000;
 	background-color: #ffffff;
 	margin: 0px 40px 0px 50px;
@@ -107,7 +107,7 @@ tr.puzz {
 	border-top: solid 1px;
 	border-bottom: solid 1px;
 	text-align: left;
-	background-color: #EFEFEF;
+	background-color: #DDDDDD;
 }
 
 tr.comment-new {
@@ -272,7 +272,7 @@ th.admin-stats, td.admin-stats {
 }
 
 .team-updates p {
-        padding-bottom: 0.5em;
+	padding-bottom: 0.5em;
 	padding-top: 0.5em;
 }
 
