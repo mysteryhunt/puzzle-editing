@@ -89,6 +89,11 @@
 	displayStatus($uid, $pid);
 	echo "</div>";
 	
+	// List puzzle notes
+	echo "<div class='notesInfo'>";
+	displayNotes($uid, $pid);
+	echo "</div>";
+	
 	// Show files
 	echo "<div class='fileInfo'>";
 	displayFiles($uid, $pid);
@@ -599,6 +604,44 @@ function displayStatus($uid, $pid)
 				</table>
 			</td>
 		</tr>	
+<?php 
+	} else {
+?>
+		</tr>
+<?php 
+	}
+?>
+	</table>
+<?php
+}
+
+function displayNotes($uid, $pid)
+{
+	$notes = getNotes($pid);
+	
+?>
+	<table class="statusInfo">
+		<tr>
+			<td class='statusInfo'>
+				<strong>Status Notes: </strong> <?php echo $notes; ?>
+			</td>
+<?php 
+	if (canChangeNotes($uid, $pid)) { 
+?>
+			<td class='statusInfo'>
+				<a href="#" class="changeLink">[Change]</a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2'>
+				<form method="post" action="form-submit.php">
+					<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+					<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+					<input type="text" name="notes" maxlength="255" style="width:40em;" value="<?php echo $notes; ?>"/>
+					<input type="submit" name="changeNotes" value="Change" />
+				</form>
+			</td>
+		</tr>
 <?php 
 	} else {
 ?>

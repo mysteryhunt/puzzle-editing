@@ -408,8 +408,11 @@ function getDescription($pid)
 	return get_element($sql);
 }
 
-
-
+function getNotes($pid)
+{
+	$sql = sprintf("SELECT notes FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+	return get_element($sql);
+}
 
 
 // Update the title, summary, and description of the puzzle (from form on puzzle page)
@@ -492,8 +495,16 @@ function updateDescription($uid = 0, $pid, $oldDescription, $cleanDescription)
 	addComment($uid, $pid, $comment, TRUE);
 }
 
+function updateNotes($uid = 0, $pid, $oldNotes, $cleanNotes)
+{		
+	$sql = sprintf("UPDATE puzzle_idea SET notes='%s' WHERE id='%s'",
+			mysql_real_escape_string($cleanNotes), mysql_real_escape_string($pid));
+			query_db($sql);
+		
+	$comment = "Changed status notes from \"$oldNotes\" to \"$cleanNotes\"";
 
-
+	addComment($uid, $pid, $comment, TRUE);
+}
 
 
 // Get the current answers (including answer id) for a puzzle
@@ -1484,6 +1495,11 @@ function canChangeStatus($uid, $pid)
 	return (isLurker($uid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid));
 }
 
+function canChangeNotes($uid, $pid)
+{
+	return (isLurker($uid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid));
+}
+
 function canUploadFiles($uid, $pid)
 {
 	return (isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isLurker($uid));
@@ -1621,6 +1637,22 @@ function isStatusInTesting($sid)
 {
 	$sql = sprintf("SELECT inTesting FROM pstatus WHERE id='%s'", mysql_real_escape_string($sid));
 	return get_element($sql);
+}
+
+function changeNotes($uid, $pid, $notes)
+{
+	if (!canChangeNotes($uid, $pid))
+		utilsError("You do not have permission to change notes on puzzle $pid");
+
+	$purifier = new HTMLPurifier();
+	mysql_query('START TRANSACTION');
+
+	$oldNotes = getNotes($pid);
+	$cleanNotes = $purifier->purify($notes);
+	$cleanNotes = htmlspecialchars($cleanNotes);
+	updateNotes($uid, $pid, $oldNotes, $cleanNotes);
+
+	mysql_query('COMMIT');  
 }
 
 function emailTesters($pid, $status)

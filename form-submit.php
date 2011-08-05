@@ -148,6 +148,18 @@
 		exit(0);
 	}
 	
+	if (isset($_POST['changeNotes'])) {
+		$pid = $_POST['pid'];
+		$uid = $_POST['uid'];
+		
+		$notes = $_POST['notes'];
+		
+		changeNotes($uid, $pid, $notes);
+		
+		header("Location: " . URL . "/puzzle?pid=$pid");
+		exit(0);
+	}
+	
 	if (isset($_POST['uploadFile'])) {
 		$pid = $_POST['pid'];
 		$uid = $_POST['uid'];
