@@ -145,6 +145,7 @@
 				<th class="puzzidea">Title</th>
 				<?php if ($showStatus) {echo '<th class="puzzidea">Puzzle Status</th>';} ?>
 				<?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
+				<?php if ($showSummary) {echo '<th class="puzzidea">Status Notes</th>';} ?>
 				<?php if ($showAnswer) {echo '<th class="puzzidea">Answer</th>';} ?>
 				<?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
 				<?php if ($showAuthors) {echo '<th class="puzzidea">Authors</th>';} ?>
@@ -175,6 +176,7 @@
 				<td class='puzzidea'><?php echo $title; ?></td>
 				<?php if ($showStatus) {echo "<td class='puzzidea'>" . getStatusNameForPuzzle($pid) . "</td>";} ?>
 				<?php if ($showSummary) {echo "<td class='puzzidea'>" . getSummary($pid) . "</td>";} ?>
+				<?php if ($showSummary) {echo "<td class='puzzidea'>" . getNotes($pid) . "</td>";} ?>
 				<?php if ($showAnswer) {echo "<td class='puzzidea'>" . getAnswersForPuzzleAsList($pid) . "</td>";} ?>
 				<?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
 				<?php if ($showAuthors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
