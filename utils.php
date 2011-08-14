@@ -1724,9 +1724,8 @@ function uploadFiles($uid, $pid, $type, $file) {
 function getComments($pid)
 {
 	$sql = sprintf("SELECT comments.id, comments.uid, comments.comment, comments.type, 
-					comments.timestamp, comments.pid, comment_type.name, user_info.first, user_info.last FROM
-					(comments LEFT JOIN user_info ON user_info.uid=comments.uid)
-					LEFT JOIN comment_type ON comments.type=comment_type.id
+					comments.timestamp, comments.pid, comment_type.name FROM
+					comments LEFT JOIN comment_type ON comments.type=comment_type.id
 					WHERE comments.pid='%s' ORDER BY comments.timestamp ASC",
 					mysql_real_escape_string($pid));
 	return get_rows_null($sql);

@@ -812,7 +812,7 @@ function displayComments($uid, $pid, $lastVisit)
 			if (canSeeTesters($uid, $pid)) {
 				echo $name . '<br />';	
 			}	
-			echo 'Testsolver '.substr(md5(strval($pid).$comment['first'].$comment['last']),0,8);
+			echo 'Testsolver '.substr(md5(strval($pid).strval($user)),0,8);
 		} else
 			echo $name;
 			
