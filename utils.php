@@ -2306,7 +2306,7 @@ function createFeedbackComment($done, $time, $tried, $liked)
 	<p>$time</p><br />
 	<p><strong>Describe what you tried.</p></strong>
 	<p>$tried</p><br />
-	<p><strong>What did you like/dislike about this puzzle? How hard do you think it is?</strong></p>
+	<p><strong>What did you like/dislike about this puzzle? How hard do you think it is? Is there anything you think should be changed?</strong></p>
 	<p>$liked</p>";
 	
 	return $comment;
