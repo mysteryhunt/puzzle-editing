@@ -701,7 +701,9 @@ function emailComment($uid, $pid, $cleanComment)
 		
 	foreach ($users as $user)
 	{
-		sendEmail($user, $subject, $message, $link);
+		if ($user != $uid) {
+			sendEmail($user, $subject, $message, $link);
+		}
 	}
 }
 
