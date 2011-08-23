@@ -1758,7 +1758,7 @@ function unsubscribe($uid, $pid)
 
 function getPeople()
 {
-	$sql = 'SELECT * FROM user_info ORDER BY first, last, username';
+	$sql = 'SELECT * FROM user_info ORDER BY username';
 	return get_rows($sql);
 }
 
