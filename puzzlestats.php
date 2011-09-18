@@ -21,20 +21,17 @@
 	$completed = array(8, 13, 6);
 	makeStatusTable($completed, 'Completed Puzzles', 'complete-stats');
 	
+	$written = array(12);
+	makeStatusTable($written, 'Revision', 'writing-stats');
+	
 	$testing = array(18, 17, 4, 7, 5);
-	makeStatusTable($testing, 'In Testing', 'testing-stats');
+	makeStatusTable($testing, 'Testing', 'testing-stats');
 	
-	$written = array(12, 2, 3);
-	makeStatusTable($written, 'Being Written', 'writing-stats');
+	$ideas = array(1);
+	makeStatusTable($ideas, 'Development', 'pending-stats');
 	
-	$ideas = array(11, 15, 1);
-	makeStatusTable($ideas, 'Pending Ideas', 'pending-stats');
-	
-	$dead = array(9, 10);
-	makeStatusTable($dead, 'Dead Ideas', 'dead-stats');
-	
-	$admin = array(16);
-	makeStatusTable($admin, 'Admin', 'admin-stats');
+	$dead = array(9, 10, 16);
+	makeStatusTable($dead, 'Dead / Admin', 'dead-stats');
 	
 	echo '</table>';
 	
