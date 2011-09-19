@@ -2429,7 +2429,7 @@ function getPuzzleForTestAdminQueue($uid)
 
 function canTestAdminPuzzle($uid, $pid)
 {
-	return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) 
+	return (!isEditorOnPuzzle($uid, $pid) 
 		&& !isTesterOnPuzzle($uid, $pid)
 		&& isPuzzleInAddToTestAdminQueue($pid));
 }
