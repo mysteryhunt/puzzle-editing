@@ -345,7 +345,6 @@ function displaySpoiled($uid, $pid)
 						<td>
 							<p><strong>Remove Spoiled:</strong></p>
 							<?php echo displayRemoveSpoiledUsers($pid); ?>
-							<?php echo displayRemoveSpoiledLists($pid); ?>
 						</td>
 <?php 
 		}
@@ -354,7 +353,6 @@ function displaySpoiled($uid, $pid)
 						<td>
 							<p><strong>Add Spoiled:</strong></p>
 							<?php echo displayAddSpoiledUsers($pid); ?>
-							<?php echo displayAddSpoiledLists($pid); ?>
 						</td>
 <?php
 		} 
@@ -380,25 +378,11 @@ function displayRemoveSpoiledUsers($pid)
 		makeOptionElements($spoiled, 'removeSpoiledUser');	
 }
 
-function displayRemoveSpoiledLists($pid)
-{
-	$spoiled = getSpoiledListsForPuzzle($pid);
-	if ($spoiled != NULL)
-		makeOptionElements($spoiled, 'removeSpoiledList');	
-}
-
 function displayAddSpoiledUsers($pid)
 {
 	$spoiled = getAvailableSpoiledUsersForPuzzle($pid);
 	if ($spoiled != NULL)
 		makeOptionElements($spoiled, 'addSpoiledUser');
-}
-
-function displayAddSpoiledLists($pid)
-{
-	$spoiled = getAvailableSpoiledListsForPuzzle($pid);
-	if ($spoiled != NULL)
-		makeOptionElements($spoiled, 'addSpoiledList');
 }
 
 function displayEditors($uid, $pid)

@@ -75,22 +75,12 @@
 		else
 			$removeUser = NULL;
 			
-		if (isset($_POST['removeSpoiledList']))
-			$removeList = $_POST['removeSpoiledList'];
-		else
-			$removeList = NULL;
-			
 		if (isset($_POST['addSpoiledUser']))
 			$addUser = $_POST['addSpoiledUser'];
 		else
 			$addUser = NULL;
 			
-		if (isset($_POST['addSpoiledList']))
-			$addList = $_POST['addSpoiledList'];
-		else
-			$addList = NULL;
-			
-		changeSpoiled($uid, $pid, $removeUser, $removeList, $addUser, $addList);
+		changeSpoiled($uid, $pid, $removeUser, $addUser);
 		
 		header("Location: " . URL . "/puzzle?pid=$pid");
 		exit(0);

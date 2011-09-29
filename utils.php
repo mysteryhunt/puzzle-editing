@@ -124,39 +124,11 @@ function isLurkerOnPuzzle($uid, $pid)
 	return (isLurker($uid) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isTesterOnPuzzle($uid, $pid));
 }
 
-function isUserSpoiledOnPuzzle($uid, $pid)
+function isSpoiledOnPuzzle($uid, $pid)
 {
 	$sql = sprintf("SELECT * FROM spoiled WHERE uid='%s' AND pid='%s'", 
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
 	return has_result($sql);
-}
-
-function isListSpoiledOnPuzzle($lid, $pid)
-{
-	$sql = sprintf("SELECT * FROM spoiled_lists WHERE lid='%s' AND pid='%s'", 
-			mysql_real_escape_string($lid), mysql_real_escape_string($pid));
-	return has_result($sql);
-}
-
-function isSpoiledOnPuzzle($uid, $pid)
-{
-	// Is the user spoiled
-	if (isUserSpoiledOnPuzzle($uid, $pid)) {
-		return TRUE;
-	}
-
-	// Is the user on any spoiled lists
-	$lists = getListsForUser($uid);
-	if ($lists == NULL)
-		return FALSE;
-		
-	foreach ($lists as $list) {
-		if (isListSpoiledOnPuzzle($list, $pid)) {
-			return TRUE;
-		}
-	}
-	
-	return FALSE;
 }
 
 function isTestingAdminOnPuzzle($uid, $pid)
@@ -249,24 +221,6 @@ function getSpoiledUsersForPuzzle($pid)
 {
 	$sql = sprintf("SELECT uid FROM spoiled WHERE pid='%s'", mysql_real_escape_string($pid));
 	return getUsersForPuzzle($pid, $sql);
-}
-
-// Get all lists spoiled on $pid
-// Return assoc array of [lid] => [name]
-function getSpoiledListsForPuzzle($pid)
-{
-	$sql = sprintf("SELECT spoiled_lists.lid, name FROM spoiled_lists, lists 
-			WHERE spoiled_lists.lid=lists.lid AND pid='%s'", mysql_real_escape_string($pid));
-	$result = get_rows_null($sql);
-	
-	$spoiled = NULL;
-	if ($result != NULL) {
-		foreach ($result as $r) {
-			$spoiled[$r['lid']] = $r['name'] . ' List';
-		}
-	}
-	
-	return $spoiled;
 }
 
 // Get uid and name of users returned by a sql query
@@ -775,7 +729,7 @@ function getAvailableSpoiledUsersForPuzzle($pid)
 	
 	$spoiled = NULL;
 	foreach ($users as $uid) {
-		if (isUserSpoilable($uid, $pid)) {
+		if (!isSpoiledOnPuzzle($uid, $pid)) {
 			$spoiled[$uid] = getUserName($uid);
 		}
 	}
@@ -785,42 +739,6 @@ function getAvailableSpoiledUsersForPuzzle($pid)
 	return $spoiled;
 }
 
-function getAvailableSpoiledListsForPuzzle($pid)
-{
-	// Get all lists
-	$sql = 'SELECT lid, name FROM lists';
-	$lists = get_rows($sql);
-	
-	$spoiled = NULL;
-	foreach ($lists as $l) {
-		$lid = $l['lid'];
-		$name = $l['name'];
-		if (!isListSpoiledOnPuzzle($lid, $pid)) {
-			$spoiled[$lid] = $name . ' List';
-		}
-	}
-	
-	// Sort by name
-	natcasesort($spoiled);
-	return $spoiled;
-}
-
-
-
-
-
-function isUserSpoilable($uid, $pid)
-{
-	return (!isUserSpoiledOnPuzzle($uid, $pid));
-}
-
-
-
-function getListsForUser($uid)
-{
-	$sql = sprintf("SELECT lid FROM list_members WHERE uid='%s'", mysql_real_escape_string($uid));
-	return get_elements_null($sql);
-}
 
 function isAuthorAvailable($uid, $pid)
 {
@@ -839,19 +757,6 @@ function getSpoiledAsList($pid)
 			if ($spoiled != '')
 				$spoiled .= ', ';
 			$spoiled .= getUserName($uid);
-		}
-	}
-	
-	$sql = sprintf("SELECT lists.name FROM spoiled_lists, lists WHERE 
-			lists.lid=spoiled_lists.lid AND spoiled_lists.pid='%s'", 
-			mysql_real_escape_string($pid));
-	$lists = get_elements_null($sql);
-	
-	if ($lists != NULL) {
-		foreach ($lists as $list) {
-			if ($spoiled != '')
-				$spoiled .= ', ';
-			$spoiled .= "$list List";
 		}
 	}
 	
@@ -982,13 +887,11 @@ function isTesterAvailable($uid, $pid)
 	return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid));
 }
 
-function changeSpoiled($uid, $pid, $removeUser, $removeList, $addUser, $addList)
+function changeSpoiled($uid, $pid, $removeUser, $addUser)
 {
 	mysql_query('START TRANSACTION');
 	removeSpoiledUser($uid, $pid, $removeUser);
-	removeSpoiledList($uid, $pid, $removeList);
 	addSpoiledUser($uid, $pid, $addUser);
-	addSpoiledList($uid, $pid, $addList);
 	mysql_query('COMMIT');
 }
 
@@ -1004,7 +907,7 @@ function removeSpoiledUser($uid, $pid, $removeUser)
 		
 	$comment = 'Removed ';
 	foreach ($removeUser as $user) {
-		if (!isUserSpoiledOnPuzzle($user, $pid))
+		if (!isSpoiledOnPuzzle($user, $pid))
 			utilsError(getUserName($user) . " is not spoiled on puzzle $pid.");
 			
 		$sql = sprintf("DELETE FROM spoiled WHERE uid='%s' AND pid='%s'",
@@ -1021,43 +924,6 @@ function removeSpoiledUser($uid, $pid, $removeUser)
 		$message = "$name removed you as spoiled on puzzle $pid.";
 		$link = URL;
 		sendEmail($user, $subject, $message, $link);
-	}
-	
-	$comment .= ' as spoiled';
-		
-	addComment($uid, $pid, $comment, TRUE);
-}
-
-function getListName($lid)
-{
-	$sql = sprintf("SELECT name FROM lists WHERE lid='%s'", mysql_real_escape_string($lid));
-	return (get_element($sql) . ' List');	
-}
-
-function removeSpoiledList($uid, $pid, $removeList)
-{		
-	if ($removeList == NULL)
-		return;
-		
-	if (!canRemoveSpoiled($uid, $pid))
-		utilsError("You do not have permission to remove spoiled lists from puzzle $pid.");
-		
-	$name = getUserName($uid);
-		
-	$comment = 'Removed ';
-	foreach ($removeList as $lid) {
-		if (!isListSpoiledOnPuzzle($lid, $pid))
-			utilsError(getListName($lid) . " is not spoiled on puzzle $pid.");
-			
-		$sql = sprintf("DELETE FROM spoiled_lists WHERE lid='%s' AND pid='%s'",
-				mysql_real_escape_string($lid), mysql_real_escape_string($pid));
-		query_db($sql);
-		
-		
-		// Add to comment
-		if ($comment != 'Removed ')
-			$comment .= ', ';
-		$comment .= getListName($lid);
 	}
 	
 	$comment .= ' as spoiled';
@@ -1100,7 +966,7 @@ function addSpoiledUser($uid, $pid, $addUser)
 	$comment = 'Added ';
 	foreach ($addUser as $user) {
 		// Check that this author is available for this puzzle
-		if (!isUserSpoilable($user, $pid)) {
+		if (isSpoiledOnPuzzle($user, $pid)) {
 			utilsError(getUserName($user) . " is not spoilable on puzzle $pid.");
 		}
 		
@@ -1118,38 +984,6 @@ function addSpoiledUser($uid, $pid, $addUser)
 		$message = "$name added you as spoiled on puzzle $pid.";
 		$link = URL;
 		sendEmail($user, $subject, $message, $link);
-	}
-		
-	$comment .= ' as spoiled';
-		
-	addComment($uid, $pid, $comment, TRUE);
-}
-
-function addSpoiledList($uid, $pid, $addList)
-{
-	if (!canAddSpoiled($uid, $pid))
-		utilsError("You do not have permission to add spoiled to puzzle $pid");
-			
-	if ($addList == NULL)
-		return;
-		
-	$name = getUserName($uid);
-		
-	$comment = 'Added ';
-	foreach ($addList as $list) {
-		// Check that this author is available for this puzzle
-		if (isListSpoiledOnPuzzle($list, $pid)) {
-			utilsError(getListName($list) . " is not spoilable on puzzle $pid.");
-		}
-		
-		$sql = sprintf("INSERT INTO spoiled_lists (pid, lid) VALUE ('%s', '%s')",
-				mysql_real_escape_string($pid), mysql_real_escape_string($list));
-		query_db($sql);
-		
-		// Add to comment
-		if ($comment != 'Added ')
-			$comment .= ', ';
-		$comment .= getListName($list);
 	}
 		
 	$comment .= ' as spoiled';
