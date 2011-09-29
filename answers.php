@@ -17,32 +17,29 @@
 		exit(1);
 	}
 
-	$seeAll = isLurker($uid);
-	
-	$byTitle = isset($_GET['title']);
-	$byStatus = isset($_GET['status']);
-	$byDraft = isset($_GET['draft']);
-	$everything = isset($_GET['everything']);
-	
-	displayAnswers($uid, $byTitle, $byStatus, $byDraft, $everything);
+	displayAnswers($uid);
 	
 	// End HTML
 	foot();
 
 //------------------------------------------------------------------------
 
-	function displayAnswers($uid, $byTitle, $byStatus, $byDraft, $everything)
+	function displayAnswers($uid)
 	{
 		$rounds = getRounds();
 ?>	
 		<table>
 <?php 
 		foreach($rounds as $round) {
-			if ($round['display']) {
-				echo '<tr><td>';
-				displayRound($round, $uid, $byTitle, $byStatus, $byDraft, $everything);
-				echo '</td></tr>';
-			}
+		    $answers = getAnswersForRound($round['rid']);
+?>
+		    <tr>
+			    <td colspan="2"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></td>
+		    </tr>
+<?php 
+		    foreach($answers as $answer) {
+			    displayAnswer($answer, $uid);
+		    }
 		}
 ?>
 		</table>
@@ -50,42 +47,24 @@
 <?php 
 	}
 
-	function displayRound($round, $uid, $byTitle, $byStatus, $byDraft, $everything)
-	{
-		$answers = getAnswersForRound($round['rid']);
-?>
-		<table>
-			<tr>
-				<td colspan="2"><?php echo "{$round['name']}: {$round['answer']}"; ?></td>
-			</tr>
-<?php 
-		foreach($answers as $answer) {
-			displayAnswer($answer, $uid, $byTitle,$byStatus,$byDraft,$everything);
-		}
-?>
-		</table>
-<?php
-	}
-	
-	function displayAnswer($answer, $uid, $byTitle, $byStatus, $byDraft, $everything)
+	function displayAnswer($answer, $uid)
 	{
 		$pid = $answer['pid'];
-		if (isLurker($uid) || isEditorOnPuzzle($uid, $pid)) {
+		if ($pid && (isLurker($uid) || isEditorOnPuzzle($uid, $pid) || isAuthorOnPuzzle($uid, $pid))) {
 ?>
-			<tr>
-				<td><?php echo $answer['answer'] ?></td>
-				<td><?php if ($everything && $pid) { echo "<a href=\"puzzle?pid=$pid\">".$pid."</a></td><td>".getTitle($pid)."</td><td>".getStatusNameForPuzzle($pid)."</td><td>" . URL . getMostRecentDraftNameForPuzzle($pid);
-} else {
-				 echo ($pid ? "<a href=\"puzzle?pid=$pid\">". ($byTitle ? getTitle($pid) : "Puzzle $pid"). "</a>". ($byStatus ? " ".getStatusNameForPuzzle($pid) : ' ') . ($byDraft ? " " .getMostRecentDraftNameForPuzzle($pid) : ' ') : 'unassigned');}
-				?></td>
-			</tr>
+		<tr>
+			<td><?php echo $answer['answer'] ?></td>
+			<td><?php echo "<a href=\"puzzle?pid=$pid\">".$pid."</a>" ?></td>
+			<td><?php echo getTitle($pid) ?></td>
+			<td><?php echo getStatusNameForPuzzle($pid) ?></td>
+		</tr>
 <?php
 		} else {
 ?>
-			<tr>
-				<td><?php echo $answer['answer'] ?></td>
-				<td><?php echo ($pid ? 'assigned' : 'unassigned') ?></td>
-			</tr>
+		<tr>
+			<td><?php echo $answer['answer'] ?></td>
+			<td><?php echo ($pid ? 'assigned' : 'unassigned') ?></td>
+		</tr>
 <?php
 		}
 	}
