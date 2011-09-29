@@ -991,6 +991,15 @@ function addSpoiledUser($uid, $pid, $addUser)
 	addComment($uid, $pid, $comment, TRUE);
 }
 
+function addSpoiledUserQuietly($uid, $pid)
+{
+	if (!isSpoiledOnPuzzle($uid, $pid)) {
+		$sql = sprintf("INSERT INTO spoiled (pid, uid) VALUE ('%s', '%s')",
+				mysql_real_escape_string($pid), mysql_real_escape_string($uid));
+		query_db($sql);
+	}
+}
+
 function isEditorAvailable($uid, $pid)
 {
 	return (isEditor($uid) && 

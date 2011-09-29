@@ -27,8 +27,9 @@
 		exit(0);
 	}
 	
-	// Get & update user's last visit to this puzzle's page
+	// Record this user's visit (in two ways)
 	$lastVisit = updateLastVisit($uid, $pid);
+	addSpoiledUserQuietly($uid, $pid);
 
 	// If author is a blind tester, turn page background red
 	if (isAnyAuthorBlind($pid)) {
