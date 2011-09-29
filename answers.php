@@ -24,16 +24,16 @@
 	$byDraft = isset($_GET['draft']);
 	$everything = isset($_GET['everything']);
 	
-	displayAnswers(1, $uid, $byTitle, $byStatus, $byDraft, $everything);
+	displayAnswers($uid, $byTitle, $byStatus, $byDraft, $everything);
 	
 	// End HTML
 	foot();
 
 //------------------------------------------------------------------------
 
-	function displayAnswers($minihunt, $uid, $byTitle, $byStatus, $byDraft, $everything)
+	function displayAnswers($uid, $byTitle, $byStatus, $byDraft, $everything)
 	{
-		$rounds = getRounds($minihunt);
+		$rounds = getRounds();
 ?>	
 		<table>
 <?php 

@@ -2148,15 +2148,9 @@ function createFeedbackComment($done, $time, $tried, $liked)
 	return $comment;
 }
 
-function getMinihunts()
+function getRounds()
 {
-	$sql = sprintf("SELECT * FROM minihunts");
-	return get_rows($sql);
-}
-
-function getRounds($mid)
-{
-	$sql = sprintf("SELECT * FROM rounds WHERE mid='%s'", mysql_real_escape_string($mid));
+	$sql = sprintf("SELECT * FROM rounds");
 	return get_rows_null($sql);
 }
 
