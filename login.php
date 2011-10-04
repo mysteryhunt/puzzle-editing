@@ -39,8 +39,8 @@
 				</tr>
 			</table>
 			<input type="submit" value="Log In" />
-		</form>
-
+		</form><br>
+		<p>If you've forgotten your password, you can e-mail <a href="mailto:cjb@laptop.org">cjb@laptop.org</a> for a new one.</p>
 <?php
 	}
 	

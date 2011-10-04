@@ -1899,7 +1899,7 @@ function getPuzzleToTest($uid)
 
 function canUseMoreTesters($pid)
 {
-	$testers_limit = 99;
+	$testers_limit = 5;
 
 	$sql = sprintf("SELECT tester_count FROM puzzle_tester_count WHERE pid='%s'", mysql_real_escape_string($pid));
 	$tester_count = get_elements_null($sql);
