@@ -2107,24 +2107,24 @@ function checkAnswer($pid, $attempt)
 	return FALSE;
 }
 
-function insertFeedback($uid, $pid, $done, $time, $tried, $liked)
+function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $when_return)
 {
 	mysql_query('START TRANSACTION');
 	
-	$comment = createFeedbackComment($done, $time, $tried, $liked);
+	$comment = createFeedbackComment($done, $time, $tried, $liked, $when_return);
 	addComment($uid, $pid, $comment, FALSE, TRUE);
 	
-	if (strcmp($done, 'yes') == 0) {
+	if (strcmp($done, 'no') == 0) {
 		$done = 1;
 		doneTestingPuzzle($uid, $pid);
 	} else
 		$done = 0;
 		
-	$sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked)
-			VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+	$sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, when_return)
+			VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid),
 			mysql_real_escape_string($done), mysql_real_escape_string($time),
-			mysql_real_escape_string($tried), mysql_real_escape_string($liked));
+			mysql_real_escape_string($tried), mysql_real_escape_string($liked), mysql_real_escape_string($when_return));
 	query_db($sql);
 	
 	mysql_query('COMMIT');
@@ -2142,18 +2142,19 @@ function doneTestingPuzzle($uid, $pid)
 	query_db($sql);
 }
 
-function createFeedbackComment($done, $time, $tried, $liked)
+function createFeedbackComment($done, $time, $tried, $liked, $when_return)
 {
 	$comment = "
-	<p><strong>Are you done with this puzzle?</strong></p>
+	<p><strong>Do you intend to return to this puzzle?</strong></p>
 	<p>$done</p><br />
+	<p><strong>If so, when do you plan to return to it?</strong></p>
+	<p>$when_return</p><br />
 	<p><strong>How long did you spend on this puzzle (since your last feedback, if any)?</strong></p>
 	<p>$time</p><br />
 	<p><strong>Describe what you tried.</p></strong>
 	<p>$tried</p><br />
 	<p><strong>What did you like/dislike about this puzzle? How hard do you think it is? Is there anything you think should be changed?</strong></p>
 	<p>$liked</p>";
-	
 	return $comment;
 }
 

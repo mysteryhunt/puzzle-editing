@@ -142,9 +142,15 @@ function displayFeedbackForm($uid, $pid)
 	<table>
 		<tr>
 			<td>
-			Are you done with this puzzle?
+			Do you intend to return to this puzzle?
 			<input type="radio" name="done" value="yes" /> Yes
 			<input type="radio" name="done" value="no" /> No
+			</td>
+		</tr>
+		<tr>
+			<td>
+			If so, when do you plan to return to it?
+			<input type="text" name="when_return" />
 			</td>
 		</tr>
 		<tr>

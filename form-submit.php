@@ -270,11 +270,11 @@
 		$time = $_POST['time'];
 		$tried = $_POST['tried'];
 		$liked = $_POST['liked'];
-		
-		insertFeedback($uid, $pid, $done, $time, $tried, $liked);
+		$when_return = $_POST['when_return'];
+		insertFeedback($uid, $pid, $done, $time, $tried, $liked, $when_return);
 		$_SESSION['feedback'] = "Thank you for giving feedback on this puzzle!";
 		
-		if (strcmp($done, 'yes') == 0) {
+		if (strcmp($done, 'no') == 0) {
 			header("Location: " . URL . "/testsolving");
 		} else
 			header("Location: " . URL . "/test?pid=$pid");
