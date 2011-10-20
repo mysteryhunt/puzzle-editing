@@ -192,11 +192,11 @@ function displayPrevFeedback($uid, $pid)
 	
 	foreach ($prevFeedback as $pf) {
 		if ($pf['done'] == 1)
-			$done = 'yes';
-		else
 			$done = 'no';
+		else
+			$done = 'yes'
 			
-		$feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked']);
+		$feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['when_return']);
 		$purifier = new HTMLPurifier();
 		$cleanComment = $purifier->purify($feedback);
 		
