@@ -194,7 +194,7 @@ function displayPrevFeedback($uid, $pid)
 		if ($pf['done'] == 1)
 			$done = 'no';
 		else
-			$done = 'yes'
+			$done = 'yes';
 			
 		$feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['when_return']);
 		$purifier = new HTMLPurifier();
