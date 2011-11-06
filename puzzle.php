@@ -684,7 +684,7 @@ function displayFileList ($uid, $pid, $type) {
 ?>
 		<tr>
 			<td class='<?php echo $class; ?>'>
-				<?php echo "<strong>Lastest $type:</strong>"; ?>
+				<?php echo "<strong>Latest $type:</strong>"; ?>
 			</td>
 <?php 
 		} else {
