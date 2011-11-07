@@ -1546,25 +1546,50 @@ function uploadFiles($uid, $pid, $type, $file) {
 		utilsError("The upload type is not specified correctly (internal error?): " . $type);
 	}
 
+	$extension = "";
+
 	$target_path = "uploads/puzzle_files/" . uniqid();
 	$filename_parts = explode(".", $file['name']);
 	if (count($filename_parts) > 1) {
 		$target_path = $target_path . "." . end($filename_parts);
+		$extension = end($filename_parts);
 	}
 
-	$upload_error = "";
-	if (move_uploaded_file($file['tmp_name'], $target_path)) {
-		$sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
+	if ($extension == "zip") {
+		$filetype = "dir";
+		if (move_uploaded_file($file['tmp_name'], $target_path)) {
+			$new_path = $target_path . "_" . $filetype;
+			echo "target_path is $target_path<br>";
+			echo "new_path is $new_path<br>";
+			$res = exec("/usr/bin/unzip $target_path -d $new_path");
+
+			$sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
+				mysql_real_escape_string($new_path), mysql_real_escape_string($pid),
+				mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
+			query_db($sql);
+			$sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($target_path), mysql_real_escape_string($pid),
 				mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
-		query_db($sql);
+	                query_db($sql);
+		} else {
+			$_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
+		}
+	}
 
-		addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
-	} else {
-		$_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
+	else {
+		$upload_error = "";
+		if (move_uploaded_file($file['tmp_name'], $target_path)) {
+			$sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
+				mysql_real_escape_string($target_path), mysql_real_escape_string($pid),
+				mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
+			query_db($sql);
+
+			addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
+		} else {
+			$_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
+		}
 	}
 }
-	
 	
 function getComments($pid)
 {
