@@ -1563,6 +1563,10 @@ function uploadFiles($uid, $pid, $type, $file) {
 			echo "new_path is $new_path<br>";
 			$res = exec("/usr/bin/unzip $target_path -d $new_path");
 
+			// Use a transaction to ensure the zip_dir is uploaded
+			// last, so that it gets shown at the top.
+			mysql_query('START TRANSACTION');
+
 			$sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($new_path), mysql_real_escape_string($pid),
 				mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
@@ -1573,6 +1577,8 @@ function uploadFiles($uid, $pid, $type, $file) {
 	                query_db($sql);
 
 			addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.",TRUE);
+
+			mysql_query('COMMIT');
 		} else {
 			$_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
 		}
