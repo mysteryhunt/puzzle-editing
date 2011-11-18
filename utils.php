@@ -1527,7 +1527,7 @@ function getPuzzleStatusName($id)
 
 function getFileListForPuzzle($pid, $type)
 {
-	$sql = sprintf("SELECT * FROM uploaded_files WHERE uploaded_files.pid='%s' AND uploaded_files.type='%s' ORDER BY uploaded_files.date DESC",
+	$sql = sprintf("SELECT * FROM uploaded_files WHERE pid='%s' AND type='%s' ORDER BY date DESC, filename DESC",
 			mysql_real_escape_string($pid), mysql_real_escape_string($type));
 	return get_rows_null($sql);
 }
@@ -1563,10 +1563,6 @@ function uploadFiles($uid, $pid, $type, $file) {
 			echo "new_path is $new_path<br>";
 			$res = exec("/usr/bin/unzip $target_path -d $new_path");
 
-			// Use a transaction to ensure the zip_dir is uploaded
-			// last, so that it gets shown at the top.
-			mysql_query('START TRANSACTION');
-
 			$sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($new_path), mysql_real_escape_string($pid),
 				mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
@@ -1577,8 +1573,6 @@ function uploadFiles($uid, $pid, $type, $file) {
 	                query_db($sql);
 
 			addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.",TRUE);
-
-			mysql_query('COMMIT');
 		} else {
 			$_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
 		}
@@ -2030,7 +2024,7 @@ function getPuzzlesInTesting()
 
 function getMostRecentDraftForPuzzle($pid) {
 	$sql = sprintf("SELECT filename, date FROM uploaded_files WHERE pid='%s' AND TYPE='draft'
-			ORDER BY date DESC LIMIT 0, 1", mysql_real_escape_string($pid));
+			ORDER BY date DESC, filename DESC LIMIT 0, 1", mysql_real_escape_string($pid));
 	$result = mysql_query($sql);
 	
 	if (mysql_num_rows($result) == 0)
