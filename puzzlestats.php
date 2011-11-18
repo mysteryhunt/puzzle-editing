@@ -18,7 +18,7 @@
 	echo '<h1 style="margin-top: 0em; margin-bottom: 0em;">Puzzle Status Numbers</h1>';
 	echo '<table>';
 	
-	$completed = array(8, 13, 6);
+	$completed = array(8, 3, 13, 6);
 	makeStatusTable($completed, 'Completed Puzzles', 'complete-stats');
 	
 	$written = array(2, 12);
