@@ -1542,10 +1542,6 @@ function uploadFiles($uid, $pid, $type, $file) {
 		utilsError("This puzzle has been finalized. No new drafts can be uploaded.");
 	}
 
-	if ($type != "draft" && $type != "solution" && $type != "misc") {
-		utilsError("The upload type is not specified correctly (internal error?): " . $type);
-	}
-
 	$extension = "";
 
 	$target_path = "uploads/puzzle_files/" . uniqid();
@@ -2328,12 +2324,6 @@ function canAcceptDrafts($pid)
 	$sql = sprintf("SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
 			WHERE pstatus.acceptDrafts = '1' AND puzzle_idea.id='%s'", mysql_real_escape_string($pid));
 	return has_result($sql);
-}
-
-function getPostProdForPuzzle($pid)
-{
-	$sql = sprintf("SELECT url FROM puzzle_production WHERE pid='%s'", mysql_real_escape_string($pid));
-	return get_element_null($sql);
 }
 
 function utilsError($msg)

@@ -43,6 +43,13 @@ $(document).ready(function()
 		return false; 
 	})
 	
+	$('#uploadpostprod').hide();	
+	$('#uploadpostprodLink').click(function() {
+		$('#uploadpostprod').toggle();
+		$(this).text($(this).text() == "[Upload New]" ? "[Hide]" : "[Upload New]");
+		return false; 
+	})
+	
 	$('.fileInfoOld').hide();
 	$('#toggleFiles').click(function() {
 		$('.fileInfoOld').toggle();

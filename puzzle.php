@@ -100,15 +100,6 @@
 	displayFiles($uid, $pid);
 	echo "</div>";
 
-	// Add post-prod link
-	if (getStatusForPuzzle($pid) == 13) {
-		echo "<br />";
-		echo "<div class='postProd'>";
-		displayPostProd($uid, $pid);
-		echo "</div>";
-	}
-	
-	
 	// Display & add comments
 	echo "<div class='comments'>";
 	echo "<table>";
@@ -658,6 +649,7 @@ function displayFiles($uid, $pid)
 		<?php displayFileList($uid, $pid, 'draft'); ?>
 		<?php displayFileList($uid, $pid, 'solution'); ?>
 		<?php displayFileList($uid, $pid, 'misc'); ?>
+		<?php displayFileList($uid, $pid, 'postprod'); ?>
 	</table>
 	<p style="padding-top: .5em;"><a href='#' id='toggleFiles'>Show Older Files</a></p>
 <?php	
@@ -750,21 +742,6 @@ function displayFileList ($uid, $pid, $type) {
 		if ($first)
 			$first = FALSE;
 	}
-}
-
-function displayPostProd($uid, $pid)
-{
-	$postProd = getPostProdForPuzzle($pid);
-	
-?>
-	<form action="form-submit.php" method="post">
-		<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-		<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-		<strong>Post-Production Link: </strong>
-		<input type="text" name="postProd" value="<?php echo $postProd; ?>" style="width: 20em;" />
-		<input type="submit" name="changePostProd" value="Change" />
-	</form>
-<?php
 }
 
 function displayComments($uid, $pid, $lastVisit)
