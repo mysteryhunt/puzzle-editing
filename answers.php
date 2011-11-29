@@ -38,7 +38,15 @@
 		    </tr>
 <?php 
 		    foreach($answers as $answer) {
-			    displayAnswer($answer, $uid);
+		        $pid = $answer['pid'];
+?>
+		        <tr>
+			        <td><?php echo $answer['answer'] ?></td>
+			        <td><?php echo ($pid ? "<a href=\"puzzle?pid=$pid\">".$pid."</a>" : "unassigned") ?></td>
+			        <td><?php echo ($pid ? getTitle($pid) : "") ?></td>
+			        <td><?php echo ($pid ? getStatusNameForPuzzle($pid) : "") ?></td>
+		        </tr>
+<?php
 		    }
 		}
 ?>
@@ -46,26 +54,5 @@
 
 <?php 
 	}
+?>
 
-	function displayAnswer($answer, $uid)
-	{
-		$pid = $answer['pid'];
-		if ($pid && (isLurker($uid) || isEditorOnPuzzle($uid, $pid) || isAuthorOnPuzzle($uid, $pid))) {
-?>
-		<tr>
-			<td><?php echo $answer['answer'] ?></td>
-			<td><?php echo "<a href=\"puzzle?pid=$pid\">".$pid."</a>" ?></td>
-			<td><?php echo getTitle($pid) ?></td>
-			<td><?php echo getStatusNameForPuzzle($pid) ?></td>
-		</tr>
-<?php
-		} else {
-?>
-		<tr>
-			<td><?php echo $answer['answer'] ?></td>
-			<td><?php echo ($pid ? 'assigned' : 'unassigned') ?></td>
-		</tr>
-<?php
-		}
-	}
-?>
