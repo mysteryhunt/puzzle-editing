@@ -39,7 +39,14 @@ function isValidPuzzleURL()
 }
 
 
-
+// convert puzzle names to canonical form used on post-prod site
+function postprodCanon($s)
+{
+  $s = strtolower(trim($s));
+  $s = preg_replace('/[\']([st])\b/', '$1', $s);
+  $s = preg_replace('/[^a-z0-9]+/', '_', $s);
+  return $s;
+}
 
 
 function isEditor($uid)
@@ -2193,6 +2200,11 @@ function getAnswersForRound($rid)
 	return get_rows_null($sql);
 }
 
+function getRoundForPuzzle($pid)
+{
+	$sql = sprintf("SELECT rounds.* FROM rounds, answers_rounds, answers WHERE answers.pid='%s' and answers_rounds.aid = answers.aid and rounds.rid = answers_rounds.rid;", mysql_real_escape_string($pid));
+	return get_row_null($sql);
+}
 	
 function getNumberOfEditorsOnPuzzles()
 {

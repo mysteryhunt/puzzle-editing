@@ -100,6 +100,15 @@
 	displayFiles($uid, $pid);
 	echo "</div>";
 
+	// Link to post-prod site
+        if (getStatusForPuzzle($pid) == 13) {
+              echo "<br />";
+              echo "<div class='postProd'>";
+              displayPostProd($uid, $pid);
+              echo "</div>";
+        }
+
+
 	// Display & add comments
 	echo "<div class='comments'>";
 	echo "<table>";
@@ -742,6 +751,16 @@ function displayFileList ($uid, $pid, $type) {
 		if ($first)
 			$first = FALSE;
 	}
+}
+
+function displayPostProd($uid, $pid)
+{
+  $rinfo = getRoundForPuzzle($pid);
+  $url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
+  $url .= postprodCanon($rinfo['name']) . '/';
+  $url .= postprodCanon(getTitle($pid)) . '/';
+  echo "<strong>Post-Production Link: </strong>";
+  echo "<a href='$url'>$url</a>";
 }
 
 function displayComments($uid, $pid, $lastVisit)
