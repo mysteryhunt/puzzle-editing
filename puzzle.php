@@ -757,8 +757,22 @@ function displayPostProd($uid, $pid)
 {
   $rinfo = getRoundForPuzzle($pid);
   $url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
-  $url .= postprodCanon($rinfo['name']) . '/';
-  $url .= postprodCanon(getTitle($pid)) . '/';
+  $roundname = $rinfo['name'];
+  $title = getTitle($pid);
+  $showmeta = FALSE;
+  if ($roundname == 'Metas') {
+    $m = array();
+    $regexp = '/^\s*\(([CS])-META\)\s*(.*)$/';
+    if (preg_match($regexp, $title, $m)) {
+      $roundname = $m[2];
+      $title = ($m[1]=='C') ? "Investigator's Report" : "Meta";
+      if ($m[1]=='S') { $showmeta = TRUE; }
+    }
+  }
+  $url .= postprodCanon($roundname) . '/';
+  if (!$showmeta) {
+    $url .= postprodCanon($title) . '/';
+  }
   echo "<strong>Post-Production Link: </strong>";
   echo "<a href='$url'>$url</a>";
 }
