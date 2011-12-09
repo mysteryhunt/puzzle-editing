@@ -260,10 +260,6 @@ function displayPuzzleStats($uid)
 						<td class="puzz-stats"><?php echo $editor; ?></td>
 					</tr>
 					<tr>
-						<td class="puzz-stats">You Are Blocked</td>
-						<td class="puzz-stats"><?php echo $userNumbers['blocked']; ?></td>
-					</tr>
-					<tr>
 						<td class="puzz-stats">You Are Author</td>
 						<td class="puzz-stats"><?php echo $userNumbers['author']; ?></td>
 					</tr>

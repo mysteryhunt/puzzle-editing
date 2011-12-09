@@ -69,11 +69,6 @@ function isBlind($uid)
 	return hasPriv($uid, 'isBlind');
 }
 
-function isBlockable($uid)
-{
-	return !(hasPriv($uid, 'notBlockable'));
-}
-
 function isServerAdmin($uid)
 {
 	return hasPriv($uid, 'changeServer');
@@ -86,9 +81,6 @@ function hasPriv($uid, $priv)
 					mysql_real_escape_string($uid), mysql_real_escape_string($priv));
 	return has_result($sql);
 }
-
-
-
 
 
 function isAuthorOnPuzzle($uid, $pid)
@@ -115,13 +107,6 @@ function isTesterOnPuzzle($uid, $pid)
 function isFormerTesterOnPuzzle($uid, $pid)
 {
 	$sql = sprintf("SELECT * FROM doneTesting WHERE uid='%s' AND pid='%s'",
-			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-	return has_result($sql);
-}
-
-function isBlockedOnPuzzle($uid, $pid)
-{
-	$sql = sprintf("SELECT * FROM blocked WHERE blocked='%s' AND pid='%s'",
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
 	return has_result($sql);
 }
@@ -212,14 +197,6 @@ function getEditorsForPuzzle($pid)
 {
 	$sql = sprintf("SELECT uid FROM editor_queue WHERE pid='%s'", mysql_real_escape_string($pid));
 	return getUsersForPuzzle($pid, $sql);
-}
-
-// Get all blocked users for $pid
-// Return assoc array of [uid] => [name]
-function getBlockedForPuzzle($pid)
-{
-	$sql = sprintf("SELECT blocked FROM blocked WHERE pid='%s'", mysql_real_escape_string($pid));
-	return getUsersForPuzzle($pid, $sql);	
 }
 
 // Get all users spoiled individually (not from a list) for $pid
@@ -706,28 +683,6 @@ function getAvailableAuthorsForPuzzle($pid)
 	return $authors;
 }
 
-function getAvailableBlockedForPuzzle($pid)
-{
-	// only editors can be blocked, so get available editors
-	$editors = getAvailableEditorsForPuzzle($pid);
-	if ($editors == NULL)
-		return NULL;
-	
-	// for each editor, check if they are blockable
-	foreach ($editors as $uid => $name) {
-		if (!isBlockedAvailable($uid, $pid)) {
-			unset ($editors[$uid]);
-		}
-	}
-		
-	return $editors;
-}
-
-function isBlockedAvailable($uid, $pid)
-{
-	return (isEditorAvailable($uid, $pid) && isBlockable($uid));
-}
-
 function getAvailableSpoiledUsersForPuzzle($pid)
 {
 	// Get all users
@@ -771,25 +726,6 @@ function getSpoiledAsList($pid)
 		$spoiled = '(none)';
 		
 	return $spoiled;
-}
-
-function getBlockedAsList($pid)
-{
-	$sql = sprintf("SELECT blocked FROM blocked WHERE pid='%s'",
-			mysql_real_escape_string($pid));
-	$users = get_elements_null($sql);
-	
-	if ($users == NULL)
-		return '(none)';
-		
-	$blocked = '';
-	foreach ($users as $uid) {
-		if ($blocked != '')
-			$blocked .= ', ';
-		$blocked .= getUserName($uid);
-	}
-	
-	return $blocked;
 }
 
 function getCurrentTestersAsList($pid)
@@ -1011,7 +947,6 @@ function isEditorAvailable($uid, $pid)
 {
 	return (isEditor($uid) && 
 			!isAuthorOnPuzzle($uid, $pid) &&
-			!isBlockedOnPuzzle($uid, $pid) &&
 			!isEditorOnPuzzle($uid, $pid) &&
 			!isTesterOnPuzzle($uid, $pid));
 }
@@ -1038,14 +973,6 @@ function changeEditors($uid, $pid, $add, $remove)
 	mysql_query('START TRANSACTION');
 	addEditors($uid, $pid, $add);
 	removeEditors($uid, $pid, $remove);
-	mysql_query('COMMIT');
-}
-
-function changeBlocked($uid, $pid, $add, $remove)
-{
-	mysql_query('START TRANSACTION');
-	addBlocked($uid, $pid, $add);
-	removeBlocked($uid, $pid, $remove);
 	mysql_query('COMMIT');
 }
 
@@ -1128,80 +1055,6 @@ function removeAuthors($uid, $pid, $remove)
 	$comment .= ' as author';
 	if (count($remove) > 1)
 		$comment .= "s";
-		
-	addComment($uid, $pid, $comment, TRUE);
-}
-
-function addBlocked($uid, $pid, $add)
-{
-	if ($add == NULL)
-		return;
-		
-	if (!canAddBlocked($uid, $pid))
-		utilsError("You do not have permission to add blocked to puzzle $pid");
-		
-	$name = getUserName($uid);
-		
-	$comment = 'Added ';
-	foreach ($add as $user) {
-		if (!isBlockedAvailable($user, $pid)) {
-			utilsError(getUserName($user) . ' is not available.');
-		}
-		
-		$sql = sprintf("INSERT INTO blocked (pid, blocked, blocked_by) VALUE ('%s', '%s', '%s')",
-				mysql_real_escape_string($pid), mysql_real_escape_string($user), mysql_real_escape_string($uid));
-		query_db($sql);
-		
-		// Add to comment
-		if ($comment != 'Added ')
-			$comment .= ', ';
-		$comment .= getUserName($user);
-		
-		// Email new author
-		$subject = "Blocked on Puzzle $pid";
-		$message = "$name blocked you from puzzle $pid.";
-		$link = URL;
-		sendEmail($user, $subject, $message, $link);
-	}
-		
-	$comment .= ' as blocked';
-		
-	addComment($uid, $pid, $comment, TRUE);
-}
-
-function removeBlocked($uid, $pid, $remove)
-{	
-	if ($remove == NULL)
-		return;
-		
-	if (!canRemoveBlocked($uid, $pid))
-		utilsError("You do not have permission to remove blocked from puzzle $pid");
-		
-	$name = getUserName($uid);
-		
-	$comment = 'Removed ';
-	foreach ($remove as $user) {
-		if (!isBlockedOnPuzzle($user, $pid)) {
-			utilsError(getUserName($user) . ' is not blocked.');
-		}
-		
-		$sql = sprintf("DELETE FROM blocked WHERE pid='%s' and blocked='%s'",
-				mysql_real_escape_string($pid), mysql_real_escape_string($user));
-		query_db($sql);
-		
-		// Add to comment
-		if ($comment != 'Removed ')
-			$comment .= ', ';
-		$comment .= getUserName($user);
-		
-		// Email new author
-		$subject = "Blocked on Puzzle $pid";
-		$message = "$name removed you as blocked from puzzle $pid.";
-		$link = URL;
-		sendEmail($user, $subject, $message, $link);
-	}
-		
-	$comment .= ' as blocked';
 		
 	addComment($uid, $pid, $comment, TRUE);
 }
@@ -1313,16 +1166,6 @@ function canAddSpoiled($uid, $pid)
 }
 
 function canRemoveSpoiled($uid, $pid)
-{
-	return (isLurker($uid));
-}
-
-function canAddBlocked($uid, $pid)
-{
-	return (isEditorOnPuzzle($uid, $pid) || isLurker($uid));
-}
-
-function canRemoveBlocked($uid, $pid)
 {
 	return (isLurker($uid));
 }
@@ -2232,7 +2075,6 @@ function getNumberOfPuzzlesForUser($uid)
 	$numbers['author'] = 0;
 	$numbers['editor'] = 0;
 	$numbers['spoiled'] = 0;
-	$numbers['blocked'] = 0;
 	$numbers['currentTester'] = 0;
 	$numbers['doneTester'] = 0;
 	$numbers['available'] = 0;
@@ -2245,9 +2087,6 @@ function getNumberOfPuzzlesForUser($uid)
 		}
 		if (isEditorOnPuzzle($uid, $pid)) {
 			$numbers['editor']++;
-		}
-		if (isBlockedOnPuzzle($uid, $pid)) {
-			$numbers['blocked']++;
 		}
 		if (isSpoiledOnPuzzle($uid, $pid)) {
 			$numbers['spoiled']++;

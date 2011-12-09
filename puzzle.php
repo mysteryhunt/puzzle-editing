@@ -245,7 +245,6 @@ function displayPeople($uid, $pid)
 	<?php displayAuthors($uid, $pid); ?>
 	<?php displaySpoiled($uid, $pid); ?>
 	<?php displayEditors($uid, $pid); ?>
-	<?php displayBlocked($uid, $pid); ?>
 	<?php if (canSeeTesters($uid, $pid)) {displayTesters($uid, $pid);} ?>
 	<?php displayTestingAdmin($uid, $pid); ?>
 	</table>
@@ -451,73 +450,6 @@ function displayAddEditor($pid)
 	$editors = getAvailableEditorsForPuzzle($pid);
 	if ($editors != NULL)
 		makeOptionElements($editors, 'addEditor');	
-}
-
-function displayBlocked($uid, $pid)
-{
-?>
-		<tr>
-			<td class='peopleInfo'>
-				<strong>Blocked:</strong> <?php echo getBlockedAsList($pid); ?>
-				<?php if (canAddBlocked($uid, $pid) || canRemoveBlocked($uid, $pid))
-					echo '&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>';
-				?>
-			</td>
-		</tr>
-<?php
-	if (canAddBlocked($uid, $pid) || canRemoveBlocked($uid, $pid)) {
-?>
-		<tr>
-			<td>
-				<table>
-					<form method="post" action="form-submit.php">
-					<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-					<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-					<tr>					
-<?php
-		if (canRemoveBlocked($uid, $pid)) {
-?>
-						<td>
-							<p><strong>Remove Blocked:</strong></p>
-							<?php echo displayRemoveBlocked($pid); ?>
-						</td>
-<?php 
-		}
-		if (canAddBlocked($uid, $pid)) {
-?>
-						<td>
-							<p><strong>Add Blocked:</strong></p>
-							<?php echo displayAddBlocked($pid); ?>
-						</td>
-<?php
-		} 
-?>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input type="submit" name="changeBlocked" value="Change Blocked" />
-						</td>
-					</tr>
-					</form>
-				</table>
-			</td>
-		</tr>
-<?php		
-	}
-}
-
-function displayRemoveBlocked($pid)
-{
-	$blocked = getBlockedForPuzzle($pid);
-	if ($blocked != NULL)
-		makeOptionElements($blocked, 'removeBlocked');	
-}
-
-function displayAddBlocked($pid)
-{
-	$blocked = getAvailableBlockedForPuzzle($pid);
-	if ($blocked != NULL)
-		makeOptionElements($blocked, 'addBlocked');	
 }
 
 function displayTesters($uid, $pid)

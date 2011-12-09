@@ -106,26 +106,6 @@
 		exit(0);
 	}
 	
-	if (isset($_POST['changeBlocked'])) {
-		$pid = $_POST['pid'];
-		$uid = $_POST['uid'];
-		
-		if (isset($_POST['addBlocked']))
-			$add = $_POST['addBlocked'];
-		else
-			$add = NULL;
-			
-		if (isset($_POST['removeBlocked']))
-			$remove = $_POST['removeBlocked'];
-		else
-			$remove = NULL;
-		
-		changeBlocked($uid, $pid, $add, $remove);
-		
-		header("Location: " . URL . "/puzzle?pid=$pid");
-		exit(0);
-	}
-	
 	if (isset($_POST['changeStatus'])) {
 		$pid = $_POST['pid'];
 		$uid = $_POST['uid'];
