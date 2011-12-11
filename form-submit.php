@@ -139,7 +139,7 @@
 			
 		uploadFiles($uid, $pid, $type, $file);
 		
-		header("Location: " . URL . "/puzzle.php?pid=" . $pid);
+		header("Location: " . URL . "/puzzle?pid=" . $pid);
 		exit(0);
 	}
 	
@@ -151,7 +151,7 @@
 		
 		addComment($uid, $pid, $comment);
 		
-		header("Location: " . URL . "/puzzle.php?pid=" . $pid);
+		header("Location: " . URL . "/puzzle?pid=" . $pid);
 		exit(0);
 	} 
 	
