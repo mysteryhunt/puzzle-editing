@@ -97,6 +97,21 @@
 		return $rows;
 	}
 	
+	// Get an associative array
+	function get_assoc_array($query, $key_col, $val_col)
+	{
+		$arr = array();
+
+		$result = mysql_query($query);
+		if ($result != FALSE) {
+			while ($r = mysql_fetch_array($result)) {
+				$arr[$r[$key_col]] = $r[$val_col];
+			}
+		}
+
+		return $arr;
+	}
+	
 	// Get a single datum from the database.
 	// Error if no result found
 	function get_element($query)

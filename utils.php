@@ -451,16 +451,7 @@ function getAnswersForPuzzle($pid)
 {
 	$sql = sprintf("SELECT aid, answer FROM answers WHERE pid='%s'",
 			mysql_real_escape_string($pid));
-	$result = get_rows_null($sql);
-
-	$answers = NULL;
-	if ($result != NULL) {
-		foreach ($result as $r) {
-			$answers[$r['aid']] = $r['answer'];
-		}
-	}
-	
-	return $answers;
+	return get_assoc_array($sql, "aid", "answer");
 }
 
 // Get the current answers for a puzzle as a comma separated list
@@ -480,14 +471,7 @@ function getAnswersForPuzzleAsList($pid)
 // Return an assoc array of type [aid] => [answer]
 function getAvailableAnswers()
 {
-	$answers = NULL;
-	$result = get_rows_null("SELECT aid, answer FROM answers WHERE pid IS NULL");
-	if ($result != NULL) {
-		foreach ($result as $r) {
-			$answers[$r['aid']] = $r['answer'];
-		}
-	}
-	
+	$answers = get_assoc_array("SELECT aid, answer FROM answers WHERE pid IS NULL", "aid", "answer");
 	if ($answers != NULL)
 		natcasesort($answers);
 	return $answers;
@@ -1245,15 +1229,7 @@ function getStatusNameForPuzzle($pid)
 
 function getPuzzleStatuses()
 {
-	$sql = 'SELECT id, name FROM pstatus ORDER BY ord ASC';
-	$rows = get_rows($sql);
-	
-	$statuses = NULL;
-	foreach ($rows as $r) {
-		$statuses[$r['id']] = $r['name'];
-	}
-	
-	return $statuses;
+    return get_assoc_array("SELECT id, name FROM pstatus ORDER BY ord ASC", "id", "name");
 }
 
 function getPuzzlesWithStatus($sid)
