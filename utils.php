@@ -334,18 +334,6 @@ function getTitle($pid)
 	return get_element($sql);
 }
 
-function getSummary($pid)
-{
-	$sql = sprintf("SELECT summary FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
-	return get_element($sql);
-}
-
-function getDescription($pid)
-{
-	$sql = sprintf("SELECT description FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
-	return get_element($sql);
-}
-
 function getNotes($pid)
 {
 	$sql = sprintf("SELECT notes FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
@@ -361,9 +349,10 @@ function changeTitleSummaryDescription($uid, $pid, $title, $summary, $descriptio
 		utilsError("You do not have permission to edit the title, summary, or description of puzzle $pid");
 	
 	// Get the old title, summary, and description
-	$oldTitle = getTitle($pid);
-	$oldSummary = getSummary($pid);
-	$oldDescription = getDescription($pid);
+	$puzzleInfo = getPuzzleInfo($pid);
+	$oldTitle = $puzzleInfo["title"];
+	$oldSummary = $puzzleInfo["summary"];
+	$oldDescription = $puzzleInfo["description"];
 		
 	// Make sure this user has permission to modify the puzzle info
 	if (isAuthorOnPuzzle($uid, $pid) || isLurker($uid)) {
@@ -385,7 +374,7 @@ function changeTitleSummaryDescription($uid, $pid, $title, $summary, $descriptio
 		}
 		
 		// If description has changed, update it
-		$cleanDescription = $purifier->purify($description);		
+		$cleanDescription = $purifier->purify($description);
 		if ($oldDescription !== $cleanDescription) {
 			updateDescription($uid, $pid, $oldDescription, $cleanDescription);
 		}

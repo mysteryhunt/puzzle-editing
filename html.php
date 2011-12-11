@@ -155,8 +155,10 @@
 		</thead>
 		<tbody>
 <?php 
+		$statuses = getPuzzleStatuses();
 		foreach ($puzzles as $pid) {
-			$title = getTitle($pid);
+			$puzzleInfo = getPuzzleInfo($pid);
+			$title = $puzzleInfo["title"];
 			if ($title == NULL)
 				$title = '(untitled)';
 			
@@ -174,9 +176,9 @@
 				echo "<td class='puzzidea'><a href='puzzle?pid=$pid'>$pid</a></td>";
 ?>
 				<td class='puzzidea'><?php echo $title; ?></td>
-				<?php if ($showStatus) {echo "<td class='puzzidea'>" . getStatusNameForPuzzle($pid) . "</td>";} ?>
-				<?php if ($showSummary) {echo "<td class='puzzidea'>" . getSummary($pid) . "</td>";} ?>
-				<?php if ($showSummary) {echo "<td class='puzzidea'>" . getNotes($pid) . "</td>";} ?>
+				<?php if ($showStatus) {echo "<td class='puzzidea'>" . $statuses[$puzzleInfo["pstatus"]] . "</td>";} ?>
+				<?php if ($showSummary) {echo "<td class='puzzidea'>" . $puzzleInfo["summary"] . "</td>";} ?>
+				<?php if ($showSummary) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
 				<?php if ($showAnswer) {echo "<td class='puzzidea'>" . getAnswersForPuzzleAsList($pid) . "</td>";} ?>
 				<?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
 				<?php if ($showAuthors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
