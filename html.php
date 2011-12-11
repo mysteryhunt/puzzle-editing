@@ -312,14 +312,13 @@ function displayPuzzleStats($uid)
 		$pstatusCol = ceil(count($puzzleStatuses) / $max_rows) * 2;
 		
 		$statuses = NULL;
+		$statusCounts = getPuzzleStatusCounts();
 		foreach ($puzzleStatuses as $sid => $name) {
-			$puzzles = getPuzzlesWithStatus($sid);
-			$count = count($puzzles);
-			
+			$count = (array_key_exists($sid, $statusCounts) ? $statusCounts[$sid] : 0);
+			$status = NULL;
 			$status['id'] = $sid;
 			$status['name'] = $name;
 			$status['count'] = $count;
-			
 			$statuses[] = $status;
 		}
 ?>

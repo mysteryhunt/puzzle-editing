@@ -1221,10 +1221,9 @@ function getPuzzleStatuses()
     return get_assoc_array("SELECT id, name FROM pstatus ORDER BY ord ASC", "id", "name");
 }
 
-function getPuzzlesWithStatus($sid)
+function getPuzzleStatusCounts()
 {
-	$sql = sprintf("SELECT id FROM puzzle_idea WHERE pstatus='%s'", mysql_real_escape_string($sid));
-	return get_elements_null($sql);
+	return get_assoc_array("SELECT pstatus, COUNT(*) AS pcount FROM puzzle_idea GROUP BY pstatus", "pstatus", "pcount");
 }
 
 function getStatusForPuzzle($pid)

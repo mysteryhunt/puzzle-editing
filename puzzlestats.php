@@ -18,45 +18,42 @@
 	echo '<h1 style="margin-top: 0em; margin-bottom: 0em;">Puzzle Status Numbers</h1>';
 	echo '<table>';
 	
+	$counts = getPuzzleStatusCounts();
+	
 	$completed = array(8, 3, 13, 6);
-	makeStatusTable($completed, 'Completed Puzzles', 'complete-stats');
+	makeStatusTable($completed, $counts, 'Completed Puzzles', 'complete-stats');
 	
 	$written = array(2, 12);
-	makeStatusTable($written, 'Fact Check / Revision', 'writing-stats');
+	makeStatusTable($written, $counts, 'Fact Check / Revision', 'writing-stats');
 	
 	$testing = array(18, 17, 4, 7, 5);
-	makeStatusTable($testing, 'Testing', 'testing-stats');
+	makeStatusTable($testing, $counts, 'Testing', 'testing-stats');
 	
 	$ideas = array(1);
-	makeStatusTable($ideas, 'Development', 'pending-stats');
+	makeStatusTable($ideas, $counts, 'Development', 'pending-stats');
 	
 	$dead = array(9, 10, 16);
-	makeStatusTable($dead, 'Dead / Admin', 'dead-stats');
+	makeStatusTable($dead, $counts, 'Dead / Admin', 'dead-stats');
 	
 	echo '</table>';
 	
 	foot();
 
-function makeStatusTable($arr, $name, $class)
+function makeStatusTable($arr, $counts, $name, $class)
 {
 	$count = 0;
 
 	foreach ($arr as $status) {
-		$puzzles = getPuzzlesWithStatus($status);
-		$number = count($puzzles);
-		$count += $number;
+		if (array_key_exists($status, $counts)) {
+			$count += $counts[$status];
+		}
 	}
 
-		
 	echo "<tr><th colspan='2' class='$class'>$name: $count</th></tr>";
 	foreach ($arr as $status) {
-		$puzzles = getPuzzlesWithStatus($status);
-		$statusName = getPuzzleStatusName($status);
-		$number = count($puzzles);
-
-		if ($number > 0)
-			echo "<tr><td class='$class'>$number</td><td class='$class'>$statusName</td></tr>";
-			
+		if (array_key_exists($status, $counts)) {
+			echo "<tr><td class='$class'>" . $counts[$status] . "</td><td class='$class'>" . getPuzzleStatusName($status) . "</td></tr>";
+		}
 	}
 	
 	if ($count == 0)
