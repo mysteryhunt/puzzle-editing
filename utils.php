@@ -244,12 +244,7 @@ function getEditorsAsList($pid)
 			mysql_real_escape_string($pid));
 	$editors = get_elements_null($sql);
 
-	$names = getUserNamesAsList($editors);
-	
-	if ($names == '')
-		$names = '(none)';	
-		
-	return $names;
+	return getUserNamesAsList($editors);
 }
 
 // Get comma-separated list of users' names
@@ -1508,13 +1503,8 @@ function getPuzzlesForAuthor($uid)
 
 function getLastCommentDate($pid)
 {
-	$sql = sprintf("SELECT timestamp FROM comments WHERE pid='%s' ORDER BY timestamp DESC", mysql_real_escape_string($pid));
-	$result = get_elements_null($sql);
-	
-	if ($result == NULL)
-		return NULL;
-	else
-		return $result[0];
+	$sql = sprintf("SELECT MAX(timestamp) FROM comments WHERE pid='%s'", mysql_real_escape_string($pid));
+	return get_element_null($sql);
 }
 
 function getNumEditors($pid)
