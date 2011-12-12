@@ -70,11 +70,8 @@
 		<script type="text/javascript">
 		//<![CDATA[
 			function validate(f) {
-				if (f.fname.value == "") {
+				if (f.fullname.value == "") {
 					alert("You must enter a first name.");
-					return false;
-				} else if (f.lname.value == "") {
-					alert("You must enter a last name.");
 					return false;
 				} else if (f.email.value == "") {
 					alert("You must enter an email address.");
@@ -110,6 +107,10 @@
 				<tr>
 					<td>Username*</td>
 					<td><input type="text" name="username" value="<?php echo $data['username'] ?>"/></td>
+				</tr>
+				<tr>
+					<td>Full Name*</td>
+					<td><input type="text" name="fullname" value="<?php echo $data['fullname'] ?>"/></td>
 				</tr>
 				<tr>
 					<td>Password*</td>
@@ -181,14 +182,12 @@
 		$picture = $_FILES['picture'];
 		$id = $data['id'];
 
-		if ($data['fname'] == "")
-			return "First name may not be empty";
-		if ($data['lname'] == "")
-			return "Last name may not be empty";
 		if ($data['email'] == "")
 			return "Email may not be empty";
 		if ($data['username'] == "")
 			return "Username may not be empty";
+		if ($data['fullname'] == "")
+			return "Full name may not be empty";
 		if ($data['pass1'] == "" || $data['pass2'] == "")
 			return "Passwords may not be empty";
 		if ($data['pass1'] != $data['pass2'])
@@ -214,16 +213,17 @@
 		$purifier = new HTMLPurifier();
 		$id = $purifier->purify($id);
 		$username = $purifier->purify($data['username']);
+		$fullname = $purifier->purify($data['fullname']);
 		$pic = $purifier->purify($pic);
 
 		mysql_query('START TRANSACTION');
 		$failed = 0;
 
 		$sql = sprintf("UPDATE user_info SET username = '%s', password=AES_ENCRYPT('%s', '%s%s'),
-                               picture='%s' WHERE uid='%s'",
+                               fullname='%s', picture='%s' WHERE uid='%s'",
 			       mysql_real_escape_string($username), mysql_real_escape_string($data['pass1']),
 			       mysql_real_escape_string($username), mysql_real_escape_string($data['pass1']),
-			       mysql_real_escape_string($pic), mysql_real_escape_string($id));
+			       mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string($id));
 
 		$result = mysql_query($sql);
 		if ($result == FALSE)

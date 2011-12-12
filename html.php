@@ -86,6 +86,7 @@
 		$id = $p['uid'];
 		$uname = $p['username'];
 		$picture = $p['picture'];
+		$fullname = $p['fullname'];
 		$email = $p['email'];
 
 		if (strncmp($uname, "test", 4) == 0) {
@@ -105,7 +106,7 @@
 		<div class="<?php echo ($jobNames) ? "specprofilebox" : "profilebox"; ?>">
 			<div class="profileimg"><?php echo $pic ?></div>
 			<div class="profiletxt">
-				<span class="profilename"><?php echo "$uname"; ?></span>
+				<span class="profilename"><?php echo "$fullname"; ?> (<?php echo "$uname"; ?>)</span>
 				<span class="profiletitle"><?php echo $jobNames; ?></span>
 				<span class="profilecontact"><a href="mailto:<?php echo $email ?>"><?php echo $email ?></a></span>
 <?php
