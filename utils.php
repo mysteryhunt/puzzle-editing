@@ -166,45 +166,31 @@ function getEmail($uid)
 	return get_element($sql);
 }
 
-// Get all authors of $pid
-// Return assoc array of [uid] => [name]
+
+// Get associative array of users' uid and name
+function getUsersForPuzzle($table, $pid)
+{
+	// This is only called from the below functions, where $table is a hardcoded string
+	$sql = sprintf("SELECT user_info.uid, user_info.fullname FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
+					$table, $table, $table, mysql_real_escape_string($pid));
+	return get_assoc_array($sql, "uid", "fullname");
+}
+
 function getAuthorsForPuzzle($pid)
 {
-	$sql = sprintf("SELECT uid FROM authors WHERE pid='%s'", mysql_real_escape_string($pid));
-	return getUsersForPuzzle($pid, $sql);
+	return getUsersForPuzzle("authors", $pid);
 }
 
-// Get all editors of $pid
-// Return assoc array of [uid] => [name]
 function getEditorsForPuzzle($pid)
 {
-	$sql = sprintf("SELECT uid FROM editor_queue WHERE pid='%s'", mysql_real_escape_string($pid));
-	return getUsersForPuzzle($pid, $sql);
+	return getUsersForPuzzle("editor_queue", $pid);
 }
 
-// Get all users spoiled individually (not from a list) for $pid
-// Return assoc array of [uid] => [name]
 function getSpoiledUsersForPuzzle($pid)
 {
-	$sql = sprintf("SELECT uid FROM spoiled WHERE pid='%s'", mysql_real_escape_string($pid));
-	return getUsersForPuzzle($pid, $sql);
+	return getUsersForPuzzle("spoiled", $pid);
 }
 
-// Get uid and name of users returned by a sql query
-// Return assoc array of [uid] => [name]
-function getUsersForPuzzle($pid, $sql)
-{
-	$result = get_elements_null($sql);
-	
-	$users = NULL;
-	if ($result != NULL) {
-		foreach ($result as $uid) {
-			$users[$uid] = getUserName($uid);
-		}
-	}
-	
-	return $users;
-}
 
 
 // Get comma-separated list of users' names
