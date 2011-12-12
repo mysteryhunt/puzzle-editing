@@ -207,44 +207,47 @@ function getUsersForPuzzle($pid, $sql)
 }
 
 
+// Get comma-separated list of users' names
+function getUserNamesAsList($table, $pid)
+{
+	// This is only called from the below functions, where $table is a hardcoded string
+	$sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
+					$table, $table, $table, mysql_real_escape_string($pid));
+	$users = get_elements_null($sql);
 
+	return ($users == NULL ? "(none)" : implode(", ", $users));
+}
 
-
-// Get a comma-separated list of author names
 function getAuthorsAsList($pid)
 {
-	$sql = sprintf("SELECT uid FROM authors WHERE pid='%s'",
-			mysql_real_escape_string($pid));
-	$authors = get_elements_null($sql);
-	
-	return getUserNamesAsList($authors);
+	return getUserNamesAsList("authors", $pid);
 }
 
-// Get a comma-separated list of editor names
 function getEditorsAsList($pid)
-{	
-	$sql = sprintf("SELECT uid FROM editor_queue WHERE pid='%s'",
-			mysql_real_escape_string($pid));
-	$editors = get_elements_null($sql);
-
-	return getUserNamesAsList($editors);
-}
-
-// Get comma-separated list of users' names
-function getUserNamesAsList($users)
 {
-	if ($users == NULL)
-		return '(none)';
-	
-	$names = '';
-	foreach ($users as $uid) {
-		if ($names != '')
-			$names .= ', ';
-		$names .= getUserName($uid);
-	}
-	
-	return $names;
+	return getUserNamesAsList("editor_queue", $pid);
 }
+
+function getTestingAdminsForPuzzleAsList($pid)
+{
+	return getUserNamesAsList("testAdminQueue", $pid);
+}
+
+function getCurrentTestersAsList($pid)
+{
+	return getUserNamesAsList("test_queue", $pid);
+}
+
+function getSpoiledAsList($pid)
+{
+	return getUserNamesAsList("spoiled", $pid);
+}
+
+function getFinishedTestersAsList($pid)
+{
+	return getUserNamesAsList("doneTesting", $pid);
+}
+
 
 // Get comma-separated list of users' names, with email addresses
 function getUserNamesAndEmailsAsList($users)
@@ -659,88 +662,11 @@ function isAuthorAvailable($uid, $pid)
 }
 
 
-function getSpoiledAsList($pid)
-{
-	$sql = sprintf("SELECT uid FROM spoiled WHERE pid='%s'", mysql_real_escape_string($pid));
-	$users = get_elements_null($sql);
-	
-	$spoiled = '';
-	if ($users != NULL) {
-		foreach ($users as $uid) {
-			if ($spoiled != '')
-				$spoiled .= ', ';
-			$spoiled .= getUserName($uid);
-		}
-	}
-	
-	if ($spoiled == '')
-		$spoiled = '(none)';
-		
-	return $spoiled;
-}
-
-function getCurrentTestersAsList($pid)
-{
-	$sql = sprintf("SELECT uid FROM test_queue WHERE pid='%s'",
-			mysql_real_escape_string($pid));
-	$users = get_elements_null($sql);
-	
-	if ($users == NULL)
-		return '(none)';
-		
-	$testers = '';
-	foreach ($users as $uid) {
-		if ($testers != '')
-			$testers .= ', ';
-		$testers .= getUserName($uid);
-	}
-	
-	return $testers;
-}
-
 function getCurrentTestersAsEmailList($pid)
 {
 	$testers = array_keys(getCurrentTestersForPuzzle($pid));
 	
 	return getUserNamesAndEmailsAsList($testers);
-}
-
-function getOncallTestersAsList($pid)
-{
-	$sql = sprintf("SELECT on_call FROM test_call WHERE pid='%s'",
-			mysql_real_escape_string($pid));
-	$users = get_elements_null($sql);
-	
-	if ($users == NULL)
-		return '(none)';
-		
-	$testers = '';
-	foreach ($users as $uid) {
-		if ($testers != '')
-			$testers .= ', ';
-		$testers .= getUserName($uid);
-	}
-	
-	return $testers;
-}
-
-function getFinishedTestersAsList($pid)
-{
-	$sql = sprintf("SELECT uid FROM doneTesting WHERE pid='%s'",
-			mysql_real_escape_string($pid));
-	$users = get_elements_null($sql);
-	
-	if ($users == NULL)
-		return '(none)';
-		
-	$testers = '';
-	foreach ($users as $uid) {
-		if ($testers != '')
-			$testers .= ', ';
-		$testers .= getUserName($uid);
-	}
-	
-	return $testers;
 }
 
 function getCurrentTestersForPuzzle($pid)
@@ -1521,15 +1447,6 @@ function getPuzzlesInEditorQueue($uid)
 	return sortByLastCommentDate($puzzles);
 }
 
-function getPuzzlesInOncallTestQueue($uid)
-{
-	$sql = sprintf("SELECT pid FROM test_call WHERE on_call='%s'",
-			mysql_real_escape_string($uid));
-	$puzzles = get_elements_null($sql);
-	
-	return sortByLastCommentDate($puzzles);
-}
-
 function getPuzzlesInTestQueue($uid)
 {
 	$sql = sprintf("SELECT pid FROM test_queue WHERE uid='%s'",
@@ -2097,14 +2014,6 @@ function getInTestAdminQueue($uid)
 {
 	$sql = sprintf("SELECT pid FROM testAdminQueue WHERE uid='%s'", mysql_real_escape_string($uid));
 	return get_elements_null($sql);
-}
-
-function getTestingAdminsForPuzzleAsList($pid)
-{
-	$sql = sprintf("SELECT uid FROM testAdminQueue WHERE pid='%s'", mysql_real_escape_string($pid));
-	$admins = get_elements_null($sql);
-	
-	return getUserNamesAsList($admins);
 }
 
 function canAcceptDrafts($pid)
