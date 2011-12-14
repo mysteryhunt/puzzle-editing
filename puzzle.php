@@ -21,7 +21,7 @@
 	}
 	
 	// Does the user have permission to see this page?
-	if (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isTestingAdminOnPuzzle($uid, $pid) && !isLurkerOnPuzzle($uid, $pid)) {
+	if (!canViewPuzzle($uid, $pid)) {
 		echo "You do not have permission to view this puzzle.";
 		foot();
 		exit(0);
@@ -47,8 +47,8 @@
 	// Get all information about the puzzle (from puzzle_idea table)
 	$puzzleInfo = getPuzzleInfo($pid);
 		
-	// Edit the summary and description? (Only authors and lurkers)
-	if (canEditTSD($uid, $pid) && isset($_GET['edit'])) {
+	// Edit the summary and description?
+	if (isset($_GET['edit'])) {
 		editTitleSummaryDescription($uid, $pid,
 				$puzzleInfo['title'], $puzzleInfo['summary'], $puzzleInfo['description']);
 		foot();
@@ -73,10 +73,8 @@
 	}
 	
 	// Allow author and lurkers to edit summary and description
-	if (canEditTSD($uid, $pid)) {
-		echo '<p style="font-size:75%;"><a href="' . URL . "/puzzle?edit&pid=$pid" . '">';
-		echo 'Edit Title, Summary and Description</a></p>';
-	}
+	echo '<p style="font-size:75%;"><a href="' . URL . "/puzzle?edit&pid=$pid" . '">';
+	echo 'Edit Title, Summary and Description</a></p>';
 
 	echo "</div>";
 	
@@ -542,9 +540,6 @@ function displayNotes($uid, $pid)
 			<td class='statusInfo'>
 				<strong>Status Notes: </strong> <?php echo $notes; ?>
 			</td>
-<?php 
-	if (canChangeNotes($uid, $pid)) { 
-?>
 			<td class='statusInfo'>
 				<a href="#" class="changeLink">[Change]</a>
 			</td>
@@ -559,13 +554,6 @@ function displayNotes($uid, $pid)
 				</form>
 			</td>
 		</tr>
-<?php 
-	} else {
-?>
-		</tr>
-<?php 
-	}
-?>
 	</table>
 <?php
 }
@@ -649,7 +637,7 @@ function displayFileList ($uid, $pid, $type) {
 <?php
 			}
 			
-		if ($first && canUploadFiles($uid, $pid) && !($type == 'draft' && !canAcceptDrafts($pid))) {
+		if ($first && !($type == 'draft' && !canAcceptDrafts($pid))) {
 ?>	
 			<td class='<?php echo $class; ?>'>
 				<a href="#" id="<?php echo "upload$type" . "Link"; ?>">[Upload New]</a>

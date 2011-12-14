@@ -311,44 +311,41 @@ function getNotes($pid)
 // Update the title, summary, and description of the puzzle (from form on puzzle page)
 function changeTitleSummaryDescription($uid, $pid, $title, $summary, $description)
 {
-	// Check that user is author or lurker
-	if (!canEditTSD($uid, $pid))
-		utilsError("You do not have permission to edit the title, summary, or description of puzzle $pid");
+	// Check that user can view the puzzle
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify this puzzle.");
 	
 	// Get the old title, summary, and description
 	$puzzleInfo = getPuzzleInfo($pid);
 	$oldTitle = $puzzleInfo["title"];
 	$oldSummary = $puzzleInfo["summary"];
 	$oldDescription = $puzzleInfo["description"];
-		
-	// Make sure this user has permission to modify the puzzle info
-	if (isAuthorOnPuzzle($uid, $pid) || isLurker($uid)) {
-		$purifier = new HTMLPurifier();
-		mysql_query('START TRANSACTION');
-		
-		// If title has changed, update it
-		$cleanTitle = $purifier->purify($title);
-		$cleanTitle = htmlspecialchars($cleanTitle);
-		if ($oldTitle !== $cleanTitle) {
-			updateTitle($uid, $pid, $oldTitle, $cleanTitle);
-		}
-		
-		// If summary has changed, update it
-		$cleanSummary = $purifier->purify($summary);
-		$cleanSummary = htmlspecialchars($cleanSummary);
-		if ($oldSummary !== $cleanSummary) {
-			updateSummary($uid, $pid, $oldSummary, $cleanSummary);
-		}
-		
-		// If description has changed, update it
-		$cleanDescription = $purifier->purify($description);
-		if ($oldDescription !== $cleanDescription) {
-			updateDescription($uid, $pid, $oldDescription, $cleanDescription);
-		}
-		
-		// Assuming all went well, commit the changes to the database
-		mysql_query('COMMIT');
+	
+	$purifier = new HTMLPurifier();
+	mysql_query('START TRANSACTION');
+	
+	// If title has changed, update it
+	$cleanTitle = $purifier->purify($title);
+	$cleanTitle = htmlspecialchars($cleanTitle);
+	if ($oldTitle !== $cleanTitle) {
+		updateTitle($uid, $pid, $oldTitle, $cleanTitle);
 	}
+	
+	// If summary has changed, update it
+	$cleanSummary = $purifier->purify($summary);
+	$cleanSummary = htmlspecialchars($cleanSummary);
+	if ($oldSummary !== $cleanSummary) {
+		updateSummary($uid, $pid, $oldSummary, $cleanSummary);
+	}
+	
+	// If description has changed, update it
+	$cleanDescription = $purifier->purify($description);
+	if ($oldDescription !== $cleanDescription) {
+		updateDescription($uid, $pid, $oldDescription, $cleanDescription);
+	}
+	
+	// Assuming all went well, commit the changes to the database
+	mysql_query('COMMIT');
 }
 
 function updateTitle($uid = 0, $pid, $oldTitle, $cleanTitle)
@@ -1003,9 +1000,9 @@ function removeEditors($uid, $pid, $remove)
 	addComment($uid, $pid, $comment, TRUE);
 }
 
-function canEditTSD($uid, $pid)
+function canViewPuzzle($uid, $pid)
 {
-	return (isAuthorOnPuzzle($uid, $pid) || isLurker($uid)); 
+	return isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid) || isLurker($uid);
 }
 
 function canChangeAnswers($uid)
@@ -1051,16 +1048,6 @@ function canSeeTesters($uid, $pid)
 function canChangeStatus($uid, $pid)
 {
 	return (isLurker($uid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid));
-}
-
-function canChangeNotes($uid, $pid)
-{
-	return (isLurker($uid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid));
-}
-
-function canUploadFiles($uid, $pid)
-{
-	return (isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isLurker($uid));
 }
 
 function canTestPuzzle($uid, $pid, $display = FALSE)
@@ -1190,8 +1177,8 @@ function isStatusInTesting($sid)
 
 function changeNotes($uid, $pid, $notes)
 {
-	if (!canChangeNotes($uid, $pid))
-		utilsError("You do not have permission to change notes on puzzle $pid");
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify this puzzle.");
 
 	$purifier = new HTMLPurifier();
 	mysql_query('START TRANSACTION');
@@ -1238,8 +1225,8 @@ function getFileListForPuzzle($pid, $type)
 
 
 function uploadFiles($uid, $pid, $type, $file) {
-	if (!canUploadFiles($uid, $pid)) {
-		utilsError("You do not have permission to upload files on this puzzle.");
+	if (!canViewPuzzle($uid, $pid)) {
+		utilsError("You do not have permission to modify this puzzle.");
 	}
 
 	if ($type == 'draft' && !canAcceptDrafts($pid)) {
