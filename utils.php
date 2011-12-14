@@ -699,12 +699,12 @@ function changeSpoiled($uid, $pid, $removeUser, $addUser)
 }
 
 function removeSpoiledUser($uid, $pid, $removeUser)
-{				
+{
 	if ($removeUser == NULL)
 		return;
 		
-	if (!canRemoveSpoiled($uid, $pid))
-		utilsError("You do not have permission to remove spoiled users from puzzle $pid.");
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify this puzzle.");
 		
 	$name = getUserName($uid);
 		
@@ -761,8 +761,8 @@ function addSpoiledUser($uid, $pid, $addUser)
 	if ($addUser == NULL)
 		return;
 		
-	if (!canAddSpoiled($uid, $pid))
-		utilsError("You do not have permission to add spoiled to puzzle $pid");
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify this puzzle.");
 		
 	$name = getUserName($uid);
 		
@@ -815,10 +815,6 @@ function isEditorAvailable($uid, $pid)
 // Add and remove puzzle authors
 function changeAuthors($uid, $pid, $add, $remove)
 {
-	// Check that the user has permission to change authors for this puzzle
-	if (!isAuthorOnPuzzle($uid, $pid) && !isLurker($uid))
-		return;
-		
 	mysql_query('START TRANSACTION');
 	addAuthors($uid, $pid, $add);
 	
@@ -837,12 +833,12 @@ function changeEditors($uid, $pid, $add, $remove)
 }
 
 function addAuthors($uid, $pid, $add)
-{		
+{
 	if ($add == NULL)
 		return;
 		
-	if (!canAddAuthor($uid, $pid))
-		utilsError("You do not have permission to add authors to puzzle $pid");
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify this puzzle.");
 		
 	$name = getUserName($uid);
 		
@@ -878,14 +874,13 @@ function addAuthors($uid, $pid, $add)
 }
 
 
-
 function removeAuthors($uid, $pid, $remove)
 {
 	if ($remove == NULL)
 		return;
 		
-	if (!canRemoveAuthor($uid, $pid))
-		utilsError("You do not have permission to remove authors on puzzle $pid.");
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify puzzle $pid.");
 		
 	$name = getUserName($uid);
 		
@@ -924,8 +919,8 @@ function addEditors($uid, $pid, $add)
 	if ($add == NULL)
 		return;
 		
-	if (!canAddEditor($uid, $pid))
-		utilsError("You do not have permission to add an editor to puzzle $pid");
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify puzzle $pid.");
 		
 	$name = getUserName($uid);
 		
@@ -965,8 +960,8 @@ function removeEditors($uid, $pid, $remove)
 	if ($remove == NULL)
 		return;
 		
-	if (!canRemoveEditor($uid, $pid))
-		utilsError("You do not have permission to remove editors on puzzle $pid.");
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify puzzle $pid.");
 		
 	$name = getUserName($uid);
 	
@@ -1010,44 +1005,9 @@ function canChangeAnswers($uid)
 	return hasPriv($uid, 'canEditAll');
 }
 
-function canAddAuthor($uid, $pid)
-{
-	return (isAuthorOnPuzzle($uid, $pid) || isLurker($uid));
-}
-
-function canRemoveAuthor($uid, $pid)
-{
-	return (isLurker($uid));
-}
-
-function canAddSpoiled($uid, $pid)
-{
-	return (isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isLurker($uid));
-}
-
-function canRemoveSpoiled($uid, $pid)
-{
-	return (isLurker($uid));
-}
-
-function canAddEditor($uid, $pid)
-{
-	return (isEditorOnPuzzle($uid, $pid) || isLurker($uid));
-}
-
-function canRemoveEditor($uid, $pid)
-{
-	return (isEditorOnPuzzle($uid, $pid) || isLurker($uid));
-}
-
 function canSeeTesters($uid, $pid)
 {
 	return (isTestingAdminOnPuzzle($uid, $pid) || isLurkerOnPuzzle($uid, $pid));
-}
-
-function canChangeStatus($uid, $pid)
-{
-	return (isLurker($uid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid));
 }
 
 function canTestPuzzle($uid, $pid, $display = FALSE)
@@ -1111,8 +1071,8 @@ function getStatusForPuzzle($pid)
 
 function changeStatus($uid, $pid, $status)
 {
-	if (!canChangeStatus($uid, $pid))
-		utilsError("You do not have permission to change statuses on puzzle $pid");
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify this puzzle.");
 
 	$sql = sprintf("SELECT pstatus.inTesting FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = 
                        pstatus.id WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));

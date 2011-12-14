@@ -254,15 +254,9 @@ function displayAuthors($uid, $pid)
 ?>
 		<tr>
 			<td class='peopleInfo'>
-				<strong>Authors:</strong> <?php echo getAuthorsAsList($pid); ?>
-				<?php if (canAddAuthor($uid, $pid) || canRemoveAuthor($uid, $pid))
-					echo '&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>';
-				?>
+				<strong>Authors:</strong> <?php echo getAuthorsAsList($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
 			</td>
 		</tr>
-<?php
-	if (canAddAuthor($uid, $pid) || canRemoveAuthor($uid, $pid)) {
-?>
 		<tr>
 			<td>
 				<table>
@@ -270,24 +264,14 @@ function displayAuthors($uid, $pid)
 					<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
 					<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
 					<tr>
-<?php
-		if (canRemoveAuthor($uid, $pid)) {
-?>
 						<td>
 							<p><strong>Remove Author(s):</strong></p>
 							<?php echo displayRemoveAuthor($pid); ?>
 						</td>
-<?php 
-		}
-		if (canAddAuthor($uid, $pid)) {
-?>
 						<td>
 							<p><strong>Add Author(s):</strong></p>
 							<?php echo displayAddAuthor($pid); ?>
 						</td>
-<?php
-		} 
-?>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -298,8 +282,7 @@ function displayAuthors($uid, $pid)
 				</table>
 			</td>
 		</tr>
-<?php		
-	}
+<?php
 }
 
 function displayRemoveAuthor($pid)
@@ -313,7 +296,7 @@ function displayAddAuthor($pid)
 {	
 	$authors = getAvailableAuthorsForPuzzle($pid);
 	if ($authors != NULL)
-		makeOptionElements($authors, 'addAuth');	
+		makeOptionElements($authors, 'addAuth');
 }
 
 function displaySpoiled($uid, $pid)
@@ -321,40 +304,24 @@ function displaySpoiled($uid, $pid)
 ?>
 		<tr>
 			<td class='peopleInfo'>
-				<strong>Spoiled:</strong> <?php echo getSpoiledAsList($pid); ?>
-				<?php if (canAddSpoiled($uid, $pid) || canRemoveSpoiled($uid, $pid))
-					echo '&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>';
-				?>
+				<strong>Spoiled:</strong> <?php echo getSpoiledAsList($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
 			</td>
 		</tr>
-<?php
-	if (canAddSpoiled($uid, $pid) || canRemoveSpoiled($uid, $pid)) {
-?>
 		<tr>
 			<td>
 				<table>
 					<form method="post" action="form-submit.php">
 					<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
 					<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-					<tr>					
-<?php
-		if (canRemoveSpoiled($uid, $pid)) {
-?>
+					<tr>
 						<td>
 							<p><strong>Remove Spoiled:</strong></p>
 							<?php echo displayRemoveSpoiledUsers($pid); ?>
 						</td>
-<?php 
-		}
-		if (canAddSpoiled($uid, $pid)) {
-?>
 						<td>
 							<p><strong>Add Spoiled:</strong></p>
 							<?php echo displayAddSpoiledUsers($pid); ?>
 						</td>
-<?php
-		} 
-?>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -365,8 +332,7 @@ function displaySpoiled($uid, $pid)
 				</table>
 			</td>
 		</tr>
-<?php		
-	}
+<?php
 }
 
 function displayRemoveSpoiledUsers($pid)
@@ -388,15 +354,9 @@ function displayEditors($uid, $pid)
 ?>
 		<tr>
 			<td class='peopleInfo'>
-				<strong>Editors:</strong> <?php echo getEditorsAsList($pid); ?>
-				<?php if (canAddEditor($uid, $pid) || canRemoveEditor($uid, $pid))
-					echo '&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>';
-				?>
+				<strong>Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
 			</td>
 		</tr>
-<?php
-	if (canAddEditor($uid, $pid) || canRemoveEditor($uid, $pid)) {
-?>
 		<tr>
 			<td>
 				<table>
@@ -404,24 +364,14 @@ function displayEditors($uid, $pid)
 					<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
 					<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
 					<tr>
-<?php
-		if (canRemoveEditor($uid, $pid)) {
-?>
 						<td>
 							<p><strong>Remove Editor(s):</strong></p>
 							<?php echo displayRemoveEditor($pid)?>
 						</td>
-<?php 
-		}
-		if (canAddEditor($uid, $pid)) {
-?>
 						<td>
 							<p><strong>Add Editor(s):</strong></p>
 							<?php echo displayAddEditor($pid); ?>
 						</td>
-<?php 
-		}
-?>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -432,8 +382,7 @@ function displayEditors($uid, $pid)
 				</table>
 			</td>
 		</tr>
-<?php		
-	}
+<?php
 }
 
 function displayRemoveEditor($pid)
@@ -491,9 +440,6 @@ function displayStatus($uid, $pid)
 			<td class='statusInfo'>
 				<strong>Puzzle Status: </strong> <?php echo $status; ?>
 			</td>
-<?php 
-	if (canChangeStatus($uid, $pid)) { 
-?>
 			<td class='statusInfo'>
 				<a href="#" class="changeLink">[Change]</a>
 			</td>
@@ -519,13 +465,6 @@ function displayStatus($uid, $pid)
 				</table>
 			</td>
 		</tr>	
-<?php 
-	} else {
-?>
-		</tr>
-<?php 
-	}
-?>
 	</table>
 <?php
 }
