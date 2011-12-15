@@ -1005,6 +1005,11 @@ function canChangeAnswers($uid)
 	return hasPriv($uid, 'canEditAll');
 }
 
+function canSeeAllPuzzles($uid)
+{
+	return hasPriv($uid, 'seeAllPuzzles');
+}
+
 function canSeeTesters($uid, $pid)
 {
 	return (isTestingAdminOnPuzzle($uid, $pid) || isLurkerOnPuzzle($uid, $pid));

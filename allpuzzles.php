@@ -11,7 +11,7 @@
 	head("allpuzzles");
 		
 	// Check for lurker permissions
-	if (!isLurker($uid) && !isTestingAdmin($uid)) {
+	if (!canSeeAllPuzzles($uid)) {
 		echo "You do not have permission for this page.";
 		foot();
 		exit(1);
