@@ -20,7 +20,7 @@
 	displayPuzzleStats($uid);
 	
 	$puzzles = getAllPuzzles();
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE);
+	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE);
 
 	
 	// End HTML

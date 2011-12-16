@@ -133,7 +133,7 @@
 <?php
 	}	
 	
-	function displayQueue($uid, $puzzles, $showStatus, $showSummary, $showAnswer, $showAuthors, $showEditors, $test, $showTesters)
+	function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters)
 	{
 		if ($puzzles == NULL) {
 			echo "<h4>No puzzles in queue</h4>";
@@ -145,13 +145,13 @@
 			<tr>
 				<th class="puzzidea">ID</th>
 				<th class="puzzidea">Title</th>
-				<?php if ($showStatus) {echo '<th class="puzzidea">Puzzle Status</th>';} ?>
-				<?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
-				<?php if ($showSummary) {echo '<th class="puzzidea">Status Notes</th>';} ?>
-				<?php if ($showAnswer) {echo '<th class="puzzidea">Answer</th>';} ?>
+				<th class="puzzidea">Puzzle Status</th>
+				<?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
+				<?php if ($showNotes) {echo '<th class="puzzidea">Status Notes</th>';} ?>
+				<?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Answer</th>';} ?>
 				<?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
-				<?php if ($showAuthors) {echo '<th class="puzzidea">Authors</th>';} ?>
-				<?php if ($showEditors) {echo '<th class="puzzidea">Editors</th>';} ?>
+				<?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
+				<?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Editors</th>';} ?>
 				<?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
 			</tr>
 		</thead>
@@ -178,13 +178,13 @@
 				echo "<td class='puzzidea'><a href='puzzle?pid=$pid'>$pid</a></td>";
 ?>
 				<td class='puzzidea'><?php echo $title; ?></td>
-				<?php if ($showStatus) {echo "<td class='puzzidea'>" . $statuses[$puzzleInfo["pstatus"]] . "</td>";} ?>
-				<?php if ($showSummary) {echo "<td class='puzzidea'>" . $puzzleInfo["summary"] . "</td>";} ?>
-				<?php if ($showSummary) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
-				<?php if ($showAnswer) {echo "<td class='puzzidea'>" . getAnswersForPuzzleAsList($pid) . "</td>";} ?>
+				<td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
+				<?php if ($showAnswerAndSummary) {echo "<td class='puzzidea'>" . $puzzleInfo["summary"] . "</td>";} ?>
+				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
+				<?php if ($showAnswerAndSummary) {echo "<td class='puzzidea'>" . getAnswersForPuzzleAsList($pid) . "</td>";} ?>
 				<?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
-				<?php if ($showAuthors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
-				<?php if ($showEditors) {echo "<td class='puzzidea'>" . getEditorsAsList($pid) . "</td>";} ?>
+				<?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
+				<?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getEditorsAsList($pid) . "</td>";} ?>
 				<?php if ($showTesters) {echo "<td class='puzzidea'>" . getCurrentTestersAsList($pid) . "</td>";} ?>
 			</tr>
 <?php

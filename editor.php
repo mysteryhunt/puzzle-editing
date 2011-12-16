@@ -28,7 +28,7 @@
 <?php
 
 	$puzzles = getPuzzlesInEditorQueue($uid);
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE);
+	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE);
 
 	// End HTML
 	foot();
