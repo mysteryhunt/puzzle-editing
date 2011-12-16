@@ -67,12 +67,6 @@ $(document).ready(function()
 		return false;
 	})
 	
-	$('#showPage').click(function() {
-		$('.hideFromLurkerTester').show();
-		$('#showPageLine').hide();
-		return false;
-	})
-	
 	$('.description').parent().next().hide();
 	$('.description').click(function() {
 		$('.description').parent().next().toggle();

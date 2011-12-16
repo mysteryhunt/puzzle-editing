@@ -55,12 +55,6 @@
 		exit(0);
 	}
 	
-	if (isLurkerOnPuzzle($uid, $pid) && isTesterOnPuzzle($uid, $pid)) {
-		echo '<style type="text/css">.hideFromLurkerTester {display: none;}</style>';
-		echo "<p id='showPageLine'>You are testsolving Puzzle $pid. <a href='#' id='showPage'>Show Page Anyway</a></p>";
-	}
-	
-	echo "<div class='hideFromLurkerTester'>";
 	echo "<div class='puzzleInfo'>";
 	
 	// Display puzzle number, title, answer, summary, description.
@@ -114,8 +108,6 @@
 	addCommentForm($uid, $pid);
 	emailSubButton($uid, $pid);
 	echo "</table>";
-	echo "</div>";
-	
 	echo "</div>";
 
 	// End HTML

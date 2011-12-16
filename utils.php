@@ -116,11 +116,6 @@ function isFormerTesterOnPuzzle($uid, $pid)
 	return has_result($sql);
 }
 
-function isLurkerOnPuzzle($uid, $pid)
-{
-	return (isLurker($uid) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isTesterOnPuzzle($uid, $pid));
-}
-
 function isSpoiledOnPuzzle($uid, $pid)
 {
 	$sql = sprintf("SELECT * FROM spoiled WHERE uid='%s' AND pid='%s'", 
@@ -822,9 +817,7 @@ function changeAuthors($uid, $pid, $add, $remove)
 {
 	mysql_query('START TRANSACTION');
 	addAuthors($uid, $pid, $add);
-	
-	if (isLurker($uid))
-		removeAuthors($uid, $pid, $remove);
+	removeAuthors($uid, $pid, $remove);
 	mysql_query('COMMIT');
 }
 
@@ -1017,7 +1010,7 @@ function canSeeAllPuzzles($uid)
 
 function canSeeTesters($uid, $pid)
 {
-	return (isTestingAdminOnPuzzle($uid, $pid) || isLurkerOnPuzzle($uid, $pid));
+	return (isTestingAdminOnPuzzle($uid, $pid) || !(isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid)));
 }
 
 function canTestPuzzle($uid, $pid, $display = FALSE)
