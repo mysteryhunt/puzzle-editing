@@ -50,14 +50,14 @@
 			<li class="nav"><a class="<?php echo ($selnav == "account") ? "selnav" : "nav" ?>" href="account">Your Account</a></li>
 			<?php }
 				  if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "admin") ? "selnav" : "nav" ?>" href="admin">Admin</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "author") ? "selnav" : "nav" ?>" href="author">Author Tools</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor">Editor Tools</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="factcheck">Fact Check Pool</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "author") ? "selnav" : "nav" ?>" href="author">Author</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor">Editor</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="factcheck">Fact Check</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving">Testsolving</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && (isLurker($_SESSION['uid']) || isTestingAdmin($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin">Testing Admin</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && !isBlind($_SESSION['uid'])) {?> <li class='nav'><a class="<?php echo ($selnav == "puzzlestats") ? "selnav" : "nav" ?>" href='puzzlestats'>Puzzle Stats</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && (isEditor($_SESSION['uid']) || isLurker($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers">Answers</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles">See All Puzzles</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles">All Puzzles</a></li> <?php } ?>
 		</ul>
 			<div style="float:right;"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout">Logout</a><?php } ?></div>
 		</div>
