@@ -79,6 +79,11 @@ function isServerAdmin($uid)
 	return hasPriv($uid, 'changeServer');
 }
 
+function canChangeStatus($uid)
+{
+    return hasPriv($uid, 'changeStatus');
+}
+
 function hasPriv($uid, $priv)
 {
 	$sql = sprintf("SELECT name FROM jobs LEFT JOIN priv ON jobs.jid = priv.jid 
@@ -1010,7 +1015,7 @@ function canSeeAllPuzzles($uid)
 
 function canSeeTesters($uid, $pid)
 {
-	return (isTestingAdminOnPuzzle($uid, $pid) || !(isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid)));
+	return isTestingAdminOnPuzzle($uid, $pid) || !(isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid));
 }
 
 function canTestPuzzle($uid, $pid, $display = FALSE)
@@ -1074,8 +1079,8 @@ function getStatusForPuzzle($pid)
 
 function changeStatus($uid, $pid, $status)
 {
-	if (!canViewPuzzle($uid, $pid))
-		utilsError("You do not have permission to modify this puzzle.");
+	if (!(canViewPuzzle($uid, $pid) && canChangeStatus($uid)))
+		utilsError("You do not have permission to modify the status of this puzzle.");
 
 	$sql = sprintf("SELECT pstatus.inTesting FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = 
                        pstatus.id WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));

@@ -433,9 +433,13 @@ function displayStatus($uid, $pid)
 				<strong>Puzzle Status: </strong> <?php echo $status; ?>
 			</td>
 			<td class='statusInfo'>
-				<a href="#" class="changeLink">[Change]</a>
+				<?php if (canChangeStatus($uid)) { ?><a href="#" class="changeLink">[Change]</a><?php } ?>
 			</td>
 		</tr>
+<?php
+	if (canChangeStatus($uid))
+	{
+?>
 		<tr>
 			<td colspan='3'>
 				<table>
@@ -456,7 +460,10 @@ function displayStatus($uid, $pid)
 				</form>
 				</table>
 			</td>
-		</tr>	
+		</tr>
+<?php
+	}
+?>
 	</table>
 <?php
 }
