@@ -64,6 +64,11 @@ function isLurker($uid)
 	return hasPriv($uid, 'isLurker');
 }
 
+function isFactChecker($uid)
+{
+	return hasPriv($uid, 'factcheck');
+}
+
 function isBlind($uid)
 {
 	return hasPriv($uid, 'isBlind');
@@ -1682,6 +1687,13 @@ function getMostRecentDraftNameForPuzzle($pid) {
 
 function getAllPuzzles() {
 	$sql = "SELECT id FROM puzzle_idea";
+	$puzzles = get_elements_null($sql);
+	
+	return sortByLastCommentDate($puzzles);
+}
+
+function getPuzzlesInFactChecking() {
+	$sql = "SELECT puzzle_idea.id FROM puzzle_idea INNER JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.needsFactcheck='1'";
 	$puzzles = get_elements_null($sql);
 	
 	return sortByLastCommentDate($puzzles);
