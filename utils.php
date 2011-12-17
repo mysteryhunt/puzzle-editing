@@ -48,6 +48,11 @@ function postprodCanon($s)
   return $s;
 }
 
+function isStatusInPostProd($sid)
+{
+	$sql = sprintf("SELECT postprod FROM pstatus WHERE id='%s'", mysql_real_escape_string($sid));
+	return get_element($sql) == 1;
+}
 
 function isEditor($uid)
 {

@@ -93,7 +93,7 @@
 	echo "</div>";
 
 	// Link to post-prod site
-        if (getStatusForPuzzle($pid) == 13) {
+        if (isStatusInPostProd($puzzleInfo['pstatus'])) {
               echo "<br />";
               echo "<div class='postProd'>";
               displayPostProd($uid, $pid);
