@@ -45,7 +45,7 @@ function postprodCanon($s)
   $s = strtolower(trim($s));
   $s = preg_replace('/[\']([st])\b/', '$1', $s);
   $s = preg_replace('/[^a-z0-9]+/', '_', $s);
-  return $s;
+  return trim($s, "_");
 }
 
 function isStatusInPostProd($sid)
