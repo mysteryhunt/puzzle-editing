@@ -1264,7 +1264,7 @@ function getComments($pid)
 	$sql = sprintf("SELECT comments.id, comments.uid, comments.comment, comments.type, 
 					comments.timestamp, comments.pid, comment_type.name FROM
 					comments LEFT JOIN comment_type ON comments.type=comment_type.id
-					WHERE comments.pid='%s' ORDER BY comments.timestamp ASC",
+					WHERE comments.pid='%s' ORDER BY comments.id ASC",
 					mysql_real_escape_string($pid));
 	return get_rows_null($sql);
 }
