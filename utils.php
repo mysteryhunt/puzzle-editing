@@ -1708,6 +1708,13 @@ function getPuzzlesInFactChecking() {
 	return sortByLastCommentDate($puzzles);
 }
 
+function getPuzzlesInFinalFactChecking() {
+	$sql = "SELECT puzzle_idea.id FROM puzzle_idea INNER JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1'";
+	$puzzles = get_elements_null($sql);
+	
+	return sortByLastCommentDate($puzzles);
+}
+
 function getAnswerAttempts($uid, $pid)
 {
 	$sql = sprintf("SELECT answer FROM answer_attempts WHERE pid='%s' AND uid='%s'",
