@@ -10,8 +10,6 @@
 	// Start HTML
 	head("ffc");
 	
-	displayPuzzleStats($uid);
-	
 	$puzzles = getPuzzlesInFinalFactChecking();
 	displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE);
 
