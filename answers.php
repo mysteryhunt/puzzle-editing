@@ -34,7 +34,7 @@
 		    $answers = getAnswersForRound($round['rid']);
 ?>
 		    <tr>
-			    <td colspan="2"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></td>
+			    <td colspan="4"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></td>
 		    </tr>
 <?php 
 		    foreach($answers as $answer) {
