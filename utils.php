@@ -1011,7 +1011,7 @@ function removeEditors($uid, $pid, $remove)
 
 function canViewPuzzle($uid, $pid)
 {
-	return isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid) || isLurker($uid);
+	return isLurker($uid) || isPuzzleInFinalFactChecking($pid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid);
 }
 
 function canChangeAnswers($uid)
@@ -1699,6 +1699,13 @@ function getAllPuzzles() {
 	$puzzles = get_elements_null($sql);
 	
 	return sortByLastCommentDate($puzzles);
+}
+
+function isPuzzleInFinalFactChecking($pid)
+{
+	$sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+			WHERE puzzle_idea.id='%s' AND pstatus.finalFactcheck='1'", mysql_real_escape_string($pid));
+	return has_result($sql);
 }
 
 function getPuzzlesInFactChecking() {
