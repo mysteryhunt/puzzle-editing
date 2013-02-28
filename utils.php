@@ -13,7 +13,9 @@ function isLoggedIn()
 	} else {
 		header("Location: " . URL . "/login.php");
 		exit(0);
+	
 	}
+
 }
 	
 // Check that a valid puzzle is given in the URL.
@@ -584,7 +586,7 @@ function emailComment($uid, $pid, $cleanComment)
 	$message = "$name commented on puzzle $pid:\n";
 	$message .= "$cleanComment";
 	$subject = "Comment on Puzzle $pid";
-	$link = URL . "/puzzle?pid=$pid";
+	$link = URL . "/puzzle.php?pid=$pid";
 
 	$users = getSubbed($pid);
 	if ($users == NULL)
@@ -876,7 +878,7 @@ function addAuthors($uid, $pid, $add)
 		// Email new author
 		$subject = "Author on Puzzle $pid";
 		$message = "$name added you as an author on puzzle $pid.";
-		$link = URL . "/puzzle?pid=$pid";
+		$link = URL . "/puzzle.php?pid=$pid";
 		sendEmail($auth, $subject, $message, $link);
 	}
 		
@@ -917,7 +919,7 @@ function removeAuthors($uid, $pid, $remove)
 		// Email old author
 		$subject = "Author on Puzzle $pid";
 		$message = "$name removed you as an author on puzzle $pid.";
-		$link = URL . "/author";
+		$link = URL . "/author.php";
 		sendEmail($auth, $subject, $message, $link);
 	}
 	
@@ -958,7 +960,7 @@ function addEditors($uid, $pid, $add)
 		// Email new editor
 		$subject = "Editor on Puzzle $pid";
 		$message = "$name added you as an editor to puzzle $pid.";
-		$link = URL . "/puzzle?pid=$pid";
+		$link = URL . "/puzzle.php?pid=$pid";
 		sendEmail($editor, $subject, $message, $link);
 	}
 		
@@ -998,7 +1000,7 @@ function removeEditors($uid, $pid, $remove)
 		// Email old editor
 		$subject = "Editor on Puzzle $pid";
 		$message = "$name removed you as an editor on puzzle $pid.";
-		$link = URL . "/editor";
+		$link = URL . "/editor.php";
 		sendEmail($editor, $subject, $message, $link);
 	}
 	
@@ -1181,7 +1183,7 @@ function emailTesters($pid, $status)
 		$message = "Puzzle $pid's status was changed to $statusName.";
 	}
 	
-	$link = URL . "/testsolving";
+	$link = URL . "/testsolving.php";
 	
 	$testers = getCurrentTestersForPuzzle($pid);
 	foreach ($testers as $uid => $name) {

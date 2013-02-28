@@ -42,7 +42,7 @@
 ?>
 		        <tr>
 			        <td><?php echo $answer['answer'] ?></td>
-			        <td><?php echo ($pid ? "<a href=\"puzzle?pid=$pid\">".$pid."</a>" : "unassigned") ?></td>
+			        <td><?php echo ($pid ? "<a href=\"puzzle.php?pid=$pid\">".$pid."</a>" : "unassigned") ?></td>
 			        <td><?php echo ($pid ? getTitle($pid) : "") ?></td>
 			        <td><?php echo ($pid ? getStatusNameForPuzzle($pid) : "") ?></td>
 		        </tr>

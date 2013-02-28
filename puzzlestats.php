@@ -20,19 +20,19 @@
 	
 	$counts = getPuzzleStatusCounts();
 	
-	$completed = array(8, 3, 13, 6);
+	$completed = array(7);
 	makeStatusTable($completed, $counts, 'Completed Puzzles', 'complete-stats');
 	
-	$written = array(2, 12);
+	$written = array(4, 5, 6);
 	makeStatusTable($written, $counts, 'Fact Check / Revision', 'writing-stats');
 	
-	$testing = array(18, 17, 4, 7, 5);
+	$testing = array(2, 3, 4, 5);
 	makeStatusTable($testing, $counts, 'Testing', 'testing-stats');
 	
 	$ideas = array(1);
 	makeStatusTable($ideas, $counts, 'Development', 'pending-stats');
 	
-	$dead = array(9, 10, 16);
+	$dead = array(8);
 	makeStatusTable($dead, $counts, 'Dead / Admin', 'dead-stats');
 	
 	echo '</table>';

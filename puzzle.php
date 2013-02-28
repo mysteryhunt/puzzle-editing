@@ -67,7 +67,7 @@
 	}
 	
 	// Allow author and lurkers to edit summary and description
-	echo '<p style="font-size:75%;"><a href="' . URL . "/puzzle?edit&pid=$pid" . '">';
+	echo '<p style="font-size:75%;"><a href="' . URL . "/puzzle.php?edit&pid=$pid" . '">';
 	echo 'Edit Title, Summary and Description</a></p>';
 
 	echo "</div>";
@@ -614,7 +614,7 @@ function displayFileList ($uid, $pid, $type) {
 function displayPostProd($uid, $pid)
 {
   $rinfo = getRoundForPuzzle($pid);
-  $url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
+  $url = "http://wind-up-birds.org/hunt-solutions/"; // XXX hard-coded, sigh.
   $roundname = $rinfo['name'];
   $title = getTitle($pid);
   $showmeta = FALSE;

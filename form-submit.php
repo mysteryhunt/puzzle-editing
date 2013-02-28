@@ -15,14 +15,14 @@
 			
 		changeTitleSummaryDescription($uid, $pid, $title, $summary, $description);
 		
-		header('Location: ' . URL . "/puzzle?pid=$pid");
+		header('Location: ' . URL . "/puzzle.php?pid=$pid");
 		exit(0);
 	}
 	
 	if (isset($_POST['cancelTSD'])) {
 		$pid = $_POST['pid'];
 		
-		header('Location: ' . URL . "/puzzle?pid=$pid");
+		header('Location: ' . URL . "/puzzle.php?pid=$pid");
 		exit(0);
 	}
 	
@@ -42,7 +42,7 @@
 
 		changeAnswers($uid, $pid, $add, $remove);
 
-		header("Location: " . URL . "/puzzle?pid=$pid");
+		header("Location: " . URL . "/puzzle.php?pid=$pid");
 		exit(0);
 	}	
 	
@@ -62,7 +62,7 @@
 		
 		changeAuthors($uid, $pid, $add, $remove);
 		
-		header("Location: " . URL . "/puzzle?pid=$pid");
+		header("Location: " . URL . "/puzzle.php?pid=$pid");
 		exit(0);
 	}		
 	
@@ -82,7 +82,7 @@
 			
 		changeSpoiled($uid, $pid, $removeUser, $addUser);
 		
-		header("Location: " . URL . "/puzzle?pid=$pid");
+		header("Location: " . URL . "/puzzle.php?pid=$pid");
 		exit(0);
 	}
 		
@@ -102,7 +102,7 @@
 			
 		changeEditors($uid, $pid, $add, $remove);
 		
-		header("Location: " . URL . "/puzzle?pid=$pid");
+		header("Location: " . URL . "/puzzle.php?pid=$pid");
 		exit(0);
 	}
 	
@@ -114,7 +114,7 @@
 		
 		changeStatus($uid, $pid, $status);
 		
-		header("Location: " . URL . "/puzzle?pid=$pid");
+		header("Location: " . URL . "/puzzle.php?pid=$pid");
 		exit(0);
 	}
 	
@@ -126,7 +126,7 @@
 		
 		changeNotes($uid, $pid, $notes);
 		
-		header("Location: " . URL . "/puzzle?pid=$pid");
+		header("Location: " . URL . "/puzzle.php?pid=$pid");
 		exit(0);
 	}
 	
@@ -139,7 +139,7 @@
 			
 		uploadFiles($uid, $pid, $type, $file);
 		
-		header("Location: " . URL . "/puzzle?pid=" . $pid);
+		header("Location: " . URL . "/puzzle.php?pid=" . $pid);
 		exit(0);
 	}
 	
@@ -151,7 +151,7 @@
 		
 		addComment($uid, $pid, $comment);
 		
-		header("Location: " . URL . "/puzzle?pid=" . $pid);
+		header("Location: " . URL . "/puzzle.php?pid=" . $pid);
 		exit(0);
 	} 
 	
@@ -160,7 +160,7 @@
 		$pid = $_POST['pid'];
 		subscribe($uid, $pid);
 		
-		header("Location: " . URL . "/puzzle?pid=" . $pid);
+		header("Location: " . URL . "/puzzle.php?pid=" . $pid);
 		exit(0);
 	}
 	
@@ -169,7 +169,7 @@
 		$pid = $_POST['pid'];
 		unsubscribe($uid, $pid);
 		
-		header("Location: " . URL . "/puzzle?pid=" . $pid);
+		header("Location: " . URL . "/puzzle.php?pid=" . $pid);
 		exit(0);
 	}
 	
@@ -182,7 +182,7 @@
 		else
 			$_SESSION['failedToAdd'] = TRUE;
 
-		header("Location: " . URL . "/testsolving");
+		header("Location: " . URL . "/testsolving.php");
 		exit(0);
 	}
 
@@ -193,7 +193,7 @@
 		if (!addToTestAdminQueue($uid, $pid))
                         $_SESSION['failedToAdd'] = TRUE;
 
-		header("Location: " . URL . "/testadmin");
+		header("Location: " . URL . "/testadmin.php");
 		exit(0);
 	}
 	
@@ -203,13 +203,13 @@
 		
 		if (canTestPuzzle($uid, $pid, TRUE) && !isTesterOnPuzzle($uid, $pid)) {
 			addPuzzleToTestQueue($uid, $pid);
-			header("Location: " . URL . "/test?pid=" . $pid);
+			header("Location: " . URL . "/test.php?pid=" . $pid);
 		} else if (isTesterOnPuzzle($uid, $pid)) {
-			header("Location: " . URL . "/test?pid=" . $pid);
+			header("Location: " . URL . "/test.php?pid=" . $pid);
 		} else {
 			if (!isset($_SESSION['testError']))
 				$_SESSION['testError'] = "Could not add Puzzle $pid to your queue";
-			header("Location: " . URL . "/testsolving");
+			header("Location: " . URL . "/testsolving.php");
 		}
 		exit(0);
 	}
@@ -239,7 +239,7 @@
 		
 		makeAnswerAttempt($uid, $pid, $answer);
 		
-		header("Location: " . URL . "/test?pid=$pid");
+		header("Location: " . URL . "/test.php?pid=$pid");
 		exit(0);
 	}
 	
@@ -255,9 +255,9 @@
 		$_SESSION['feedback'] = "Thank you for giving feedback on this puzzle!";
 		
 		if (strcmp($done, 'no') == 0) {
-			header("Location: " . URL . "/testsolving");
+			header("Location: " . URL . "/testsolving.php");
 		} else
-			header("Location: " . URL . "/test?pid=$pid");
+			header("Location: " . URL . "/test.php?pid=$pid");
 		exit(0);
 	}
 	
@@ -279,7 +279,7 @@
 
 	head();
 	echo 'An unknown error seems to have occurred. <br />';
-	echo 'Please try again, or contact <a href="mailto:server-admin@puzzle2011.com">the Server Administrators</a> for help. <br />';
+	echo 'Please try again, or contact <a href="mailto:wind-up-birds-systems@wind-up-birds.org">the Server Administrators</a> for help. <br />';
 	echo 'Note: uploaded file size is limited to 25MB. <br />';
 	foot();
 

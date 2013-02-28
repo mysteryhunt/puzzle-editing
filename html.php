@@ -3,7 +3,7 @@
 	require_once "utils.php";
 
 	function head($selnav = "home") {
-        $hunt=mktime(12,00,00,1,13,2012);
+        $hunt=mktime(12,30,00,1,17,2014);
         $now = time();
         $tth=$hunt-$now;
         $days=floor($tth/(60 * 60 * 24));
@@ -45,22 +45,22 @@
 	  	 </div>
 	  	<div id="navbar" style="float:left;width:100%;background-color:#efefef;">
 		<ul class="nav" style="float:left;">
-			<li class="nav"><a class="<?php echo ($selnav == "home") ? "selnav" : "nav" ?>" href="index">Home</a></li> <?php if(isset($_SESSION['uid'])) { ?>
-			<li class="nav"><a class="<?php echo ($selnav == "people") ? "selnav" : "nav" ?>" href="people">People</a></li>
-			<li class="nav"><a class="<?php echo ($selnav == "account") ? "selnav" : "nav" ?>" href="account">Your Account</a></li>
+			<li class="nav"><a class="<?php echo ($selnav == "home") ? "selnav" : "nav" ?>" href="index.php">Home</a></li> <?php if(isset($_SESSION['uid'])) { ?>
+			<li class="nav"><a class="<?php echo ($selnav == "people") ? "selnav" : "nav" ?>" href="people.php">People</a></li>
+			<li class="nav"><a class="<?php echo ($selnav == "account") ? "selnav" : "nav" ?>" href="account.php">Your Account</a></li>
 			<?php }
-				  if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "admin") ? "selnav" : "nav" ?>" href="admin">Admin</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "author") ? "selnav" : "nav" ?>" href="author">Author</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor">Editor</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="ffc">Final Fact Check</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="factcheck">Fact Check</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving">Testsolving</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && (isLurker($_SESSION['uid']) || isTestingAdmin($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin">Testing Admin</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && !isBlind($_SESSION['uid'])) {?> <li class='nav'><a class="<?php echo ($selnav == "puzzlestats") ? "selnav" : "nav" ?>" href='puzzlestats'>Stats</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && (isEditor($_SESSION['uid']) || isLurker($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers">Answers</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles">All Puzzles</a></li> <?php } ?>
+				  if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "admin") ? "selnav" : "nav" ?>" href="admin.php">Admin</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "author") ? "selnav" : "nav" ?>" href="author.php">Author</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor.php">Editor</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="ffc.php">Final Fact Check</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="factcheck.php">Fact Check</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving.php">Testsolving</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && (isLurker($_SESSION['uid']) || isTestingAdmin($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin.php">Testing Admin</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && !isBlind($_SESSION['uid'])) {?> <li class='nav'><a class="<?php echo ($selnav == "puzzlestats.php") ? "selnav" : "nav" ?>" href='puzzlestats.php'>Stats</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && (isEditor($_SESSION['uid']) || isLurker($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers.php">Answers</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles.php">All Puzzles</a></li> <?php } ?>
 		</ul>
-			<div style="float:right;"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout">Logout</a><?php } ?></div>
+			<!-- <div style="float:right;"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout.php">Logout</a><?php } ?></div> -->
 		</div>
 			<div style="clear:both;"></div>
 	</div>
@@ -74,7 +74,7 @@
 	</div>
 	<div id="footer">
 		<hr />
-		<p>This is the website for the hunt writing team. For technical assistance, please contact the <a href="mailto:memberjasper@googlegroups.com">Server Administrators</a>.  The original authors of this software are Kate Baker and Metaphysical Plant.  This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.  The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
+		<p>This is the website for the hunt writing team. For technical assistance, please contact the <a href="mailto:wind-up-birds-systems@wind-up-birds.org">Server Administrators</a>.  The original authors of this software are Kate Baker and Metaphysical Plant.  This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.  The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
 	</div>
 </div>		
 </body>
@@ -174,9 +174,9 @@
 				echo '<tr class="puzz">';
 				
 			if ($test)
-				echo "<td class='puzzidea'><a href='test?pid=$pid'>$pid</a></td>";
+				echo "<td class='puzzidea'><a href='test.php?pid=$pid'>$pid</a></td>";
 			else
-				echo "<td class='puzzidea'><a href='puzzle?pid=$pid'>$pid</a></td>";
+				echo "<td class='puzzidea'><a href='puzzle.php?pid=$pid'>$pid</a></td>";
 ?>
 				<td class='puzzidea'><?php echo $title; ?></td>
 				<td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>

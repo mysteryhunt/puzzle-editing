@@ -11,7 +11,7 @@
 	// Start HTML
 	head("home");
 
-	$hunt=mktime(12,17,00,1,17,2011);
+	$hunt=mktime(12,30,00,1,17,2014);
 	$now = time();
 	$tth=$hunt-$now;
 	$days=floor($tth/(60 * 60 * 24));
