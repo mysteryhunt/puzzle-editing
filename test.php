@@ -83,7 +83,7 @@ function displayDraft($pid)
 	<table style="border-width: 0px; vertical-align:middle;">
 		<tr>
 			<td style="vertical-align:middle;background-color: #FAD97D;">
-				<a href="<?php echo $draft['filename']; ?>">
+				<a href="<?php echo $draft['filename']; ?>" target="_blank">
 					<?php echo $finfo['basename']; ?>
 				</a>
 			</td>

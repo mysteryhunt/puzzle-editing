@@ -24,8 +24,8 @@
 	// Put messages to the team here (separate for blind and non-blind solvers?)
 ?>
 <div class="team-updates">
-<b>Wednesday, February 2:</b><br/>
-Welcome to the hunt editing server!<br>
+<b>Thursday, 2013-02-28:</b><br/>
+MH2014 Puzzletron is in pre-implementation/test mode<br>
 </div>
 <h3 style="padding-bottom:0.5em;"><a href="updates.php">Past Updates</a></h3>
 <?	// End HTML

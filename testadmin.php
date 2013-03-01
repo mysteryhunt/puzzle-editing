@@ -117,7 +117,7 @@ function displayTestingSummary()
 		$arr[$uid] .= '<span class="current">Current queue: ' . print_r($currqueue[$uid], true) . '</span><br />';
 		$arr[$uid] .= '<span class="past">Past comments: </span><br />';
 		$arr[$uid] .= "<span class='a$uid-$pid'>";
-		$puzzlink = URL . "/puzzle?pid=$pid";
+		$puzzlink = URL . "/puzzle.php?pid=$pid";
 		$arr[$uid] .= "<a href='$puzzlink'>$pid</a>: ";
 		$arr[$uid] .= "<a href='$puzzlink#comm$id'>$timestamp</a> &nbsp; ";
 

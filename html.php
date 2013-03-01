@@ -25,7 +25,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
 	
-	<title>Hunt Writing Server</title>
+	<title>MH2014 puzzletron authoring server</title>
 	
 	<script type='text/javascript' src='jquery-1.4.2.js'></script>
 	<script type='text/javascript' src='jquery.tablesorter.min.js'></script>
@@ -33,10 +33,11 @@
 </head>
 <body>
 <div id="container">
-	<div id="header" style="margin-top:15px;">
-          <div id="titletext" style="vertical-align:middle; margin-bottom:10px;">
+	<div id="header" style="margin-top:10px;">
+          <div id="titletext" style="vertical-align:middle; margin-bottom:4px;">
 				<div style="text-align:left;width:auto;float:left;vertical-align:top;">
-                     <h1>Hunt authoring server</h1>
+                     <h1>MH2014 puzzletron authoring server</h1>
+		     <h2>Logged in: [<?php echo $_SERVER['HTTP_REMOTE_USER'] ?>]</h2>
                 </div>
                 <div style="text-align:right;width:auto;float:right;vertical-align:top;">
                      <h3 style="margin-top:0;"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>
@@ -45,6 +46,7 @@
 	  	 </div>
 	  	<div id="navbar" style="float:left;width:100%;background-color:#efefef;">
 		<ul class="nav" style="float:left;">
+			<li class="nav"><a class="nav" target="_blank" href="https://wind-up-birds.org/">Wiki</a></li>
 			<li class="nav"><a class="<?php echo ($selnav == "home") ? "selnav" : "nav" ?>" href="index.php">Home</a></li> <?php if(isset($_SESSION['uid'])) { ?>
 			<li class="nav"><a class="<?php echo ($selnav == "people") ? "selnav" : "nav" ?>" href="people.php">People</a></li>
 			<li class="nav"><a class="<?php echo ($selnav == "account") ? "selnav" : "nav" ?>" href="account.php">Your Account</a></li>
