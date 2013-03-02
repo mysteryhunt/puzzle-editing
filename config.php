@@ -9,7 +9,7 @@
 	$dev = preg_match("/\/(.*)\/writing.*/", $_SERVER["SCRIPT_NAME"], $matches);
 	if ($dev) {
            define("DEVMODE", TRUE);
-	   define("URL", "http://wind-up-birds.org/" . $matches[1] . "/writing");
+	   define("URL", "http://wind-up-birds.org/" . $matches[1] . "/editing-dev");
 	} else {
            define("DEVMODE", FALSE);
 	   define("URL", "http://wind-up-birds.org/editing");
