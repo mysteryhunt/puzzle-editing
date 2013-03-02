@@ -433,11 +433,11 @@ function displayStatus($uid, $pid)
 				<strong>Puzzle Status: </strong> <?php echo $status; ?>
 			</td>
 			<td class='statusInfo'>
-				<?php if (canChangeStatus($uid)) { ?><a href="#" class="changeLink">[Change]</a><?php } ?>
+				<?php if (canChangeStatus($uid) && !isAuthorOnPuzzle($uid, $pid)) { ?><a href="#" class="changeLink">[Change]</a><?php } ?>
 			</td>
 		</tr>
 <?php
-	if (canChangeStatus($uid))
+	if (canChangeStatus($uid) && !isAuthorOnPuzzle($uid, $pid))
 	{
 ?>
 		<tr>

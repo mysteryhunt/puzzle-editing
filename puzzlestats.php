@@ -26,7 +26,7 @@
 	$written = array(4, 5, 6);
 	makeStatusTable($written, $counts, 'Fact Check / Revision', 'writing-stats');
 	
-	$testing = array(2, 3, 4, 5);
+	$testing = array(2, 3);
 	makeStatusTable($testing, $counts, 'Testing', 'testing-stats');
 	
 	$ideas = array(1);
