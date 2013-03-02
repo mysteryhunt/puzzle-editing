@@ -57,6 +57,9 @@
 		}
 		
 		mysql_query('COMMIT');
+
+		//author automatically gets subscribed
+		subscribe($uid, $id);
 		
 		echo "<h3>Idea Submitted</h3>";
 	} else {
