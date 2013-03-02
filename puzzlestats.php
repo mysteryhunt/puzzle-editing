@@ -23,7 +23,7 @@
 	$completed = array(7);
 	makeStatusTable($completed, $counts, 'Completed Puzzles', 'complete-stats');
 	
-	$written = array(4, 5, 6);
+	$written = array(4, 5, 6, 10);
 	makeStatusTable($written, $counts, 'Fact Check / Revision', 'writing-stats');
 	
 	$testing = array(2, 3);
