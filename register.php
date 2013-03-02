@@ -42,11 +42,12 @@
 	function checkEmailForm()
 	{
 ?>
-		<h2> Please enter your email address.</h2>
+		<h2> Please enter your email address. <?php if (!TRUST_REMOTE_USER) { ?> and username <?php } ?> </h2>
 		<form method="post" action="register.php">
 		    E-mail address: <input type="text" name="checkEmail" /><br>
-		    username: <?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?><br>
-		    <input type="hidden" name="username" value="<?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?>"/> 
+		    <?php if (TRUST_REMOTE_USER) { ?> username: <?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?><br>
+		    <input type="hidden" name="username" value="<?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?>"/> <?php } ?>
+		    <?php if (!TRUST_REMOTE_USER) { ?> Desired username: <input type="text" name="username" /><br> <?php } ?> 
 		    <input type="submit" value="Submit" />
 		</form>
 <?php
@@ -80,18 +81,20 @@
 				} else if (f.username.value == "") {
 					alert("You must enter a username.");
 					return false;
-			//	} else if (f.pass1.value == "") {
-			//		alert("You must enter a password.");
-			//		return false;
-			//	} else if (f.pass2.value == "") {
-			//		alert("You must re-enter a password.");
-			//		return false;
-			//	} else if (f.pass1.value != f.pass2.value) {
-			//		alert("Passwords do not match.");
-			//		return false;
-			//	} else if (f.pass1.length < 7) {
-			//		alert("Password must be at least 6 characters.");
-			//		return false;
+				} else if (TRUST_REMOTE_USER) {
+					return true;
+				} else if (f.pass1.value == "") {
+					alert("You must enter a password.");
+					return false;
+				} else if (f.pass2.value == "") {
+					alert("You must re-enter a password.");
+					return false;
+				} else if (f.pass1.value != f.pass2.value) {
+					alert("Passwords do not match.");
+					return false;
+				} else if (f.pass1.length < 7) {
+					alert("Password must be at least 6 characters.");
+					return false;
 				}
 
 				return true;
@@ -107,14 +110,21 @@
 				</tr>
 				<tr>
 					<td>Username*</td>
+					<?php if (TRUST_REMOTE_USER) { ?>
 					<td><?php echo $_SERVER[HTTP_REMOTE_USER]; ?></td>
 					<input type="hidden" name="username" value="<?php echo $_SERVER[HTTP_REMOTE_USER]; ?>"/>
+					<?php } ?>
+
+					<?php if (!TRUST_REMOTE_USER) { ?>
+					<td><input type="text" name="username" value="<?php echo $data['username'] ?>"/></td>
+					<?php } ?>
 				</tr>
 				<tr>
 					<td>Full Name*</td>
 					<td><input type="text" name="fullname" value="<?php echo $data['fullname'] ?>"/></td>
 				</tr>
-			<!--	<tr>
+				<?php if (!TRUST_REMOTE_USER) { ?>
+				<tr>
 					<td>Password*</td>
 					<td><input type="password" name="pass1" value=""/></td>
 				</tr>
@@ -122,7 +132,7 @@
 					<td>Password, Again*</td>
 					<td><input type="password" name="pass2" /></td>
 				</tr>
-			-->
+				<?php } ?>
 				<tr>
 					<td>Upload a picture of yourself (jpg, png, gif)</td>
 					<td>
@@ -191,19 +201,23 @@
 			return "Username may not be empty";
 		if ($data['fullname'] == "")
 			return "Full name may not be empty";
-		//if ($data['pass1'] == "" || $data['pass2'] == "")
-		//	return "Passwords may not be empty";
-		//if ($data['pass1'] != $data['pass2'])
-		//	return "Passwords do not match";
-		//if (strlen($data['pass1']) < 6)
-		//	return "Password must be at least 6 characters";
+		if (!TRUST_REMOTE_USER) {
+			if ($data['pass1'] == "" || $data['pass2'] == "")
+				return "Passwords may not be empty";
+			if ($data['pass1'] != $data['pass2'])
+				return "Passwords do not match";
+			if (strlen($data['pass1']) < 6)
+				return "Password must be at least 6 characters";
+		}
 		if ($data['id'] == "")
 			return "Error: missing id";
 		
 		if (alreadyRegistered($id)) {
-			//if (!checkPassword($data['username'], $data['pass1'])) {
-			//	return 'Incorrect Password. Please try again.';
-			//}
+			if (!TRUST_REMOTE_USER) {
+				if (!checkPassword($data['username'], $data['pass1'])) {
+					return 'Incorrect Password. Please try again.';
+				}
+			}
 			if ($picture['name'] != '') {
 				$pic = pictureHandling($id, $picture);
 			} else {
@@ -221,11 +235,20 @@
 
 		mysql_query('START TRANSACTION');
 		$failed = 0;
-
-		$sql = sprintf("UPDATE user_info SET username = '%s',
-                               fullname='%s', picture='%s' WHERE uid='%s'",
-			       mysql_real_escape_string($username), 
-			       mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string($id));
+		
+		if (TRUST_REMOTE_USER) {
+			$sql = sprintf("UPDATE user_info SET username = '%s',
+                               		fullname='%s', picture='%s' WHERE uid='%s'",
+			       		mysql_real_escape_string($username), 
+			       		mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string($id));
+		}
+		if (!TRUST_REMOTE_USER) {
+			$sql = sprintf("UPDATE user_info SET username = '%s', password=AES_ENCRYPT('%s', '%s%s'),
+				       fullname='%s', picture='%s' WHERE uid='%s'",
+				       mysql_real_escape_string($username), mysql_real_escape_string($data['pass1']),
+				       mysql_real_escape_string($username), mysql_real_escape_string($data['pass1']),
+				       mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string($id));
+ 		}
 
 		$result = mysql_query($sql);
 		if ($result == FALSE)

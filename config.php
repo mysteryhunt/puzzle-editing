@@ -6,17 +6,16 @@
 	
 	session_start();
 
-	$dev = preg_match("/\/(.*)\/writing.*/", $_SERVER["SCRIPT_NAME"], $matches);
-	if ($dev) {
-           define("DEVMODE", TRUE);
-	   define("URL", "http://wind-up-birds.org/" . $matches[1] . "/editing-dev");
-	} else {
-           define("DEVMODE", FALSE);
-	   define("URL", "http://wind-up-birds.org/editing");
-	}
+        define("DEVMODE", TRUE);
+	define("URL", "http://wind-up-birds.org/editing-dev");
+
+        //define("DEVMODE", FALSE);
+	//define("URL", "http://wind-up-birds.org/editing");
+	
 
 	define("SELF", "$_SERVER[PHP_SELF]");
 	define("PICPATH", "uploads/pictures/"); // Path for user pictures
+	define("TRUST_REMOTE_USER", TRUE);  // Skip puzzletron authentication and trust REMOTE_USER
 	
 	date_default_timezone_set('America/New_York');
 ?>

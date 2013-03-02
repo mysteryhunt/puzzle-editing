@@ -37,7 +37,7 @@
           <div id="titletext" style="vertical-align:middle; margin-bottom:4px;">
 				<div style="text-align:left;width:auto;float:left;vertical-align:top;">
                      <h1>MH2014 puzzletron authoring server</h1>
-		     <h2>Logged in: [<?php echo $_SERVER['HTTP_REMOTE_USER'] ?>]</h2>
+		     <?php if (TRUST_REMOTE_USER) { ?> <h2>Logged in: [<?php echo $_SERVER['HTTP_REMOTE_USER'] ?>]</h2> <?php } ?>
                 </div>
                 <div style="text-align:right;width:auto;float:right;vertical-align:top;">
                      <h3 style="margin-top:0;"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>
@@ -62,7 +62,7 @@
 			<?php if(isset($_SESSION['uid']) && (isEditor($_SESSION['uid']) || isLurker($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers.php">Answers</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles.php">All Puzzles</a></li> <?php } ?>
 		</ul>
-			<!-- <div style="float:right;"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout.php">Logout</a><?php } ?></div> -->
+			<?php if(!TRUST_REMOTE_USER) { ?> <div style="float:right;"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout.php">Logout</a><?php } ?> </div> <?php } ?>
 		</div>
 			<div style="clear:both;"></div>
 	</div>
