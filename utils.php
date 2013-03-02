@@ -1971,6 +1971,7 @@ function getPuzzleForTestAdminQueue($uid)
 function canTestAdminPuzzle($uid, $pid)
 {
 	return (!isEditorOnPuzzle($uid, $pid) 
+		&& !isAuthorOnPuzzle($uid, $pid)
 		&& !isTesterOnPuzzle($uid, $pid)
 		&& isPuzzleInAddToTestAdminQueue($pid));
 }
