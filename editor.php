@@ -22,7 +22,7 @@
 ?>
 	<form action="form-submit.php" method="post">
 		<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-		Enter Puzzle ID to edit, or blank to get a random puzzle: <input type="text" name="pid" />
+		Enter Puzzle ID to edit: <input type="text" name="pid" />
 		<input type="submit" name="getPuzz" value="Get Puzzle" />
 	</form>
 <?php
