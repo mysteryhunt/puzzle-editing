@@ -24,8 +24,9 @@
 	// Put messages to the team here (separate for blind and non-blind solvers?)
 ?>
 <div class="team-updates">
-<b>Thursday, 2013-02-28:</b><br/>
-MH2014 Puzzletron is in pre-implementation/test mode<br>
+<b>Sunday, 2013-03-04:</b><br/>
+MH2014 Puzzletron is still in pre-implementation/test mode<br>
+Submit bugs/feature requests <a href="https://docs.google.com/a/stormynight.org/spreadsheet/ccc?key=0AjP2PJ8PtbmadEYxOU5VUHhoLXoteU1NaEhPTDVjSGc&usp=sharing">Here</a>(wind-up-birds.org google spreadsheet)<br>
 </div>
 <h3 style="padding-bottom:0.5em;"><a href="updates.php">Past Updates</a></h3>
 <?	// End HTML
