@@ -346,7 +346,7 @@ function displayEditors($uid, $pid)
 ?>
 		<tr>
 			<td class='peopleInfo'>
-				<strong>Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
+				<strong>Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid)) { ?><a href="#" class="changeLink">[Change]</a>
 			</td>
 		</tr>
 		<tr>
@@ -371,7 +371,7 @@ function displayEditors($uid, $pid)
 						</td>
 					</tr>
 					</form>
-				</table>
+				</table><?php } ?>
 			</td>
 		</tr>
 <?php
