@@ -8,18 +8,21 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("admin");
+        head("roundcaptain");
 
-        // Check for admin bits
-        if (!isServerAdmin($uid)) {
-                echo "<h3> You do not have permissions for this page. </h3>";
+        // Check for editor permissions
+        if (!isRoundCaptain($uid)) {
+                echo "You do not have permission for this page.";
                 foot();
                 exit(1);
         }
-        echo "<p><a href=\"";
-        echo PHPMYADMIN_URL;
-        echo "\">phpMyAdmin</a></p>";
+
+        displayPuzzleStats($uid);
+
+        $puzzles = getPuzzlesInRoundCaptainQueue($uid);
+        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE);
 
         // End HTML
         foot();
+
 ?>

@@ -8,14 +8,15 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("puzzlestats");
+        head("spoiled");
+?>
+        <h3>&nbsp;</h3>
+        <h3>Puzzles you're spoiled on</h3>
 
-        if (isBlind($uid)) {
-                echo '<h3>This page may contain spoilers</h3>';
-                foot();
-        }
+<?php
+        $puzzles = getSpoiledPuzzles($uid);
+        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE);
 
-        displayPuzzleStats($uid);
-
+        // End the HTML
         foot();
 ?>
