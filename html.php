@@ -25,7 +25,7 @@
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
 
-	<title>MH2014 puzzletron authoring server</title>
+	<title>MH2014 puzzletron authoring server <?php if (DEVMODE) { ?> (test/dev instance) <?php } ?></title>
 
         <script type='text/javascript' src='jquery-1.4.2.js'></script>
         <script type='text/javascript' src='jquery.tablesorter.min.js'></script>
@@ -36,7 +36,7 @@
 	<div id="header" style="margin-top:10px;">
           <div id="titletext" style="vertical-align:middle; margin-bottom:4px;">
                                 <div style="text-align:left;width:auto;float:left;vertical-align:top;">
-                     <h1>MH2014 puzzletron authoring server</h1>
+                     <h1>MH2014 puzzletron authoring server <?php if (DEVMODE) { ?> (test/dev instance) <?php } ?></h1>
 		     <?php if (TRUST_REMOTE_USER) { ?> <h2>Logged in: [<?php echo $_SERVER['HTTP_REMOTE_USER'] ?>]</h2> <?php } ?>
                 </div>
                 <div style="text-align:right;width:auto;float:right;vertical-align:top;">
