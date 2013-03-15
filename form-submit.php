@@ -70,17 +70,22 @@
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];
 
-                if (isset($_POST['addAuth']))
+                if (isset($_POST['addAuth'])) {
                         $add = $_POST['addAuth'];
+                        subscribe ($uid, $pid);
+                }
                 else
                         $add = NULL;
 
-                if (isset($_POST['removeAuth']))
+                if (isset($_POST['removeAuth'])) {
                         $remove = $_POST['removeAuth'];
+                        unsubscribe ($uid, $pid);
+                }
                 else
                         $remove = NULL;
 
                 changeAuthors($uid, $pid, $add, $remove);
+		
 
 		header("Location: " . URL . "/puzzle.php?pid=$pid");
                 exit(0);
@@ -116,13 +121,17 @@
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];
 
-                if (isset($_POST['addEditor']))
+                if (isset($_POST['                        addEditor'])) {
                         $add = $_POST['addEditor'];
+                        subscribe($uid, $pid);
+                }
                 else
                         $add = NULL;
 
-                if (isset($_POST['removeEditor']))
+                if (isset($_POST['removeEditor'])) {
                         $remove = $_POST['removeEditor'];
+                        unsubscribe($uid, $pid);
+                }
                 else
                         $remove = NULL;
 
@@ -337,8 +346,10 @@
                 $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
-                if ($pid && isEditorAvailable($uid, $pid))
+                if ($pid && isEditorAvailable($uid, $pid)) {
                         addPuzzleToEditorQueue($uid, $pid);
+                        subscribe($uid, $pid);
+                }
                 else
                         $_SESSION['failedToAdd'] = TRUE;
 

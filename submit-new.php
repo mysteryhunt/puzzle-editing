@@ -64,7 +64,7 @@
 
                 mysql_query('COMMIT');
 
-                // Subscribe authors to comments on their own puzzles
+                // Subscribe authors and coauthors to comments on their own puzzles
                 subscribe($uid, $id);
                 foreach ($coauthors as $auth) {
                         if ($auth != $uid) {

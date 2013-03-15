@@ -892,12 +892,24 @@ function realSendAllEmail()
                 $address = $mail[1];
                 $subject = $mail[2];
                 $msg = $mail[3];
-                if (!DEVMODE)
+                $headers = 'From: ' . HELP_EMAIL . "\r\n";
+
+                if (DEVMODE)
                 {
-                        mail($address, $subject, $msg);
-                } else {
-                        print "$address - $subject<BR>\n";
-                }
+                        $subject = "PUZZLETRON-DEV: " . $subject;  
+		}
+		
+
+                //ok, we want devmode to send emails also for testing subscriptions and stuff
+                mail($address, $subject, $msg, $headers);
+
+                //replace above line with this conditional to disable email in dev mode
+                //if (!DEVMODE)
+                //{
+                //        mail($address, $subject, $msg, $headers);
+                //} else {
+                //        print "$address - $subject<BR>\n";
+                //}
         }
 }
 
