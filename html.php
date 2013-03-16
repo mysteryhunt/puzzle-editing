@@ -153,7 +153,6 @@
                 <thead>
                         <tr>
                                 <th class="puzzidea">ID</th>
-                                <th class="puzzidea">Transformer</th>
                                 <th class="puzzidea">Title</th>
                                 <th class="puzzidea">Puzzle Status</th>
                                 <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
@@ -192,7 +191,6 @@
                         if ($title == NULL)
                                 $title = '(untitled)';
 
-                        $transformer = puzzleTransformer($pid);
 
                         $lastComment = getLastCommentDate($pid);
                         $lastCommenter = getLastCommenter($pid);
@@ -208,7 +206,6 @@
                         else
 				echo "<td class='puzzidea'><a href='puzzle.php?pid=$pid'>$pid</a></td>";
 ?>
-                                <td class='puzzidea'><?php echo $transformer; ?></td>
                                 <td class='puzzidea'><?php echo $title; ?></td>
                                 <td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
                                 <?php if ($showAnswerAndSummary) {echo "<td class='puzzidea'>" . $puzzleInfo["summary"] . "</td>";} ?>

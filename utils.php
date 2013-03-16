@@ -166,12 +166,6 @@ function postprodPony($pid)
         return get_elements_null($sql);
 }
 
-function puzzleTransformer($pid)
-{
-        $sql = sprintf("SELECT name from transformers where id = '%s';", mysql_real_escape_string($pid));
-        return get_element($sql);
-}
-
 function isEditor($uid)
 {
         return hasPriv($uid, 'addToEditingQueue');
@@ -821,8 +815,8 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE)
 
         $message = "$name commented on puzzle $pid:\n";
         $message .= "$cleanComment";
-        $transformer = puzzleTransformer($pid);
-        $subject = "Comment on $transformer (puzzle $pid)";
+        $title = getTitle($pid);
+        $subject = "Comment on $title (puzzle $pid)";
         $link = URL . "/puzzle.php?pid=$pid";
 
         $users = getSubbed($pid);
@@ -986,8 +980,7 @@ function isFactcheckerAvailable($uid, $pid)
 
 function defaultWikiPageForPuzzle($pid)
 {
-        $transformer = puzzleTransformer($pid);
-        return "http://manicsages.org/writingwiki/index.php?title=$transformer/Testsolve_1";
+        return "http://manicsages.org/writingwiki/index.php?title=puzzle_$pid/Testsolve_1";
 }
 
 function getCurrentTestersAsEmailList($pid)
@@ -1073,9 +1066,9 @@ function removeSpoiledUser($uid, $pid, $removeUser)
                         $comment .= ', ';
                 $comment .= getUserName($user);
 
-                $transformer = puzzleTransformer($pid);
-                $subject = "Spoiled on $transformer (puzzle $pid)";
-                $message = "$name removed you as spoiled on $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Spoiled on $title (puzzle $pid)";
+                $message = "$name removed you as spoiled on $title (puzzle $pid).";
                 $link = URL;
                 sendEmail($user, $subject, $message, $link);
         }
@@ -1154,9 +1147,9 @@ function addSpoiledUser($uid, $pid, $addUser)
                 $comment .= getUserName($user);
 
                 // Email new author
-                $transformer = puzzleTransformer($pid);
-                $subject = "Spoiled on $transformer (puzzle $pid)";
-                $message = "$name added you as spoiled on $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Spoiled on $title (puzzle $pid)";
+                $message = "$name added you as spoiled on $title (puzzle $pid).";
                 $link = URL;
                 sendEmail($user, $subject, $message, $link);
         }
@@ -1252,9 +1245,9 @@ function addFactcheckers($uid, $pid, $add)
                 $comment .= getUserName($fc);
 
                 // Email new factchecker
-                $transformer = puzzleTransformer($pid);
-                $subject = "Factchecker on $transformer (puzzle $pid)";
-                $message = "$name added you as a factchecker on $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Factchecker on $title (puzzle $pid)";
+                $message = "$name added you as a factchecker on $title (puzzle $pid).";
                 $link = URL . "/puzzle?pid=$pid";
                 sendEmail($fc, $subject, $message, $link);
 
@@ -1296,9 +1289,9 @@ function removeFactcheckers($uid, $pid, $remove)
                 $comment .= getUserName($fc);
 
                 // Email old factchecker
-                $transformer = puzzleTransformer($pid);
-                $subject = "Factchecker on $transformer (puzzle $pid)";
-                $message = "$name removed you as a factchecker on $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Factchecker on $title (puzzle $pid)";
+                $message = "$name removed you as a factchecker on $title (puzzle $pid).";
                 $link = URL . "/factcheck";
                 sendEmail($fc, $subject, $message, $link);
         }
@@ -1338,9 +1331,9 @@ function addAuthors($uid, $pid, $add)
                 $comment .= getUserName($auth);
 
                 // Email new author
-                $transformer = puzzleTransformer($pid);
-                $subject = "Author on $transformer (puzzle $pid)";
-                $message = "$name added you as an author on $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Author on $title (puzzle $pid)";
+                $message = "$name added you as an author on $title (puzzle $pid).";
                 $link = URL . "/puzzle.php?pid=$pid";
                 sendEmail($auth, $subject, $message, $link);
 
@@ -1382,9 +1375,9 @@ function removeAuthors($uid, $pid, $remove)
                 $comment .= getUserName($auth);
 
                 // Email old author
-                $transformer = puzzleTransformer($pid);
-                $subject = "Author on $transformer (puzzle $pid)";
-                $message = "$name removed you as an author on $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Author on $title (puzzle $pid)";
+                $message = "$name removed you as an author on $title (puzzle $pid).";
                 $link = URL . "/author.php";
                 sendEmail($auth, $subject, $message, $link);
         }
@@ -1424,9 +1417,9 @@ function addRoundCaptains($uid, $pid, $add)
                 $comment .= getUserName($roundcaptain);
 
                 // Email new round captain
-                $transformer = puzzleTransformer($pid);
-                $subject = "Round Captain on $transformer (puzzle $pid)";
-                $message = "$name added you as a round captain to $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Round Captain on $title (puzzle $pid)";
+                $message = "$name added you as a round captain to $title (puzzle $pid).";
                 $link = URL . "/puzzle?pid=$pid";
                 sendEmail($roundcaptain, $subject, $message, $link);
 
@@ -1468,9 +1461,9 @@ function removeRoundCaptains($uid, $pid, $remove)
                 $comment .= getUserName($roundcaptain);
 
                 // Email old round captain
-                $transformer = puzzleTransformer($pid);
-                $subject = "Round Captain on $transformer (puzzle $pid)";
-                $message = "$name removed you as a round captain on $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Round Captain on $title (puzzle $pid)";
+                $message = "$name removed you as a round captain on $title (puzzle $pid).";
                 $link = URL . "/roundcaptain";
                 sendEmail($roundcaptain, $subject, $message, $link);
         }
@@ -1510,9 +1503,9 @@ function addEditors($uid, $pid, $add)
                 $comment .= getUserName($editor);
 
                 // Email new editor
-                $transformer = puzzleTransformer($pid);
-                $subject = "Editor on $transformer (puzzle $pid)";
-                $message = "$name added you as an editor to $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Editor on $title (puzzle $pid)";
+                $message = "$name added you as an editor to $title (puzzle $pid).";
                 $link = URL . "/puzzle.php?pid=$pid";
                 sendEmail($editor, $subject, $message, $link);
 
@@ -1554,9 +1547,9 @@ function removeEditors($uid, $pid, $remove)
                 $comment .= getUserName($editor);
 
                 // Email old editor
-                $transformer = puzzleTransformer($pid);
-                $subject = "Editor on $transformer (puzzle $pid)";
-                $message = "$name removed you as an editor on $transformer (puzzle $pid).";
+                $title = getTitle($pid);
+                $subject = "Editor on $title (puzzle $pid)";
+                $message = "$name removed you as an editor on $title (puzzle $pid).";
                 $link = URL . "/editor.php";
                 sendEmail($editor, $subject, $message, $link);
         }
@@ -1825,14 +1818,14 @@ function changeWikiPage($uid, $pid, $wikiPage)
 
 function emailTesters($pid, $status)
 {
-        $transformer = puzzleTransformer($pid);
+        $title = getTitle($pid);
         $subject = "Puzzle $pid Status Change";
 
         if (!isStatusInTesting($status)) {
-                $message = "$transformer (puzzle $pid) was removed from testing";
+                $message = "$title (puzzle $pid) was removed from testing";
         } else {
                 $statusName = getPuzzleStatusName($status);
-                $message = "$transformer (puzzle $pid)'s status was changed to $statusName.";
+                $message = "$title (puzzle $pid)'s status was changed to $statusName.";
         }
 
         $link = URL . "/testsolving.php";
@@ -1845,12 +1838,12 @@ function emailTesters($pid, $status)
 
 function emailFactcheckers($pid)
 {
-        $transformer = puzzleTransformer($pid);
+        $title = getTitle($pid);
         $subject = "Puzzle $pid needs factchecking attention";
 
-        $message = "$transformer (puzzle $pid), on which you are a factchecker, was put back into factchecking. Please comment on it letting us know whether, and when, you can take another look at it. Thanks!";
+        $message = "$title (puzzle $pid), on which you are a factchecker, was put back into factchecking. Please comment on it letting us know whether, and when, you can take another look at it. Thanks!";
 
-        $link = URL . "/puzzle?pid=$pid";
+        $link = URL . "/puzzle.php?pid=$pid";
 
         $fcs = getFactcheckersForPuzzle($pid);
         foreach ($fcs as $uid => $name) {

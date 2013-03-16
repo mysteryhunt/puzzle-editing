@@ -147,12 +147,11 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
         if ($description == NULL)
                 $description = '(no description)';
 
-        $transformer = puzzleTransformer($pid);
 ?>
         <table>
                 <tr>
                         <td>
-                                <h1 style="margin: 0em;"><?php echo "$transformer (puzzle $pid): $title"; ?></h1>
+                                <h1 style="margin: 0em;"><?php echo "(puzzle $pid): $title"; ?></h1>
                         </td>
                 </tr>
                 <?php displayAnswers($uid, $pid); ?>
