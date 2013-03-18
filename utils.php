@@ -160,12 +160,6 @@ function isStatusInPostProd($sid)
         return get_element($sql) == 1;
 }
 
-function postprodPony($pid)
-{
-        $sql = sprintf("SELECT ponies.name FROM ponies, answers WHERE ponies.aid = answers.aid AND answers.pid = '%s';", mysql_real_escape_string($pid));
-        return get_elements_null($sql);
-}
-
 function isEditor($uid)
 {
         return hasPriv($uid, 'addToEditingQueue');
