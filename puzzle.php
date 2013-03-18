@@ -844,9 +844,7 @@ function displayFileList ($uid, $pid, $type) {
 function displayPostProd($uid, $pid, $pp)
 {
   $rinfo = getRoundForPuzzle($pid);
-  //$url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
-  $urlprefix = "http://z.manicsages.org/postprod-preview/postprod.bluebird.coinheist.com";
-  $specialurlprefix = "http://z.manicsages.org/postprod-preview/postprod.bluebird.enigmavalley.com";
+  $urlprefix = POSTPROD_URLPREFIX;
   $roundname = $rinfo['name'];
   $title = getTitle($pid);
   /*
@@ -864,11 +862,7 @@ function displayPostProd($uid, $pid, $pp)
   $fileList = getFileListForPuzzle($pid, 'postprod');
   $file = $fileList[0];
   $url = $urlprefix;
-  if (postprodCanonRound($roundname) == "enigmavalley") {
-    $url = $specialurlprefix;
-  } else {
-    $url .= "/" . postprodCanonRound($roundname);
-  }
+  $url .= "/" . postprodCanonRound($roundname);
   $url .= "/beta_" . postprodCanon($title) . "/";
   if ($pp) {
 ?>
@@ -878,11 +872,7 @@ function displayPostProd($uid, $pid, $pp)
 <?php
   }
   $url = $urlprefix;
-  if (postprodCanonRound($roundname) == "enigmavalley") {
-    $url = $specialurlprefix;
-  } else {
-    $url .= "/" . postprodCanonRound($roundname);
-  }
+  $url .= "/" . postprodCanonRound($roundname);
   $url .= "/" . postprodCanon($title) . "/";
 ?>
   <strong>Post-Production Final Link: </strong>

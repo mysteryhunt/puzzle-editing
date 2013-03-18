@@ -17,6 +17,7 @@
 	define("PICPATH", "uploads/pictures/"); // Path for user pictures
 	define("TRUST_REMOTE_USER", TRUE);  // Skip puzzletron authentication and trust REMOTE_USER
 	define("ENABLE_WRITING_WIKI", FALSE);
+	define("POSTPROD_URLPREFIX", "https://wind-up-birds.org/prodhunt");
 	define("PHPMYADMIN_URL", "https://wind-up-birds.org/phpmyadmin");
 	define("HELP_EMAIL", "wind-up-birds-systems@wind-up-birds.org");
 	define("WIKI_URL", "https://wind-up-birds.org");
