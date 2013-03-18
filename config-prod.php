@@ -6,11 +6,8 @@
 	
 	session_start();
 
-//        define("DEVMODE", TRUE);
-//	define("URL", "http://wind-up-birds.org/editing-dev");
-//        define('DB_NAME', 'puzzletron_dev');
-
         define("DEVMODE", FALSE);
+	define("PRACMODE", FALSE);
 	define("URL", "http://wind-up-birds.org/editing");
         define('DB_NAME', 'puzzletron');
 	
