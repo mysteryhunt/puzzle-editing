@@ -22,10 +22,21 @@
 
         // Display index page
         // Put messages to the team here (separate for blind and non-blind solvers?)
-	// todo:  fetch updates from the database
+
+        echo "<div class='team-updates'>";
+
+        // Fetch array of MOTDs from database
+        $motds = getAllMotd();
+        
+        foreach ($motds as $motd) {
+            $motddate = $motd[1];
+            $motdmsg = $motd[2];
+
+            printf ("<b> %s UTC:</b><br/>",$motddate);
+            echo $motdmsg;
+            echo "<br/>";
+        }
 ?>
-<div class="team-updates">
-Updates functionality is under construction
 </div>
 
 <?        // End HTML

@@ -18,14 +18,22 @@
         $hrs=floor($tth/(60 * 60))-(24*$days);
         $mins=floor($tth/(60))-(24*60*$days)-(60*$hrs);
 
-        echo "<h2>Latest Updates:</h2>\n";
+        echo "<h2>Latest Update:</h2>\n";
 
         // Display index page
-	// TODO:  fetch these updates from the database
+        echo "<div class='team-updates'>";
+
+        // Fetch current MOTD from database
+        $motd = getCurMotd();
+        if ($motd != NULL) { 
+            $motddate = $motd[1];
+            $motdmsg = $motd[2];
+
+            printf ("<b> %s UTC:</b><br/>",$motddate);
+            echo $motdmsg;
+            echo "<br/>"; 
+        }
 ?>
-<div class="team-updates">
-<b>Sunday, 2013-03-17:</b><br/>
-"Updates" functionality is under construction<br>
 </div>
 <h3 style="padding-bottom:0.5em;"><a href="updates.php">Past Updates</a><br>
 <a href="

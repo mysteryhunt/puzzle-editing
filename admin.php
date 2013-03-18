@@ -20,6 +20,8 @@
         echo PHPMYADMIN_URL;
         echo "\">phpMyAdmin</a></p>";
 
+	// TODO:  form for inputting new MOTD here
+
         // End HTML
         foot();
 ?>

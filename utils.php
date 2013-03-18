@@ -497,6 +497,17 @@ function getNotes($pid)
         return get_element($sql);
 }
 
+function getCurMotd()
+{
+        $sql = sprintf("SELECT * FROM motd ORDER BY time DESC LIMIT 1");
+        return get_row_null($sql);
+}
+
+function getAllMotd()
+{
+        $sql = sprintf("SELECT * FROM motd ORDER BY time DESC");
+        return get_rows_null($sql);
+}
 
 // Update the title, summary, and description of the puzzle (from form on puzzle page)
 function changeTitleSummaryDescription($uid, $pid, $title, $summary, $description)
