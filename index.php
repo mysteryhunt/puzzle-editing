@@ -21,11 +21,11 @@
         echo "<h2>Latest Updates:</h2>\n";
 
         // Display index page
-        // Put messages to the team here (separate for blind and non-blind solvers?)
+	// TODO:  fetch these updates from the database
 ?>
 <div class="team-updates">
-<b>Sunday, 2013-03-04:</b><br/>
-MH2014 Puzzletron is still in pre-implementation/test mode<br>
+<b>Sunday, 2013-03-17:</b><br/>
+"Updates" functionality is under construction<br>
 </div>
 <h3 style="padding-bottom:0.5em;"><a href="updates.php">Past Updates</a><br>
 <a href="

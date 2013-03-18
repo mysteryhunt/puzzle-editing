@@ -888,11 +888,20 @@ function realSendAllEmail()
                 $msg = $mail[3];
                 $headers = 'From: ' . HELP_EMAIL . "\r\n";
 
+                //subject line conditional on what instance of ptron this is
                 if (DEVMODE)
                 {
                         $subject = "PUZZLETRON-DEV: " . $subject;  
-		}
-		
+                }
+                else if (PRACMODE)
+                {
+                        $subject = "PUZZLETRON-PRACTICE: " . $subject;
+                }
+                else
+                {
+                        $subject = "PUZZLETRON: " . $subject;
+                }
+
 
                 //ok, we want devmode to send emails also for testing subscriptions and stuff
                 mail($address, $subject, $msg, $headers);
