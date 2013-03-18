@@ -8,7 +8,7 @@
 
         define("DEVMODE", FALSE);
 	define("PRACMODE", FALSE);
-	define("URL", "http://wind-up-birds.org/editing");
+	define("URL", "http://yourhuntteam.tld/editing");
         define('DB_NAME', 'puzzletron');
 	
 
@@ -16,12 +16,12 @@
 	define("PICPATH", "uploads/pictures/"); // Path for user pictures
 	define("TRUST_REMOTE_USER", TRUE);  // Skip puzzletron authentication and trust REMOTE_USER
 	define("ENABLE_WRITING_WIKI", FALSE);
-	define("POSTPROD_URLPREFIX", "https://wind-up-birds.org/prodhunt");
-	define("PHPMYADMIN_URL", "https://wind-up-birds.org/phpmyadmin");
-	define("HELP_EMAIL", "wind-up-birds-systems@wind-up-birds.org");
-	define("WIKI_URL", "https://wind-up-birds.org");
-	define("BUGTRACK_URL", "https://docs.google.com/a/stormynight.org/spreadsheet/ccc?key=0AjP2PJ8PtbmadEYxOU5VUHhoLXoteU1NaEhPTDVjSGc&usp=sharing");
-        define("HUNT_YEAR",2014);
+	define("POSTPROD_URLPREFIX", "http://thehuntisactuallyhere.tld/puzzles/");
+	define("PHPMYADMIN_URL", "https://yourdatabaseserver.tld/phpmyadmin");
+	define("HELP_EMAIL", "hunt-support-team@yourhuntteam.tld");
+	define("WIKI_URL", "https://yourhuntteam.tld/wiki");
+	define("BUGTRACK_URL", "https://docs.google.com/a/yourhuntteam.tld/spreadsheet/ccc?key=0AjP2PJ8PtbmadEYxOU5VUHjalskajJKPTDVjSGc&usp=sharing");
+        define("HUNT_YEAR",2099);
         define("HUNT_DOM",17);
 	
 	date_default_timezone_set('America/New_York');

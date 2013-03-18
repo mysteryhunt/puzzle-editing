@@ -1,2 +1,5 @@
 secret.php
 config.php
+config-prod.php
+config-dev.php
+config-prac.php
