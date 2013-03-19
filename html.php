@@ -52,7 +52,7 @@
                 (actual mystery hunt-writing instance) 
         <?php } ?>
 		     </h1>
-		     <?php if (TRUST_REMOTE_USER) { ?> <h2>Logged in: [<?php echo $_SERVER['HTTP_REMOTE_USER'] ?>]</h2> <?php } ?>
+		     <h2>Logged in: [<?php echo getUserUsername($_SESSION['uid']); ?>]</h2> 
                 </div>
                 <div style="text-align:right;width:auto;float:right;vertical-align:top;">
                      <h3 style="margin-top:0;"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>

@@ -801,6 +801,13 @@ function createRound($round, $roundanswer)
         return ($result);
 } 
 
+function addNewMotd($message)
+{
+        $sql = sprintf("INSERT INTO motd (message, uid) VALUES ('%s', '%s')",
+                mysql_real_escape_string($message),$_SESSION['uid']);
+        $result = query_db($sql);
+        return ($result);
+}
 function requestTestsolve($uid, $pid, $notes)
 {
         $sql = sprintf("INSERT INTO testsolve_requests (pid, uid, notes) VALUES ('%s', '%s', '%s')",
