@@ -780,6 +780,27 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
                 emailComment($uid, $pid, $cleanComment);
 }
 
+function createAnswer($answer, $round)
+{
+        $sql = sprintf("INSERT INTO answers (answer) VALUES ('%s')", mysql_real_escape_string($answer));
+        query_db($sql);
+        $sql = "SELECT LAST_INSERT_ID()";
+        $result = query_db($sql);
+        $resultrow = mysql_fetch_row($result);
+        $aid = $resultrow[0];
+        $sql = sprintf("INSERT INTO answers_rounds (aid, rid) VALUES ('%s', '%s')", $aid, $round);
+        $result = query_db($sql);
+        return ($result);
+}
+
+function createRound($round, $roundanswer)
+{
+        $sql = sprintf("INSERT INTO rounds (name, answer) VALUES ('%s', '%s')", 
+                mysql_real_escape_string($round), mysql_real_escape_string($roundanswer));
+        $result = query_db($sql);
+        return ($result);
+} 
+
 function requestTestsolve($uid, $pid, $notes)
 {
         $sql = sprintf("INSERT INTO testsolve_requests (pid, uid, notes) VALUES ('%s', '%s', '%s')",
@@ -796,6 +817,7 @@ function clearOneTestsolveRequest($pid)
         //
         // This is just a touch horrifying. In particular, the 'select * from'
         // is a workaround for a mysql limitation.
+        // benoc note: come on, don't be horrified.  that's what the LIMIT 1 is for.
         $sql = sprintf("update testsolve_requests set done=1 where pid='%d' and done=0 and
                         timestamp=(select * from (select timestamp from testsolve_requests where
                         pid='%d' and done=0 order by timestamp limit 1) as a)",
