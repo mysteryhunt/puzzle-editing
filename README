@@ -30,3 +30,7 @@ in order for puzzletron to actually send its email queue (comments on puzzles, e
 there needs to be a cron job that runs email_cronjob.php script with your php interpreter
 at some regular frequency.
 
+File Permissions:
+
+Make sure the uploads directory (and everything underneath it) is writable and searchable by your web server
+
