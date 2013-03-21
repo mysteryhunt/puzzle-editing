@@ -1295,7 +1295,7 @@ function addFactcheckers($uid, $pid, $add)
                 sendEmail($fc, $subject, $message, $link);
 
                 // Subscribe factcheckers to comments on their puzzles
-                subscribe($fc, $pid);
+                // subscribe($fc, $pid);
         }
 
         $comment .= ' as factchecker';
@@ -1467,7 +1467,7 @@ function addRoundCaptains($uid, $pid, $add)
                 sendEmail($roundcaptain, $subject, $message, $link);
 
                 // Subscribe round captains to comments on their puzzles
-                subscribe($roundcaptain, $pid);
+                // subscribe($roundcaptain, $pid);
         }
 
         $comment .= ' as round captain';
@@ -1553,7 +1553,7 @@ function addEditors($uid, $pid, $add)
                 sendEmail($editor, $subject, $message, $link);
 
                 // Subscribe editors to comments on their puzzles
-                subscribe($editor, $pid);
+                // subscribe($editor, $pid);
         }
 
         $comment .= ' as editor';
@@ -2306,7 +2306,7 @@ function addPuzzleToEditorQueue($uid, $pid)
         mysql_query('COMMIT');
 
         // Subscribe editors to comments on the puzzles they edit
-        subscribe($uid, $pid);
+        // subscribe($uid, $pid);
 }
 
 function addPuzzleToTestQueue($uid, $pid)
@@ -2808,7 +2808,7 @@ function addToFactcheckQueue($uid, $pid)
                         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
         query_db($sql);
         // Subscribe factcheckers to comments on their puzzles
-        subscribe($uid, $pid);
+        // subscribe($uid, $pid);
 }
 
 function addToTestAdminQueue($uid, $pid)
@@ -2820,7 +2820,7 @@ function addToTestAdminQueue($uid, $pid)
                         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
         query_db($sql);
         // Subscribe testadmins to comments on their puzzles
-        subscribe($uid, $pid);
+        // subscribe($uid, $pid);
 }
 
 function getInTestAdminQueue($uid)

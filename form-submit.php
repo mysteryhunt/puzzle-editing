@@ -121,16 +121,16 @@
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];
 
-                if (isset($_POST['                        addEditor'])) {
+                if (isset($_POST['addEditor'])) {
                         $add = $_POST['addEditor'];
-                        subscribe($uid, $pid);
+                        //subscribe($uid, $pid);
                 }
                 else
                         $add = NULL;
 
                 if (isset($_POST['removeEditor'])) {
                         $remove = $_POST['removeEditor'];
-                        unsubscribe($uid, $pid);
+                        //unsubscribe($uid, $pid);
                 }
                 else
                         $remove = NULL;
@@ -348,7 +348,7 @@
 
                 if ($pid && isEditorAvailable($uid, $pid)) {
                         addPuzzleToEditorQueue($uid, $pid);
-                        subscribe($uid, $pid);
+                        //subscribe($uid, $pid);
                 }
                 else
                         $_SESSION['failedToAdd'] = TRUE;

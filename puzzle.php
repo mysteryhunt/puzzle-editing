@@ -456,7 +456,7 @@ function displayRemoveEditor($pid)
 function displayAddEditor($pid)
 {
         $editors = getAvailableEditorsForPuzzle($pid);
-        if ($editors != NULL)
+        // if ($editors != NULL)
                 makeOptionElements($editors, 'addEditor');
 }
 
