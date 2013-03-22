@@ -985,6 +985,7 @@ function emailSubButton($uid, $pid)
 
 function displayPuzzApproval($uid, $pid)
 {
+        $approvals = getPuzzApprovals($pid);
 ?>
         <b>Editor approval (required to change puzzle status):</b> <br/>
         <table>
@@ -1009,21 +1010,27 @@ function displayPuzzApproval($uid, $pid)
                 </tr>
 <?php
         }
+        
         //everyone gets to see approval table
-                $approvals = getPuzzApprovals($pid);
-                foreach ($approvals as $fullname => $approve){
-                        echo "<tr><td align=center>";
-                        //check if approved
-                        if ($approve == 1){
+        if ($approvals == NULL){
+                echo "<tr><td colspan=3>No existing editor feedback at this stage yet.</td></tr><br>";
+        }
+        foreach ($approvals as $fullname => $approve){
+                echo "<tr><td align=center>";
+
+                //check if approved
+                if ($approve == 1){
                         echo "<b>X</b>";
-                        }
-                        echo "</td><td align=center>";
-                        //check if notapproved
-                        if ($approve == 0){
-                        echo "<b>X</b>";
-                        }
-                        printf ("</td><td>%s</td></tr>",$fullname);
                 }
+                echo "</td><td align=center>";
+
+                //check if notapproved
+                if ($approve == 0){
+                        echo "<b>X</b>";
+                }
+
+                printf ("</td><td>%s</td></tr>",$fullname);
+        }
 ?>
         </table>
 <?php                
