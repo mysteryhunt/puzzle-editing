@@ -1015,6 +1015,9 @@ function displayPuzzApproval($uid, $pid)
         if ($approvals == NULL){
                 echo "<tr><td colspan=3>No existing editor feedback at this stage yet.</td></tr><br>";
         }
+        if (!isEditorOnPuzzle($uid, $pid)) {
+                echo "<tr><td>Approve</td><td>Revise</td></td>";
+        }
         foreach ($approvals as $fullname => $approve){
                 echo "<tr><td align=center>";
 
