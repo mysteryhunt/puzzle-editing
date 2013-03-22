@@ -69,7 +69,13 @@
 <?php
 
         $puzzles = getAllPuzzles();
+        //BOOM you're spoiled on them all
+	$uid = isLoggedIn();
+        foreach ($puzzles as $pid) {
+                addSpoiledUserQuietly($uid, $pid);
+        }
         displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, $filt);
+        
 
 
         // End HTML

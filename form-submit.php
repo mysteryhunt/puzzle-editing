@@ -416,10 +416,20 @@
 
                 postprodAll($uid);
 
-                header("Location: " . URL . "/postprod");
+                header("Location: " . URL . "/postprod.php");
                 exit(0);
         }
 
+        if (isset($_POST['setPuzzApprove'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+                $approve = $_POST['puzzApprove'];
+                
+                setPuzzApprove($uid, $pid, $approve);
+                
+                header("Location: "  . URL . "/puzzle.php?pid=$pid");
+                exit(0);
+        }
 //-------------------------------------
 
 

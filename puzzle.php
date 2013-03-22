@@ -6,7 +6,7 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-
+        
         // Start HTML
         head();
 
@@ -115,6 +115,11 @@
         echo "<br />";
         echo "<div class='postProd'>";
         displayPostProd($uid, $pid, isStatusInPostProd($puzzleInfo['pstatus']));
+        echo "</div>";
+
+        echo "<br />";
+        echo "<div class='puzzApproval'>";
+        displayPuzzApproval($uid, $pid);
         echo "</div>";
 
         // Display & add comments
@@ -976,5 +981,51 @@ function emailSubButton($uid, $pid)
                 </form>
 <?php
         }
+}
+
+function displayPuzzApproval($uid, $pid)
+{
+?>
+        <b>Editor approval (required to change puzzle status):</b> <br/>
+        <table>
+<?php
+        //only display approval form itself if you are an editor on this puzzle
+        if (isEditorOnPuzzle($uid, $pid)) { 
+?>
+                <tr>
+                        <td>
+                                <form action="form-submit.php" method="post">
+                                <input type="radio" name="puzzApprove" value="1" checked />Approve
+                        </td>
+                        <td> 
+                                <input type="radio" name="puzzApprove" value="0" />Revise
+                        </td>
+                        <td>
+                                <input type="hidden" name="uid" value='<?php echo $uid; ?>' />
+                                <input type="hidden" name="pid" value='<?php echo $pid; ?>' />
+                                <input type="submit" name="setPuzzApprove" value="Submit" />
+                                </form>
+                        </td>
+                </tr>
+<?php
+        }
+        //everyone gets to see approval table
+                $approvals = getPuzzApprovals($pid);
+                foreach ($approvals as $fullname => $approve){
+                        echo "<tr><td align=center>";
+                        //check if approved
+                        if ($approve == 1){
+                        echo "<b>X</b>";
+                        }
+                        echo "</td><td align=center>";
+                        //check if notapproved
+                        if ($approve == 0){
+                        echo "<b>X</b>";
+                        }
+                        printf ("</td><td>%s</td></tr>",$fullname);
+                }
+?>
+        </table>
+<?php                
 }
 ?>

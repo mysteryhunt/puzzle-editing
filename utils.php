@@ -1682,6 +1682,41 @@ function getTestsolveRequestsForPuzzle($pid)
         return get_element($sql);
 }
 
+function getPuzzApprovals($pid)
+{
+        $sql = sprintf("SELECT fullname, approve from user_info, puzzle_approve where pid='%s' AND puzzle_approve.uid = user_info.uid", mysql_real_escape_string($pid));
+        return get_assoc_array($sql, "fullname", "approve");
+}
+
+function flushPuzzApprovals($pid)
+{
+        //this function should get called after any puzzle state-change
+        $sql = sprintf("DELETE from puzzle_approve WHERE pid = %s", mysql_real_escape_string($pid));
+        $result = query_db($sql);
+        return $result;
+}
+
+function setPuzzApprove($uid, $pid, $approve)
+{
+        $sql = sprintf("INSERT INTO puzzle_approve (uid, pid, approve) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE approve = %s",
+                mysql_real_escape_string($uid), mysql_real_escape_string($pid),
+                mysql_real_escape_string($approve), mysql_real_escape_string($approve));;
+
+        $result = query_db($sql);
+        $name = getUserName($uid);
+        $title = getTitle($pid);
+        
+        //add comment noting this approval or disapproval
+
+        if ($approve == 1){
+                $comment = sprintf("%s approves puzzle %s to advance to next puzzle status", $name, $title);
+        } else {
+                $comment = sprintf("%s does not approve puzzle %s to advance to next puzzle status", $name, $title);
+        }
+        addComment ($uid, $pid, $comment, TRUE);
+        
+}
+
 function getAllEditors()
 {
         return get_assoc_array("select user_info.uid, fullname from user_info, jobs, priv where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 group by uid", "uid", "fullname");
@@ -1796,6 +1831,8 @@ function changeStatus($uid, $pid, $status)
                 // factchecking.
                 emailFactcheckers($pid);
         }
+
+        flushPuzzApprovals($pid);
 
 }
 
