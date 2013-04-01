@@ -16,7 +16,8 @@
                 } else {
                         // Otherwise, try again.
                         echo '<h3> I\'m sorry. That email address is not authorized to register. </h3>';
-                        echo '<h3> Please try again, or contact contact the <a href="mailto:tech@manicsages.org">Server Administrators</a>.';
+                        echo '<h3> Or there was some other failure in initial authorization check. </h3>';
+                        echo '<h3> Please try again, or contact contact the Server Administrators</a>.';
                         checkEmailForm();
                 }
         } else if(isset($_POST['register'])) {
@@ -167,9 +168,13 @@
         }
 
 //------------------------------------------------------------------------
+        //this function doesn't actually check for email authorization
+        //you'll need to change it somehow if you want it to do that.
         function checkEmail($email, $username)
         {
-                return false;
+                if ($username == ""){
+                        return false;
+                }
                 $sql = sprintf("SELECT * FROM user_info WHERE email='%s'",
                                mysql_real_escape_string($email));
                 $result = query_db($sql);
@@ -178,6 +183,8 @@
                         $r = mysql_fetch_assoc($result);
                         return $r['uid'];
                 } else if (mysql_num_rows($result) == 0) {
+                        //have it return false here if you plan to pre-populate user_info
+                        //with known valid team email addressees 
                         $sql = sprintf("INSERT INTO user_info (username, email) VALUES ('%s', '%s')",
                                        mysql_real_escape_string($username),
                                        mysql_real_escape_string($email));
