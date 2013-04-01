@@ -350,8 +350,10 @@
                         addPuzzleToEditorQueue($uid, $pid);
                         //subscribe($uid, $pid);
                 }
-                else
+                else {
                         $_SESSION['failedToAdd'] = TRUE;
+                        $_SESSION['failedToAddEdit'] = TRUE;
+                }
 
                 header("Location: " . URL . "/editor.php");
                 exit(0);

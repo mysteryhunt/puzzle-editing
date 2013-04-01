@@ -17,6 +17,12 @@
                 exit(1);
         }
 
+        if ($_SESSION['failedToAddEdit'] == TRUE){
+                echo "<H3>Failed to add puzzle to your editing queue<br>";
+                echo "Perhaps you are an author, are testsolving it, or are already editing it?</h3><br>";
+                unset($_SESSION['failedToAddEdit']);
+        }
+
         displayPuzzleStats($uid);
 
 ?>
