@@ -1688,6 +1688,13 @@ function getPuzzApprovals($pid)
         return get_assoc_array($sql, "fullname", "approve");
 }
 
+function countPuzzApprovals($pid)
+{
+        $sql = sprintf("SELECT count(*) from puzzle_approve where pid='%s' AND approve='1'", 
+                mysql_real_escape_string($pid));
+        return get_element($sql);
+}
+
 function flushPuzzApprovals($pid)
 {
         //this function should get called after any puzzle state-change

@@ -187,6 +187,7 @@
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Editors</th>';} ?>
+                                <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approvals</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Last Test Report</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Testsolve requests</th>';} ?>
@@ -247,6 +248,7 @@
                                 <?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getEditorsAsList($pid) . "</td>";} ?>
+                                <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . countPuzzApprovals($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" . getCurrentTestersAsList($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" .  getLastTestReportDate($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" .  getTestsolveRequestsForPuzzle($pid) . "</td>";} ?>
