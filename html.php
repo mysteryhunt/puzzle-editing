@@ -157,11 +157,21 @@
 <?php
         }
 
-        function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $filter = array())
+        function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $hidedeadpuzzles, $filter = array())
         {
                 if ($puzzles == NULL) {
                         echo "<h4>No puzzles in queue</h4>";
                         return;
+                }
+                $statuses = getPuzzleStatuses();
+                
+                // terrible hack to figure out which status ID is "dead"
+                // so we can omit them by default from queue
+                $deadstatusid = NULL;
+                foreach ($statuses as $sid => $sname) {
+                        if (strtoupper($sname) == "DEAD") {
+                                $deadstatusid = $sid;
+                        }
                 }
 ?>
                 <table class="tablesorter">
@@ -184,7 +194,8 @@
                 </thead>
                 <tbody>
 <?php
-                $statuses = getPuzzleStatuses();
+
+
                 foreach ($puzzles as $pid) {
                         $puzzleInfo = getPuzzleInfo($pid);
 
@@ -200,6 +211,12 @@
                                 if ($filter[0] == "editor" && !isEditorOnPuzzle($filter[1], $pid)) {
                                   continue;
                                 }
+                                if ($filter[0] != "status" && $hidedeadpuzzles && $puzzleInfo["pstatus"] == $deadstatusid) {
+                                  continue;
+                                }
+                        }
+                        else if ($hidedeadpuzzles && $puzzleInfo["pstatus"] == $deadstatusid) {
+                                continue;
                         }
 
                         $title = $puzzleInfo["title"];

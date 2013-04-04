@@ -31,10 +31,11 @@
                 Enter Puzzle ID to edit: <input type="text" name="pid" />
                 <input type="submit" name="getPuzz" value="Get Puzzle" />
         </form>
+        <br>(Hiding dead puzzles)<br>
 <?php
 
         $puzzles = getPuzzlesInEditorQueue($uid);
-        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE);
+        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
 
         // End HTML
         foot();

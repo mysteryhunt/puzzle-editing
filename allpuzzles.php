@@ -74,7 +74,8 @@
         foreach ($puzzles as $pid) {
                 addSpoiledUserQuietly($uid, $pid);
         }
-        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, $filt);
+        echo "(Hiding dead puzzles by default)<br><br>";
+        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, $filt);
         
 
 

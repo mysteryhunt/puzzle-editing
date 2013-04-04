@@ -55,7 +55,7 @@
                 $availPuzzles = array_keys($sort);
                 $availPuzzles = array_reverse($availPuzzles);
         }
-        displayQueue($uid, $availPuzzles, TRUE, FALSE, FALSE, TRUE, FALSE);
+        displayQueue($uid, $availPuzzles, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, array());
 
 ?>
         <br/>
@@ -79,21 +79,21 @@
   */
 
         $testPuzzles = getActivePuzzlesInTestQueue($uid);
-        displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, TRUE, FALSE);
+        displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, array());
 
         echo '<br />';
         echo '<br />';
 
         echo '<h3>Finished Testing</h3>';
         $donePuzzles = getActiveDoneTestingPuzzlesForUser($uid);
-        displayQueue($uid, $donePuzzles, TRUE, FALSE, FALSE, TRUE, FALSE);
+        displayQueue($uid, $donePuzzles, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, array());
 
         echo '<br />';
         echo '<br />';
 
         echo '<h3>Puzzles Not Currently In Testing</h3>';
         $inactivePuzzles = getInactiveTestPuzzlesForUser($uid);
-        displayQueue($uid, $inactivePuzzles, FALSE, FALSE, FALSE, TRUE, FALSE);
+        displayQueue($uid, $inactivePuzzles, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, array());
 
         // End HTML
         foot();

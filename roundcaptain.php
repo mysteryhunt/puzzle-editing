@@ -20,7 +20,7 @@
         displayPuzzleStats($uid);
 
         $puzzles = getPuzzlesInRoundCaptainQueue($uid);
-        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE);
+        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, $array());
 
         // End HTML
         foot();

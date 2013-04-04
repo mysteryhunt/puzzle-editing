@@ -54,10 +54,10 @@
 
         echo "<h1>Puzzles needing testadmin</h1>";
         $testPuzzles = getPuzzlesNeedTestAdmin();
-        // The last argument is 'show tester identities'? It should be FALSE,
+        // The 5th argument is 'show tester identities'? It should be FALSE,
         // but we've gotten lazy about using the testadmin system, which means
         // I need to see testers for puzzles that have no testadmin.
-        displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, FALSE, TRUE);
+        displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, array());
 
         echo "<h1>Testing Summary</h1>";
         displayTestingSummary();
@@ -75,7 +75,7 @@ function displayTestQueue($uid)
         if ($puzzles == NULL) {
                 echo '<h3>No Puzzles Currently In Queue</h3>';
         } else {
-                displayQueue($uid, $puzzles, TRUE, TRUE, FALSE, FALSE, TRUE);
+                displayQueue($uid, $puzzles, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, array());
         }
 }
 
