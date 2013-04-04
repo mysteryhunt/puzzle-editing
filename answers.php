@@ -11,7 +11,7 @@
         head("answers");
 
         // Check for answers permissions
-        if (!isEditor($uid) && !isLurker($uid)) {
+        if (!canChangeAnswers($uid)) {
                 echo "You do not have permission for this page.";
                 foot();
                 exit(1);
