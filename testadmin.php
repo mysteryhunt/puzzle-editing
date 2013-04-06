@@ -12,7 +12,7 @@
         head("testadmin");
 
         // Check for permissions
-        if (!isTestingAdmin($uid) && !isLurker($uid)) {
+        if (!isTestingAdmin($uid)) {
                 echo "Sorry, you're not a testing admin.";
                 foot();
                 exit(1);
