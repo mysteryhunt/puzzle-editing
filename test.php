@@ -90,8 +90,8 @@ function maybeDisplayWarning($uid, $pid)
                                 testsolver.<br> Please
                                 use the puzzle version, and wiki page, that
                                 were current when you started solving, NOT the
-                                ones listed below (if they differ).<br>If in doubt, contact Glenn
-                                Willen or Robin Baur.
+                                ones listed below (if they differ).<br>If in doubt, email
+                                <?php echo HELP_EMAIL; ?>
                         </td>
                 </tr>
         </table>

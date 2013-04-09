@@ -16,8 +16,8 @@
 <h3>Not a factchecker</h3>
 <br>
 You are not currently a factchecker. (If you are a blind testsolver, please do
-not use this page. Instead, please contact gwillen@nerdnet.org if you wish to
-be a factchecker.)
+not use this page. 
+
 <br>
 <br>
 Anybody can factcheck -- please start by reading
