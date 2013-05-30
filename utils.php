@@ -7,10 +7,11 @@
 // If not, redirect to login page.
 function isLoggedIn()
 {
-        if (isset($_SESSION['uid'])) {
+        if (isset($_SESSION['uid']) && ($_SESSION['SITEURL'] == URL)) {
                 $_SESSION['time'] = time();
                 return $_SESSION['uid'];
         } else {
+                unset($_SESSION['uid']);
                 $_SESSION['redirect_to'] = $_SERVER['REQUEST_URI'];
                 header("Location: " . URL . "/login.php");
                 exit(0);

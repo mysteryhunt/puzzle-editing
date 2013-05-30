@@ -5,7 +5,10 @@
 
         if (isset($_SESSION['uid'])) {
                 head();
+                //simply do a refresh of session time and siteID for sanity
                 $_SESSION['time'] = time();
+                $_SESSION['SITEURL'] = URL;
+
                 if (!TRUST_REMOTE_USER) {
                         echo '<h3> You are logged in. Would you like to <a href="logout.php">log out</a>?</h3><br>';
                 } else {
@@ -91,6 +94,7 @@
                 // Store uid in SESSION
                 $r = mysql_fetch_assoc($result);
                 $_SESSION['uid'] = $r['uid'];
+                $_SESSION['SITEURL'] = URL;
 
                 if (TRUST_REMOTE_USER){
 		        header("Location: " . URL . "/login.php");
