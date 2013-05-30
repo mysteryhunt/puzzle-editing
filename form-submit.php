@@ -123,14 +123,18 @@
 
                 if (isset($_POST['addEditor'])) {
                         $add = $_POST['addEditor'];
-                        //subscribe($uid, $pid);
+			if (isAutoSubEditor($uid)) {
+                       	   subscribe($uid, $pid);
+			}			   
                 }
                 else
                         $add = NULL;
 
                 if (isset($_POST['removeEditor'])) {
                         $remove = $_POST['removeEditor'];
-                        //unsubscribe($uid, $pid);
+			if (isAutoSubEditor($uid)) {
+                           unsubscribe($uid, $pid);
+			}
                 }
                 else
                         $remove = NULL;

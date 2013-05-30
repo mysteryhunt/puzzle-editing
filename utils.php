@@ -165,6 +165,11 @@ function isEditor($uid)
         return hasPriv($uid, 'addToEditingQueue');
 }
 
+function isAutoSubEditor($uid)
+{
+	return hasPriv($uid, 'autoSubEditor');
+}
+
 function isRoundCaptain($uid)
 {
         return hasPriv($uid, 'addToRoundCaptainQueue');
@@ -2743,7 +2748,7 @@ function getAnswersForRound($rid)
 function getRoundForPuzzle($pid)
 {
         $sql = sprintf("SELECT rounds.* FROM rounds, answers_rounds, answers WHERE answers.pid='%s' and answers_rounds.aid = answers.aid and rounds.rid = answers_rounds.rid;", mysql_real_escape_string($pid));
-        return get_row_null($sql);
+        return get_rows_null($sql);
 }
 
 function getNumberOfEditorsOnPuzzles()
