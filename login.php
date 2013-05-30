@@ -5,7 +5,14 @@
 
         if (isset($_SESSION['uid'])) {
                 head();
-                echo '<h3> You are logged in. Would you like to <a href="logout.php">log out</a>?</h3>';
+                $_SESSION['time'] = time();
+                if (!TRUST_REMOTE_USER) {
+                        echo '<h3> You are logged in. Would you like to <a href="logout.php">log out</a>?</h3>';
+                } else {
+                        echo '<h3> A new puzzletron session has been initialized for you via single-sign-on authentication <br>';
+                        echo '(most likely because your previous session expired or this is your first visit to puzzletron in a while)<br>';
+                        echo 'Would you like to <a href="logout.php">log out</a>?</h3>';
+                }
 	} else if(TRUST_REMOTE_USER) {   //we are trusting apache remote_user header so use that
 		login($_SERVER['HTTP_REMOTE_USER'], "nopass");
 		// If login was successful, user was redirected to index.php
@@ -84,6 +91,10 @@
                 $r = mysql_fetch_assoc($result);
                 $_SESSION['uid'] = $r['uid'];
 
-		header("Location: " . URL . "/index.php");
+                if (TRUST_REMOTE_USER){
+		        header("Location: " . URL . "/login.php");
+                } else {
+                        header("Location: " . URL . "/index.php");
+                }
         }
 ?>
