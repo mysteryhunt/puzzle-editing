@@ -52,7 +52,7 @@
                 (actual mystery hunt-writing instance) 
         <?php } ?>
 		     </h1>
-		     <h2>Logged in: [<?php if (($_SESSION['uid']) != '') { echo getUserUsername($_SESSION['uid']); } ?>]</h2> 
+		     <h2>Logged in: [<?php if (($_SESSION['uid']) != '') { echo getUserUsername(isLoggedIn()); } ?>]</h2> 
                 </div>
                 <div style="text-align:right;width:auto;float:right;vertical-align:top;">
                      <h3 style="margin-top:0;"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>
@@ -80,6 +80,7 @@
 			<?php if(isset($_SESSION['uid']) && !isBlind($_SESSION['uid'])) {?> <li class='nav'><a class="<?php echo ($selnav == "puzzlestats.php") ? "selnav" : "nav" ?>" href='puzzlestats.php'>Stats</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && (canChangeAnswers($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers.php">Answers</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles.php">All Puzzles</a></li> <?php } ?>
+                        <?php if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editorlist") ? "selnav" : "nav" ?>" href="editorlist.php">Editor List</a></li> <?php } ?>
                 </ul>
 			<?php if(!TRUST_REMOTE_USER) { ?> <div style="float:right;"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout.php">Logout</a><?php } ?> </div> <?php } ?>
                 </div>
