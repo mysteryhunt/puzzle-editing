@@ -324,7 +324,7 @@ function displayPuzzleStats($uid)
                         <td class="puzz-stats">
                                 <table>
                                         <tr>
-                                                <th class="puzz-stats" colspan="2"><?php echo $totalNumberOfPuzzles; ?> Total Puzzles</th>
+                                                <th class="puzz-stats" colspan="2"><?php echo $totalNumberOfPuzzles; ?> Total Puzzles/Ideas</th>
                                         </tr>
                                         <tr>
                                                 <td class="puzz-stats">You Are Editor</td>
@@ -430,6 +430,25 @@ function displayPuzzleStats($uid)
 ?>
                                 </table>
                         </td>
+
+                        <td class="answer-stats">
+                                <table>
+                                        <tr>
+                                                <th class="answer-stats" colspan="2"> Answer Status</th>
+                                        </tr>
+                                        <tr>
+                                                <td class="answer-stats"> Total Answers </td>
+                                                <td class="answer-stats"> <?php echo numAnswers(); ?> </td>
+                                        </tr>
+                                        <tr>    
+                                                <td class="answer-stats"> Assigned </td>
+                                                <td class="answer-stats"> <?php echo answersAssigned(); ?> </td>
+                                        </tr>
+                                        <tr>    
+                                                <td class="answer-stats"> Unassigned </td>
+                                                <td class="answer-stats"> <?php echo (numAnswers() - answersAssigned()); ?> </td>
+                                        </tr>
+                                </table>
                         </tr>
                 </table>
 <?php

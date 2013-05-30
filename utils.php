@@ -658,6 +658,20 @@ function getAvailableAnswers()
         return $answers;
 }
 
+// Get count of total answers
+function numAnswers()
+{
+        $sql = sprintf("SELECT count(*) FROM answers");
+        return get_element($sql);
+}
+
+// Get count of answers that have been assigned
+function answersAssigned()
+{
+        $sql = sprintf("SELECT count(*) FROM answers WHERE pid IS NOT NULL");
+        return get_element($sql);
+}
+
 // Add and remove puzzle answers
 function changeAnswers($uid, $pid, $add, $remove)
 {

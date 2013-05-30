@@ -218,6 +218,14 @@ th.t-stats, td.t-stats {
 	padding-top: 0.1em;
 }
 
+th.answer-stats, td.answer-stats {
+	background-color: #EFE0E0;
+	border: none;
+	padding-bottom: 0.1em;
+	padding-top: 0.1em;
+}
+
+
 th.complete-stats, td.complete-stats {
 	background-color: #B4C1E0;
 	border: none;

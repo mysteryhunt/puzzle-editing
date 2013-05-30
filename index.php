@@ -18,6 +18,7 @@
         $hrs=floor($tth/(60 * 60))-(24*$days);
         $mins=floor($tth/(60))-(24*60*$days)-(60*$hrs);
 
+        displayPuzzleStats();
         echo "<h2>Latest Update:</h2>\n";
 
         // Display index page
