@@ -155,10 +155,15 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 ?>
         <table>
                 <tr>
-                        <td>
-                                <h1 style="margin: 0em;"><?php echo "(puzzle $pid): $title"; ?></h1>
-                        </td>
+                        <td><h1>
+                        <?php echo "(puzzle #$pid): $title <br>"; 
+                        
+                        $puzzleround=getPuzzleRound($pid);
+                       
+                        echo "Round: $puzzleround"; ?>
+                        </h1></td>
                 </tr>
+                </h1>
                 <?php displayAnswers($uid, $pid); ?>
                 <tr class='hideFromTest'>
                         <td style="background-color: #F0E8E0;">
