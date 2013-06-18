@@ -1573,7 +1573,9 @@ function addEditors($uid, $pid, $add)
                 sendEmail($editor, $subject, $message, $link);
 
                 // Subscribe editors to comments on their puzzles
-                // subscribe($editor, $pid);
+		if (isAutoSubEditor($editor)){
+                   subscribe($editor, $pid);
+		}
         }
 
         $comment .= ' as editor';
