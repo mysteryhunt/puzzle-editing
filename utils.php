@@ -2915,7 +2915,7 @@ function computeTestsolverScores()
 
 function getPuzzleRound($pid)
 {
-  $sql = sprintf("SELECT aid FROM answers WHERE pid = %d", $pid);
+  $sql = sprintf("SELECT aid FROM answers WHERE pid = %d LIMIT 1", $pid);
   $aid = get_element_null($sql); 
   if ($aid == NULL) { 
     return ("none"); 
