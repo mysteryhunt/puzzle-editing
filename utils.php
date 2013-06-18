@@ -2913,6 +2913,19 @@ function computeTestsolverScores()
 
 }
 
+function getPuzzleRound($pid)
+{
+  $sql = sprintf("SELECT aid FROM answers WHERE pid = %d", $pid);
+  $aid = get_element_null($sql); 
+  if ($aid == NULL) { 
+    return ("none"); 
+  }
+  $sql = sprintf("SELECT rounds.name FROM rounds,answers_rounds WHERE rounds.rid=answers_rounds.rid AND answers_rounds.aid=%d", $aid);
+  $roundname=get_element($sql);
+
+  return($roundname);
+}
+
 function utilsError($msg)
 {
         mysql_query('ROLLBACK');
