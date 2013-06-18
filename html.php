@@ -181,6 +181,7 @@
                                 <th class="puzzidea">ID</th>
                                 <th class="puzzidea">Title</th>
                                 <th class="puzzidea">Puzzle Status</th>
+                                <th class="puzzidea">Round</th>
                                 <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
                                 <?php if ($showNotes) {echo '<th class="puzzidea">Status Notes</th>';} ?>
                                 <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Answer</th>';} ?>
@@ -242,6 +243,7 @@
 ?>
                                 <td class='puzzidea'><?php echo $title; ?></td>
                                 <td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
+                                <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>
                                 <?php if ($showAnswerAndSummary) {echo "<td class='puzzidea'>" . $puzzleInfo["summary"] . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
                                 <?php if ($showAnswerAndSummary) {echo "<td class='puzzidea'>" . getAnswersForPuzzleAsList($pid) . "</td>";} ?>
