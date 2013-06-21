@@ -11,6 +11,7 @@
         head("editorlist");
 
         echo '<h1 style="margin-top: 0em; margin-bottom: 0em;">List of Editor Stats</h1>';
+
         echo '<table>';
 
         $counts = getEditorStats();
@@ -21,6 +22,8 @@
         }
 
         echo '</table>';
+
+	echo '<iframe src="http://www.google.com/calendar/embed?src=stormynight.org_9eiihk4r23sgbvlurmf8rn9kp4%40group.calendar.google.com&ctz=America/Los_Angeles" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>';
 
         foot();
 ?>

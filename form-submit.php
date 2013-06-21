@@ -125,7 +125,7 @@
                         $add = $_POST['addEditor'];
 			if (isAutoSubEditor($uid)) {
                        	   subscribe($uid, $pid);
-			}			   
+			}
                 }
                 else
                         $add = NULL;
