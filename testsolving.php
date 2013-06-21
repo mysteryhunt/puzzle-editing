@@ -27,7 +27,7 @@
         </form>
 
         <br />
-
+<?php if (ALLOW_TESTSOLVE_PICK) { ?>
         <h2>Available for you to test (In order of priority):</small></h2>
         <b><font color="red">IMPORTANT:</font> Clicking a puzzle below will
         spoil you on it. Please click judiciously.</b>
@@ -62,6 +62,9 @@
         <br/>
         <hr/>
         <br/>
+<?php } else {?>
+        <h2>Consult the testsolving assignments to find a puzzle id to enter above.</h2>
+<?php } ?>
         <h3>Currently Testing -- (if you're done, please submit a report, even an empty one):</h3>
 <?php
 
