@@ -77,7 +77,6 @@
 			<?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "factcheck") ? "selnav" : "nav" ?>" href="factcheck.php">Fact Check</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving.php">Testsolving</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && isTestingAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin.php">Testing Admin</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && !isBlind($_SESSION['uid'])) {?> <li class='nav'><a class="<?php echo ($selnav == "puzzlestats") ? "selnav" : "nav" ?>" href='puzzlestats.php'>Stats</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && (canChangeAnswers($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers.php">Answers</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles.php">All Puzzles</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editorlist") ? "selnav" : "nav" ?>" href="editorlist.php">Editor List</a></li> <?php } ?>
@@ -165,15 +164,9 @@
                         return;
                 }
                 $statuses = getPuzzleStatuses();
+
+                $deadstatusid = getDeadStatusId();
                 
-                // terrible hack to figure out which status ID is "dead"
-                // so we can omit them by default from queue
-                $deadstatusid = NULL;
-                foreach ($statuses as $sid => $sname) {
-                        if (strtoupper($sname) == "DEAD") {
-                                $deadstatusid = $sid;
-                        }
-                }
 ?>
                 <table class="tablesorter">
                 <thead>
@@ -326,7 +319,7 @@ function displayPuzzleStats($uid)
                         <td class="puzz-stats">
                                 <table>
                                         <tr>
-                                                <th class="puzz-stats" colspan="2"><?php echo $totalNumberOfPuzzles; ?> Total Puzzles/Ideas</th>
+                                                <th class="puzz-stats" colspan="2"><?php echo $totalNumberOfPuzzles; ?> Total Live Puzzles/Ideas</th>
                                         </tr>
                                         <tr>
                                                 <td class="puzz-stats">You Are Editor</td>

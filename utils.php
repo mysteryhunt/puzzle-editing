@@ -2565,8 +2565,9 @@ function getMostRecentDraftNameForPuzzle($pid) {
                 return $file['filename'];
 }
 
-function getAllPuzzles() {
-        $sql = "SELECT id FROM puzzle_idea";
+function getAllPuzzles() { 
+        $deadpuzzleid = getDeadStatusId(); 
+        $sql = sprintf("SELECT id FROM puzzle_idea where pstatus != %d", $deadpuzzleid);
         $puzzles = get_elements_null($sql);
 
         return sortByLastCommentDate($puzzles);
@@ -2770,9 +2771,10 @@ function getRoundForPuzzle($pid)
 
 function getNumberOfEditorsOnPuzzles()
 {
-        $sql = 'SELECT COUNT(editor_queue.uid) FROM puzzle_idea
-                        LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid
-                        GROUP BY id';
+        $deadstatusid = getDeadStatusId();
+        $sql = sprintf('SELECT COUNT(editor_queue.uid) FROM puzzle_idea
+                        LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid WHERE puzzle_idea.pstatus != %d
+                        GROUP BY id', $deadstatusid);
         $numbers = get_elements($sql);
 
         $count = array_count_values($numbers);
@@ -2926,6 +2928,20 @@ function getPuzzleRound($pid)
   $roundname=get_element($sql);
 
   return($roundname);
+}
+
+function getDeadStatusId()
+{
+  // terrible hack to figure out which status ID is "dead"
+  // so we can omit them by default from queue
+  $statuses = getPuzzleStatuses();
+  $deadstatusid = NULL;
+  foreach ($statuses as $sid => $sname) {
+                         if (strtoupper($sname) == "DEAD") {
+                                 $deadstatusid = $sid;
+                         }
+  }
+  return ($deadstatusid);
 }
 
 function utilsError($msg)
