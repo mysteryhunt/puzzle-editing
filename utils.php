@@ -643,7 +643,7 @@ function getAnswersForPuzzleAsList($pid)
         $answers = get_elements_null($sql);
 
         if ($answers == NULL)
-                return '(none)';
+                return '';
         else
                 return implode(', ', $answers);
 }
@@ -2918,7 +2918,7 @@ function getPuzzleRound($pid)
   $sql = sprintf("SELECT aid FROM answers WHERE pid = %d LIMIT 1", $pid);
   $aid = get_element_null($sql); 
   if ($aid == NULL) { 
-    return ("none"); 
+    return (""); 
   }
   $sql = sprintf("SELECT rounds.name FROM rounds,answers_rounds WHERE rounds.rid=answers_rounds.rid AND answers_rounds.aid=%d", $aid);
   $roundname=get_element($sql);
