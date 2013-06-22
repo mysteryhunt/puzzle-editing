@@ -134,6 +134,12 @@ td.puzzidea {
 	border-bottom: solid 1px;
 }
 
+td.puzzideasecure {
+        border-top: solid 1px;
+        border-bottom: solid 1px;
+        background-color: #000000;
+}
+
 textarea.register {
 	width: 500px;
 	height: 100px;

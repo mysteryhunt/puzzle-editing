@@ -37,7 +37,7 @@
         }
 
         // Hide puzzle info from testing admins, to prevent spoilage
-        $hidePuzzleInfo = (isTestingAdmin($uid) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid));
+        $hidePuzzleInfo = ((isServerAdmin($uid) || isTestingAdmin($uid)) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid));
 
         // If Testing Admin, hide answer, summary, and description
         if ($hidePuzzleInfo) {
