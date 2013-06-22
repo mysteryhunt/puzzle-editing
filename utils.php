@@ -2987,12 +2987,19 @@ function displayTestingFeed()
       echo "<tr class='comment' id='comm$id'>";
     }
 
-    echo "<td class='$type"."Comment'>";
-    echo "Puzzle ID: <a href=puzzle.php?pid=" . $pid . ">$pid" . "</a>";
+    echo "\n<td class='$type"."Comment'>";
+    echo "Puzzle ID: <a href='puzzle.php?pid=" . $pid . "'>$pid" . "</a>";
     echo "<br />Puzzle: " . getTitle($pid);
     echo "<br />$timestamp<br />";
-    echo "<td class='$type"."Comment'>";
-    echo nl2br($comment['comment']);
+    echo "\n<td class='$type"."Comment'>";
+    if ($type == 'Testsolver') {
+        $splitcomment=explode(" ", $comment['comment'], 4);
+        if ($splitcomment[0] == "Correct") echo "<b>";
+        echo $splitcomment[0] ." Answer Attempt ";
+        if ($splitcomment[0] == "Correct") echo "</b>";
+    } else {
+        echo $comment['comment'];
+    }
     echo '</td>';
     echo '</tr>';
     }
