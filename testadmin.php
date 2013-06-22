@@ -59,8 +59,6 @@
         // I need to see testers for puzzles that have no testadmin.
         displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, array());
 
-        echo "<h1>Testing Summary</h1>";
-        displayTestingSummary();
 
         echo "<h1>Testing Feed</h1>";
         echo "<table>";
@@ -68,6 +66,9 @@
         displayTestingFeed();
         echo "</div>";
         echo "</table>";
+
+        echo "<h1>Testing Summary</h1>";
+        displayTestingSummary();
 
         // End HTML
         foot();
