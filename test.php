@@ -235,13 +235,51 @@ function displayFeedbackForm($uid, $pid)
                 <tr>
                         <td>
                         Describe what you tried. <br />
-                        <textarea style="width:50em; height: 25em;" name="tried"></textarea>
+                        <textarea style="width:50em; height: 10em;" name="tried"></textarea>
                         </td>
                 </tr>
                 <tr>
                         <td>
-                        What did you like/dislike about this puzzle? How hard do you think it is? Is there anything you think should be changed?<br />
+                        What did you like/dislike about this puzzle? </br>
+                        Is there anything you think should be changed with the puzzle?</br> 
+                        Is there anything wrong with the technical details/formatting of the puzzle?<br />
                         <textarea style="width:50em; height: 25em;" name="liked"></textarea>
+                        </td>
+                </tr>
+                <tr>
+                        <td>
+                        Were there any special skills required to solve this puzzle?<br />
+                        <textarea style="width:50em; height: 3em;" name="skills"></textarea>
+                        </td>
+                </tr>
+        
+                <tr>
+                        <td>
+                        Describe a breakthrough point and what in the puzzle lead you to it<br />
+                        <textarea style="width:50em; height: 5em;" name="breakthrough"></textarea>
+                        </td>
+                </tr>
+                <tr>
+                        <td>
+                        Rate the overall fun of this puzzle. <SELECT NAME="fun">
+                        <OPTION>1</OPTION>
+                        <OPTION>2</OPTION>
+                        <OPTION SELECTED> 3</OPTION>
+                        <OPTION>4</OPTION>
+                        <OPTION>5</OPTION>
+                        </SELECT>
+                        </td>
+                </tr>
+                        
+                <tr>
+                        <td>
+                        Rate the overall difficulty of this puzzle. <SELECT NAME="difficulty">
+                        <OPTION>1</OPTION>
+                        <OPTION>2</OPTION>
+                        <OPTION SELECTED> 3</OPTION>
+                        <OPTION>4</OPTION>
+                        <OPTION>5</OPTION>
+                        </SELECT>
                         </td>
                 </tr>
                 <tr>
@@ -269,7 +307,7 @@ function displayPrevFeedback($uid, $pid)
                 else
                         $done = 'yes';
 
-                $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['when_return']);
+                $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
                 $purifier = new HTMLPurifier();
                 $cleanComment = $purifier->purify($feedback);
 

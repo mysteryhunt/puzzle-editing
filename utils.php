@@ -2700,11 +2700,11 @@ function checkAnswer($pid, $attempt)
         return FALSE;
 }
 
-function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $when_return)
+function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return)
 {
         mysql_query('START TRANSACTION');
 
-        $comment = createFeedbackComment($done, $time, $tried, $liked, $when_return);
+        $comment = createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
         addComment($uid, $pid, $comment, FALSE, TRUE);
 
         if (strcmp($done, 'no') == 0) {
@@ -2713,11 +2713,14 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $when_return)
         } else
                 $done = 0;
 
-        $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, when_return)
-                        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+        $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
+                        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
                         mysql_real_escape_string($uid), mysql_real_escape_string($pid),
                         mysql_real_escape_string($done), mysql_real_escape_string($time),
-                        mysql_real_escape_string($tried), mysql_real_escape_string($liked), mysql_real_escape_string($when_return));
+                        mysql_real_escape_string($tried), mysql_real_escape_string($liked),
+                        mysql_real_escape_string($skills), mysql_real_escape_string($breakthrough),
+                        mysql_real_escape_string($fun), 
+                        mysql_real_escape_string($difficulty), mysql_real_escape_string($when_return));
         query_db($sql);
 
         mysql_query('COMMIT');
@@ -2735,7 +2738,7 @@ function doneTestingPuzzle($uid, $pid)
         query_db($sql);
 }
 
-function createFeedbackComment($done, $time, $tried, $liked, $when_return)
+function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return)
 {
         $comment = "
         <p><strong>Do you intend to return to this puzzle?</strong></p>
@@ -2746,8 +2749,18 @@ function createFeedbackComment($done, $time, $tried, $liked, $when_return)
         <p>$time</p><br />
         <p><strong>Describe what you tried.</p></strong>
         <p>$tried</p><br />
-        <p><strong>What did you like/dislike about this puzzle? How hard do you think it is? Is there anything you think should be changed?</strong></p>
-        <p>$liked</p>";
+        <p><strong>What did you like/dislike about this puzzle? </br>
+        Is there anything you think should be changed with the puzzle?</br>
+        Is there anything wrong with the technical details/formatting of the puzzle?</strong><br /></p>
+        <p>$liked</p><br />
+        <p><strong>Were there any special skills required to solve this puzzle?</strong></p>
+        <p>$skills</p><br />
+        <p><strong>What was the breakthrough point for you in this puzzle?</strong></p>
+        <p>$breakthrough</p><br />
+        <p><strong>How fun was this puzzle?</p></strong></p>
+        <p>$fun</p><br />
+        <p><strong>How would you rate the difficulty of this puzzle?</p></strong></p>
+        <p>$difficulty</p>";
         return $comment;
 }
 
