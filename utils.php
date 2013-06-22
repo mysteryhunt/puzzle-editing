@@ -2055,7 +2055,7 @@ function getTestFeedComments()
         $sql = "SELECT comments.id, comments.uid, comments.comment, comments.type,
                                         comments.timestamp, comments.pid, comment_type.name FROM
                                         comments LEFT JOIN comment_type ON comments.type=comment_type.id
-                                        WHERE comments.comment LIKE '%In Testing%' OR comments.comment LIKE '%answer attempt%' ORDER BY comments.timestamp DESC LIMIT 50";
+                                        WHERE (comments.comment LIKE '%In Testing%' OR comments.comment LIKE '%answer attempt%') AND (comment_type.name = 'Testsolver' OR comment_type.name = 'Server') ORDER BY comments.timestamp DESC LIMIT 50";
         return get_rows_null($sql);
 }
 
