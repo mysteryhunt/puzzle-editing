@@ -9,7 +9,7 @@
 
         // Start HTML
         head("allpuzzles");
-
+        echo '<style type="text/css">.puzzideasummary {background-color: #000000;}</style>';
         // Check for lurker permissions
         if (!canSeeAllPuzzles($uid)) {
                 echo "You do not have permission for this page.";
@@ -69,11 +69,7 @@
 <?php
 
         $puzzles = getAllPuzzles();
-        //BOOM you're spoiled on them all
 	$uid = isLoggedIn();
-        foreach ($puzzles as $pid) {
-                addSpoiledUserQuietly($uid, $pid);
-        }
         echo "(Hiding dead puzzles by default)<br><br>";
         displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, $filt);
         
