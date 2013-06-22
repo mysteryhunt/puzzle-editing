@@ -2050,6 +2050,14 @@ function getComments($pid)
         return get_rows_null($sql);
 }
 
+function getTestFeedComments()
+{
+        $sql = "SELECT comments.id, comments.uid, comments.comment, comments.type,
+                                        comments.timestamp, comments.pid, comment_type.name FROM
+                                        comments LEFT JOIN comment_type ON comments.type=comment_type.id
+                                        WHERE comments.comment LIKE '%In Testing%' OR comments.comment LIKE '%answer attempt%' ORDER BY comments.timestamp DESC LIMIT 50";
+        return get_rows_null($sql);
+}
 
 function isSubbedOnPuzzle($uid, $pid)
 {
@@ -2959,6 +2967,35 @@ function getDeadStatusId()
                          }
   }
   return ($deadstatusid);
+}
+
+function displayTestingFeed()
+{
+  $comments = getTestFeedComments();
+  if ($comments == NULL)
+    return;
+ 
+  foreach ($comments as $comment){
+    $id = $comment['id'];
+    $pid = $comment['pid'];
+    $timestamp = $comment['timestamp'];
+    $type = $comment['name'];
+ 
+    if ($lastVisit == NULL || strtotime($lastVisit) < strtotime($timestamp)) {
+      echo "<tr class='comment-new' id='comm$id'>";
+    } else {
+      echo "<tr class='comment' id='comm$id'>";
+    }
+
+    echo "<td class='$type"."Comment'>";
+    echo "Puzzle ID: <a href=puzzle.php?pid=" . $pid . ">$pid" . "</a>";
+    echo "<br />Puzzle: " . getTitle($pid);
+    echo "<br />$timestamp<br />";
+    echo "<td class='$type"."Comment'>";
+    echo nl2br($comment['comment']);
+    echo '</td>';
+    echo '</tr>';
+    }
 }
 
 function utilsError($msg)

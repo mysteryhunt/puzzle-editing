@@ -62,6 +62,13 @@
         echo "<h1>Testing Summary</h1>";
         displayTestingSummary();
 
+        echo "<h1>Testing Feed</h1>";
+        echo "<table>";
+        echo "<div class='comments'>";
+        displayTestingFeed();
+        echo "</div>";
+        echo "</table>";
+
         // End HTML
         foot();
 
