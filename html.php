@@ -308,7 +308,7 @@ function displayPuzzleStats($uid)
 {
         $max_rows = 6;
 
-        $totalNumberOfPuzzles = count(getAllPuzzles());
+        $totalNumberOfPuzzles = count(getAllLivePuzzles());
         $numberOfEditors = getNumberOfEditorsOnPuzzles();
         $moreThanThree = $totalNumberOfPuzzles - $numberOfEditors['0'] - $numberOfEditors['1'] - $numberOfEditors['2'] - $numberOfEditors['3'];
 

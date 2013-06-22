@@ -2566,10 +2566,14 @@ function getMostRecentDraftNameForPuzzle($pid) {
 }
 
 function getAllPuzzles() { 
+        $sql = "SELECT id FROM puzzle_idea";
+        $puzzles = get_elements_null($sql);
+        return sortByLastCommentDate($puzzles);
+}
+function getAllLivePuzzles() { 
         $deadpuzzleid = getDeadStatusId(); 
         $sql = sprintf("SELECT id FROM puzzle_idea where pstatus != %d", $deadpuzzleid);
         $puzzles = get_elements_null($sql);
-
         return sortByLastCommentDate($puzzles);
 }
 
@@ -2813,7 +2817,7 @@ function getNumberOfPuzzlesForUser($uid)
         $numbers['doneTester'] = 0;
         $numbers['available'] = 0;
 
-        $puzzles = getAllPuzzles();
+        $puzzles = getAllLivePuzzles();
 
         foreach ($puzzles as $pid) {
                 if (isAuthorOnPuzzle($uid, $pid)) {
