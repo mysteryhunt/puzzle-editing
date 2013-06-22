@@ -20,7 +20,8 @@
         $pid = $_GET['pid'];
 
         // Check permissions
-        if (!isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid)) {
+        if (!isTestingAdmin($uid)) {
+            if (!isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid)) {
                 if (!canTestPuzzle($uid, $pid)) {
                         echo "You do not have permission to test this puzzle.";
                         foot();
@@ -28,6 +29,7 @@
                 } else {
                         addPuzzleToTestQueue($uid, $pid);
                 }
+            }
         }
 
         $title = getTitle($pid);

@@ -333,6 +333,11 @@
                 $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
+                if (isTestingAdmin($uid)) {
+                        header("Location: " . URL . "/test.php?pid=" . $pid);
+                        exit(0);
+                }
+
                 if (canTestPuzzle($uid, $pid, TRUE) && !isTesterOnPuzzle($uid, $pid)) {
                         addPuzzleToTestQueue($uid, $pid);
 			header("Location: " . URL . "/test.php?pid=" . $pid);
