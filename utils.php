@@ -708,12 +708,30 @@ function addAnswers($uid, $pid, $add)
         addComment($uid, $pid, $comment, TRUE);
 }
 
+function removeAnswerKill($uid, $pid, $ans)
+{
+        //echo "called: removeAnswerKill with ansid= $ans<br>";
+
+        // Check that this answer is assigned to this puzzle
+        if (!isAnswerOnPuzzle($pid, $ans))
+                        utilsError(getAnswerWord($ans) . " is not assigned to puzzle $pid");
+
+        // Remove answer from puzzle
+        $sql = sprintf("UPDATE answers SET pid=NULL WHERE aid='%s'",
+                                mysql_real_escape_string($ans));
+        query_db($sql);
+
+        $comment = "Unassigned answer";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+        
 function removeAnswers($uid, $pid, $remove)
 {
         if ($remove == NULL)
                 return;
 
-        if (!canChangeAnswers($uid))
+        if (!isAuthorOnPuzzle($uid, $pid) && !canChangeAnswers($uid))
                 utilsError("You do not have permission to remove answers.");
 
         foreach ($remove as $ans) {
@@ -1585,6 +1603,43 @@ function addEditors($uid, $pid, $add)
         addComment($uid, $pid, $comment, TRUE);
 }
 
+function removeEditorKill($uid, $pid, $editor)
+{
+        //echo "called removeEditorKill with editorid = $editor<br>";
+
+        if (!isEditorOnPuzzle($editor, $pid))
+                utilsError(getUserName($editor) . " is not an editor on puzzle $pid");
+
+        $name = getUserName($uid);
+
+
+        $comment = 'Removed ';
+        // Remove editor from puzzle
+        $sql = sprintf("DELETE FROM editor_queue WHERE uid='%s' AND pid='%s'",
+                        mysql_real_escape_string($editor), mysql_real_escape_string($pid));
+        query_db($sql);
+
+        // Add to comment
+        if ($comment != 'Removed ')
+                $comment .= ', ';
+        $comment .= getUserName($editor);
+
+        // Email old editor
+        $title = getTitle($pid);
+        $subject = "Editor on $title (puzzle $pid)";
+        $message = "$name removed you as an editor on $title (puzzle $pid) by killing the puzzle.";
+        $link = URL . "/editor.php";
+        sendEmail($editor, $subject, $message, $link);
+
+        $comment .= ' as editor';
+        if (count($remove) > 1)
+                $comment .= "s";
+
+        addComment($uid, $pid, $comment, TRUE);
+        
+}
+        
+
 function removeEditors($uid, $pid, $remove)
 {
         if ($remove == NULL)
@@ -1594,6 +1649,7 @@ function removeEditors($uid, $pid, $remove)
                 utilsError("You do not have permission to modify puzzle $pid.");
 
         $name = getUserName($uid);
+
 
         $comment = 'Removed ';
         foreach ($remove as $editor) {
@@ -1860,8 +1916,26 @@ function changeStatus($uid, $pid, $status)
                 // factchecking.
                 emailFactcheckers($pid);
         }
-
+        
+        // reset approval status on puzz status change
         flushPuzzApprovals($pid);
+
+        if ($status == getDeadStatusId()) {
+                //return answer words to pool if we're killing a puzzle
+                foreach (getAnswersForPuzzle($pid) as $akey => $answer){
+                  //echo "removing answer id $akey<br>";
+                  removeAnswerKill($uid, $pid, $akey);
+                }
+                
+                //remove editors from puzzle if we're killing it
+                foreach (getEditorsForPuzzle($pid) as $ekey => $editor){
+                  //echo "removing editor id $ekey<br>";
+                  removeEditorKill($uid, $pid, $ekey);
+                }
+
+        //utilsError("Debug Breakpoint");
+        }
+               
 
 }
 
@@ -2953,6 +3027,11 @@ function getPuzzleRound($pid)
   $roundname=get_element($sql);
 
   return($roundname);
+}
+
+function isPuzzleDead($pid)
+{
+ return(getStatusForPuzzle($pid) == getDeadStatusId());
 }
 
 function getDeadStatusId()

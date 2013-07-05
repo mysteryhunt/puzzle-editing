@@ -314,6 +314,31 @@ td.statusInfo {
 	padding: 0em 1em 0em 0em;
 }
 
+div.creditsInfo {
+	padding-top: 1em;
+}
+
+td.creditsInfo {
+	padding: 0em 1em 0em 0em;
+}
+
+div.wikiInfo {
+	padding-top: 1em;
+}
+
+td.wikiInfo {
+	padding: 0em 1em 0em 0em;
+}
+div.testsolveInfo {
+	padding-top: 1em;
+}
+
+td.testsolveInfo {
+	padding: 0em 1em 0em 0em;
+}
+
+
+
 div.fileInfo {
 	padding-top: .75em;
 }
@@ -332,6 +357,16 @@ td.fileInfoOld {
 
 div.comments {
 	padding-top: 2em;
+}
+
+div.killpuzzle {
+        color: #FF0000;
+        padding: 0em;
+
+}
+
+td.killpuzzle {
+        padding: 0em 1em 0em 0em;
 }
 
 td.sd {

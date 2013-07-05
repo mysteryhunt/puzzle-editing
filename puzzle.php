@@ -122,6 +122,11 @@
         displayPuzzApproval($uid, $pid);
         echo "</div>";
 
+        echo "<br />";
+        echo "<div class='killpuzzle'>";
+        displayKillPuzzle($uid, $pid);
+        echo "</div>";
+
         // Display & add comments
         echo "<div class='comments'>";
         echo "<table>";
@@ -849,6 +854,27 @@ function displayFileList ($uid, $pid, $type) {
                 if ($first)
                         $first = FALSE;
         }
+}
+
+function displayKillPuzzle($uid, $pid)
+{
+        if ((isAuthorOnPuzzle($uid, $pid)) && !(isPuzzleDead($pid))){
+?>
+<table style="border:1px solid black;">
+<tr>
+<td><strong>Kill This Puzzle:</strong></td>
+<td>
+<form method="post" action="form-submit.php">
+        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+        <input type="submit" name="killPuzzle" value="Really Kill" />
+</form>
+</td>
+</tr>
+</table>
+<?php
+}
+return;
 }
 
 function displayPostProd($uid, $pid, $pp)
