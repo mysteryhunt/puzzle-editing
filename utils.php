@@ -2091,7 +2091,7 @@ function uploadFiles($uid, $pid, $type, $file) {
 
                         addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.",TRUE);
                 } else {
-                        $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
+                        $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited)";
                 }
         }
 
@@ -2105,7 +2105,7 @@ function uploadFiles($uid, $pid, $type, $file) {
 
                         addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
                 } else {
-                        $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB) " . serialize($file);
+                        $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited) " . serialize($file);
                 }
         }
 

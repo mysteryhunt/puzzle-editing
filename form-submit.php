@@ -464,7 +464,6 @@
         echo HELP_EMAIL;
         echo '\">the Server Administrators</a> for help. <br />';
 
-        echo 'Note: uploaded file size is limited to 25MB. <br />';
         foot();
 
 
