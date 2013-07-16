@@ -96,6 +96,7 @@
                         $teamassignments["$pid"] = $testteam;
 
                 }
+        asort($teamassignments);
         return($teamassignments);
         }
 ?>        
