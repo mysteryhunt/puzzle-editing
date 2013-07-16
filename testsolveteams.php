@@ -56,7 +56,7 @@
                 echo "<input type='hidden' name='pid' value='$pid'>\n";
                 echo "<input type='hidden' name='notfrompuzzle' value='YES'>";
                 echo "<SELECT NAME='tid'>\n";
-                if ($teamid == NULL) echo "<option value=''>";
+                if ($testteam == NULL) echo "<option value=''>";
                 $testteams = getTestTeams();
                 foreach ($testteams as $t) {
                         $tid = $t['tid'];
@@ -88,7 +88,7 @@
         }
 
         function getPuzzleTeamsList(){
-                $puzzles = getAllPuzzles();
+                $puzzles = getPuzzlesInTesting();
                 foreach ($puzzles as $p) {
                         $pid = $p;
                         $testteam = getPuzzleTestTeam($pid);
