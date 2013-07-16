@@ -68,7 +68,7 @@
         
                 $myteam = getUserTestTeamID($uid);
                 if ($myteam == NULL) {
-                        echo "<h2>You are not assigned to a testsolve team at this time. Talk to a testing admin. No puzzles listed.</h2>";
+                        echo "<h2>Puzzletron doesn't know your testsolve team at this time. Consult the testsolve team assignment spreadsheet manually for an ID to enter above. No puzzles listed.</h2>";
                 } else {
                 $myteamname = getTestTeamName($myteam);
                 echo "<h2>Listing available puzzles to testsolve for team $myteamname </h2>";
