@@ -17,6 +17,30 @@
                 exit(1);
         }
 
+        echo "<h1>Testsolve Team Puzzle Assignments</h1>";
+        echo "<table>";
+        echo "<tr><th>Puzzle ID</th><th>TestSolve Team</th></tr>\n";
+        $puzzles = getPuzzleTeamsList();
+        foreach ($puzzles as $pid  => $testteam) {
+                echo "<tr><td>$pid</td>\n";
+                echo "<td><form method='post' action='form-submit.php'>\n";
+                echo "<input type='hidden' name='pid' value='$pid'>\n";
+                echo "<input type='hidden' name='notfrompuzzle' value='YES'>";
+                echo "<SELECT NAME='tid'>\n";
+                if ($testteam == NULL) echo "<option value=''>";
+                $testteams = getTestTeams();
+                foreach ($testteams as $t) {
+                        $tid = $t['tid'];
+                        $teamname = $t['name'];
+                        echo "<option value='$tid' ";
+                        if ($tid == $testteam) { echo "SELECTED "; }
+                        echo ">$teamname\n";
+                }
+
+                echo "</select><input type='submit' value='set' name='setPuzzleTestTeam'></form></td><tr>\n";
+        }
+        echo "</table>";
+        
         echo "<h1>Testsolve Team People Assignments</h1>";
         
         echo "<table>";
@@ -46,30 +70,6 @@
         
         echo "</table>";
 
-        echo "<h1>Testsolve Team Puzzle Assignments</h1>";
-        echo "<table>";
-        echo "<tr><th>Puzzle ID</th><th>TestSolve Team</th></tr>\n";
-        $puzzles = getPuzzleTeamsList();
-        foreach ($puzzles as $pid  => $testteam) {
-                echo "<tr><td>$pid</td>\n";
-                echo "<td><form method='post' action='form-submit.php'>\n";
-                echo "<input type='hidden' name='pid' value='$pid'>\n";
-                echo "<input type='hidden' name='notfrompuzzle' value='YES'>";
-                echo "<SELECT NAME='tid'>\n";
-                if ($testteam == NULL) echo "<option value=''>";
-                $testteams = getTestTeams();
-                foreach ($testteams as $t) {
-                        $tid = $t['tid'];
-                        $teamname = $t['name'];
-                        echo "<option value='$tid' ";
-                        if ($tid == $testteam) { echo "SELECTED "; }
-                        echo ">$teamname\n";
-                }
-
-                echo "</select><input type='submit' value='set' name='setPuzzleTestTeam'></form></td><tr>\n";
-        }
-        echo "</table>";
-        
 
 
         foot();
