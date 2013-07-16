@@ -102,9 +102,33 @@
         echo "</div>";
 
         // List testsolve requests
+        if (USING_TESTSOLVE_REQUESTS) {
         echo "<div class='testsolveInfo'>";
         displayTestsolveRequests($uid, $pid);
         echo "</div>";
+        }
+
+        // TestsolveTeam Stuff
+        if (USING_TESTSOLVE_TEAMS){
+        echo "<form method='post' action='form-submit.php'>";
+        echo "<div class='testsolveInfo'>";
+        echo "<strong>TestSolve Team:</strong>\n";
+        echo "<input type='hidden' name='pid' value='$pid'>\n";
+        echo "<SELECT NAME='tid'>\n";
+        $teamid = getPuzzleTestTeam($pid);
+        if ($teamid == NULL) echo "<option value=''>";
+        $testteams = getTestTeams();
+        foreach ($testteams as $t) {
+                        $tid = $t['tid'];
+                        $teamname = $t['name'];
+                        echo "<option value='$tid' ";
+                        if ($tid == $teamid) { echo "SELECTED "; }
+                        echo ">$teamname\n";
+        }
+
+        echo "</select><input type='submit' value='set' name='setPuzzleTestTeam'></form>\n";
+        echo "</div>"; 
+        }
 
         // Show files
         echo "<div class='fileInfo'>";

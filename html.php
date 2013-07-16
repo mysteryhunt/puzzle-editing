@@ -77,6 +77,7 @@
 			<?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "factcheck") ? "selnav" : "nav" ?>" href="factcheck.php">Fact Check</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving.php">Testsolving</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && isTestingAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin.php">Testing Admin</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && isTestingAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolveteams") ? "selnav" : "nav" ?>" href="testsolveteams.php">TS Team Assignments</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && (canChangeAnswers($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers.php">Answers</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles.php">All Puzzles</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editorlist") ? "selnav" : "nav" ?>" href="editorlist.php">Editor List</a></li> <?php } ?>

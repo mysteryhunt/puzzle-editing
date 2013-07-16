@@ -62,10 +62,28 @@
         <br/>
         <hr/>
         <br/>
-<?php } else {?>
-        <h2>Consult the testsolving assignments to find a puzzle id to enter above.</h2>
-<?php } ?>
-        <h3>Currently Testing -- (if you're done, please submit a report, even an empty one):</h3>
+<?php } 
+
+        if (USE_TESTSOLVE_TEAMS) {
+        
+                $myteam = getUserTestTeamID($uid);
+                if ($myteam == NULL) {
+                        echo "<h2>You are not assigned to a testsolve team at this time. Talk to a testing admin. No puzzles listed.</h2>";
+                } else {
+                $myteamname = getTestTeamName($myteam);
+                echo "<h2>Listing available puzzles to testsolve for team $myteamname </h2>";
+                $teampuzzles = getTestTeamPuzzles($myteam);
+                if ($teampuzzles == NULL) {
+                echo "This testsolving team has no puzzles assigned at this time.";
+                } else {
+                displayQueue($uid, $teampuzzles, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, array());
+                }
+                }
+        }
+
+
+        ?>
+        <br><h3>Currently Testing -- (if you're done, please submit a report, even an empty one):</h3>
 <?php
 
   /* Commented out to disallow -- for now -- getting a random puzzle to test.

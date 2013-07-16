@@ -455,6 +455,37 @@
                 header("Location: "  . URL . "/puzzle.php?pid=$pid");
                 exit(0);
         }
+
+        if (isset($_POST['setUserTestTeam'])) {
+                $tid = $_POST['tid'];
+                $uid = $_POST['uid'];
+                
+                //echo "tid=$tid";
+                //echo "<br>uid=$uid";
+
+                setUserTestTeam($uid, $tid);
+                
+                header("Location: "  . URL . "/testsolveteams.php");
+                exit(0);
+        }
+
+        if (isset($_POST['setPuzzleTestTeam'])) {
+                $tid = $_POST['tid'];
+                $pid = $_POST['pid'];
+                $notfrompuzz = $_POST['notfrompuzzle'];
+
+                //echo "tid=$tid";
+                //echo "<br>uid=$uid";
+
+                setPuzzleTestTeam($pid, $tid);
+
+                if ($notfrompuzz == "YES") {
+                        header("Location: " .  URL  . "/testsolveteams.php");  
+                } else {
+                        header("Location: "  . URL . "/puzzle.php?pid=$pid");
+                }
+                exit(0);
+        }
 //-------------------------------------
 
 
