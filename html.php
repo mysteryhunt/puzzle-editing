@@ -186,7 +186,7 @@
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approvals</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Last Test Report</th>';} ?>
-                                <?php if ($showTesters) {echo '<th class="puzzidea">Testsolve requests</th>';} ?>
+                                <?php if (($showTesters) && (USING_TESTSOLVE_REQUESTS)){echo '<th class="puzzidea">Testsolve requests</th>';} ?>
                         </tr>
                 </thead>
                 <tbody>
@@ -255,7 +255,7 @@
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . countPuzzApprovals($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" . getCurrentTestersAsList($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" .  getLastTestReportDate($pid) . "</td>";} ?>
-                                <?php if ($showTesters) {echo "<td class='puzzidea'>" .  getTestsolveRequestsForPuzzle($pid) . "</td>";} ?>
+                                <?php if (($showTesters) && (USING_TESTSOLVE_REQUESTS)) {echo "<td class='puzzidea'>" .  getTestsolveRequestsForPuzzle($pid) . "</td>";} ?>
                         </tr>
 <?php
                 }

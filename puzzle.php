@@ -92,9 +92,11 @@
         echo "</div>";
 
         // List credits
-        echo "<div class='creditsInfo'>";
-        displayCredits($uid, $pid);
-        echo "</div>";
+        if (USING_CREDITS){
+                echo "<div class='creditsInfo'>";
+                displayCredits($uid, $pid);
+                echo "</div>";
+        }
 
         // List wiki page
         echo "<div class='wikiInfo'>";
@@ -290,7 +292,7 @@ function displayPeople($uid, $pid)
         <table>
         <?php displayAuthors($uid, $pid); ?>
         <?php displaySpoiled($uid, $pid); ?>
-        <?php displayRoundCaptain($uid, $pid); ?>
+        <?php if (USING_ROUND_CAPTAINS) {displayRoundCaptain($uid, $pid);} ?>
         <?php displayEditors($uid, $pid); ?>
         <?php displayFactcheckers($uid, $pid); ?>
         <?php if (canSeeTesters($uid, $pid)) {displayTesters($uid, $pid);} ?>
