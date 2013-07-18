@@ -149,9 +149,15 @@
         echo "</div>";
 
         echo "<br />";
+        echo "<div class='markasunseen'>";
+        displayMarkAsUnseen($uid, $pid);
+        echo "</div>";
+
+        echo "<br />";
         echo "<div class='killpuzzle'>";
         displayKillPuzzle($uid, $pid);
         echo "</div>";
+
 
         // Display & add comments
         echo "<div class='comments'>";
@@ -899,8 +905,27 @@ function displayKillPuzzle($uid, $pid)
 </tr>
 </table>
 <?php
-}
+        }
 return;
+}
+
+function displayMarkAsUnseen($uid, $pid)
+{
+?>
+<table>
+<tr>
+<td><strong>Mark This Puzzle Unread:</strong></td>
+<td>
+<form method="post" action="form-submit.php">
+        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+        <input type="submit" name="markunseen" value="unread" />
+</form>
+</td>
+</tr>
+</table>
+<?php
+        return;
 }
 
 function displayPostProd($uid, $pid, $pp)

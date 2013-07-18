@@ -456,6 +456,16 @@
                 exit(0);
         }
 
+        if (isset($_POST['markunseen'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                markUnseen($uid, $pid);
+                
+                header("Location: " . URL);
+                exit(0);
+        }
+
         if (isset($_POST['setUserTestTeam'])) {
                 $tid = $_POST['tid'];
                 $uid = $_POST['uid'];

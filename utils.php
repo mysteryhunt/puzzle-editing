@@ -296,6 +296,7 @@ function updateLastVisit($uid, $pid)
         return $lastVisit;
 }
 
+
 function getLastVisit($uid, $pid)
 {
         $sql = sprintf("SELECT date FROM last_visit WHERE pid='%s' AND uid='%s'",
@@ -3143,6 +3144,13 @@ function setPuzzleTestTeam($pid, $tid)
         query_db($sql);
 }
 
+function markUnseen($uid, $pid)
+{
+        $sql = sprintf("INSERT INTO last_visit (pid, uid, date) VALUES ('%s', '%s', 'NULL')
+                                        ON DUPLICATE KEY UPDATE date='NULL'", mysql_real_escape_string($pid),
+                                        mysql_real_escape_string($uid));
+        query_db($sql);
+}
 
 function utilsError($msg)
 {
