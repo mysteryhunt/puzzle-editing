@@ -1840,7 +1840,8 @@ function getStatusForPuzzle($pid)
 
 function changeStatus($uid, $pid, $status)
 {
-        if (!(canViewPuzzle($uid, $pid) && canChangeStatus($uid)))
+        //make permission exception if we're killing -- for kill puzzle button
+        if (!(canViewPuzzle($uid, $pid) && ((canChangeStatus($uid))||($status == getDeadStatusId()))))
                 utilsError("You do not have permission to modify the status of this puzzle.");
 
         $sql = sprintf("SELECT pstatus.inTesting FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus =
