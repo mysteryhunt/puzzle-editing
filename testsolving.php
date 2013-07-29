@@ -30,7 +30,7 @@
 <?php if (ALLOW_TESTSOLVE_PICK) { ?>
         <h2>Available for you to test (In order of priority):</small></h2>
         <b><font color="red">IMPORTANT:</font> Clicking a puzzle below will
-        spoil you on it. Please click judiciously.</b>
+        mark you as a testsolver. Please click judiciously and file a testsolving report!</b>
         <br>
 <?php
 
