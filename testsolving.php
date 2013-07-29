@@ -32,8 +32,6 @@
         <b><font color="red">IMPORTANT:</font> Clicking a puzzle below will
         spoil you on it. Please click judiciously.</b>
         <br>
-        <small>Tip: If you are joining an existing testsolve group, you can enter the puzzle number above, even if you don't see it here.</small>
-        <br>
 <?php
 
         $availPuzzles = getAvailablePuzzlesToTestForUser($uid);
@@ -64,7 +62,7 @@
         <br/>
 <?php } 
 
-        if (USE_TESTSOLVE_TEAMS) {
+        if (USING_TESTSOLVE_TEAMS == 'TRUE') {
         
                 $myteam = getUserTestTeamID($uid);
                 if ($myteam == NULL) {
