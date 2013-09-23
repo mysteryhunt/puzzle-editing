@@ -188,7 +188,8 @@ function isLurker($uid)
 
 function isFactChecker($uid)
 {
-        return hasPriv($uid, 'factcheck');
+        //return hasPriv($uid, 'factcheck');
+        return(TRUE);
 }
 
 function isBlind($uid)
