@@ -74,7 +74,7 @@
 
 			<?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor.php">Editor</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "ffc") ? "selnav" : "nav" ?>" href="ffc.php">Final Fact Check</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])  {?> <li class="nav"><a class="<?php echo ($selnav == "factcheck") ? "selnav" : "nav" ?>" href="factcheck.php">Fact Check</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']))  {?> <li class="nav"><a class="<?php echo ($selnav == "factcheck") ? "selnav" : "nav" ?>" href="factcheck.php">Fact Check</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving.php">Testsolving</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && isTestingAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin.php">Testing Admin</a></li> <?php } ?>
 			<?php if((USING_TESTSOLVE_TEAMS) && isset($_SESSION['uid']) && isTestingAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolveteams") ? "selnav" : "nav" ?>" href="testsolveteams.php">TS Team Assignments</a></li> <?php } ?>
