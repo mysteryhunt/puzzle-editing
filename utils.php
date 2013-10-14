@@ -960,7 +960,7 @@ function realSendAllEmail()
                 $address = $mail[1];
                 $subject = $mail[2];
                 $msg = $mail[3];
-                $headers = 'From: ' . HELP_EMAIL . "\r\n";
+                $headers = 'From: ' . PTRON_FROM_EMAIL . "\r\n";
 
                 //subject line conditional on what instance of ptron this is
                 if (DEVMODE)
