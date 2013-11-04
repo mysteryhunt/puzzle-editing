@@ -1,30 +1,43 @@
 <?php
 	require_once "/var/www/docroot/htmlpurifier/library/HTMLPurifier.auto.php";
-        ini_set('session.cookie_lifetime','86400');
 
 	ini_set('default_charset', 'UTF-8');
 	ini_set('session.gc_maxlifetime','86400');
+        ini_set('session.cookie_lifetime','86400');
 	
 	session_start();
 
-        define("DEVMODE", FALSE);
-	define("PRACMODE", FALSE);
-	define("URL", "http://yourhuntteam.tld/editing");
-        define('DB_NAME', 'puzzletron');
-	
-
+        //stuff you probably don't need to change
 	define("SELF", "$_SERVER[PHP_SELF]");
 	define("PICPATH", "uploads/pictures/"); // Path for user pictures
+        define("DB_NAME", "puzzletron");
+
+        //server mode
+        define("DEVMODE", FALSE);
+	define("PRACMODE", FALSE);
+
+        //urls and email addresses for your team
+        define("PTRON_FROM_EMAIL", "no-reply@blahblahblah.org");
+	define("URL", "https://blahblahblah.org/editing");
+	define("POSTPROD_URLPREFIX", "https://xxxmysteryhunt.com/");
+	define("PHPMYADMIN_URL", "https://blahblahblah.org/phpmyadmin");
+	define("HELP_EMAIL", "systems-help@blahblahblah.org");
+	define("WIKI_URL", "https://blahblahblah.org/wiki");
+	define("BUGTRACK_URL", "https://docs.google.com/a/blahblahblah.org/spreadsheet/ccc?key=0AjP2PJ8PtbmadEYxOU5VUHhoLXoteU1NaEhPTDVjSGc&usp=sharing");
+        
+        //puzzletron options
 	define("TRUST_REMOTE_USER", TRUE);  // Skip puzzletron authentication and trust REMOTE_USER
-        define("ALLOW_TESTSOLVE_PICK", TRUE); // Allow testsolvers to pick arbitrary puzzles
+        define("ALLOW_TESTSOLVE_PICK", TRUE); // Don't display list of puzzles for testsolvers to pick from
+
+        //puzzletron feature sets
+        define("USING_TESTSOLVE_REQUESTS", FALSE);
+        define("USING_TESTSOLVE_TEAMS", FALSE);
+        define("USING_ROUND_CAPTAINS", FALSE);
+        define("USING_CREDITS", FALSE);
 	define("ENABLE_WRITING_WIKI", FALSE);
-	define("POSTPROD_URLPREFIX", "http://thehuntisactuallyhere.tld/puzzles/");
-	define("PHPMYADMIN_URL", "https://yourdatabaseserver.tld/phpmyadmin");
-	define("HELP_EMAIL", "hunt-support-team@yourhuntteam.tld");
-	define("WIKI_URL", "https://yourhuntteam.tld/wiki");
-	define("BUGTRACK_URL", "https://docs.google.com/a/yourhuntteam.tld/spreadsheet/ccc?key=0AjP2PJ8PtbmadEYxOU5VUHjalskajJKPTDVjSGc&usp=sharing");
-        define("HUNT_YEAR",2099);
-        define("HUNT_DOM",17);
 	
+        //when is hunt
+        define("HUNT_YEAR",2014);
+        define("HUNT_DOM",17);
 	date_default_timezone_set('America/New_York');
 ?>
