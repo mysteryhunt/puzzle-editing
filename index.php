@@ -19,6 +19,9 @@
         $mins=floor($tth/(60))-(24*60*$days)-(60*$hrs);
 
         displayPuzzleStats($uid);
+
+        echo '<br><h3><a href="stats.php">Testsolver stats</a></h3>';
+
         echo "<h2>Latest Update:</h2>\n";
 
         // Display index page
