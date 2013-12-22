@@ -91,6 +91,11 @@
         displayNotes($uid, $pid);
         echo "</div>";
 
+        // List puzzle runtime info
+        echo "<div class='notesInfo'>";
+        displayRuntime($uid, $pid);
+        echo "</div>";
+
         // List credits
         if (USING_CREDITS){
                 echo "<div class='creditsInfo'>";
@@ -738,6 +743,33 @@ function displayNotes($uid, $pid)
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                                         <input type="text" name="notes" maxlength="255" style="width:40em;" value="<?php echo $notes; ?>"/>
                                         <input type="submit" name="changeNotes" value="Change" />
+                                </form>
+                        </td>
+                </tr>
+        </table>
+<?php
+}
+function displayRuntime($uid, $pid)
+{
+        $notes = getRuntime($pid);
+
+?>
+        <table class="statusInfo">
+                <tr>
+                        <td class='statusInfo'>
+                                <strong>Runtime Notes: </strong> <?php echo $notes; ?>
+                        </td>
+                        <td class='statusInfo'>
+                                <a href="#" class="changeLink">[Change]</a>
+                        </td>
+                </tr>
+                <tr>
+                        <td colspan='2'>
+                                <form method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <input type="text" name="notes" maxlength="255" style="width:40em;" value="<?php echo $notes; ?>"/>
+                                        <input type="submit" name="changeRuntime" value="Change" />
                                 </form>
                         </td>
                 </tr>

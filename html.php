@@ -178,6 +178,7 @@
                                 <th class="puzzidea">Round</th>
                                 <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
                                 <?php if ($showNotes) {echo '<th class="puzzidea">Status Notes</th>';} ?>
+				<?php if ($showNotes) {echo '<th class="puzzidea">Runtime Info</th>';} ?>
                                 <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Answer</th>';} ?>
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Commenter</th>';} ?>
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
@@ -240,6 +241,7 @@
                                 <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>
                                 <?php if ($showAnswerAndSummary) {echo "<td class='puzzideasummary'>" . $puzzleInfo["summary"] . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
+				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["runtime_info"] . "</td>";} ?>
                 <?php 
                 if ($showAnswerAndSummary) { 
                         if (getAnswersForPuzzleAsList($pid) != "") { 

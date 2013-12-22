@@ -201,6 +201,18 @@
                 exit(0);
         }
 
+        if (isset($_POST['changeRuntime'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                $notes = $_POST['notes'];
+
+                changeRuntime($uid, $pid, $notes);
+
+                header("Location: " . URL . "/puzzle.php?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['changeWikiPage'])) {
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];

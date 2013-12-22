@@ -505,6 +505,13 @@ function getNotes($pid)
         return get_element($sql);
 }
 
+function getRuntime($pid)
+{
+        $sql = sprintf("SELECT runtime_info FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+        return get_element($sql);
+}
+
+
 function getCurMotd()
 {
         $sql = sprintf("SELECT * FROM motd ORDER BY time DESC LIMIT 1");
@@ -613,6 +620,17 @@ function updateNotes($uid = 0, $pid, $oldNotes, $cleanNotes)
         query_db($sql);
 
         $comment = "Changed status notes from \"$oldNotes\" to \"$cleanNotes\"";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+
+function updateRuntime($uid = 0, $pid, $oldRuntime, $cleanRuntime)
+{
+        $sql = sprintf("UPDATE puzzle_idea SET runtime_info='%s' WHERE id='%s'",
+                        mysql_real_escape_string($cleanRuntime), mysql_real_escape_string($pid));
+        query_db($sql);
+
+        $comment = "Changed runtime notes from \"$oldRuntime\" to \"$cleanRuntime\"";
 
         addComment($uid, $pid, $comment, TRUE);
 }
@@ -1982,6 +2000,22 @@ function changeNotes($uid, $pid, $notes)
         $cleanNotes = $purifier->purify($notes);
         $cleanNotes = htmlspecialchars($cleanNotes);
         updateNotes($uid, $pid, $oldNotes, $cleanNotes);
+
+        mysql_query('COMMIT');
+}
+
+function changeRuntime($uid, $pid, $runtime)
+{
+        if (!canViewPuzzle($uid, $pid))
+                utilsError("You do not have permission to modify this puzzle.");
+
+        $purifier = new HTMLPurifier();
+        mysql_query('START TRANSACTION');
+
+        $oldRuntime = getRuntime($pid);
+        $cleanRuntime = $purifier->purify($runtime);
+        $cleanRuntime = htmlspecialchars($cleanRuntime);
+        updateRuntime($uid, $pid, $oldRuntime, $cleanRuntime);
 
         mysql_query('COMMIT');
 }
