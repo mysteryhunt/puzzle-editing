@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.58, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.34, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: ihtfp
+-- Host: series-of-tubes.wind-up-birds.org    Database: puzzletron
 -- ------------------------------------------------------
--- Server version	5.1.58-1ubuntu1
+-- Server version	5.5.31-0ubuntu0.12.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,6 +30,15 @@ CREATE TABLE `answer_attempts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `answer_attempts`
+--
+
+LOCK TABLES `answer_attempts` WRITE;
+/*!40000 ALTER TABLE `answer_attempts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answer_attempts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `answers`
 --
 
@@ -42,8 +51,17 @@ CREATE TABLE `answers` (
   `pid` int(11) DEFAULT NULL,
   `batch` int(11) DEFAULT NULL,
   PRIMARY KEY (`aid`)
-) ENGINE=InnoDB AUTO_INCREMENT=10063 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `answers`
+--
+
+LOCK TABLES `answers` WRITE;
+/*!40000 ALTER TABLE `answers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answers` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `answers_rounds`
@@ -60,6 +78,15 @@ CREATE TABLE `answers_rounds` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `answers_rounds`
+--
+
+LOCK TABLES `answers_rounds` WRITE;
+/*!40000 ALTER TABLE `answers_rounds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answers_rounds` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `authors`
 --
 
@@ -74,6 +101,15 @@ CREATE TABLE `authors` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `authors`
+--
+
+LOCK TABLES `authors` WRITE;
+/*!40000 ALTER TABLE `authors` DISABLE KEYS */;
+/*!40000 ALTER TABLE `authors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `comment_type`
 --
 
@@ -85,8 +121,17 @@ CREATE TABLE `comment_type` (
   `name` varchar(16) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comment_type`
+--
+
+LOCK TABLES `comment_type` WRITE;
+/*!40000 ALTER TABLE `comment_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comment_type` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `comments`
@@ -104,8 +149,17 @@ CREATE TABLE `comments` (
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`,`timestamp`)
-) ENGINE=InnoDB AUTO_INCREMENT=37927 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comments`
+--
+
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `doneTesting`
@@ -123,6 +177,15 @@ CREATE TABLE `doneTesting` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `doneTesting`
+--
+
+LOCK TABLES `doneTesting` WRITE;
+/*!40000 ALTER TABLE `doneTesting` DISABLE KEYS */;
+/*!40000 ALTER TABLE `doneTesting` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `editor_queue`
 --
 
@@ -135,6 +198,40 @@ CREATE TABLE `editor_queue` (
   PRIMARY KEY (`pid`,`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `editor_queue`
+--
+
+LOCK TABLES `editor_queue` WRITE;
+/*!40000 ALTER TABLE `editor_queue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `editor_queue` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `email_outbox`
+--
+
+DROP TABLE IF EXISTS `email_outbox`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `email_outbox` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `address` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=60919 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `email_outbox`
+--
+
+LOCK TABLES `email_outbox` WRITE;
+/*!40000 ALTER TABLE `email_outbox` DISABLE KEYS */;
+/*!40000 ALTER TABLE `email_outbox` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `email_sub`
@@ -151,6 +248,39 @@ CREATE TABLE `email_sub` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `email_sub`
+--
+
+LOCK TABLES `email_sub` WRITE;
+/*!40000 ALTER TABLE `email_sub` DISABLE KEYS */;
+/*!40000 ALTER TABLE `email_sub` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `factcheck_queue`
+--
+
+DROP TABLE IF EXISTS `factcheck_queue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `factcheck_queue` (
+  `uid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  KEY `uid` (`uid`),
+  KEY `pid` (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `factcheck_queue`
+--
+
+LOCK TABLES `factcheck_queue` WRITE;
+/*!40000 ALTER TABLE `factcheck_queue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `factcheck_queue` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jobs`
 --
 
@@ -163,6 +293,15 @@ CREATE TABLE `jobs` (
   PRIMARY KEY (`uid`,`jid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jobs`
+--
+
+LOCK TABLES `jobs` WRITE;
+/*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `last_visit`
@@ -180,19 +319,39 @@ CREATE TABLE `last_visit` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `ponies`
+-- Dumping data for table `last_visit`
 --
 
-DROP TABLE IF EXISTS `ponies`;
+LOCK TABLES `last_visit` WRITE;
+/*!40000 ALTER TABLE `last_visit` DISABLE KEYS */;
+/*!40000 ALTER TABLE `last_visit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `motd`
+--
+
+DROP TABLE IF EXISTS `motd`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ponies` (
-  `aid` int(11) DEFAULT NULL,
-  `name` varchar(28) DEFAULT NULL,
-  KEY `pony_index` (`aid`),
-  KEY `pony_name_index` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `motd` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `message` text NOT NULL,
+  `uid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `time` (`time`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `motd`
+--
+
+LOCK TABLES `motd` WRITE;
+/*!40000 ALTER TABLE `motd` DISABLE KEYS */;
+/*!40000 ALTER TABLE `motd` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `priv`
@@ -211,12 +370,22 @@ CREATE TABLE `priv` (
   `seeTesters` tinyint(4) NOT NULL,
   `isBlind` tinyint(1) NOT NULL,
   `isLurker` tinyint(1) NOT NULL,
-  `factcheck` tinyint(1) NOT NULL,
   `changeStatus` tinyint(1) NOT NULL,
+  `autoSubEditor` tinyint(4) NOT NULL,
   PRIMARY KEY (`jid`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `priv`
+--
+
+LOCK TABLES `priv` WRITE;
+/*!40000 ALTER TABLE `priv` DISABLE KEYS */;
+INSERT INTO `priv` VALUES (2,'Puzzle Herder',1,0,0,0,0,0,1,0,0),(3,'Director',1,1,1,1,1,0,1,1,1),(4,'Puzzle Editor',0,1,0,0,0,0,1,1,0),(5,'Puzzle  Editor Autosub',0,1,0,0,0,0,1,1,1),(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0),(7,'Producer',1,0,0,0,0,0,1,0,0),(8,'Server Admin',1,0,1,0,1,0,1,1,0),(9,'Editor in Chief',1,1,0,1,1,0,1,1,1),(12,'Fact Checker',0,0,0,0,0,0,1,0,0),(13,'Testing Admin',0,0,0,0,1,0,1,0,0);
+/*!40000 ALTER TABLE `priv` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `pstatus`
@@ -238,8 +407,42 @@ CREATE TABLE `pstatus` (
   `finalFactcheck` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order` (`ord`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pstatus`
+--
+
+LOCK TABLES `pstatus` WRITE;
+/*!40000 ALTER TABLE `pstatus` DISABLE KEYS */;
+INSERT INTO `pstatus` VALUES (1,'Initial Idea',1,0,1,1,0,0,0,0),(2,'In Testing',3,1,1,0,1,0,0,0),(3,'Awaiting Final Test Approval',4,0,0,0,1,0,0,0),(4,'Needs Fact Check',5,0,0,0,0,0,0,0),(5,'Post Production',6,0,0,0,0,0,1,0),(6,'Awaiting Final Approval',7,0,0,0,0,0,1,1),(7,'Done',8,0,0,0,0,0,0,0),(8,'Dead',9,0,0,0,0,0,0,0),(10,'In Revision',10,0,1,1,0,0,0,0),(22,'Writing (Answer Assigned)',2,0,1,1,0,0,0,0);
+/*!40000 ALTER TABLE `pstatus` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `puzzle_approve`
+--
+
+DROP TABLE IF EXISTS `puzzle_approve`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `puzzle_approve` (
+  `pid` int(11) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `approve` smallint(6) NOT NULL,
+  PRIMARY KEY (`pid`,`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `puzzle_approve`
+--
+
+LOCK TABLES `puzzle_approve` WRITE;
+/*!40000 ALTER TABLE `puzzle_approve` DISABLE KEYS */;
+/*!40000 ALTER TABLE `puzzle_approve` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `puzzle_idea`
@@ -256,10 +459,21 @@ CREATE TABLE `puzzle_idea` (
   `title` varchar(255) NOT NULL DEFAULT '',
   `update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `notes` varchar(512) NOT NULL,
+  `wikipage` varchar(512) NOT NULL,
+  `credits` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `pstatus` (`pstatus`)
-) ENGINE=InnoDB AUTO_INCREMENT=373 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `puzzle_idea`
+--
+
+LOCK TABLES `puzzle_idea` WRITE;
+/*!40000 ALTER TABLE `puzzle_idea` DISABLE KEYS */;
+/*!40000 ALTER TABLE `puzzle_idea` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `puzzle_tester_count`
@@ -276,6 +490,15 @@ CREATE TABLE `puzzle_tester_count` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `puzzle_tester_count`
+--
+
+LOCK TABLES `puzzle_tester_count` WRITE;
+/*!40000 ALTER TABLE `puzzle_tester_count` DISABLE KEYS */;
+/*!40000 ALTER TABLE `puzzle_tester_count` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `rounds`
 --
 
@@ -289,8 +512,17 @@ CREATE TABLE `rounds` (
   `answer` varchar(255) NOT NULL COMMENT 'Answer of Round Meta',
   `unlock_at` double DEFAULT NULL,
   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4102 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rounds`
+--
+
+LOCK TABLES `rounds` WRITE;
+/*!40000 ALTER TABLE `rounds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rounds` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `spoiled`
@@ -307,6 +539,15 @@ CREATE TABLE `spoiled` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `spoiled`
+--
+
+LOCK TABLES `spoiled` WRITE;
+/*!40000 ALTER TABLE `spoiled` DISABLE KEYS */;
+/*!40000 ALTER TABLE `spoiled` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `testAdminQueue`
 --
 
@@ -319,6 +560,15 @@ CREATE TABLE `testAdminQueue` (
   PRIMARY KEY (`uid`,`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `testAdminQueue`
+--
+
+LOCK TABLES `testAdminQueue` WRITE;
+/*!40000 ALTER TABLE `testAdminQueue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testAdminQueue` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `test_call`
@@ -336,6 +586,15 @@ CREATE TABLE `test_call` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `test_call`
+--
+
+LOCK TABLES `test_call` WRITE;
+/*!40000 ALTER TABLE `test_call` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_call` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `test_queue`
 --
 
@@ -348,6 +607,15 @@ CREATE TABLE `test_queue` (
   PRIMARY KEY (`uid`,`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_queue`
+--
+
+LOCK TABLES `test_queue` WRITE;
+/*!40000 ALTER TABLE `test_queue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_queue` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `testing_feedback`
@@ -364,10 +632,95 @@ CREATE TABLE `testing_feedback` (
   `tried` text,
   `liked` text,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `breakthrough` varchar(255) DEFAULT NULL,
+  `skills` varchar(255) DEFAULT NULL,
+  `fun` int(11) NOT NULL DEFAULT '0',
+  `difficulty` int(11) NOT NULL DEFAULT '0',
   `when_return` text,
   PRIMARY KEY (`uid`,`pid`,`time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `testing_feedback`
+--
+
+LOCK TABLES `testing_feedback` WRITE;
+/*!40000 ALTER TABLE `testing_feedback` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testing_feedback` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `testsolve_requests`
+--
+
+DROP TABLE IF EXISTS `testsolve_requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `testsolve_requests` (
+  `pid` int(11) DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `done` tinyint(1) DEFAULT '0',
+  `notes` text
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `testsolve_requests`
+--
+
+LOCK TABLES `testsolve_requests` WRITE;
+/*!40000 ALTER TABLE `testsolve_requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testsolve_requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `testsolve_team`
+--
+
+DROP TABLE IF EXISTS `testsolve_team`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `testsolve_team` (
+  `tid` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`tid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `testsolve_team`
+--
+
+LOCK TABLES `testsolve_team` WRITE;
+/*!40000 ALTER TABLE `testsolve_team` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testsolve_team` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `testsolve_team_queue`
+--
+
+DROP TABLE IF EXISTS `testsolve_team_queue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `testsolve_team_queue` (
+  `tid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  PRIMARY KEY (`pid`),
+  KEY `tid` (`tid`,`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `testsolve_team_queue`
+--
+
+LOCK TABLES `testsolve_team_queue` WRITE;
+/*!40000 ALTER TABLE `testsolve_team_queue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testsolve_team_queue` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `uploaded_files`
@@ -389,6 +742,15 @@ CREATE TABLE `uploaded_files` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `uploaded_files`
+--
+
+LOCK TABLES `uploaded_files` WRITE;
+/*!40000 ALTER TABLE `uploaded_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `uploaded_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_info`
 --
 
@@ -405,8 +767,17 @@ CREATE TABLE `user_info` (
   PRIMARY KEY (`uid`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=243 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_info`
+--
+
+LOCK TABLES `user_info` WRITE;
+/*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user_info_key`
@@ -420,8 +791,18 @@ CREATE TABLE `user_info_key` (
   `shortname` varchar(255) NOT NULL,
   `longname` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_info_key`
+--
+
+LOCK TABLES `user_info_key` WRITE;
+/*!40000 ALTER TABLE `user_info_key` DISABLE KEYS */;
+INSERT INTO `user_info_key` VALUES (3,'location','Location'),(4,'phone','Phone Number'),(6,'expertise','What are your areas of interest and/or expertise?'),(7,'favorite','What are your favorite puzzle types?');
+/*!40000 ALTER TABLE `user_info_key` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user_info_values`
@@ -438,6 +819,39 @@ CREATE TABLE `user_info_values` (
   KEY `user_info_key_id` (`user_info_key_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_info_values`
+--
+
+LOCK TABLES `user_info_values` WRITE;
+/*!40000 ALTER TABLE `user_info_values` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_info_values` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_testsolve_team`
+--
+
+DROP TABLE IF EXISTS `user_testsolve_team`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_testsolve_team` (
+  `uid` int(11) NOT NULL,
+  `tid` int(11) NOT NULL,
+  PRIMARY KEY (`uid`),
+  KEY `uid` (`uid`,`tid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_testsolve_team`
+--
+
+LOCK TABLES `user_testsolve_team` WRITE;
+/*!40000 ALTER TABLE `user_testsolve_team` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_testsolve_team` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -448,23 +862,4 @@ CREATE TABLE `user_info_values` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-16 22:48:44
-
-
-LOCK TABLES `comment_type` WRITE;
-/*!40000 ALTER TABLE `comment_type` DISABLE KEYS */;
-INSERT INTO `comment_type` VALUES (1,'Author'),(2,'Editor'),(4,'Lurker'),(8,'PostProdRobot'),(3,'Server'),(7,'TestingAdmin'),(5,'Testsolver'),(6,'Unknown');
-/*!40000 ALTER TABLE `comment_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
-LOCK TABLES `priv` WRITE;
-/*!40000 ALTER TABLE `priv` DISABLE KEYS */;
-INSERT INTO `priv` VALUES (1,'Chief Producer',1,0,0,1,0,0,1,1,1),(2,'Puzzle Herder',1,0,0,0,0,0,1,0,0),(3,'Chief Puzzle Editor',1,1,0,1,0,0,1,1,1),(4,'Puzzle Editor',0,1,0,0,0,0,1,1,0),(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,1),(7,'Producer',1,0,0,0,0,0,1,1,0),(8,'Server Admin',0,0,1,0,0,0,0,0,0),(12,'Fact Checker',0,0,0,0,0,0,1,1,0),(13,'Testing Admin',0,0,0,0,1,0,1,0,0);
-/*!40000 ALTER TABLE `priv` ENABLE KEYS */;
-UNLOCK TABLES;
-
-LOCK TABLES `user_info_key` WRITE;
-/*!40000 ALTER TABLE `user_info_key` DISABLE KEYS */;
-INSERT INTO `user_info_key` VALUES (3,'location','Location'),(4,'phone','Phone Number'),(5,'jabber','Jabber server nickname'),(6,'expertise','What are your areas of interest and/or expertise?'),(7,'favorite','What are your favorite puzzle types?'),(8,'bio','Short bio');
-/*!40000 ALTER TABLE `user_info_key` ENABLE KEYS */;
-UNLOCK TABLES;
+-- Dump completed on 2013-11-04  3:42:30
