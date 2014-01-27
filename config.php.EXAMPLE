@@ -27,6 +27,7 @@
         
         //puzzletron options
 	define("TRUST_REMOTE_USER", TRUE);  // Skip puzzletron authentication and trust REMOTE_USER
+                                            // This is if you're behind an SSO system / apache proxy that does auth
         define("ALLOW_TESTSOLVE_PICK", TRUE); // Don't display list of puzzles for testsolvers to pick from
 
         //puzzletron feature sets

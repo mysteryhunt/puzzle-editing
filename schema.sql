@@ -461,6 +461,7 @@ CREATE TABLE `puzzle_idea` (
   `notes` varchar(512) NOT NULL,
   `wikipage` varchar(512) NOT NULL,
   `credits` varchar(255) NOT NULL,
+  `runtime_info` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `pstatus` (`pstatus`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
