@@ -2113,8 +2113,8 @@ function uploadFiles($uid, $pid, $type, $file) {
                 $filetype = "dir";
                 if (move_uploaded_file($file['tmp_name'], $target_path)) {
                         $new_path = $target_path . "_" . $filetype;
-                        echo "target_path is $target_path<br>";
-                        echo "new_path is $new_path<br>";
+                        #echo "target_path is $target_path<br>";
+                        #echo "new_path is $new_path<br>";
                         $res = exec("/usr/bin/unzip $target_path -d $new_path");
 
                         $sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
