@@ -62,7 +62,7 @@
 		<?php if (!TRUST_REMOTE_USER) { ?> <input type="submit" value="Log In" /> <?php } ?>
                 </form><br>
 		<p>If you've forgotten your password, you can <a href="
-		<?php echo HELP_EMAIL; ?>">e-mail <?php echo HELP_EMAIL ?> for a new one></a>.</p> 
+		mailto:<?php echo HELP_EMAIL; ?>">e-mail <?php echo HELP_EMAIL ?> for a new one</a>.</p>
 
 <?php
         }
