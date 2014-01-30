@@ -1323,6 +1323,9 @@ function addFactcheckers($uid, $pid, $add)
         if ($add == NULL)
                 return;
 
+	if (!validPuzzleStatus($pid))
+		utilsError("Invalid puzzle ID.");
+
         if (!canViewPuzzle($uid, $pid))
                 utilsError("You do not have permission to modify this puzzle.");
 

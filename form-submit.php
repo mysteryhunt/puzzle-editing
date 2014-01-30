@@ -345,6 +345,9 @@
                 $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
+		if (!validPuzzleStatus($pid))
+			utilsError("Invalid puzzle ID.");
+
                 if (isTestingAdmin($uid)) {
                         header("Location: " . URL . "/test.php?pid=" . $pid);
                         exit(0);
