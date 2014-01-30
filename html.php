@@ -25,7 +25,7 @@
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
 
-	<title>MH2014 puzzletron authoring server 
+	<title>MH2015 puzzletron authoring server
 	<?php if (DEVMODE) { ?> 
 		(test/dev instance) 
 	<?php } else if (PRACMODE) { ?> 
@@ -43,7 +43,7 @@
 	<div id="header" style="margin-top:10px;">
           <div id="titletext" style="vertical-align:middle; margin-bottom:4px;">
                                 <div style="text-align:left;width:auto;float:left;vertical-align:top;">
-                     <h1>MH2014 puzzletron authoring server 
+                     <h1>MH2015 puzzletron authoring server
         <?php if (DEVMODE) { ?>                 
 		(test/dev instance)         
 	<?php } else if (PRACMODE) { ?>
