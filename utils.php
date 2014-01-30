@@ -1869,7 +1869,7 @@ function changeStatus($uid, $pid, $status)
 
         $inTesting_before = get_element($sql);
 
-        echo "<br>inTesting_before is $inTesting_before<br>";
+  //      echo "<br>inTesting_before is $inTesting_before<br>";
 
         mysql_query('START TRANSACTION');
 
@@ -1899,17 +1899,17 @@ function changeStatus($uid, $pid, $status)
         query_db($sql);
         $inTesting_after = get_element($sql);
 
-        echo "<br>inTesting_after is $inTesting_after<br>";
+  //      echo "<br>inTesting_after is $inTesting_after<br>";
 
         if ($inTesting_before == "1" && $inTesting_after == "0") {
-                echo "<br>inTesting changed from yes to no<br>";
+  //              echo "<br>inTesting changed from yes to no<br>";
                 // For every user that was testing this puzzle, mark the puzzle as doneTesting
                 $sql = sprintf("SELECT uid FROM test_queue WHERE pid = '%s'", mysql_real_escape_string($pid));
                 query_db($sql);
                 $users = get_elements_null($sql);
                 if ($users) {
                            foreach ($users as $user) {
-                                echo "<br>Setting puzzle $pid done for user $user<br>";
+  //                            echo "<br>Setting puzzle $pid done for user $user<br>";
                                 doneTestingPuzzle($user, $pid);
                         }
                 }
