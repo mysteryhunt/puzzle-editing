@@ -37,7 +37,7 @@
                 $title = '(untitled)';
 
         echo "<h1>Puzzle $pid -- $title</h1>";
-        echo "<b><font color='red'>IMPORTANT:</font> Please leave feedback! We
+        echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
         need it!</b><br><br> When you are done, PLEASE leave feedback indicating
         that you do not intend to return, <b>even if the rest is blank</b>. This
         removes you as a tester on this puzzle, so we can track who's still

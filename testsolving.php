@@ -28,8 +28,8 @@
 
         <br />
 <?php if (ALLOW_TESTSOLVE_PICK) { ?>
-        <h2>Available for you to test (In order of priority):</small></h2>
-        <b><font color="red">IMPORTANT:</font> Clicking a puzzle below will
+        <h2>Available for you to test (In order of priority):</h2>
+        <strong class="impt">IMPORTANT:</strong> <b>Clicking a puzzle below will
         mark you as a testsolver. Please click judiciously and file a testsolving report!</b>
         <br>
 <?php
