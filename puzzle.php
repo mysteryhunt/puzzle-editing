@@ -351,15 +351,13 @@ function displayAuthors($uid, $pid)
 function displayRemoveAuthor($pid)
 {
         $authors = getAuthorsForPuzzle($pid);
-        if ($authors)
-                makeOptionElements($authors, 'removeAuth');
+        makeOptionElements($authors, 'removeAuth');
 }
 
 function displayAddAuthor($pid)
 {
         $authors = getAvailableAuthorsForPuzzle($pid);
-        if ($authors)
-                makeOptionElements($authors, 'addAuth');
+        makeOptionElements($authors, 'addAuth');
 }
 
 function displaySpoiled($uid, $pid)
@@ -401,15 +399,13 @@ function displaySpoiled($uid, $pid)
 function displayRemoveSpoiledUsers($pid)
 {
         $spoiled = getSpoiledUsersForPuzzle($pid);
-        if ($spoiled != NULL)
-                makeOptionElements($spoiled, 'removeSpoiledUser');
+        makeOptionElements($spoiled, 'removeSpoiledUser');
 }
 
 function displayAddSpoiledUsers($pid)
 {
         $spoiled = getAvailableSpoiledUsersForPuzzle($pid);
-        if ($spoiled != NULL)
-                makeOptionElements($spoiled, 'addSpoiledUser');
+        makeOptionElements($spoiled, 'addSpoiledUser');
 }
 
 function displayRoundCaptain($uid, $pid)
@@ -451,15 +447,13 @@ function displayRoundCaptain($uid, $pid)
 function displayRemoveRoundCaptain($pid)
 {
         $capts = getRoundCaptainsForPuzzle($pid);
-        if ($capts != NULL)
-                makeOptionElements($capts, 'removeRoundCaptain');
+        makeOptionElements($capts, 'removeRoundCaptain');
 }
 
 function displayAddRoundCaptain($pid)
 {
         $capts = getAvailableRoundCaptainsForPuzzle($pid);
-        if ($capts != NULL)
-                makeOptionElements($capts, 'addRoundCaptain');
+        makeOptionElements($capts, 'addRoundCaptain');
 }
 
 function displayEditors($uid, $pid)
@@ -501,15 +495,13 @@ function displayEditors($uid, $pid)
 function displayRemoveEditor($pid)
 {
         $editors = getEditorsForPuzzle($pid);
-        if ($editors != NULL)
-                makeOptionElements($editors, 'removeEditor');
+        makeOptionElements($editors, 'removeEditor');
 }
 
 function displayAddEditor($pid)
 {
         $editors = getAvailableEditorsForPuzzle($pid);
-        // if ($editors != NULL)
-                makeOptionElements($editors, 'addEditor');
+        makeOptionElements($editors, 'addEditor');
 }
 
 function displayFactcheckers($uid, $pid)
@@ -551,15 +543,13 @@ function displayFactcheckers($uid, $pid)
 function displayRemoveFactchecker($pid)
 {
         $factcheckers = getFactcheckersForPuzzle($pid);
-        if ($factcheckers != NULL)
-                makeOptionElements($factcheckers, 'removeFactchecker');
+        makeOptionElements($factcheckers, 'removeFactchecker');
 }
 
 function displayAddFactchecker($pid)
 {
         $factcheckers = getAvailableFactcheckersForPuzzle($pid);
-        if ($factcheckers != NULL)
-                makeOptionElements($factcheckers, 'addFactchecker');
+        makeOptionElements($factcheckers, 'addFactchecker');
 }
 
 function displayTesters($uid, $pid)

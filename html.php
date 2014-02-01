@@ -271,6 +271,11 @@
 // Takes an associative array and the name of the form element
 function makeOptionElements($toDisplay, $name)
 {
+        if (!$toDisplay) {
+                echo '<em>(none)</em>';
+                return;
+        }
+
         $maxLength = 5;
         $maxCol = 10;
 

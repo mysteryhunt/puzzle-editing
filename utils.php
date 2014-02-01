@@ -915,8 +915,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE)
         if ($isTestsolveComment) {
                 $admins = getTestAdminsToNotify($pid);
         }
-        if ($admins == NULL)
-                $admins = array();
+        $admins = array();
 
         foreach ($users as $user)
         {
@@ -1016,7 +1015,7 @@ function getAvailableAuthorsForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $authors = NULL;
+        $authors = array();
         foreach ($users as $uid) {
                 if ($pid == FALSE || isAuthorAvailable($uid, $pid)) {
                         $authors[$uid] = getUserName($uid);
@@ -1034,7 +1033,7 @@ function getAvailableFactcheckersForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $fcs = NULL;
+        $fcs = array();
         foreach ($users as $uid) {
                 if ($pid == FALSE || isFactcheckerAvailable($uid, $pid)) {
                         $fcs[$uid] = getUserName($uid);
@@ -1052,7 +1051,7 @@ function getAvailableSpoiledUsersForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $spoiled = NULL;
+        $spoiled = array();
         foreach ($users as $uid) {
                 if (!isSpoiledOnPuzzle($uid, $pid)) {
                         $spoiled[$uid] = getUserName($uid);
@@ -1097,7 +1096,7 @@ function getCurrentTestersForPuzzle($pid)
         $sql = sprintf("SELECT uid FROM test_queue WHERE pid='%s'", mysql_real_escape_string($pid));
         $result = get_elements($sql);
 
-        $testers = NULL;
+        $testers = array();
         foreach ($result as $uid) {
                 $testers[$uid] = getUserName($uid);
         }
@@ -1111,7 +1110,7 @@ function getAvailableTestersForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $testers = NULL;
+        $testers = array();
         foreach ($users as $uid) {
                 if (isTesterAvailable($uid, $pid)) {
                         $testers[$uid] = getUserName($uid);
@@ -1181,7 +1180,7 @@ function getAvailableEditorsForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $editors = NULL;
+        $editors = array();
         foreach ($users as $uid) {
                 if (isEditorAvailable($uid, $pid)) {
                         $editors[$uid] = getUserName($uid);
@@ -1199,7 +1198,7 @@ function getAvailableRoundCaptainsForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $capts = NULL;
+        $capts = array();
         foreach ($users as $uid) {
                 if (isRoundCaptainAvailable($uid, $pid)) {
                         $capts[$uid] = getUserName($uid);
