@@ -459,10 +459,10 @@ CREATE TABLE `puzzle_idea` (
   `pstatus` int(11) NOT NULL DEFAULT '1',
   `title` varchar(255) NOT NULL DEFAULT '',
   `update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `notes` varchar(512) NOT NULL,
-  `wikipage` varchar(512) NOT NULL,
-  `credits` varchar(255) NOT NULL,
-  `runtime_info` varchar(255) NOT NULL,
+  `notes` varchar(512) NOT NULL DEFAULT '',
+  `wikipage` varchar(512) NOT NULL DEFAULT '',
+  `credits` varchar(255) NOT NULL DEFAULT '',
+  `runtime_info` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `pstatus` (`pstatus`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -510,7 +510,7 @@ DROP TABLE IF EXISTS `rounds`;
 CREATE TABLE `rounds` (
   `rid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Round ID',
   `name` varchar(32) NOT NULL COMMENT 'Name of Round',
-  `display` tinyint(1) NOT NULL COMMENT 'Display Round?',
+  `display` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Display Round?',
   `answer` varchar(255) NOT NULL COMMENT 'Answer of Round Meta',
   `unlock_at` double DEFAULT NULL,
   PRIMARY KEY (`rid`)
