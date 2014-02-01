@@ -124,33 +124,16 @@
         }
 
         // Get a column from the database, as an array.
-        // Error if no result found
+        // Return an empty array if no result found
         function get_elements($query)
         {
                 $result = query_db($query);
+                $elements = array();
                 while ($r = mysql_fetch_array($result)) {
                         $elements[] = $r[0];
                 }
 
                 return $elements;
-        }
-
-        // Get a column from the database, as an array.
-        // Return NULL if no result found.
-        function get_elements_null($query)
-        {
-                $result = mysql_query($query);
-
-                if ($result == FALSE || mysql_num_rows($result) == 0) {
-                        return NULL;
-                }
-
-                $rows = NULL;
-                while ($r = mysql_fetch_array($result)) {
-                        $rows[] = $r[0];
-                }
-
-                return $rows;
         }
 
         // Check if a query returns a result

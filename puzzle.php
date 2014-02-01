@@ -351,14 +351,14 @@ function displayAuthors($uid, $pid)
 function displayRemoveAuthor($pid)
 {
         $authors = getAuthorsForPuzzle($pid);
-        if ($authors != NULL)
+        if ($authors)
                 makeOptionElements($authors, 'removeAuth');
 }
 
 function displayAddAuthor($pid)
 {
         $authors = getAvailableAuthorsForPuzzle($pid);
-        if ($authors != NULL)
+        if ($authors)
                 makeOptionElements($authors, 'addAuth');
 }
 

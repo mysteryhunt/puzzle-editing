@@ -160,7 +160,7 @@
 
         function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $hidedeadpuzzles, $filter = array())
         {
-                if ($puzzles == NULL) {
+                if (!$puzzles) {
                         echo "<h4>No puzzles to list</h4>";
                         return;
                 }

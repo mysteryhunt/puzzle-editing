@@ -71,7 +71,7 @@
                 $myteamname = getTestTeamName($myteam);
                 echo "<h2>Listing available puzzles to testsolve for team $myteamname </h2>";
                 $teampuzzles = getTestTeamPuzzles($myteam);
-                if ($teampuzzles == NULL) {
+                if (!$teampuzzles) {
                 echo "This testsolving team has no puzzles assigned at this time.";
                 } else {
                 displayQueue($uid, $teampuzzles, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE, array());
