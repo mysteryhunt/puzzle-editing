@@ -521,7 +521,7 @@ function getCurMotd()
 function getAllMotd()
 {
         $sql = sprintf("SELECT * FROM motd ORDER BY time DESC");
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 // Update the title, summary, and description of the puzzle (from form on puzzle page)
@@ -969,8 +969,10 @@ function realSendAllEmail()
         query_db($sql);
         mysql_query("COMMIT");
 
-        if (is_null($mails))
+        if (!$mails)
         {
+                // Should we indicate an error here?
+                // I don't think so, but the original call to get_rows would do that.
                 return;
         }
         foreach ($mails as $mail)
@@ -2090,7 +2092,7 @@ function getFileListForPuzzle($pid, $type)
 {
         $sql = sprintf("SELECT * FROM uploaded_files WHERE pid='%s' AND type='%s' ORDER BY date DESC, filename DESC",
                         mysql_real_escape_string($pid), mysql_real_escape_string($type));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 
@@ -2161,7 +2163,7 @@ function getComments($pid)
                                         comments LEFT JOIN comment_type ON comments.type=comment_type.id
                                         WHERE comments.pid='%s' ORDER BY comments.id ASC",
                                         mysql_real_escape_string($pid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function getTestFeedComments()
@@ -2170,7 +2172,7 @@ function getTestFeedComments()
                                         comments.timestamp, comments.pid, comment_type.name FROM
                                         comments LEFT JOIN comment_type ON comments.type=comment_type.id
                                         WHERE (comments.comment LIKE '%In Testing%' OR comments.comment LIKE '%answer attempt%') AND (comment_type.name = 'Testsolver' OR comment_type.name = 'Server') ORDER BY comments.timestamp DESC LIMIT 50";
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function isSubbedOnPuzzle($uid, $pid)
@@ -2773,7 +2775,7 @@ function getPreviousFeedback($uid, $pid)
 {
         $sql = sprintf("SELECT * FROM testing_feedback WHERE pid='%s' AND uid='%s'",
                         mysql_real_escape_string($pid), mysql_real_escape_string($uid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function hasAnswer($pid)
@@ -2893,19 +2895,19 @@ function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthro
 function getRounds()
 {
         $sql = sprintf("SELECT * FROM rounds ORDER BY unlock_at");
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function getAnswersForRound($rid)
 {
         $sql = sprintf("SELECT * FROM answers_rounds JOIN answers ON answers.aid=answers_rounds.aid WHERE answers_rounds.rid='%s'", mysql_real_escape_string($rid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function getRoundForPuzzle($pid)
 {
         $sql = sprintf("SELECT rounds.* FROM rounds, answers_rounds, answers WHERE answers.pid='%s' and answers_rounds.aid = answers.aid and rounds.rid = answers_rounds.rid;", mysql_real_escape_string($pid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function getNumberOfEditorsOnPuzzles()
@@ -3091,7 +3093,7 @@ function getDeadStatusId()
 function displayTestingFeed()
 {
   $comments = getTestFeedComments();
-  if ($comments == NULL)
+  if (!$comments)
     return;
  
   foreach ($comments as $comment){
@@ -3144,7 +3146,7 @@ function getUserTestTeamID($uid)
 function getTestTeams()
 {
         $sql = "SELECT * FROM testsolve_team";
-        return(get_rows_null($sql));
+        return(get_rows($sql));
 }
 
 function getTestTeamName($tid)

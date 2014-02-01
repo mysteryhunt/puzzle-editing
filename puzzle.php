@@ -835,7 +835,7 @@ function displayFileList ($uid, $pid, $type) {
         $fileList = getFileListForPuzzle($pid, $type);
         $first = TRUE;
 
-        if ($fileList == NULL) {
+        if (!$fileList) {
                 $file['filename'] = '(none)';
                 $file['date'] = NULL;
                 $fileList[] = $file;
@@ -1012,7 +1012,7 @@ function displayPostProd($uid, $pid, $pp)
 function displayComments($uid, $pid, $lastVisit)
 {
         $comments = getComments($pid);
-        if ($comments == NULL)
+        if (!$comments)
                 return;
 
         foreach ($comments as $comment)

@@ -295,7 +295,7 @@ function displayFeedbackForm($uid, $pid)
 function displayPrevFeedback($uid, $pid)
 {
         $prevFeedback = getPreviousFeedback($uid, $pid);
-        if ($prevFeedback == NULL)
+        if (!$prevFeedback)
                 return;
 
         echo '<h3>Previous Feedback</h3>';

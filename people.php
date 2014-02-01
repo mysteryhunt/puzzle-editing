@@ -11,6 +11,10 @@
         head("people");
         $people = getPeople();
 
+        if (!$people) {
+                echo "<strong>No people to list!</strong>";
+        }
+
         foreach ($people as $p) {
                 printPerson($p);
         }

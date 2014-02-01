@@ -70,7 +70,7 @@
         }
 
         // Get multiple rows from database, as an array of arrays.
-        // Error if no result found
+        // Return an empty array if no result found.
         function get_rows($query)
         {
                 $result = query_db($query);
@@ -78,25 +78,7 @@
                 if ($result == FALSE)
                         db_error($query);
 
-                $rows = NULL;
-                while ($r = mysql_fetch_array($result)) {
-                        $rows[] = $r;
-                }
-
-                return $rows;
-        }
-
-        // Get multiple rows from database, as an array of arrays.
-        // Return NULL if no result found
-        function get_rows_null($query)
-        {
-                $result = mysql_query($query);
-
-                if ($result == FALSE || mysql_num_rows($result) == 0) {
-                        return NULL;
-                }
-
-                $rows = NULL;
+                $rows = array();
                 while ($r = mysql_fetch_array($result)) {
                         $rows[] = $r;
                 }

@@ -90,9 +90,9 @@ function displayTestQueue($uid)
 function displayTestingSummary()
 {
         $sql = sprintf("SELECT uid, pid from test_queue");
-        $result = get_rows_null($sql);
+        $result = get_rows($sql);
 
-        if ($result == NULL)
+        if (!$result)
                 return;
 
         echo '<style type="text/css">';

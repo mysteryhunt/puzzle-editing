@@ -137,14 +137,14 @@
                                 <span class="profilecontact"><a href="mailto:<?php echo $email ?>"><?php echo $email ?></a></span>
 <?php
                         $sql = "SELECT * FROM user_info_key";
-                        $result = get_rows_null($sql);
+                        $result = get_rows($sql);
                         foreach ($result as $r) {
                                 $shortname = $r['shortname'];
                                 $longname = $r['longname'];
                                 $user_key_id = $r['id'];
                                 $sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
                                                mysql_real_escape_string($id), mysql_real_escape_string($user_key_id));
-                                $res = get_rows_null($sql);
+                                $res = get_rows($sql);
                                 if ($res[0]['value'] != "") {
 ?>
                                         <span class="profilesect"><?php echo "<b>$longname</b>: " . $res[0]['value']; ?></span>

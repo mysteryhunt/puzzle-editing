@@ -18,7 +18,7 @@ function computeComments()
 	$a = array();
 
         $comments = getTestCommentsAll();
-        if ($comments == NULL)
+        if (!$comments)
                 return;
 
 
@@ -140,7 +140,7 @@ function getTestCommentsAll()
                                         comments LEFT JOIN comment_type ON comments.type=comment_type.id
                                         WHERE comment_type.name='Testsolver' ORDER BY comments.id ASC",
                                         mysql_real_escape_string($pid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
   computeComments();
