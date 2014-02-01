@@ -42,11 +42,8 @@
         {
                 $result = query_db($query);
 
-                if ($result == FALSE)
-                        db_error($query);
-
                 if (mysql_num_rows($result) != 1)
-                        db_error($query);
+                        db_unexpected($query);
 
                 $r = mysql_fetch_array($result);
                 return $r;
@@ -57,13 +54,13 @@
         // Error if more than 1 row found.
         function get_row_null($query)
         {
-                $result = mysql_query($query);
+                $result = query_db($query);
 
-                if ($result == FALSE || mysql_num_rows($result) == 0)
+                if (mysql_num_rows($result) == 0)
                         return NULL;
 
                 if (mysql_num_rows($result) != 1)
-                        db_error($query);
+                        db_unexpected($query);
 
                 $r = mysql_fetch_array($result);
                 return $r;
@@ -74,9 +71,6 @@
         function get_rows($query)
         {
                 $result = query_db($query);
-
-                if ($result == FALSE)
-                        db_error($query);
 
                 $rows = array();
                 while ($r = mysql_fetch_array($result)) {
@@ -91,11 +85,9 @@
         {
                 $arr = array();
 
-                $result = mysql_query($query);
-                if ($result != FALSE) {
-                        while ($r = mysql_fetch_array($result)) {
-                                $arr[$r[$key_col]] = $r[$val_col];
-                        }
+                $result = query_db($query);
+                while ($r = mysql_fetch_array($result)) {
+                        $arr[$r[$key_col]] = $r[$val_col];
                 }
 
                 return $arr;
@@ -139,24 +131,25 @@
         // Check if a query returns a result
         function has_result($query)
         {
-                $result = mysql_query($query);
-
-                if ($result == NULL)
-                        return FALSE;
-                if (mysql_num_rows($result) > 0)
-                        return TRUE;
-
-                //Something went wrong somewhere
-                return FALSE;
+                $result = query_db($query);
+                return mysql_num_rows($result) > 0;
         }
 
         // On database error, give error and stop.
-        function db_error($query)
+        function db_fail_message($query, $message)
         {
                 mysql_query('ROLLBACK');
-                echo "An error has occurred while querying the database. Please try again. <br />";
+                echo "$message <br />";
                 echo $query;
                 foot();
                 exit(1);
+        }
+        function db_error($query)
+        {
+                db_fail_message($query, "An error has occurred while querying the database. Please try again.");
+        }
+        function db_unexpected($query)
+        {
+                db_fail_message($query, "The number of rows resulting from querying the database was unexpected. Please try again.");
         }
 ?>

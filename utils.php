@@ -173,7 +173,8 @@ function isAutoSubEditor($uid)
 
 function isRoundCaptain($uid)
 {
-        return hasPriv($uid, 'addToRoundCaptainQueue');
+        //return hasPriv($uid, 'addToRoundCaptainQueue');
+        return false;
 }
 
 function isTestingAdmin($uid)
@@ -430,7 +431,7 @@ function getFinishedTestersAsList($pid)
 // Get comma-separated list of users' names, with email addresses
 function getUserNamesAndEmailsAsList($users)
 {
-        if ($users == NULL)
+        if (!$users)
                 return '(none)';
 
         $list = '';
@@ -464,9 +465,6 @@ function getUserJobsAsList($uid)
 function isAnyAuthorBlind($pid)
 {
         $authors = getAuthorsForPuzzle($pid);
-
-        if ($authors == NULL)
-                return FALSE;
 
         foreach ($authors as $author) {
                 if (isBlind($author))
@@ -672,8 +670,7 @@ function getAnswersForPuzzleAsList($pid)
 function getAvailableAnswers()
 {
         $answers = get_assoc_array("SELECT aid, answer FROM answers WHERE pid IS NULL", "aid", "answer");
-        if ($answers != NULL)
-                natcasesort($answers);
+        natcasesort($answers);
         return $answers;
 }
 
@@ -697,12 +694,13 @@ function changeAnswers($uid, $pid, $add, $remove)
         mysql_query('START TRANSACTION');
         addAnswers($uid, $pid, $add);
         removeAnswers($uid, $pid, $remove);
+
         mysql_query('COMMIT');
 }
 
 function addAnswers($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
         if (!canChangeAnswers($uid))
@@ -747,7 +745,7 @@ function removeAnswerKill($uid, $pid, $ans)
         
 function removeAnswers($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!isAuthorOnPuzzle($uid, $pid) && !canChangeAnswers($uid))
@@ -793,7 +791,7 @@ function getAnswerWord($aid)
                         mysql_real_escape_string($aid));
         $ans = get_element_null($sql);
 
-        if ($ans == NULL)
+        if (!$ans)
                 utilsError("$aid is not a valid answer id");
 
         return $ans;
@@ -1082,11 +1080,7 @@ function defaultWikiPageForPuzzle($pid)
 function getCurrentTestersAsEmailList($pid)
 {
         $testers = getCurrentTestersForPuzzle($pid);
-        if ($testers == NULL) {
-                $testers = array();
-        } else {
-                $testers = array_keys($testers);
-        }
+        $testers = array_keys($testers);
 
         return getUserNamesAndEmailsAsList($testers);
 }
@@ -1137,7 +1131,7 @@ function changeSpoiled($uid, $pid, $removeUser, $addUser)
 
 function removeSpoiledUser($uid, $pid, $removeUser)
 {
-        if ($removeUser == NULL)
+        if (!$removeUser)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1212,7 +1206,7 @@ function getAvailableRoundCaptainsForPuzzle($pid)
 
 function addSpoiledUser($uid, $pid, $addUser)
 {
-        if ($addUser == NULL)
+        if (!$addUser)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1309,7 +1303,7 @@ function changeFactcheckers($uid, $pid, $add, $remove)
 
 function addFactcheckers($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
 	if (!validPuzzleStatus($pid))
@@ -1357,7 +1351,7 @@ function addFactcheckers($uid, $pid, $add)
 
 function removeFactcheckers($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1398,7 +1392,7 @@ function removeFactcheckers($uid, $pid, $remove)
 
 function addAuthors($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1443,7 +1437,7 @@ function addAuthors($uid, $pid, $add)
 
 function removeAuthors($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1484,7 +1478,7 @@ function removeAuthors($uid, $pid, $remove)
 
 function addRoundCaptains($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1529,7 +1523,7 @@ function addRoundCaptains($uid, $pid, $add)
 
 function removeRoundCaptains($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1570,7 +1564,7 @@ function removeRoundCaptains($uid, $pid, $remove)
 
 function addEditors($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1654,7 +1648,7 @@ function removeEditorKill($uid, $pid, $editor)
 
 function removeEditors($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -2776,7 +2770,7 @@ function checkAnswer($pid, $attempt)
 {
         $actual = getAnswersForPuzzle($pid);
 
-        if ($actual == NULL)
+        if (!$actual)
                 return FALSE;
 
         foreach ($actual as $a) {
@@ -3025,7 +3019,7 @@ function getPuzzleRound($pid)
 {
   $sql = sprintf("SELECT aid FROM answers WHERE pid = %d LIMIT 1", $pid);
   $aid = get_element_null($sql); 
-  if ($aid == NULL) { 
+  if (!$aid) { 
     return (""); 
   }
   $sql = sprintf("SELECT rounds.name FROM rounds,answers_rounds WHERE rounds.rid=answers_rounds.rid AND answers_rounds.aid=%d", $aid);
@@ -3044,7 +3038,7 @@ function getDeadStatusId()
   // terrible hack to figure out which status ID is "dead"
   // so we can omit them by default from queue
   $statuses = getPuzzleStatuses();
-  $deadstatusid = NULL;
+  $deadstatusid = array();
   foreach ($statuses as $sid => $sname) {
                          if (strtoupper($sname) == "DEAD") {
                                  $deadstatusid = $sid;
