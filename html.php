@@ -2,6 +2,13 @@
         require_once "config.php";
         require_once "utils.php";
 
+        function echoNav($isselected, $href, $linktext, $condition) {
+                if ($condition) {
+                        $navclass = $isselected ? "selnav" : "nav";
+                        echo "<li class='nav'><a class='$navclass' href='$href'>$linktext</a></li>\n";
+                }
+        }
+        function echoNav1($selnav, $name, $linktext, $condition) { echoNav($selnav == $name, $name . ".php", $linktext, $condition); }
         function head($selnav = "") {
         $hunt=mktime(12,00,00,1,HUNT_DOM,HUNT_YEAR);
         $now = time();
@@ -63,24 +70,27 @@
                 <ul class="nav" style="float:left;">
 			<li class="nav"><a class="nav" target="_blank" href="
 <?php echo WIKI_URL; ?> ">Wiki</a></li>
-			<li class="nav"><a class="<?php echo ($selnav == "home") ? "selnav" : "nav" ?>" href="index.php">Home</a></li> <?php if(isset($_SESSION['uid'])) { ?>
-			<li class="nav"><a class="<?php echo ($selnav == "people") ? "selnav" : "nav" ?>" href="people.php">People</a></li>
-			<li class="nav"><a class="<?php echo ($selnav == "account") ? "selnav" : "nav" ?>" href="account.php">Your Account</a></li>
-                        <?php }
-				  if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "admin") ? "selnav" : "nav" ?>" href="admin.php">Admin</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "author") ? "selnav" : "nav" ?>" href="author.php">Author</a></li> <?php } ?>
-<?php if(isset($_SESSION['uid']) && isRoundCaptain($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "roundcaptain") ? "selnav" : "nav" ?>" href="roundcaptain.php">Round Captain</a></li> <?php } ?>
-<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "spoiled") ? "selnav" : "nav" ?>" href="spoiled.php">Spoiled</a></li> <?php } ?>
-
-			<?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor.php">Editor</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "ffc") ? "selnav" : "nav" ?>" href="ffc.php">Final Fact Check</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']))  {?> <li class="nav"><a class="<?php echo ($selnav == "factcheck") ? "selnav" : "nav" ?>" href="factcheck.php">Fact Check</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving.php">Testsolving</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && isTestingAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin.php">Testing Admin</a></li> <?php } ?>
-			<?php if((USING_TESTSOLVE_TEAMS) && isset($_SESSION['uid']) && isTestingAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolveteams") ? "selnav" : "nav" ?>" href="testsolveteams.php">TS Team Assignments</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && (canChangeAnswers($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers.php">Answers</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && canSeeAllPuzzles($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "allpuzzles") ? "selnav" : "nav" ?>" href="allpuzzles.php">All Puzzles</a></li> <?php } ?>
-                        <?php if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editorlist") ? "selnav" : "nav" ?>" href="editorlist.php">Editor List</a></li> <?php } ?>
+<?php
+        echoNav($selnav == "home", "index.php", "Home", true);
+        if (isset($_SESSION['uid'])) {
+                $suid = $_SESSION['uid'];
+                echoNav1($selnav, "people",         "People",              true);
+                echoNav1($selnav, "account",        "Your Account",        true);
+                echoNav1($selnav, "admin",          "Admin",               isServerAdmin($suid));
+                echoNav1($selnav, "author",         "Author",              true);
+                echoNav1($selnav, "roundcaptain",   "Round Captain",       isRoundCaptain($suid));
+                echoNav1($selnav, "spoiled",        "Spoiled",             true);
+                echoNav1($selnav, "editor",         "Editor",              isEditor($suid));
+                echoNav1($selnav, "ffc",            "Final Fact Check",    true);
+                echoNav1($selnav, "factcheck",      "Fact Check",          true);
+                echoNav1($selnav, "testsolving",    "Testsolving",         true);
+                echoNav1($selnav, "testadmin",      "Testing Admin",       isTestingAdmin($suid));
+                echoNav1($selnav, "testsolveteams", "TS Team Assignments", (USING_TESTSOLVE_TEAMS) && isTestingAdmin($suid));
+                echoNav1($selnav, "answers",        "Answers",             canChangeAnswers($suid));
+                echoNav1($selnav, "allpuzzles",     "All Puzzles",         canSeeAllPuzzles($suid));
+                echoNav1($selnav, "editorlist",     "Editor List",         isServerAdmin($suid));
+        }
+?>
                 </ul>
 			<?php if(!TRUST_REMOTE_USER) { ?> <div style="float:right;"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout.php">Logout</a><?php } ?> </div> <?php } ?>
                 </div>
