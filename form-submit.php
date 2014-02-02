@@ -345,7 +345,7 @@
                 $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
-		if (!validPuzzleStatus($pid))
+		if (!validPuzzleId($pid))
 			utilsError("Invalid puzzle ID.");
 
                 if (isTestingAdmin($uid)) {

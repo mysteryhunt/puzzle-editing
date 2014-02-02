@@ -24,6 +24,12 @@ function validUserId($uid)
         return has_result($sql);
 }
 
+function validPuzzleId($uid)
+{
+        $sql = sprintf("SELECT * FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($uid));
+        return has_result($sql);
+}
+
 function isValidPuzzleFilter()
 {
         if (isset($_GET['filterkey']) && isset($_GET['filtervalue'])) {
@@ -34,7 +40,7 @@ function isValidPuzzleFilter()
                         exit(1);
                 }
                 $val = $_GET['filtervalue'];
-                if ($key == "status" && !validPuzzleStatus($val)) {
+                if ($key == "status" && !validPuzzleId($val)) {
                         echo "Invalid puzzle status ID.";
                         foot();
                         exit(1);
@@ -1323,7 +1329,7 @@ function addFactcheckers($uid, $pid, $add)
         if ($add == NULL)
                 return;
 
-	if (!validPuzzleStatus($pid))
+	if (!validPuzzleId($pid))
 		utilsError("Invalid puzzle ID.");
 
         if (!canViewPuzzle($uid, $pid))
