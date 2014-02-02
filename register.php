@@ -232,7 +232,9 @@
                                 $pic = getPic($id);
                         }
                 } else {
-                        $pic = pictureHandling($id, $picture);
+                        if ($picture['name'] != '') {
+			        $pic = pictureHandling($id, $picture);
+			}
                 }
 
                 $purifier = new HTMLPurifier();
