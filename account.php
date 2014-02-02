@@ -58,7 +58,7 @@
                         }
                 //]]>
         </script>
-<!--
+
         <form method="post" action="<?php echo SELF; ?>" onsubmit="return validate(this)">
         <table>
                 <tr>
@@ -79,7 +79,7 @@
                 </tr>
         </table>
         </form>
--->
+
 <?php
         // End HTML
         foot();
