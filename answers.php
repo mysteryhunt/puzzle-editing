@@ -38,8 +38,11 @@
         function displayAnswers($uid)
         {
                 $rounds = getRounds();
+                if (!$rounds) {
 ?>
+                <strong>No rounds to list</strong>
 <?php
+                }
                 foreach($rounds as $round) {
                     $answers = getAnswersForRound($round['rid']);
 ?>
@@ -48,6 +51,13 @@
                             <th colspan="4"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></th>
                     </tr>
 <?php
+                    if (!$answers) {
+?>
+                        <tr>
+                                <td colspan="4"><strong>No answers added yet</strong></td>
+                        </tr>
+<?php
+                    }
                     foreach($answers as $answer) {
                         $pid = $answer['pid'];
 ?>

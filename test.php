@@ -37,7 +37,7 @@
                 $title = '(untitled)';
 
         echo "<h1>Puzzle $pid -- $title</h1>";
-        echo "<b><font color='red'>IMPORTANT:</font> Please leave feedback! We
+        echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
         need it!</b><br><br> When you are done, PLEASE leave feedback indicating
         that you do not intend to return, <b>even if the rest is blank</b>. This
         removes you as a tester on this puzzle, so we can track who's still
@@ -169,11 +169,11 @@ function checkAnsForm($uid, $pid)
 function displayPrevAns($uid, $pid)
 {
         $answers = getAnswerAttempts($uid, $pid);
-        if ($answers == NULL)
+        if (!$answers)
                 return;
 
         $correct = getCorrectSolves($uid, $pid);
-        if ($correct != NULL)
+        if ($correct)
                 echo "<h4>Correct Answers: $correct</h4>";
 
         echo '<table>';
@@ -295,7 +295,7 @@ function displayFeedbackForm($uid, $pid)
 function displayPrevFeedback($uid, $pid)
 {
         $prevFeedback = getPreviousFeedback($uid, $pid);
-        if ($prevFeedback == NULL)
+        if (!$prevFeedback)
                 return;
 
         echo '<h3>Previous Feedback</h3>';

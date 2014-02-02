@@ -179,7 +179,8 @@ function isAutoSubEditor($uid)
 
 function isRoundCaptain($uid)
 {
-        return hasPriv($uid, 'addToRoundCaptainQueue');
+        //return hasPriv($uid, 'addToRoundCaptainQueue');
+        return false;
 }
 
 function isTestingAdmin($uid)
@@ -371,14 +372,14 @@ function getTestAdminsToNotify($pid)
         $table = 'testAdminQueue';
         $sql = sprintf("SELECT user_info.uid FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
                                         $table, $table, $table, mysql_real_escape_string($pid));
-        $testadmins_for_puzzle = get_elements_null($sql);
+        $testadmins_for_puzzle = get_elements($sql);
 
         $sql = "select user_info.uid from user_info, jobs where user_info.uid=jobs.uid and (jobs.jid=6 or jobs.jid=13);";
-        $all_testadmins = get_elements_null($sql);
+        $all_testadmins = get_elements($sql);
 
         // If a puzzle has testadmins, they will be auto-subscribed to
         // comments. Prevent them from getting notified twice.
-        return ($testadmins_for_puzzle == NULL ? $all_testadmins : array());
+        return ($testadmins_for_puzzle ? array() : $all_testadmins);
 }
 
 // Get comma-separated list of users' names
@@ -387,9 +388,9 @@ function getUserNamesAsList($table, $pid)
         // This is only called from the below functions, where $table is a hardcoded string
         $sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
                                         $table, $table, $table, mysql_real_escape_string($pid));
-        $users = get_elements_null($sql);
+        $users = get_elements($sql);
 
-        return ($users == NULL ? "(none)" : implode(", ", $users));
+        return ($users ? implode(", ", $users) : "(none)" );
 }
 
 function getAuthorsAsList($pid)
@@ -436,7 +437,7 @@ function getFinishedTestersAsList($pid)
 // Get comma-separated list of users' names, with email addresses
 function getUserNamesAndEmailsAsList($users)
 {
-        if ($users == NULL)
+        if (!$users)
                 return '(none)';
 
         $list = '';
@@ -457,13 +458,12 @@ function getUserJobsAsList($uid)
 {
         $sql = sprintf("SELECT priv.name FROM jobs, priv WHERE jobs.uid='%s' AND jobs.jid=priv.jid",
                                         mysql_real_escape_string($uid));
-        $result = get_elements_null($sql);
+        $result = get_elements($sql);
 
-        if ($result == NULL)
-                return '';
-
-        else
+        if ($result)
                 return implode(', ', $result);
+        else
+                return '';
 }
 
 
@@ -471,9 +471,6 @@ function getUserJobsAsList($uid)
 function isAnyAuthorBlind($pid)
 {
         $authors = getAuthorsForPuzzle($pid);
-
-        if ($authors == NULL)
-                return FALSE;
 
         foreach ($authors as $author) {
                 if (isBlind($author))
@@ -527,7 +524,7 @@ function getCurMotd()
 function getAllMotd()
 {
         $sql = sprintf("SELECT * FROM motd ORDER BY time DESC");
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 // Update the title, summary, and description of the puzzle (from form on puzzle page)
@@ -666,12 +663,12 @@ function getAnswersForPuzzleAsList($pid)
 {
         $sql = sprintf("SELECT answer FROM answers WHERE pid='%s'",
                         mysql_real_escape_string($pid));
-        $answers = get_elements_null($sql);
+        $answers = get_elements($sql);
 
-        if ($answers == NULL)
-                return '';
-        else
+        if ($answers)
                 return implode(', ', $answers);
+        else
+                return '';
 }
 
 // Get available answers
@@ -679,8 +676,7 @@ function getAnswersForPuzzleAsList($pid)
 function getAvailableAnswers()
 {
         $answers = get_assoc_array("SELECT aid, answer FROM answers WHERE pid IS NULL", "aid", "answer");
-        if ($answers != NULL)
-                natcasesort($answers);
+        natcasesort($answers);
         return $answers;
 }
 
@@ -704,12 +700,13 @@ function changeAnswers($uid, $pid, $add, $remove)
         mysql_query('START TRANSACTION');
         addAnswers($uid, $pid, $add);
         removeAnswers($uid, $pid, $remove);
+
         mysql_query('COMMIT');
 }
 
 function addAnswers($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
         if (!canChangeAnswers($uid))
@@ -754,7 +751,7 @@ function removeAnswerKill($uid, $pid, $ans)
         
 function removeAnswers($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!isAuthorOnPuzzle($uid, $pid) && !canChangeAnswers($uid))
@@ -800,7 +797,7 @@ function getAnswerWord($aid)
                         mysql_real_escape_string($aid));
         $ans = get_element_null($sql);
 
-        if ($ans == NULL)
+        if (!$ans)
                 utilsError("$aid is not a valid answer id");
 
         return $ans;
@@ -922,10 +919,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE)
         if ($isTestsolveComment) {
                 $admins = getTestAdminsToNotify($pid);
         }
-        if ($users == NULL)
-                $users = array();
-        if ($admins == NULL)
-                $admins = array();
+        $admins = array();
 
         foreach ($users as $user)
         {
@@ -950,7 +944,7 @@ function getSubbed($pid)
 {
         $sql = sprintf("SELECT uid FROM email_sub WHERE pid='%s'",
                         mysql_real_escape_string($pid));
-        return get_elements_null($sql);
+        return get_elements($sql);
 }
 
 function sendEmail($uid, $subject, $message, $link)
@@ -975,8 +969,10 @@ function realSendAllEmail()
         query_db($sql);
         mysql_query("COMMIT");
 
-        if (is_null($mails))
+        if (!$mails)
         {
+                // Should we indicate an error here?
+                // I don't think so, but the original call to get_rows would do that.
                 return;
         }
         foreach ($mails as $mail)
@@ -1023,7 +1019,7 @@ function getAvailableAuthorsForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $authors = NULL;
+        $authors = array();
         foreach ($users as $uid) {
                 if ($pid == FALSE || isAuthorAvailable($uid, $pid)) {
                         $authors[$uid] = getUserName($uid);
@@ -1040,11 +1036,8 @@ function getAvailableFactcheckersForPuzzle($pid)
         // Get all users
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
-        if ($users == NULL) {
-                $users = array();
-        }
 
-        $fcs = NULL;
+        $fcs = array();
         foreach ($users as $uid) {
                 if ($pid == FALSE || isFactcheckerAvailable($uid, $pid)) {
                         $fcs[$uid] = getUserName($uid);
@@ -1062,7 +1055,7 @@ function getAvailableSpoiledUsersForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $spoiled = NULL;
+        $spoiled = array();
         foreach ($users as $uid) {
                 if (!isSpoiledOnPuzzle($uid, $pid)) {
                         $spoiled[$uid] = getUserName($uid);
@@ -1093,11 +1086,7 @@ function defaultWikiPageForPuzzle($pid)
 function getCurrentTestersAsEmailList($pid)
 {
         $testers = getCurrentTestersForPuzzle($pid);
-        if ($testers == NULL) {
-                $testers = array();
-        } else {
-                $testers = array_keys($testers);
-        }
+        $testers = array_keys($testers);
 
         return getUserNamesAndEmailsAsList($testers);
 }
@@ -1105,13 +1094,11 @@ function getCurrentTestersAsEmailList($pid)
 function getCurrentTestersForPuzzle($pid)
 {
         $sql = sprintf("SELECT uid FROM test_queue WHERE pid='%s'", mysql_real_escape_string($pid));
-        $result = get_elements_null($sql);
+        $result = get_elements($sql);
 
-        $testers = NULL;
-        if ($result != NULL) {
-                foreach ($result as $uid) {
-                        $testers[$uid] = getUserName($uid);
-                }
+        $testers = array();
+        foreach ($result as $uid) {
+                $testers[$uid] = getUserName($uid);
         }
 
         return $testers;
@@ -1123,7 +1110,7 @@ function getAvailableTestersForPuzzle($pid)
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
 
-        $testers = NULL;
+        $testers = array();
         foreach ($users as $uid) {
                 if (isTesterAvailable($uid, $pid)) {
                         $testers[$uid] = getUserName($uid);
@@ -1150,7 +1137,7 @@ function changeSpoiled($uid, $pid, $removeUser, $addUser)
 
 function removeSpoiledUser($uid, $pid, $removeUser)
 {
-        if ($removeUser == NULL)
+        if (!$removeUser)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1191,14 +1178,12 @@ function getAvailableEditorsForPuzzle($pid)
 {
         // Get all users
         $sql = 'SELECT uid FROM user_info';
-        $users = get_elements_null($sql);
+        $users = get_elements($sql);
 
-        $editors = NULL;
-        if ($users != NULL) {
-                foreach ($users as $uid) {
-                        if (isEditorAvailable($uid, $pid)) {
-                                $editors[$uid] = getUserName($uid);
-                        }
+        $editors = array();
+        foreach ($users as $uid) {
+                if (isEditorAvailable($uid, $pid)) {
+                        $editors[$uid] = getUserName($uid);
                 }
         }
 
@@ -1211,14 +1196,12 @@ function getAvailableRoundCaptainsForPuzzle($pid)
 {
         // Get all users
         $sql = 'SELECT uid FROM user_info';
-        $users = get_elements_null($sql);
+        $users = get_elements($sql);
 
-        $capts = NULL;
-        if ($users != NULL) {
-                foreach ($users as $uid) {
-                        if (isRoundCaptainAvailable($uid, $pid)) {
-                                $capts[$uid] = getUserName($uid);
-                        }
+        $capts = array();
+        foreach ($users as $uid) {
+                if (isRoundCaptainAvailable($uid, $pid)) {
+                        $capts[$uid] = getUserName($uid);
                 }
         }
 
@@ -1229,7 +1212,7 @@ function getAvailableRoundCaptainsForPuzzle($pid)
 
 function addSpoiledUser($uid, $pid, $addUser)
 {
-        if ($addUser == NULL)
+        if (!$addUser)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1326,7 +1309,7 @@ function changeFactcheckers($uid, $pid, $add, $remove)
 
 function addFactcheckers($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
 	if (!validPuzzleId($pid))
@@ -1374,7 +1357,7 @@ function addFactcheckers($uid, $pid, $add)
 
 function removeFactcheckers($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1415,7 +1398,7 @@ function removeFactcheckers($uid, $pid, $remove)
 
 function addAuthors($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1460,7 +1443,7 @@ function addAuthors($uid, $pid, $add)
 
 function removeAuthors($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1501,7 +1484,7 @@ function removeAuthors($uid, $pid, $remove)
 
 function addRoundCaptains($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1546,7 +1529,7 @@ function addRoundCaptains($uid, $pid, $add)
 
 function removeRoundCaptains($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1587,7 +1570,7 @@ function removeRoundCaptains($uid, $pid, $remove)
 
 function addEditors($uid, $pid, $add)
 {
-        if ($add == NULL)
+        if (!$add)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1671,7 +1654,7 @@ function removeEditorKill($uid, $pid, $editor)
 
 function removeEditors($uid, $pid, $remove)
 {
-        if ($remove == NULL)
+        if (!$remove)
                 return;
 
         if (!canViewPuzzle($uid, $pid))
@@ -1915,12 +1898,10 @@ function changeStatus($uid, $pid, $status)
                 // For every user that was testing this puzzle, mark the puzzle as doneTesting
                 $sql = sprintf("SELECT uid FROM test_queue WHERE pid = '%s'", mysql_real_escape_string($pid));
                 query_db($sql);
-                $users = get_elements_null($sql);
-                if ($users) {
-                           foreach ($users as $user) {
-  //                            echo "<br>Setting puzzle $pid done for user $user<br>";
-                                doneTestingPuzzle($user, $pid);
-                        }
+                $users = get_elements($sql);
+                foreach ($users as $user) {
+                        // echo "<br>Setting puzzle $pid done for user $user<br>";
+                        doneTestingPuzzle($user, $pid);
                 }
                 // Now, reset the number-of-testers count for the puzzle.
                 resetPuzzleTesterCount($pid);
@@ -2096,7 +2077,7 @@ function getFileListForPuzzle($pid, $type)
 {
         $sql = sprintf("SELECT * FROM uploaded_files WHERE pid='%s' AND type='%s' ORDER BY date DESC, filename DESC",
                         mysql_real_escape_string($pid), mysql_real_escape_string($type));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 
@@ -2167,7 +2148,7 @@ function getComments($pid)
                                         comments LEFT JOIN comment_type ON comments.type=comment_type.id
                                         WHERE comments.pid='%s' ORDER BY comments.id ASC",
                                         mysql_real_escape_string($pid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function getTestFeedComments()
@@ -2176,7 +2157,7 @@ function getTestFeedComments()
                                         comments.timestamp, comments.pid, comment_type.name FROM
                                         comments LEFT JOIN comment_type ON comments.type=comment_type.id
                                         WHERE (comments.comment LIKE '%In Testing%' OR comments.comment LIKE '%answer attempt%') AND (comment_type.name = 'Testsolver' OR comment_type.name = 'Server') ORDER BY comments.timestamp DESC LIMIT 50";
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function isSubbedOnPuzzle($uid, $pid)
@@ -2266,7 +2247,7 @@ function newPass($uid, $username, $pass1, $pass2)
 function getPuzzlesForAuthor($uid)
 {
         $sql = sprintf("SELECT pid FROM authors WHERE uid='%s'", mysql_real_escape_string($uid));
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
 }
@@ -2274,7 +2255,7 @@ function getPuzzlesForAuthor($uid)
 function getPuzzlesForFactchecker($uid)
 {
         $sql = sprintf("SELECT pid FROM factcheck_queue WHERE uid='%s'", mysql_real_escape_string($uid));
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
 }
@@ -2282,7 +2263,7 @@ function getPuzzlesForFactchecker($uid)
 function getSpoiledPuzzles($uid)
 {
         $sql = sprintf("SELECT pid FROM spoiled WHERE uid='%s'", mysql_real_escape_string($uid));
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
 }
@@ -2329,13 +2310,13 @@ function getNumTesters($pid)
 
 function getPuzzlesInPostprod()
 {
-        $puzzles = get_elements_null("select puzzle_idea.id from puzzle_idea, pstatus where puzzle_idea.pstatus=pstatus.id and pstatus.name like '%Post-Production%'");
+        $puzzles = get_elements("select puzzle_idea.id from puzzle_idea, pstatus where puzzle_idea.pstatus=pstatus.id and pstatus.name like '%Post-Production%'");
         return sortByLastCommentDate($puzzles);
 }
 
 function getPuzzlesInPostprodAndLater()
 {
-        $puzzles = get_elements_null("select puzzle_idea.id from puzzle_idea, pstatus where puzzle_idea.pstatus=pstatus.id and pstatus.postprod='1'");
+        $puzzles = get_elements("select puzzle_idea.id from puzzle_idea, pstatus where puzzle_idea.pstatus=pstatus.id and pstatus.postprod='1'");
         return sortByLastCommentDate($puzzles);
 }
 
@@ -2343,7 +2324,7 @@ function getPuzzlesInEditorQueue($uid)
 {
         $sql = sprintf("SELECT pid FROM editor_queue WHERE uid='%s'",
                         mysql_real_escape_string($uid));
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
 }
@@ -2352,7 +2333,7 @@ function getPuzzlesInRoundCaptainQueue($uid)
 {
         $sql = sprintf("SELECT pid FROM round_captain_queue WHERE uid='%s'",
                         mysql_real_escape_string($uid));
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
 }
@@ -2361,7 +2342,7 @@ function getPuzzlesInTestQueue($uid)
 {
         $sql = sprintf("SELECT pid FROM test_queue WHERE uid='%s'",
                         mysql_real_escape_string($uid));
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return $puzzles;
 }
@@ -2371,7 +2352,7 @@ function getPuzzlesNeedingTesters()
 {
         $sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN test_queue ON test_queue.pid
                 = puzzle_idea.id WHERE pstatus = 4 AND uid IS NULL";
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return $puzzles;
 }
@@ -2380,10 +2361,7 @@ function getActivePuzzlesInTestQueue($uid)
 {
         $puzzles = getPuzzlesInTestQueue($uid);
 
-        if ($puzzles == NULL)
-                return NULL;
-
-        $active = NULL;
+        $active = array();
         foreach ($puzzles as $pid) {
                 if (isPuzzleInTesting($pid)) {
                         $active[] = $pid;
@@ -2398,20 +2376,16 @@ function getInactiveTestPuzzlesForUser($uid)
         $inQueue = getPuzzlesInTestQueue($uid);
         $oldPuzzles = getDoneTestingPuzzlesForUser($uid);
 
-        $puzzles = array_merge((array)$inQueue, (array)$oldPuzzles);
+        $puzzles = array_merge($inQueue, $oldPuzzles);
 
-        if ($puzzles == NULL)
-                return NULL;
-
-        $inactive = NULL;
+        $inactive = array();
         foreach ($puzzles as $pid) {
                 if (!isPuzzleInTesting($pid)) {
                         $inactive[] = $pid;
                 }
         }
 
-        if ($inactive != NULL)
-                sort($inactive);
+        sort($inactive);
 
         return $inactive;
 }
@@ -2419,18 +2393,15 @@ function getInactiveTestPuzzlesForUser($uid)
 function getDoneTestingPuzzlesForUser($uid)
 {
         $sql = sprintf("SELECT pid FROM doneTesting WHERE uid='%s'", mysql_real_escape_string($uid));
-        $result = get_elements_null($sql);
-    if ($result == NULL)
-      return array();
-    else
-      return $result;
+        $result = get_elements($sql);
+        return $result;
 }
 
 function getActiveDoneTestingPuzzlesForUser($uid)
 {
         $puzzles = getDoneTestingPuzzlesForUser($uid);
 
-        $active = NULL;
+        $active = array();
         foreach ($puzzles as $pid) {
                 if (isPuzzleInTesting($pid)) {
                         $active[] = $pid;
@@ -2442,10 +2413,7 @@ function getActiveDoneTestingPuzzlesForUser($uid)
 
 function sortByLastCommentDate($puzzles)
 {
-        if ($puzzles == NULL)
-                return NULL;
-
-        $sorted = NULL;
+        $sorted = array();
         foreach ($puzzles as $pid) {
                 $sorted[$pid] = getLastCommentDate($pid);
         }
@@ -2457,10 +2425,7 @@ function sortByLastCommentDate($puzzles)
 
 function sortByNumEditors($puzzles)
 {
-        if ($puzzles == NULL)
-                return NULL;
-
-        $sorted = NULL;
+        $sorted = array();
         foreach ($puzzles as $pid) {
                 $sorted[$pid] = getNumEditors($pid);
         }
@@ -2473,7 +2438,7 @@ function sortByNumEditors($puzzles)
 function getNewPuzzleForEditor($uid)
 {
         $sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.addToEditorQueue='1'";
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
         $puzzles = sortByNumEditors($puzzles);
 
         $foundPuzzle = FALSE;
@@ -2554,10 +2519,10 @@ function getPuzzleTestPriority($pid)
 function getPuzzleToTest($uid)
 {
         $puzzles = getAvailablePuzzlesToTestForUser($uid);
-        if ($puzzles == NULL)
+        if (!$puzzles)
                 return FALSE;
 
-        $sort = NULL;
+        $sort = array();
         foreach ($puzzles as $pid) {
                 $num = getPuzzleTestPriority($pid);
                 // Lower numbers are HIGHER priorities
@@ -2573,7 +2538,7 @@ function canUseMoreTesters($pid)
         $testers_limit = 99;
 
         $sql = sprintf("SELECT tester_count FROM puzzle_tester_count WHERE pid='%s'", mysql_real_escape_string($pid));
-        $tester_count = get_elements_null($sql);
+        $tester_count = get_elements($sql);
 
         if (!$tester_count) {
                 // No entry in the DB means 0 testers.
@@ -2620,10 +2585,8 @@ function incrementPuzzleTesterCount($pid)
 function getAvailablePuzzlesToTestForUser($uid)
 {
         $puzzles = getPuzzlesInTesting();
-        if ($puzzles == NULL)
-                return NULL;
 
-        $available = NULL;
+        $available = array();
         echo "\n<br>\n";
         foreach ($puzzles as $pid) {
                 if (canTestPuzzle($uid, $pid) &&
@@ -2664,7 +2627,7 @@ function getPuzzlesInTesting()
 {
         $sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE pstatus.inTesting = '1'";
-        return get_elements_null($sql);
+        return get_elements($sql);
 }
 
 function getWikiPage($pid) {
@@ -2695,13 +2658,13 @@ function getMostRecentDraftNameForPuzzle($pid) {
 
 function getAllPuzzles() { 
         $sql = "SELECT id FROM puzzle_idea";
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
         return sortByLastCommentDate($puzzles);
 }
 function getAllLivePuzzles() { 
         $deadpuzzleid = getDeadStatusId(); 
         $sql = sprintf("SELECT id FROM puzzle_idea where pstatus != %d", $deadpuzzleid);
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
         return sortByLastCommentDate($puzzles);
 }
 
@@ -2728,21 +2691,21 @@ function isPuzzleInPostprod($pid)
 
 function getUnclaimedPuzzlesInFactChecking() {
         $sql = "SELECT puzzle_idea.id FROM pstatus, puzzle_idea LEFT JOIN factcheck_queue ON puzzle_idea.id=factcheck_queue.pid WHERE puzzle_idea.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.uid IS NULL";
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
 }
 
 function getClaimedPuzzlesInFactChecking() {
         $sql = "SELECT puzzle_idea.id FROM puzzle_idea, pstatus, factcheck_queue WHERE puzzle_idea.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.pid=puzzle_idea.id";
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
 }
 
 function getPuzzlesInFinalFactChecking() {
         $sql = "SELECT puzzle_idea.id FROM puzzle_idea INNER JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1'";
-        $puzzles = get_elements_null($sql);
+        $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
 }
@@ -2751,16 +2714,14 @@ function getAnswerAttempts($uid, $pid)
 {
         $sql = sprintf("SELECT answer FROM answer_attempts WHERE pid='%s' AND uid='%s'",
                         mysql_real_escape_string($pid), mysql_real_escape_string($uid));
-        return get_elements_null($sql);
+        return get_elements($sql);
 }
 
 function getCorrectSolves($uid, $pid)
 {
         $attempts = getAnswerAttempts($uid, $pid);
-        if ($attempts == NULL)
-                return NULL;
 
-        $correct = NULL;
+        $correct = array();
         foreach ($attempts as $attempt) {
                 if (checkAnswer($pid, $attempt)) {
                         $correct[] = $_SESSION['answer'];
@@ -2768,8 +2729,7 @@ function getCorrectSolves($uid, $pid)
                 }
         }
 
-        if ($correct == NULL)
-                return NULL;
+        if (!$correct) return NULL;
 
         $correct = array_unique($correct);
         return implode(', ', $correct);
@@ -2779,7 +2739,7 @@ function getPreviousFeedback($uid, $pid)
 {
         $sql = sprintf("SELECT * FROM testing_feedback WHERE pid='%s' AND uid='%s'",
                         mysql_real_escape_string($pid), mysql_real_escape_string($uid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function hasAnswer($pid)
@@ -2816,7 +2776,7 @@ function checkAnswer($pid, $attempt)
 {
         $actual = getAnswersForPuzzle($pid);
 
-        if ($actual == NULL)
+        if (!$actual)
                 return FALSE;
 
         foreach ($actual as $a) {
@@ -2899,19 +2859,19 @@ function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthro
 function getRounds()
 {
         $sql = sprintf("SELECT * FROM rounds ORDER BY unlock_at");
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function getAnswersForRound($rid)
 {
         $sql = sprintf("SELECT * FROM answers_rounds JOIN answers ON answers.aid=answers_rounds.aid WHERE answers_rounds.rid='%s'", mysql_real_escape_string($rid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function getRoundForPuzzle($pid)
 {
         $sql = sprintf("SELECT rounds.* FROM rounds, answers_rounds, answers WHERE answers.pid='%s' and answers_rounds.aid = answers.aid and rounds.rid = answers_rounds.rid;", mysql_real_escape_string($pid));
-        return get_rows_null($sql);
+        return get_rows($sql);
 }
 
 function getNumberOfEditorsOnPuzzles()
@@ -2988,14 +2948,13 @@ function getPuzzlesNeedTestAdmin()
 {
         $sql = "SELECT puzzle_idea.id FROM (puzzle_idea LEFT JOIN testAdminQueue ON puzzle_idea.id=testAdminQueue.pid)
                         JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE testAdminQueue.uid IS NULL AND pstatus.addToTestAdminQueue=1";
-        return get_elements_null($sql);
+        return get_elements($sql);
 }
 
 function getPuzzleForTestAdminQueue($uid)
 {
         $puzzles = getPuzzlesNeedTestAdmin();
-        if ($puzzles == NULL)
-                return FALSE;
+        if (!$puzzles) return FALSE;
 
         foreach ($puzzles as $pid) {
                 if (canTestAdminPuzzle($uid, $pid))
@@ -3039,7 +2998,7 @@ function addToTestAdminQueue($uid, $pid)
 function getInTestAdminQueue($uid)
 {
         $sql = sprintf("SELECT pid FROM testAdminQueue WHERE uid='%s'", mysql_real_escape_string($uid));
-        return get_elements_null($sql);
+        return get_elements($sql);
 }
 
 function canAcceptDrafts($pid)
@@ -3057,16 +3016,16 @@ function grantFactcheckPowers($uid)
 
 function computeTestsolverScores()
 {
-        $in_testing = get_elements_null("SELECT uid, pid FROM test_queue");
-        $done_testing = get_elements_null("SELECT uid, pid FROM doneTesting");
-
+        $in_testing = get_elements("SELECT uid, pid FROM test_queue");
+        $done_testing = get_elements("SELECT uid, pid FROM doneTesting");
+        // what?
 }
 
 function getPuzzleRound($pid)
 {
   $sql = sprintf("SELECT aid FROM answers WHERE pid = %d LIMIT 1", $pid);
   $aid = get_element_null($sql); 
-  if ($aid == NULL) { 
+  if (!$aid) { 
     return (""); 
   }
   $sql = sprintf("SELECT rounds.name FROM rounds,answers_rounds WHERE rounds.rid=answers_rounds.rid AND answers_rounds.aid=%d", $aid);
@@ -3085,7 +3044,7 @@ function getDeadStatusId()
   // terrible hack to figure out which status ID is "dead"
   // so we can omit them by default from queue
   $statuses = getPuzzleStatuses();
-  $deadstatusid = NULL;
+  $deadstatusid = array();
   foreach ($statuses as $sid => $sname) {
                          if (strtoupper($sname) == "DEAD") {
                                  $deadstatusid = $sid;
@@ -3097,7 +3056,7 @@ function getDeadStatusId()
 function displayTestingFeed()
 {
   $comments = getTestFeedComments();
-  if ($comments == NULL)
+  if (!$comments)
     return;
  
   foreach ($comments as $comment){
@@ -3150,7 +3109,7 @@ function getUserTestTeamID($uid)
 function getTestTeams()
 {
         $sql = "SELECT * FROM testsolve_team";
-        return(get_rows_null($sql));
+        return(get_rows($sql));
 }
 
 function getTestTeamName($tid)
@@ -3173,7 +3132,7 @@ function getTestTeamPuzzles($tid)
 
         $sql = sprintf('SELECT pid FROM testsolve_team_queue,puzzle_idea WHERE tid=%s AND puzzle_idea.id = testsolve_team_queue.pid AND puzzle_idea.pstatus = %s', 
                 mysql_real_escape_string($tid), mysql_real_escape_string($testingstatusid));
-        return(get_elements_null($sql));
+        return(get_elements($sql));
 }
 
 function getPuzzleTestTeam($pid)

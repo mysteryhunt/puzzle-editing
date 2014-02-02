@@ -144,14 +144,14 @@
 <?php
                         // Start by getting the list of rows of user_info_keys into arrays.
                         $sql = "SELECT id, shortname, longname FROM user_info_key";
-                        $result = get_rows_null($sql);
+                        $result = get_rows($sql);
                         foreach ($result as $r) {
                                 $shortname = $r['shortname'];
                                 $longname = $r['longname'];
                                 $user_key_id = $r['id'];
                                 $sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
                                                mysql_real_escape_string($id), mysql_real_escape_string($user_key_id));
-                                $res = get_rows_null($sql);
+                                $res = get_rows($sql);
 ?>
                                 <tr>
                                         <td><?php echo $longname; ?></td>
@@ -270,8 +270,8 @@
                         $failed = 1;
 
                 $sql = sprintf("SELECT id, shortname, longname FROM user_info_key");
-                $result = get_rows_null($sql);
-                if ($result == FALSE)
+                $result = get_rows($sql);
+                if (!$result)
                         $failed = 1;
 
                 foreach ($result as $r) {

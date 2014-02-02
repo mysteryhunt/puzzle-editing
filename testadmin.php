@@ -80,7 +80,7 @@ function displayTestQueue($uid)
 
         $puzzles = sortByLastCommentDate($puzzles);
 
-        if ($puzzles == NULL) {
+        if (!$puzzles) {
                 echo '<h3>No Puzzles Currently In Queue</h3>';
         } else {
                 displayQueue($uid, $puzzles, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, array());
@@ -90,9 +90,9 @@ function displayTestQueue($uid)
 function displayTestingSummary()
 {
         $sql = sprintf("SELECT uid, pid from test_queue");
-        $result = get_rows_null($sql);
+        $result = get_rows($sql);
 
-        if ($result == NULL)
+        if (!$result)
                 return;
 
         echo '<style type="text/css">';
