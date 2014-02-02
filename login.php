@@ -41,7 +41,7 @@
         function loginForm()
         {
 ?>
-		<h3> You Need to <a href="register.php">register for puzzletron</a>(fill in some basic info) before you can use it.</h3>
+		<h3> You Need to <a href="register.php">register for puzzletron</a> before you can use it.</h3>
 
                 <form method="post" action="<?php echo SELF; ?>">
                         <table>
