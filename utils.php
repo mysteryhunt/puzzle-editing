@@ -3056,8 +3056,10 @@ function getDeadStatusId()
 function displayTestingFeed()
 {
   $comments = getTestFeedComments();
-  if (!$comments)
+  if (!$comments) {
+    echo "<strong>No comments to list</strong>";
     return;
+  }
  
   foreach ($comments as $comment){
     $id = $comment['id'];

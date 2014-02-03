@@ -92,14 +92,16 @@ function displayTestingSummary()
         $sql = sprintf("SELECT uid, pid from test_queue");
         $result = get_rows($sql);
 
-        if (!$result)
+        if (!$result) {
+                echo "<strong>No puzzles in test queue</strong>";
                 return;
+        }
 
         echo '<style type="text/css">';
         echo '.testingtable, .testingtable a { color: #999999; }';
         echo '.testingtable .name, .testingtable .current, .testingtable .past { color: #000000; font-weight: bold; }';
 
-        $currqueue = NULL;
+        $currqueue = array();
         foreach($result as $r) {
                 $currclass = NULL;
                 $uid = $r['uid'];
@@ -120,7 +122,7 @@ function displayTestingSummary()
         $result = query_db($sql);
         $r = mysql_fetch_assoc($result);
 
-        $arr = NULL;
+        $arr = array();
         while ($r) {
                 $uid = $r['uid'];
                 $pid = $r['pid'];
@@ -155,6 +157,7 @@ function displayTestingSummary()
                     $r = mysql_fetch_assoc($result);
               }
         }
+        if (!$arr) echo "<strong>No comments</strong>";
 
         echo "<table class=\"testingtable\">\n";
         foreach ($arr as $key => $value) {
