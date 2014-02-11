@@ -58,15 +58,19 @@
         {
                 echo "<h2>Registration</h2>";
 
-                if (isset($_POST['username']))
-                        $data['username'] = $_POST['username'];
-                if (isset($_POST['checkEmail']))
-                        $data['email'] = $_POST['checkEmail'];
-
                 if (alreadyRegistered($id)) {
                         echo '<h3>You have already registered. You may edit your information, but must use the same password.</h3>';
                         $data = getPerson($id);
                 }
+
+                if (isset($_POST['username']))
+                        $data['username'] = $_POST['username'];
+                if (isset($_POST['checkEmail']))
+                        $data['email'] = $_POST['checkEmail'];
+                if (isset($_POST['email']))
+                        $data['email'] = $_POST['email'];
+                if (isset($_POST['fullname']))
+                        $data['fullname'] = $_POST['fullname'];
 ?>
                 <p> All information (other than your password) will be visible to all members of the team. </p>
 
@@ -152,10 +156,13 @@
                                 $sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
                                                mysql_real_escape_string($id), mysql_real_escape_string($user_key_id));
                                 $res = get_rows($sql);
+				$lastvalue = $res[0]['value'];
+				if (isset($_POST[$shortname]))
+					$lastvalue = $_POST[$shortname];
 ?>
                                 <tr>
                                         <td><?php echo $longname; ?></td>
-                                        <td><input type="text" name="<?php echo $shortname; ?>" value="<?php echo $res[0]['value']; ?>" /></td>
+                                        <td><input type="text" name="<?php echo $shortname; ?>" value="<?php echo $lastvalue; ?>" /></td>
                                 </tr>
 <?php
                         }
