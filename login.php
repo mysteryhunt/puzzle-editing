@@ -96,10 +96,14 @@
                 $_SESSION['uid'] = $r['uid'];
                 $_SESSION['SITEURL'] = URL;
 
-                if (TRUST_REMOTE_USER){
-		        header("Location: " . URL . "/login.php");
-                } else {
-                        header("Location: " . URL . "/index.php");
+		if (isset($_SESSION['redirect_to'])) {
+			header("Location: " . $_SESSION['redirect_to']);
+		} else {
+			if (TRUST_REMOTE_USER) {
+		        	header("Location: " . URL . "/login.php");
+	                } else {
+        	                header("Location: " . URL . "/index.php");
+			}
                 }
         }
 ?>
