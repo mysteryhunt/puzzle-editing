@@ -386,7 +386,7 @@
                         exit(1);
                 }
 
-                imagecopyresized($thumb, $source, 0, 0, 0, 0, $newW, $newH, $width, $height);
+                imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newW, $newH, $width, $height);
                 imagejpeg($thumb, $thumbName);
         }
 ?>
