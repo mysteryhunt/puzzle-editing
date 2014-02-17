@@ -12,10 +12,15 @@
         function head($selnav = "") {
         $hunt=mktime(12,00,00,1,HUNT_DOM,HUNT_YEAR);
         $now = time();
-        $tth=$hunt-$now;
-        $days=floor($tth/(60 * 60 * 24));
-        $hrs=floor($tth/(60 * 60))-(24*$days);
-        $mins=floor($tth/(60))-(24*60*$days)-(60*$hrs);
+        $timediff = abs($hunt-$now);
+        $days = floor($timediff/(60 * 60 * 24));
+        $hrs = floor($timediff/(60 * 60))-(24*$days);
+        $mins = floor($timediff/(60))-(24*60*$days)-(60*$hrs);
+	if ($now > $hunt) {
+	    $days *= -1;
+	    $hrs *= -1;
+	    $mins *= -1;
+        }
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
