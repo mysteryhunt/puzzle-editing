@@ -116,9 +116,17 @@ function computeComments()
       echo '<tr class="puzz">';
       echo '<td class="puzzidea">' . $person['name'] . '</td>';
       echo '<td class="puzzidea">' . $person['total'] . '</td>';
+      if ($person['total']  == 0) {
+          # Prevent division by zero.
+          $person['total'] = 1;
+      }
       echo '<td class="puzzidea">' . sprintf('%0.3f',($person['correct']/$person['total'])) . '</td>';
       echo '<td class="puzzidea">' . $person['correct'] . '</td>';
       echo '<td class="puzzidea">' . $person['incorrect'] . '</td>';
+      if ($person['correct'] + $person['incorrect'] == 0) {
+          # Prevent division by zero.
+          $person['incorrect'] = 1;
+      }
       echo '<td class="puzzidea">' . sprintf('%0.3f',($person['correct']/($person['correct']+$person['incorrect']))) . '</td>';
       echo '<td class="puzzidea">' . $person['responses'] . '</td>';
       echo '<td class="puzzidea">' . $person['words'] . '</td>';
