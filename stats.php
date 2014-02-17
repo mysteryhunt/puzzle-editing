@@ -130,6 +130,10 @@ function computeComments()
       echo '<td class="puzzidea">' . sprintf('%0.3f',($person['correct']/($person['correct']+$person['incorrect']))) . '</td>';
       echo '<td class="puzzidea">' . $person['responses'] . '</td>';
       echo '<td class="puzzidea">' . $person['words'] . '</td>';
+      if ($person['words'] == 0) {
+          # Prevent division by zero.
+          $person['words'] = 1;
+      }
       echo '<td class="puzzidea">' . sprintf('%0.2f',($person['words']/$person['responses'])) . '</td>';
       echo '</tr>';
    }
