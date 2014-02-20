@@ -16,14 +16,14 @@
 	    }
 
 	    $no_mit_edu = substr($email, 0, -strlen("@mit.edu"));
-	    if (isMoiraList($no_mit_edu)) {
-	        return "LIST:" . $no_mit_edu;
-            }
-	    
 	    if (isMoiraUser($no_mit_edu)) {
 	    	return "USER:" . $no_mit_edu;
             }
 
+	    if (isMoiraList($no_mit_edu)) {
+	        return "LIST:" . $no_mit_edu;
+            }
+	    
 	    return "STRING:" . $no_mit_edu;
         }
 
