@@ -94,6 +94,7 @@
                 echoNav1($selnav, "answers",        "Answers",             canChangeAnswers($suid));
                 echoNav1($selnav, "allpuzzles",     "All Puzzles",         canSeeAllPuzzles($suid));
                 echoNav1($selnav, "editorlist",     "Editor List",         isServerAdmin($suid));
+		echoNav1($selnav, "mailinglists",   "Mailing Lists",	   MAILING_LISTS);
         }
 ?>
                 </ul>

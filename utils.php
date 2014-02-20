@@ -3166,4 +3166,14 @@ function utilsError($msg)
         foot();
         exit(1);
 }
+
+function startsWith($haystack, $needle)
+{
+     $length = strlen($needle);
+     return (substr($haystack, 0, $length) === $needle);
+}
+function endsWith($haystack, $needle)
+{
+        return substr($haystack, -strlen($needle))===$needle;
+}
 ?>
