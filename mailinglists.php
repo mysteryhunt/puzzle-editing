@@ -216,17 +216,6 @@
 	</form>
 
 <?php
-
-        function postMotdForm($newmotd, $username)
-        {
-                if ($newmotd == ''){
-                        echo "Empty MOTD is unacceptable.<br>";
-                        return (NULL);
-                }
-	        $result = addNewMotd($newmotd, $username);
-                echo "<h3>Added new MOTD successfully </h3><br>";
- 	        return ($result);
-        }
         // End HTML
         foot();
 ?>
