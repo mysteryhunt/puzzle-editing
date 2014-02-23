@@ -1249,7 +1249,8 @@ function addSpoiledUser($uid, $pid, $addUser)
 
                 // Email new author
                 $title = getTitle($pid);
-                $subject = "Spoiled on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Spoiled on $codename (puzzle $pid)";
                 $message = "$name added you as spoiled on $title (puzzle $pid).";
                 $link = URL;
                 sendEmail($user, $subject, $message, $link);
@@ -1700,7 +1701,8 @@ function removeEditors($uid, $pid, $remove)
 
                 // Email old editor
                 $title = getTitle($pid);
-                $subject = "Editor on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Editor on $codename (puzzle $pid)";
                 $message = "$name removed you as an editor on $title (puzzle $pid).";
                 $link = URL . "/editor.php";
                 sendEmail($editor, $subject, $message, $link);
