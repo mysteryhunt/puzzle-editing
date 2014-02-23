@@ -194,11 +194,12 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
         if ($description == NULL)
                 $description = '(no description)';
 
+        $codename = getCodename($pid);
 ?>
         <table>
                 <tr>
                         <td><h1>
-                        <?php echo "(puzzle #$pid): $title <br>"; 
+                        <?php echo "$codename (puzzle #$pid): $title <br>"; 
                         
                         $puzzleround=getPuzzleRound($pid);
                        

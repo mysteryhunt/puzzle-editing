@@ -189,6 +189,7 @@
                 <thead>
                         <tr>
                                 <th class="puzzidea">ID</th>
+                                <?php if (USING_CODENAMES) {echo '<th class="puzzidea">Codename</th>';} ?>
                                 <th class="puzzidea">Title</th>
                                 <th class="puzzidea">Puzzle Status</th>
                                 <th class="puzzidea">Round</th>
@@ -238,6 +239,7 @@
                                 $title = '(untitled)';
 
 
+                        $codename = getCodename($pid);
                         $lastComment = getLastCommentDate($pid);
                         $lastCommenter = getLastCommenter($pid);
                         $lastVisit = getLastVisit($uid, $pid);
@@ -252,6 +254,7 @@
                         else
 				echo "<td class='puzzidea'><a href='puzzle.php?pid=$pid'>$pid</a></td>";
 ?>
+                                <?php if (USING_CODENAMES) {echo '<td class="puzzidea">' . $codename . '</th>';} ?>
                                 <td class='puzzidea'><?php echo $title; ?></td>
                                 <td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
                                 <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>

@@ -167,6 +167,15 @@ function isStatusInPostProd($sid)
         return get_element($sql) == 1;
 }
 
+function getCodename($pid)
+{
+        if (USING_CODENAMES) {
+                $sql = sprintf("SELECT name from codenames where id = '%s';", mysql_real_escape_string($pid));
+                return get_element($sql);
+        }
+        return getTitle($pid);
+}
+
 function isEditor($uid)
 {
         return hasPriv($uid, 'addToEditingQueue');
@@ -911,7 +920,8 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE)
         $message = "$name commented on puzzle $pid:\n";
         $message .= "$cleanComment";
         $title = getTitle($pid);
-        $subject = "Comment on $title (puzzle $pid)";
+        $codename = getCodename($pid);
+        $subject = "Comment on $codename (puzzle $pid)";
         $link = URL . "/puzzle.php?pid=$pid";
 
         $users = getSubbed($pid);
@@ -1080,7 +1090,7 @@ function isFactcheckerAvailable($uid, $pid)
 
 function defaultWikiPageForPuzzle($pid)
 {
-        return "http://manicsages.org/writingwiki/index.php?title=puzzle_$pid/Testsolve_1";
+        return TESTSOLVE_WIKI . getCodename($pid) . "/Testsolve_1";
 }
 
 function getCurrentTestersAsEmailList($pid)
@@ -1161,7 +1171,8 @@ function removeSpoiledUser($uid, $pid, $removeUser)
                 $comment .= getUserName($user);
 
                 $title = getTitle($pid);
-                $subject = "Spoiled on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Spoiled on $codename (puzzle $pid)";
                 $message = "$name removed you as spoiled on $title (puzzle $pid).";
                 $link = URL;
                 sendEmail($user, $subject, $message, $link);
@@ -1339,7 +1350,8 @@ function addFactcheckers($uid, $pid, $add)
 
                 // Email new factchecker
                 $title = getTitle($pid);
-                $subject = "Factchecker on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Factchecker on $codename (puzzle $pid)";
                 $message = "$name added you as a factchecker on $title (puzzle $pid).";
                 $link = URL . "/puzzle?pid=$pid";
                 sendEmail($fc, $subject, $message, $link);
@@ -1383,9 +1395,10 @@ function removeFactcheckers($uid, $pid, $remove)
 
                 // Email old factchecker
                 $title = getTitle($pid);
-                $subject = "Factchecker on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Factchecker on $codename (puzzle $pid)";
                 $message = "$name removed you as a factchecker on $title (puzzle $pid).";
-                $link = URL . "/factcheck";
+                $link = URL . "/factcheck.php";
                 sendEmail($fc, $subject, $message, $link);
         }
 
@@ -1425,7 +1438,8 @@ function addAuthors($uid, $pid, $add)
 
                 // Email new author
                 $title = getTitle($pid);
-                $subject = "Author on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Author on $codename (puzzle $pid)";
                 $message = "$name added you as an author on $title (puzzle $pid).";
                 $link = URL . "/puzzle.php?pid=$pid";
                 sendEmail($auth, $subject, $message, $link);
@@ -1469,7 +1483,8 @@ function removeAuthors($uid, $pid, $remove)
 
                 // Email old author
                 $title = getTitle($pid);
-                $subject = "Author on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Author on $codename (puzzle $pid)";
                 $message = "$name removed you as an author on $title (puzzle $pid).";
                 $link = URL . "/author.php";
                 sendEmail($auth, $subject, $message, $link);
@@ -1511,7 +1526,8 @@ function addRoundCaptains($uid, $pid, $add)
 
                 // Email new round captain
                 $title = getTitle($pid);
-                $subject = "Round Captain on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Round Captain on $codename (puzzle $pid)";
                 $message = "$name added you as a round captain to $title (puzzle $pid).";
                 $link = URL . "/puzzle?pid=$pid";
                 sendEmail($roundcaptain, $subject, $message, $link);
@@ -1555,9 +1571,10 @@ function removeRoundCaptains($uid, $pid, $remove)
 
                 // Email old round captain
                 $title = getTitle($pid);
-                $subject = "Round Captain on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Round Captain on $codename (puzzle $pid)";
                 $message = "$name removed you as a round captain on $title (puzzle $pid).";
-                $link = URL . "/roundcaptain";
+                $link = URL . "/roundcaptain.php";
                 sendEmail($roundcaptain, $subject, $message, $link);
         }
 
@@ -1597,7 +1614,8 @@ function addEditors($uid, $pid, $add)
 
                 // Email new editor
                 $title = getTitle($pid);
-                $subject = "Editor on $title (puzzle $pid)";
+                $codename = getCodename($pid);
+                $subject = "Editor on $codename (puzzle $pid)";
                 $message = "$name added you as an editor to $title (puzzle $pid).";
                 $link = URL . "/puzzle.php?pid=$pid";
                 sendEmail($editor, $subject, $message, $link);
@@ -1638,7 +1656,8 @@ function removeEditorKill($uid, $pid, $editor)
 
         // Email old editor
         $title = getTitle($pid);
-        $subject = "Editor on $title (puzzle $pid)";
+        $codename = getCodename($pid);
+        $subject = "Editor on $codename (puzzle $pid)";
         $message = "$name removed you as an editor on $title (puzzle $pid) by killing the puzzle.";
         $link = URL . "/editor.php";
         sendEmail($editor, $subject, $message, $link);
@@ -2029,7 +2048,8 @@ function changeWikiPage($uid, $pid, $wikiPage)
 function emailTesters($pid, $status)
 {
         $title = getTitle($pid);
-        $subject = "Puzzle $pid Status Change";
+        $codename = getCodename($pid);
+        $subject = "Status Change on $codename (puzzle $pid)";
 
         if (!isStatusInTesting($status)) {
                 $message = "$title (puzzle $pid) was removed from testing";
@@ -2049,7 +2069,8 @@ function emailTesters($pid, $status)
 function emailFactcheckers($pid)
 {
         $title = getTitle($pid);
-        $subject = "Puzzle $pid needs factchecking attention";
+        $codename = getCodename($pid);
+        $subject = "$codename (puzzle $pid) needs factchecking attention";
 
         $message = "$title (puzzle $pid), on which you are a factchecker, was put back into factchecking. Please comment on it letting us know whether, and when, you can take another look at it. Thanks!";
 
