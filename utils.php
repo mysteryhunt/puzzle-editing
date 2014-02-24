@@ -188,8 +188,8 @@ function isAutoSubEditor($uid)
 
 function isRoundCaptain($uid)
 {
-        //return hasPriv($uid, 'addToRoundCaptainQueue');
-        return false;
+	return hasPriv($uid, 'addToRoundCaptainQueue');
+
 }
 
 function isTestingAdmin($uid)
