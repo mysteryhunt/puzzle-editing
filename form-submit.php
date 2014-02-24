@@ -372,7 +372,9 @@
 
                 if ($pid && isEditorAvailable($uid, $pid)) {
                         addPuzzleToEditorQueue($uid, $pid);
-                        //subscribe($uid, $pid);
+			if (isAutoSubEditor($uid)) {
+                           subscribe($uid, $pid);
+			}
                 }
                 else {
                         $_SESSION['failedToAdd'] = TRUE;
