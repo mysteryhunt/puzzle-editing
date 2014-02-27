@@ -867,3 +867,15 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2013-11-04  3:42:30
+
+DROP TABLE IF EXISTS `approver_queue`;
+CREATE TABLE `approver_queue` (
+  `uid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `round_captain_queue`;
+CREATE TABLE `round_captain_queue` (
+  `uid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
