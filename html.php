@@ -64,7 +64,11 @@
                 (actual mystery hunt-writing instance) 
         <?php } ?>
 		     </h1>
-		     <h2>Logged in: [<?php if (($_SESSION['uid']) != '') { echo getUserUsername(isLoggedIn()); } ?>]</h2> 
+        <?php if (isset($_SESSION['uid'])) { ?>
+                <h2>Logged in: [<?php echo getUserUsername(isLoggedIn()); ?>]</h2>
+        <?php } else { ?>
+                <h2>Not logged in</h2>
+        <?php } ?>
                 </div>
                 <div style="text-align:right;width:auto;float:right;vertical-align:top;">
                      <h3 style="margin-top:0;"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>
