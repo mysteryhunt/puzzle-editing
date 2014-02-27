@@ -177,7 +177,7 @@
         function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $hidedeadpuzzles, $filter = array())
         {
                 if (!$puzzles) {
-                        echo "<h4>No puzzles to list</h4>";
+                        echo "<span class='emptylist'>No puzzles to list</span><br/>";
                         return;
                 }
                 $statuses = getPuzzleStatuses();

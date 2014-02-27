@@ -3255,7 +3255,7 @@ function displayTestingFeed()
 {
   $comments = getTestFeedComments();
   if (!$comments) {
-    echo "<strong>No comments to list</strong>";
+    echo "<span class='emptylist'>No comments to list</span>";
     return;
   }
  

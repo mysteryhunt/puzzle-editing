@@ -377,3 +377,8 @@ td.sd {
 .impt {
 	color: red;
 }
+
+.emptylist {
+	font-style: italic;
+	color: #666;
+}

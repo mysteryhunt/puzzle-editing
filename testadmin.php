@@ -93,7 +93,7 @@ function displayTestingSummary()
         $result = get_rows($sql);
 
         if (!$result) {
-                echo "<strong>No puzzles in test queue</strong>";
+                echo "<span class='emptylist'>No puzzles in test queue</span>";
                 return;
         }
 

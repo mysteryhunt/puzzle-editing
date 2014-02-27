@@ -40,7 +40,7 @@
                 $rounds = getRounds();
                 if (!$rounds) {
 ?>
-                <strong>No rounds to list</strong>
+                <span class="emptylist">No rounds to list</span>
 <?php
                 }
                 foreach($rounds as $round) {
@@ -54,7 +54,7 @@
                     if (!$answers) {
 ?>
                         <tr>
-                                <td colspan="4"><strong>No answers added yet</strong></td>
+                                <td colspan="4"><span class="emptylist">No answers added yet</span></td>
                         </tr>
 <?php
                     }
