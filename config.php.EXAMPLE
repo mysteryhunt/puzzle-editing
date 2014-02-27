@@ -1,10 +1,18 @@
 <?php
 	require_once "/var/www/docroot/htmlpurifier/library/HTMLPurifier.auto.php";
 
+	# Used for sessions.  Default location is bad because all PHP
+	# scripts running on the same server will clean up sessions
+	# with the default session lifetimes, rather than the one
+	# specified below.  Also used for KRB5CCNAME when managing
+	# moira lists.
+	define("TMPDIR", "/mit/puzzle/web_scripts_tmp/2015puzzletron");
+
 	ini_set('default_charset', 'UTF-8');
 	ini_set('session.gc_maxlifetime','86400');
         ini_set('session.cookie_lifetime','86400');
-	
+	ini_set('session.save_path', TMPDIR);
+
 	session_start();
 
         //stuff you probably don't need to change
@@ -20,15 +28,15 @@
         define("PTRON_FROM_EMAIL", "no-reply@blahblahblah.org");
 	define("URL", "https://blahblahblah.org/editing");
 	define("POSTPROD_URLPREFIX", "https://xxxmysteryhunt.com/");
-	define("PHPMYADMIN_URL", "https://blahblahblah.org/phpmyadmin");
+	define("PHPMYADMIN_URL", "https://scripts.mit.edu/~sql/phpMyAdmin/");
 	define("HELP_EMAIL", "systems-help@blahblahblah.org");
 	define("WIKI_URL", "https://blahblahblah.org/wiki");
-	define("BUGTRACK_URL", "https://docs.google.com/a/blahblahblah.org/spreadsheet/ccc?key=0AjP2PJ8PtbmadEYxOU5VUHhoLXoteU1NaEhPTDVjSGc&usp=sharing");
+	define("BUGTRACK_URL", "https://github.com/mysteryhunt/puzzle-editing/issues");
         
         //puzzletron options
-	define("TRUST_REMOTE_USER", TRUE);  // Skip puzzletron authentication and trust REMOTE_USER
+	define("TRUST_REMOTE_USER", FALSE);  // Use internal puzzletron authentication
                                             // This is if you're behind an SSO system / apache proxy that does auth
-        define("ALLOW_TESTSOLVE_PICK", TRUE); // Don't display list of puzzles for testsolvers to pick from
+        define("ALLOW_TESTSOLVE_PICK", TRUE); // Display list of puzzles for testsolvers to pick from
 
         //puzzletron feature sets
         define("USING_TESTSOLVE_REQUESTS", FALSE);
