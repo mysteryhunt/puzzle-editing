@@ -3,11 +3,13 @@
         require_once "utils.php";
         require_once "html.php";
 
+        $wasLoggedIn = isset($_SESSION['uid']);
+        if ($wasLoggedIn) { logout(); }
+
         // Start the HTML
         head();
 
-        if (isset($_SESSION['uid'])) {
-                logout();
+        if ($wasLoggedIn) {
                 echo '<h3> You have been logged out. </h3>';
         } else {
                 echo '<h3> You are already logged out.</h3>';
