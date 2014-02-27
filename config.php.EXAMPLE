@@ -35,7 +35,6 @@
         define("USING_TESTSOLVE_TEAMS", FALSE);
         define("USING_ROUND_CAPTAINS", FALSE);
         define("USING_CREDITS", FALSE);
-	define("ENABLE_WRITING_WIKI", FALSE);
 	
         //when is hunt
         define("HUNT_YEAR",2014);
