@@ -520,7 +520,7 @@
         echo 'An unknown error seems to have occurred. <br />';
 	echo 'Please try again, or contact <a href="mailto:';
         echo HELP_EMAIL;
-        echo '\">the Server Administrators</a> for help. <br />';
+        echo '">the Server Administrators</a> for help. <br />';
 
         foot();
 
