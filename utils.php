@@ -1836,7 +1836,7 @@ function removeApprovers($uid, $pid, $remove)
         $comment = 'Removed ';
         foreach ($remove as $approver) {
                 // Check that this approver is assigned to this puzzle
-                if (!isApproverOnPuzzle($editor, $pid))
+                if (!isApproverOnPuzzle($approver, $pid))
                         utilsError(getUserName($approver) . " is not an approver on puzzle $pid");
 
                 // Remove approver from puzzle
