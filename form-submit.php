@@ -145,6 +145,34 @@
                 exit(0);
         }
 
+        if (isset($_POST['changeApprovers'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                if (isset($_POST['addApprover'])) {
+                        $add = $_POST['addApprover'];
+			if (isAutoSubEditor($uid)) {
+                       	   subscribe($uid, $pid);
+			}
+                }
+                else
+                        $add = NULL;
+
+                if (isset($_POST['removeApprover'])) {
+                        $remove = $_POST['removeApprover'];
+			if (isAutoSubEditor($uid)) {
+                           unsubscribe($uid, $pid);
+			}
+                }
+                else
+                        $remove = NULL;
+
+                changeApprovers($uid, $pid, $add, $remove);
+
+                header("Location: " . URL . "/puzzle.php?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['changeRoundCaptain'])) {
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];

@@ -181,6 +181,11 @@ function isEditor($uid)
         return hasPriv($uid, 'addToEditingQueue');
 }
 
+function isApprover($uid)
+{
+        return hasPriv($uid, 'isApprover');
+}
+
 function isAutoSubEditor($uid)
 {
 	return hasPriv($uid, 'autoSubEditor');
@@ -258,6 +263,13 @@ function isRoundCaptainOnPuzzle($uid, $pid)
 function isEditorOnPuzzle($uid, $pid)
 {
         $sql = sprintf("SELECT * FROM editor_queue WHERE uid='%s' AND pid='%s'",
+                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
+        return has_result($sql);
+}
+
+function isApproverOnPuzzle($uid, $pid)
+{
+        $sql = sprintf("SELECT * FROM approver_queue WHERE uid='%s' AND pid='%s'",
                         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
         return has_result($sql);
 }
@@ -365,6 +377,11 @@ function getEditorsForPuzzle($pid)
         return getUsersForPuzzle("editor_queue", $pid);
 }
 
+function getApproversForPuzzle($pid)
+{
+        return getUsersForPuzzle("approver_queue", $pid);
+}
+
 function getSpoiledUsersForPuzzle($pid)
 {
         return getUsersForPuzzle("spoiled", $pid);
@@ -415,6 +432,11 @@ function getRoundCaptainsAsList($pid)
 function getEditorsAsList($pid)
 {
         return getUserNamesAsList("editor_queue", $pid);
+}
+
+function getApproversAsList($pid)
+{
+        return getUserNamesAsList("approver_queue", $pid);
 }
 
 function getTestingAdminsForPuzzleAsList($pid)
@@ -1203,6 +1225,26 @@ function getAvailableEditorsForPuzzle($pid)
         return $editors;
 }
 
+// Get approvers who are not authors, editors, or approvers on a puzzle
+// Return assoc of [uid] => [name]
+function getAvailableApproversForPuzzle($pid)
+{
+        // Get all users
+        $sql = 'SELECT uid FROM user_info';
+        $users = get_elements($sql);
+
+        $approvers = array();
+        foreach ($users as $uid) {
+                if (isApproverAvailable($uid, $pid)) {
+                        $approvers[$uid] = getUserName($uid);
+                }
+        }
+
+        // Sort by name
+        natcasesort($approvers);
+        return $approvers;
+}
+
 function getAvailableRoundCaptainsForPuzzle($pid)
 {
         // Get all users
@@ -1280,9 +1322,18 @@ function isEditorAvailable($uid, $pid)
         return (isEditor($uid) &&
                         !isAuthorOnPuzzle($uid, $pid) &&
                         !isEditorOnPuzzle($uid, $pid) &&
+			!isApproverOnPuzzle($uid, $pid) &&
                         !isTesterOnPuzzle($uid, $pid));
 }
 
+function isApproverAvailable($uid, $pid)
+{
+        return (isApprover($uid) &&
+                        !isAuthorOnPuzzle($uid, $pid) &&
+                        !isEditorOnPuzzle($uid, $pid) &&
+			!isApproverOnPuzzle($uid, $pid) &&
+                        !isTesterOnPuzzle($uid, $pid));
+}
 
 // Add and remove puzzle authors
 function changeAuthors($uid, $pid, $add, $remove)
@@ -1308,6 +1359,15 @@ function changeEditors($uid, $pid, $add, $remove)
         mysql_query('START TRANSACTION');
         addEditors($uid, $pid, $add);
         removeEditors($uid, $pid, $remove);
+        mysql_query('COMMIT');
+}
+
+// Add and remove puzzle approvers
+function changeApprovers($uid, $pid, $add, $remove)
+{
+        mysql_query('START TRANSACTION');
+        addApprovers($uid, $pid, $add);
+        removeApprovers($uid, $pid, $remove);
         mysql_query('COMMIT');
 }
 
@@ -1709,6 +1769,96 @@ function removeEditors($uid, $pid, $remove)
         }
 
         $comment .= ' as editor';
+        if (count($remove) > 1)
+                $comment .= "s";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+
+function addApprovers($uid, $pid, $add)
+{
+        if (!$add)
+                return;
+
+        if (!canViewPuzzle($uid, $pid))
+                utilsError("You do not have permission to modify puzzle $pid.");
+
+        $name = getUserName($uid);
+
+        $comment = 'Added ';
+        foreach ($add as $approver) {
+                // Check that this editor is available for this puzzle
+                if (!isApproverAvailable($approver, $pid)) {
+                        utilsError(getUserName($approver) . ' is not available.');
+                }
+
+                // Add approver to puzzle
+                $sql = sprintf("INSERT INTO approver_queue (uid, pid) VALUES ('%s', '%s')",
+                                mysql_real_escape_string($approver), mysql_real_escape_string($pid));
+                query_db($sql);
+
+                // Add to comment
+                if ($comment != 'Added ')
+                        $comment .= ', ';
+                $comment .= getUserName($approver);
+
+                // Email new approver
+                $title = getTitle($pid);
+                $codename = getCodename($pid);
+                $subject = "Approver on $codename (puzzle $pid)";
+                $message = "$name added you as an approver to $title (puzzle $pid).";
+                $link = URL . "/puzzle.php?pid=$pid";
+                sendEmail($approver, $subject, $message, $link);
+
+                // Subscribe approvers to comments on their puzzles
+		if (isAutoSubEditor($approver)){
+                   subscribe($approver, $pid);
+		}
+        }
+
+        $comment .= ' as approver';
+        if (count($add) > 1)
+                $comment .= "s";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+
+function removeApprovers($uid, $pid, $remove)
+{
+        if (!$remove)
+                return;
+
+        if (!canViewPuzzle($uid, $pid))
+                utilsError("You do not have permission to modify puzzle $pid.");
+
+        $name = getUserName($uid);
+
+        $comment = 'Removed ';
+        foreach ($remove as $approver) {
+                // Check that this approver is assigned to this puzzle
+                if (!isApproverOnPuzzle($editor, $pid))
+                        utilsError(getUserName($approver) . " is not an approver on puzzle $pid");
+
+                // Remove approver from puzzle
+                $sql = sprintf("DELETE FROM approver_queue WHERE uid='%s' AND pid='%s'",
+                                mysql_real_escape_string($approver), mysql_real_escape_string($pid));
+                query_db($sql);
+
+                // Add to comment
+                if ($comment != 'Removed ')
+                        $comment .= ', ';
+                $comment .= getUserName($approver);
+
+                // Email old approver
+                $title = getTitle($pid);
+                $codename = getCodename($pid);
+                $subject = "Approver on $codename (puzzle $pid)";
+                $message = "$name removed you as an approver on $title (puzzle $pid).";
+                $link = URL . "/editor.php";
+                sendEmail($approver, $subject, $message, $link);
+        }
+
+        $comment .= ' as approver';
         if (count($remove) > 1)
                 $comment .= "s";
 

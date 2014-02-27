@@ -302,6 +302,7 @@ function displayPeople($uid, $pid)
         <?php displaySpoiled($uid, $pid); ?>
         <?php if (USING_ROUND_CAPTAINS) {displayRoundCaptain($uid, $pid);} ?>
         <?php displayEditors($uid, $pid); ?>
+        <?php if (USING_APPROVERS) {displayApprovers($uid, $pid);} ?>
         <?php displayFactcheckers($uid, $pid); ?>
         <?php if (canSeeTesters($uid, $pid)) {displayTesters($uid, $pid);} ?>
         <?php displayTestingAdmin($uid, $pid); ?>
@@ -499,6 +500,54 @@ function displayAddEditor($pid)
 {
         $editors = getAvailableEditorsForPuzzle($pid);
         makeOptionElements($editors, 'addEditor');
+}
+
+function displayApprovers($uid, $pid)
+{
+?>
+                <tr>
+                        <td class='peopleInfo'>
+                                <strong>Approvers:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                        </td>
+                </tr>
+                <tr>
+                        <td>
+                                <table>
+                                        <form method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <tr>
+                                                <td>
+                                                        <p><strong>Remove Approver(s):</strong></p>
+                                                        <?php echo displayRemoveApprover($pid)?>
+                                                </td>
+                                                <td>
+                                                        <p><strong>Add Approver(s):</strong></p>
+                                                        <?php echo displayAddApprover($pid); ?>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan="2">
+                                                        <input type="submit" name="changeApprovers" value="Change Approvers" />
+                                                </td>
+                                        </tr>
+                                        </form>
+                                </table><?php } ?>
+                        </td>
+                </tr>
+<?php
+}
+
+function displayRemoveApprover($pid)
+{
+        $approvers = getApproversForPuzzle($pid);
+        makeOptionElements($approvers, 'removeApprover');
+}
+
+function displayAddApprover($pid)
+{
+        $approvers = getAvailableApproversForPuzzle($pid);
+        makeOptionElements($approvers, 'addApprover');
 }
 
 function displayFactcheckers($uid, $pid)
@@ -1092,8 +1141,9 @@ function displayPuzzApproval($uid, $pid)
         <b>Editor approval (required to change puzzle status):</b> <br/>
         <table>
 <?php
-        //only display approval form itself if you are an editor on this puzzle
-        if (isEditorOnPuzzle($uid, $pid)) { 
+        //only display approval form itself if you are an editor/approver on this puzzle
+        if ((isEditorOnPuzzle($uid, $pid) && !USING_APPROVERS) ||
+	    (isApproverOnPuzzle($uid, $pid) && USING_APPROVERS)) { 
 ?>
                 <tr>
                         <td>
