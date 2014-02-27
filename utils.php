@@ -2502,6 +2502,15 @@ function getPuzzlesInEditorQueue($uid)
         return sortByLastCommentDate($puzzles);
 }
 
+function getPuzzlesInApproverQueue($uid)
+{
+        $sql = sprintf("SELECT pid FROM approver_queue WHERE uid='%s'",
+                        mysql_real_escape_string($uid));
+        $puzzles = get_elements($sql);
+
+        return sortByLastCommentDate($puzzles);
+}
+
 function getPuzzlesInRoundCaptainQueue($uid)
 {
         $sql = sprintf("SELECT pid FROM round_captain_queue WHERE uid='%s'",
@@ -2862,6 +2871,20 @@ function isPuzzleInPostprod($pid)
         $sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE puzzle_idea.id='%s' AND pstatus.postprod='1'", mysql_real_escape_string($pid));
         return has_result($sql);
+}
+
+function getPuzzlesNeedingEditors() {
+        $sql = "SELECT puzzle from (SELECT count(*) num_editors, puzzle_idea.id puzzle FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < " . MIN_EDITORS;
+        $puzzles = get_elements($sql);
+
+        return sortByLastCommentDate($puzzles);
+}
+
+function getPuzzlesNeedingApprovers() {
+        $sql = "SELECT puzzle from (SELECT count(*) num_editors, puzzle_idea.id puzzle FROM puzzle_idea LEFT JOIN approver_queue ON puzzle_idea.id=approver_queue.pid GROUP by puzzle) puzzle_count where num_editors < " . MIN_APPROVERS;
+        $puzzles = get_elements($sql);
+
+        return sortByLastCommentDate($puzzles);
 }
 
 function getUnclaimedPuzzlesInFactChecking() {

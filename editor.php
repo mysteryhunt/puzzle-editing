@@ -32,10 +32,32 @@
                 <input type="submit" name="getPuzz" value="Get Puzzle" />
         </form>
         <br>(Hiding dead puzzles)<br>
-<?php
+<?php 
+	if (ALLOW_EDITOR_PICK) {
+	   echo '<br/>';
+           echo '<h3>Needs Editor(s)</h3>';
+	   $puzzles = getPuzzlesNeedingEditors();
+           displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
 
+	   if (USING_APPROVERS && isApprover($uid)) {
+	       echo '<br/>';
+               echo '<h3>Needs Approver(s)</h3>';
+	       $puzzles = getPuzzlesNeedingApprovers();
+               displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
+	   }
+	}
+
+        echo '<br/>';
+        echo '<h3>Editor Queue:</h3>';
         $puzzles = getPuzzlesInEditorQueue($uid);
         displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
+
+	if (USING_APPROVERS && isApprover($uid)) {
+	        echo '<br/>';
+		echo '<h3>Approver Queue:</h3>';
+		$puzzles = getPuzzlesInApproverQueue($uid);
+        	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
+	}
 
         // End HTML
         foot();

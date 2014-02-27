@@ -37,11 +37,15 @@
 	define("TRUST_REMOTE_USER", FALSE);  // Use internal puzzletron authentication
                                             // This is if you're behind an SSO system / apache proxy that does auth
         define("ALLOW_TESTSOLVE_PICK", TRUE); // Display list of puzzles for testsolvers to pick from
+        define("ALLOW_EDITOR_PICK", TRUE); // Display list of puzzles for editors to pick from
+        define("MIN_EDITORS", 2); // Used in conjunction with ALLOW_EDITOR_PICK.
+        define("MIN_APPROVERS", 2); // Used in conjunction with ALLOW_EDITOR_PICK and USING_APPROVERS
 
         //puzzletron feature sets
         define("USING_TESTSOLVE_REQUESTS", FALSE);
         define("USING_TESTSOLVE_TEAMS", FALSE);
         define("USING_ROUND_CAPTAINS", FALSE);
+        define("USING_APPROVERS", FALSE);
         define("USING_CREDITS", FALSE);
 	
         //when is hunt
