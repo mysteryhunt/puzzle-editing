@@ -41,7 +41,7 @@
 
 	   if (USING_APPROVERS && isApprover($uid)) {
 	       echo '<br/>';
-               echo '<h3>Needs Approver(s)</h3>';
+               echo '<h3>Needs Approval Editor(s)</h3>';
 	       $puzzles = getPuzzlesNeedingApprovers();
                displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
 	   }
@@ -54,7 +54,7 @@
 
 	if (USING_APPROVERS && isApprover($uid)) {
 	        echo '<br/>';
-		echo '<h3>Approver Queue:</h3>';
+		echo '<h3>Approval Editor Queue:</h3>';
 		$puzzles = getPuzzlesInApproverQueue($uid);
         	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
 	}
