@@ -108,7 +108,7 @@
                 }
                 
                 createAnswer ($newAnswer, $round);
-                printf ("<div class='errormsg'>Added new Answer: %s for Round %s</div>\n", $newAnswer, $round);  
+                printf ("<div class='okmsg'>Added new Answer: %s for Round %s</div>\n", $newAnswer, $round);  
                 return(TRUE);
         }
 
