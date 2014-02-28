@@ -507,7 +507,7 @@ function displayApprovers($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Approvers:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                                <strong>Approval Editors:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
                 <tr>
@@ -518,11 +518,11 @@ function displayApprovers($uid, $pid)
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                                         <tr>
                                                 <td>
-                                                        <p><strong>Remove Approver(s):</strong></p>
+                                                        <p><strong>Remove Approval Editor(s):</strong></p>
                                                         <?php echo displayRemoveApprover($pid)?>
                                                 </td>
                                                 <td>
-                                                        <p><strong>Add Approver(s):</strong></p>
+                                                        <p><strong>Add Approval Editor(s):</strong></p>
                                                         <?php echo displayAddApprover($pid); ?>
                                                 </td>
                                         </tr>
