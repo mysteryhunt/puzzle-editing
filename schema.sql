@@ -886,3 +886,11 @@ CREATE TABLE `codenames` (
   `name` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `reset_password_tokens`;
+CREATE TABLE `reset_password_tokens` (
+  `uid` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
