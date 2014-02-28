@@ -27,6 +27,7 @@
         echo PHPMYADMIN_URL;
         echo "\">Go To phpMyAdmin</a> (manipulate MySQL database)</p><br>";
 ?>
+        <p><a href="adminpassword.php">Admin Reset Password Interface</a></p>
         <p>Enter New Message of the Day (MOTD) For Team:<br>
         <form method="post" action="admin.php" />
         <table style="border: 3px solid black;">
