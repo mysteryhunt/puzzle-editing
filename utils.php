@@ -992,7 +992,7 @@ function sendEmail($uid, $subject, $message, $link)
         query_db($sql);
 }
 
-function realSendAllEmail()
+function sendAllEmail($isReal)
 {
         mysql_query("START TRANSACTION");
         $sql = ("SELECT * from email_outbox");
@@ -1028,19 +1028,12 @@ function realSendAllEmail()
                         $subject = "PUZZLETRON: " . $subject;
                 }
 
-
-                //ok, we want devmode to send emails also for testing subscriptions and stuff
-                mail($address, $subject, $msg, $headers);
-
-                //replace above line with this conditional to disable email in dev mode
-                //if (!DEVMODE)
-                //{
-                //        mail($address, $subject, $msg, $headers);
-                //} else {
-                //        print "$address - $subject<BR>\n";
-                //}
+                if ($isReal) mail($address, $subject, $msg, $headers);
+                else echo "Address=$address\n\nSubject=$subject\n\nMessage=$msg\n\nHeaders=$headers\n\n\n";
         }
 }
+function realSendAllEmail() { sendAllEmail(TRUE); }
+function fakeSendAllEmail() { sendAllEmail(FALSE); }
 
 
 // Get a list of users who are not authors or editors on a puzzle
