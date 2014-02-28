@@ -12,20 +12,20 @@
 
         // Check for answers permissions
         if (!canChangeAnswers($uid)) {
-                echo "You do not have permission for this page.";
+                echo "<div class='errormsg'>You do not have permission for this page.</div>";
                 foot();
                 exit(1);
         }
         if (isset($_POST['newAnswer'])) {
                 $result = submitAnswersForm(strtoupper($_POST['newAnswer']),$_POST['round']);
                 if ($result == FALSE) {
-                        echo '<h3> Error in submitting new answer </h3>';
+                        echo '<div class="errormsg">Error in submitting new answer</div>';
                 }
         }
         if (isset($_POST['newRound'])) {
                 $result = submitNewRound($_POST['newRound'], strtoupper($_POST['roundAnswer']));
                 if ($result == FALSE) {
-                        echo '<h3> Error in submitting new round </h3>';
+                        echo '<div class="errormsg">Error in submitting new round</div>';
                 }
         } 
         displayAnswers($uid);
@@ -103,28 +103,28 @@
         function submitAnswersForm($newAnswer, $round)
         {		
                 if ($newAnswer == "") {
-                        printf("Blank Answer is unacceptable. Try again \n");
+                        echo("<div class='errormsg'>Blank Answer is unacceptable. Try again</div>\n");
                         return (FALSE);
                 }
                 
                 createAnswer ($newAnswer, $round);
-                printf ("Added new Answer: %s for Round %s \n", $newAnswer, $round);  
+                printf ("<div class='errormsg'>Added new Answer: %s for Round %s</div>\n", $newAnswer, $round);  
                 return(TRUE);
         }
 
         function submitNewRound($roundname,$roundanswer)
         {
                 if ($roundname == "") {
-                        printf("Blank Round Name is unacceptable. Try again \n");
+                        printf("<div class='errormsg'>Blank Round Name is unacceptable. Try again</div>\n");
                         return (FALSE);
                 }
                 if ($roundanswer == "") {
-                        printf("Blank Round Answer is unacceptable. Try again \n");
+                        printf("<div class='errormsg'>Blank Round Answer is unacceptable. Try again</div>\n");
                         return (FALSE);
                 }
         
                 createRound ($roundname, $roundanswer);
-                printf ("Added new Round: %s with meta answer: %s\n", $roundname, $roundanswer);
+                printf ("<div class='okmsg'>Added new Round: %s with meta answer: %s</div>\n", $roundname, $roundanswer);
                 return(TRUE);
         }
 ?>

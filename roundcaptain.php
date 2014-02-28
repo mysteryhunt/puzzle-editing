@@ -12,7 +12,7 @@
 
         // Check for editor permissions
         if (!isRoundCaptain($uid)) {
-                echo "You do not have permission for this page.";
+                echo "<div class='errormsg'>You do not have permissions for this page.</div>";
                 foot();
                 exit(1);
         }

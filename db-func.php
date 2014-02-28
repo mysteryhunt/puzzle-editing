@@ -5,21 +5,21 @@
 
         // Connect to database
         if (($db = mysql_connect(DB_SERVER, DB_USER, DB_PASS)) == FALSE) {
-                echo 'Could not connect to database server ' . DB_SERVER . '.';
+                echo '<div class="errormsg">Could not connect to database server ' . DB_SERVER . '.</div>';
                 foot();
                 exit(1);
         }
 
         // Use UTF-8 character set for connection
         if (!mysql_set_charset('utf8')) {
-                echo 'Could not set character set.';
+                echo '<div class="errormsg">Could not set character set.</div>';
                 foot();
                 exit(1);
         }
 
         // Select database
         if (mysql_select_db(DB_NAME, $db) == FALSE) {
-                echo 'Could not select database ' . DB_NAME . '.';
+                echo '<div class="errormsg">Could not select database ' . DB_NAME . '.</div>';
                 foot();
                 exit(1);
         }
@@ -139,8 +139,7 @@
         function db_fail_message($query, $message)
         {
                 mysql_query('ROLLBACK');
-                echo "$message <br />";
-                echo $query;
+                echo "<div class='errormsg'>$message<br /><code>$query</code></div>";
                 foot();
                 exit(1);
         }

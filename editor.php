@@ -12,14 +12,14 @@
 
         // Check for editor permissions
         if (!isEditor($uid)) {
-                echo "You do not have permission for this page.";
+                echo "<div class='errormsg'>You do not have permission for this page.</div>";
                 foot();
                 exit(1);
         }
 
         if ($_SESSION['failedToAddEdit'] == TRUE){
-                echo "<H3>Failed to add puzzle to your editing queue<br>";
-                echo "Perhaps you are an author, are testsolving it, or are already editing it?</h3><br>";
+                echo "<div class='errormsg'>Failed to add puzzle to your editing queue<br/>";
+                echo "Perhaps you are an author, are testsolving it, or are already editing it?</div>";
                 unset($_SESSION['failedToAddEdit']);
         }
 

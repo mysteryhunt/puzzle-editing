@@ -12,7 +12,7 @@
 
         // Check for permissions
         if (!isTestingAdmin($uid)) {
-                echo "Sorry, you're not a testing admin.";
+                echo "<div class='errormsg'>Sorry, you're not a testing admin.</div>";
                 foot();
                 exit(1);
         }

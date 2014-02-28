@@ -10,9 +10,9 @@
         head();
 
         if ($wasLoggedIn) {
-                echo '<h3> You have been logged out. </h3>';
+                echo '<div class="okmsg">You have been logged out.</div>';
         } else {
-                echo '<h3> You are already logged out.</h3>';
+                echo '<div class="errormsg">You are already logged out.</div>';
         }
 
         echo '<h2><a href="login.php">Log In</a></h2>';

@@ -15,19 +15,21 @@
                         registerForm($id);
                 } else {
                         // Otherwise, try again.
-                        echo '<h3> I\'m sorry. That email address is not authorized to register. </h3>';
-                        echo '<h3> Or there was some other failure in initial authorization check. </h3>';
-                        echo '<h3> Please try again, or contact contact the Server Administrators</a>.';
+                        echo '<div class="errormsg">';
+                        echo 'I\'m sorry. That email address is not authorized to register.<br />';
+                        echo 'Or there was some other failure in initial authorization check.<br />';
+                        echo 'Please try again, or contact the Server Administrators.<br />';
+                        echo '</div>';
                         checkEmailForm();
                 }
         } else if(isset($_POST['register'])) {
                 $r = register();
 
                 if ($r === TRUE) {
-                        echo '<h4> Registration Successful. </h4>';
-			echo '<h4> <a href="index.php"> Log In </a> </h4>';
+                        echo '<div class="okmsg">Registration Successful.</div>';
+                        echo '<a href="index.php">Log In</a>';
                 } else {
-                        echo $r;
+                        echo "<div class='errormsg'>$r</div>";
                         registerForm($_POST['id']);
                 }
         } else if(isset($_SESSION['uid'])) {

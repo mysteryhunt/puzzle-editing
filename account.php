@@ -17,15 +17,15 @@
         }
 
         if ($passwd == 'changed') {
-                echo '<strong>Password Changed!</strong>';
+                echo '<div class="okmsg">Password Changed!</div>';
         } else if ($passwd == 'wrong') {
-                echo '<strong>Incorrect Old Password</strong>';
+                echo '<div class="errormsg">Incorrect Old Password</div>';
         } else if ($passwd == 'invalid') {
-                echo '<strong>Invalid New Password</strong>';
+                echo '<div class="errormsg">Invalid New Password</div>';
         } else if ($passwd == 'short') {
-                echo '<strong>Password Must Be At Least 6 Characters</strong>';
+                echo '<div class="errormsg">Password Must Be At Least 6 Characters</div>';
         } else if ($passwd == 'error') {
-                echo '<strong>An Error Occurred While Changing Password</strong>';
+                echo '<div class="errormsg">An Error Occurred While Changing Password</div>';
         }
 
         printPerson(getPerson($uid));

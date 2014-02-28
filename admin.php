@@ -12,7 +12,7 @@
 
         // Check for admin bits
         if (!isServerAdmin($uid)) {
-                echo "<h3> You do not have permissions for this page. </h3>";
+                echo "<div class='errormsg'>You do not have permissions for this page.</div>";
                 foot();
                 exit(1);
         }
@@ -20,7 +20,7 @@
         if (isset($_POST['newmotd'])) {
                 $result = postMotdForm($_POST['newmotd'],$_POST['username']);
                 if ($result == NULL){
-                        echo "<h3>Error Posting New Message</h3><br>";
+                        echo "<div class='errormsg'>Error Posting New Message</div>";
                 }
         } 
         echo "<p><a href=\"";
@@ -45,11 +45,11 @@
         function postMotdForm($newmotd, $username)
         {
                 if ($newmotd == ''){
-                        echo "Empty MOTD is unacceptable.<br>";
+                        echo "<div class='errormsg'>Empty MOTD is unacceptable.</div>";
                         return (NULL);
                 }
 	        $result = addNewMotd($newmotd, $username);
-                echo "<h3>Added new MOTD successfully </h3><br>";
+                echo "<div class='okmsg'>Added new MOTD successfully</div>";
  	        return ($result);
         }
         // End HTML

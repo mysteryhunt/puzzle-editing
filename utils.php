@@ -3352,8 +3352,8 @@ function markUnseen($uid, $pid)
 function utilsError($msg)
 {
         mysql_query('ROLLBACK');
-        echo "An error has occurred. Please try again. <br />";
-        echo "<pre>$msg</pre>";
+        echo "<div class='errormsg'>An error has occurred. Please try again.<br />";
+        echo "<pre>$msg</pre></div>";
         foot();
         exit(1);
 }

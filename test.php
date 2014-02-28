@@ -85,18 +85,11 @@ function maybeDisplayWarning($uid, $pid)
                 return;
         }
 ?>
-        <table style="border-width: 0px; vertical-align:middle;">
-                <tr>
-                        <td style="vertical-align:middle;background-color: #FFA7A9;">
-                                <B>WARNING:</B> You are not marked as a current
-                                testsolver.<br> Please
-                                use the puzzle version, and wiki page, that
-                                were current when you started solving, NOT the
-                                ones listed below (if they differ).<br>If in doubt, email
-                                <?php echo HELP_EMAIL; ?>
-                        </td>
-                </tr>
-        </table>
+        <div class="warning">
+                <strong class='impt'>WARNING:</strong> You are not marked as a current testsolver.<br>
+                Please use the puzzle version, and wiki page, that were current when you started solving, NOT the ones listed below (if they differ).<br/>
+                If in doubt, email <?php echo HELP_EMAIL; ?>
+        </div>
 <?php
 }
 

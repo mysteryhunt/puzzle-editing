@@ -28,7 +28,7 @@
                 $cleanDescription = $purifier->purify($description);
 
                 if ($summary == '' || $description == '') {
-                        echo "<h2>You must enter a summary and a description</h2>";
+                        echo "<div class='errormsg'>You must enter a summary and a description</div>";
                         newIdeaForm($uid, $summary, $description);
                         foot();
                         exit(1);
@@ -72,7 +72,7 @@
                         }
                 }
 
-                echo "<h3>Idea Submitted</h3>";
+                echo "<div class='okmsg'>Idea Submitted</div>";
         } else {
                 newIdeaForm($uid);
         }

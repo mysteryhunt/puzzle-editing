@@ -382,3 +382,25 @@ td.sd {
 	font-style: italic;
 	color: #666;
 }
+
+.okmsg {
+	color: #090;
+	font-size: 120%;
+	background-color: #cfc;
+	border: 1px solid #090;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+.errormsg {
+	color: #c00;
+	font-size: 120%;
+	font-weight: bold;
+	background-color: #fcc;
+	border: 1px solid #c00;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+.warning {
+	background-color: #faa;
+	padding: 10px;
+}

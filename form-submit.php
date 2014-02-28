@@ -109,7 +109,7 @@
                 if ($removeUser[0] == $uid)
                 {
                         head();
-                        echo "Removed you as spoiled. Not redirecting to avoid re-spoiling you.\n";
+                        echo "<div class='okmsg'>Removed you as spoiled. Not redirecting to avoid re-spoiling you.</div>\n";
                         exit(0);
                 }
 
@@ -545,10 +545,10 @@
 
 
         head();
-        echo 'An unknown error seems to have occurred. <br />';
+        echo '<div class="errormsg">An unknown error seems to have occurred. <br />';
 	echo 'Please try again, or contact <a href="mailto:';
         echo HELP_EMAIL;
-        echo '">the Server Administrators</a> for help. <br />';
+        echo '">the Server Administrators</a> for help.</div>';
 
         foot();
 

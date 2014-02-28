@@ -61,16 +61,16 @@
         if (isset($_GET['token'])) {
                 $success = resetPassword($_GET['token']);
                 if ($success) {
-                        echo "<p>Password reset. Please check your email for your new email (allow a few minutes for the cronjob delay)</p>";
+                        echo "<div class='okmsg'>Password reset. Please check your email for your new password (allow a few minutes for the cronjob delay)</div>";
                 } else {
-                        echo "<p><strong>Invalid or expired token</strong></p>";
+                        echo "<div class='errormsg'>Invalid or expired token</div>";
                 }
         } else if (isset($_POST['email'])) {
                 $success = addAndSendToken($_POST['email']);
                 if ($success) {
-                        echo "<p>Please check your email for instructions on how to reset your password (allow a few minutes for the cronjob delay)</p>";
+                        echo "<div class='okmsg'>Please check your email for instructions on how to reset your password (allow a few minutes for the cronjob delay)</div>";
                 } else {
-                        echo "<p><strong>No user with the given email was found!</strong></p>";
+                        echo "<div class='errormsg'>No user with the given email was found!</div>";
                 }
         } else {
 ?>

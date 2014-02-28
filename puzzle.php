@@ -22,7 +22,7 @@
 
         // Does the user have permission to see this page?
         if (!canViewPuzzle($uid, $pid)) {
-                echo "You do not have permission to view this puzzle.";
+                echo "<div class='errormsg'>You do not have permission to view this puzzle.</div>";
                 foot();
                 exit(0);
         }

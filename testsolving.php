@@ -11,7 +11,7 @@
         head("testsolving");
 
         if (isset($_SESSION['testError'])) {
-                echo '<h2>' . $_SESSION['testError'] . '</h2>';
+                echo '<div class="errormsg">' . $_SESSION['testError'] . '</div>';
                 unset($_SESSION['testError']);
         }
         if (isset($_SESSION['feedback'])) {

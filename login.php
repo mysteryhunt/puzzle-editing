@@ -21,14 +21,14 @@
 		login($_SERVER['HTTP_REMOTE_USER'], "nopass");
 		// If login was successful, user was redirected to index.php
 		head();
-		echo "<h3> User not yet registered</h3>";
+		echo "<div class='errormsg'>User not yet registered</div>";
 		loginForm();
 	} else if (isset($_POST['username'])) {  //try to login with username/password if this is login form
                 login($_POST['username'], $_POST['pass']);
 
                 // If login was successful, user was redirected to index.php
                 head();
-                echo "<h3> Incorrect Username or Password</h3>";
+                echo "<div class='errormsg'>Incorrect Username or Password</div>";
 	} else {		//otherwise display login form
                 head();
                 loginForm();
