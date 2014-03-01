@@ -15,17 +15,31 @@ body {
 }
 
 #header { margin-top: 10px; }
-#top { vertical-align: middle; margin-bottom: 4px; }
-#titlediv { text-align:left;width:auto;float:left;vertical-align:top; }
-#countdowndiv { text-align:right;width:auto;float:right;vertical-align:top; }
+h1 { margin: 0; }
+#top { vertical-align: middle; }
+#titlediv { text-align:left; vertical-align:top; }
+#logindiv { text-align:right; vertical-align:bottom; font-size: 110%; }
+#logindiv a {
+	padding: 0 0.5em;
+	background-color: #eee;
+	border-radius: 0.5em 0.5em 0 0;
+}
+#logindiv a:link, #logindiv a:visited { color: black; }
+#logindiv a:hover { color: red; background-color: #fafafa; }
+.notloggedin { color: #666; font-style: italic; }
+#countdowndiv { text-align:right; vertical-align:top; }
 #countdown { margin-top: 0; font-size: 108%; }
 .cdnum { color: red; font-weight: bold; }
 
-#loginst { font-size: 123.1%; font-weight: bold;}
-
 .clear { clear: both; }
 
-#navbar { float:left;width:100%;background-color:#efefef; }
+#navbar {
+	float:left;
+	width:100%;
+	background-color: #eee;
+	background: linear-gradient(to bottom, #eee, #ddd);
+	border-radius: 0.7em 0 0 0;
+}
 
 #container {
 	min-height: 100%;
@@ -76,26 +90,42 @@ ul.nav {
 li.nav {
 	float: left;
 	display:block;
-	margin-right:15px;
 	list-style-type: none;
 	text-align: left;
 }
 
 a.nav {
 	display: block;
-	padding: 5px;
+	padding: 5px 12px;
 	font-size: 1.2em;
 }
 
 a.nav:link {color:#000000;}
 a.nav:visited {color:#000000;}
-a.nav:hover {color:#FF0000;}
+a.nav:hover {
+	color: #d00;
+	background-color: #fafafa;
+	background: linear-gradient(to bottom, #fafafa, #eaeaea);
+}
 a.nav:active {color:#000000;}
+
+a.wikinav {
+	border-radius: 0.7em 0 0 0;
+}
+a.wikinav:link, a.wikinav:visited, a.wikinav:active {
+	background-color: #bcd;
+	background: linear-gradient(to bottom, #cde, #abc);
+}
+a.wikinav:hover {
+	background-color: #cde;
+	background: linear-gradient(to bottom, #def, #bcd);
+}
 
 a.selnav {
 	display: block;
-	padding: 5px;
+	padding: 5px 12px;
 	background-color:#B8CFC2;
+	background: linear-gradient(to bottom, #acb, #ced);
 	font-size: 1.2em;
 	font-weight: bold;
 	text-decoration: none;
@@ -153,9 +183,9 @@ td.puzzidea {
 }
 
 td.puzzideasecure {
-        border-top: solid 1px;
-        border-bottom: solid 1px;
-        background-color: #000000;
+	border-top: solid 1px;
+	border-bottom: solid 1px;
+	background-color: #000000;
 }
 
 textarea.register {
@@ -378,13 +408,13 @@ div.comments {
 }
 
 div.killpuzzle {
-        color: #FF0000;
-        padding: 0em;
+	color: #FF0000;
+	padding: 0em;
 
 }
 
 td.killpuzzle {
-        padding: 0em 1em 0em 0em;
+	padding: 0em 1em 0em 0em;
 }
 
 td.sd {

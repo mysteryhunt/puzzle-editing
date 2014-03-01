@@ -48,22 +48,23 @@
 <div id="container">
 	<div id="header">
           <div id="top">
-                                <div id="titlediv">
-                <h1><?php echo fullTitle(); ?></h1><span id="loginst">
-        <?php if (isset($_SESSION['uid'])) { ?>
-                Logged in: [<?php echo getUserUsername(isLoggedIn()); ?>]</span>
-        <?php } else { ?>
-                Not logged in
-        <?php } ?></span>
-                </div>
                 <div id="countdowndiv">
                      <span id="countdown"> <span class="cdnum"><?php echo $days ?></span> days, <span class="cdnum"><?php echo $hrs ?></span> hours and <span class="cdnum"><?php echo $mins ?></span> minutes left until hunt.</span>
-                                </div>
-                <div class="clear"></div>
+                </div>
+                <div id="titlediv">
+                <h1><?php echo fullTitle(); ?></h1>
+                </div>
+                <div id="logindiv">
+        <?php if (isset($_SESSION['uid'])) { ?>
+                Logged in as <strong><?php echo getUserUsername(isLoggedIn()); ?></strong>
+                <?php if(!TRUST_REMOTE_USER) { ?><a href="logout.php">Logout</a><?php } ?>
+        <?php } else { ?>
+                <span class="notloggedin">Not logged in</span> <a href="login.php">Login</a>
+        <?php } ?></div>
                    </div>
                   <div id="navbar">
                 <ul class="nav">
-			<li class="nav"><a class="nav" target="_blank" href="
+			<li class="nav"><a class="nav wikinav" target="_blank" href="
 <?php echo WIKI_URL; ?> ">Wiki</a></li>
 <?php
         echoNav($selnav == "home", "index.php", "Home", true);
@@ -88,7 +89,6 @@
         }
 ?>
                 </ul>
-			<?php if(!TRUST_REMOTE_USER) { ?> <div class="navr"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout.php">Logout</a><?php } ?> </div> <?php } ?>
                 </div>
                         <div class="clear"></div>
         </div>
