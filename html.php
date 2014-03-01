@@ -9,6 +9,9 @@
                 }
         }
         function echoNav1($selnav, $name, $linktext, $condition) { echoNav($selnav == $name, $name . ".php", $linktext, $condition); }
+        function fullTitle() {
+                return 'MH2015 puzzletron authoring server (' . (DEVMODE ? 'test/dev' : (PRACMODE ? 'practice' : 'actual mystery hunt-writing')) . ' instance)';
+        }
         function head($selnav = "") {
         $hunt=mktime(12,00,00,1,HUNT_DOM,HUNT_YEAR);
         $now = time();
@@ -36,14 +39,7 @@
         <link rel="stylesheet" type="text/css" href="css/fonts-min.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
-	<title>MH2015 puzzletron authoring server
-	<?php if (DEVMODE) { ?>
-		(test/dev instance)
-	<?php } else if (PRACMODE) { ?>
-		(practice instance)
-	<?php } else { ?>
-		(actual mystery hunt-writing instance)
-	<?php } ?> </title>
+        <title><?php echo fullTitle(); ?></title>
         <script type='text/javascript' src='jquery-1.4.2.js'></script>
         <script type='text/javascript' src='jquery.tablesorter.min.js'></script>
         <script type="text/javascript" src='js.js'></script>
@@ -53,15 +49,7 @@
 	<div id="header">
           <div id="top">
                                 <div id="titlediv">
-                     <h1>MH2015 puzzletron authoring server
-        <?php if (DEVMODE) { ?>
-		(test/dev instance)
-	<?php } else if (PRACMODE) { ?>
-                (practice instance)
-        <?php } else { ?>
-                (actual mystery hunt-writing instance)
-        <?php } ?>
-		     </h1><span id="loginst">
+                <h1><?php echo fullTitle(); ?></h1><span id="loginst">
         <?php if (isset($_SESSION['uid'])) { ?>
                 Logged in: [<?php echo getUserUsername(isLoggedIn()); ?>]</span>
         <?php } else { ?>
