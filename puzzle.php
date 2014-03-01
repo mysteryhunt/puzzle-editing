@@ -459,7 +459,7 @@ function displayEditors($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                                <strong>Discussion Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
                 <tr>
@@ -470,11 +470,11 @@ function displayEditors($uid, $pid)
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                                         <tr>
                                                 <td>
-                                                        <p><strong>Remove Editor(s):</strong></p>
+                                                        <p><strong>Remove Discussion Editor(s):</strong></p>
                                                         <?php echo displayRemoveEditor($pid)?>
                                                 </td>
                                                 <td>
-                                                        <p><strong>Add Editor(s):</strong></p>
+                                                        <p><strong>Add Discussion Editor(s):</strong></p>
                                                         <?php echo displayAddEditor($pid); ?>
                                                 </td>
                                         </tr>
