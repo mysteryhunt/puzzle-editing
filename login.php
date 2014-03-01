@@ -48,9 +48,9 @@
                                 <tr>
 					<td>Username:</td>
 					<!-- prompt for username if we don't use REMOTE_USER -->
-					<?php if (!TRUST_REMOTE_USER) { ?> <td><input type="text" name="username" /></td> <?php } ?> 
+					<?php if (!TRUST_REMOTE_USER) { ?> <td><input type="text" name="username" /></td> <?php } ?>
 					<!-- if we trust REMOTE_USER use that instead -->
-					<?php if (TRUST_REMOTE_USER) { ?> <td><?php echo $_SERVER['HTTP_REMOTE_USER']; ?></td> 
+					<?php if (TRUST_REMOTE_USER) { ?> <td><?php echo $_SERVER['HTTP_REMOTE_USER']; ?></td>
 					<input type="hidden" name="username" value="<?php echo $_SERVER['HTTP_REMOTE_USER']; ?>"> <?php } ?>
                                 </tr>
 			<!-- prompt for password if we're not trusting remote_user -->
@@ -74,7 +74,7 @@
         {
 		if (!TRUST_REMOTE_USER){
                 $sql = sprintf("SELECT uid FROM user_info WHERE
-						username='%s'  
+						username='%s'
 						AND password=AES_ENCRYPT('%s', '%s%s')",
                                                 mysql_real_escape_string($username),
                                                 mysql_real_escape_string($pass),

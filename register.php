@@ -50,7 +50,7 @@
                     E-mail address: <input type="text" name="checkEmail" /><br>
 		    <?php if (TRUST_REMOTE_USER) { ?> username: <?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?><br>
 		    <input type="hidden" name="username" value="<?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?>"/> <?php } ?>
-		    <?php if (!TRUST_REMOTE_USER) { ?> Desired username: <input type="text" name="username" /><br> <?php } ?> 
+		    <?php if (!TRUST_REMOTE_USER) { ?> Desired username: <input type="text" name="username" /><br> <?php } ?>
                     <input type="submit" value="Submit" />
                 </form>
 <?php
@@ -193,7 +193,7 @@
                         return $r['uid'];
                 } else if (mysql_num_rows($result) == 0) {
                         //have it return false here if you plan to pre-populate user_info
-                        //with known valid team email addressees 
+                        //with known valid team email addressees
                         $sql = sprintf("INSERT INTO user_info (username, email) VALUES ('%s', '%s')",
                                        mysql_real_escape_string($username),
                                        mysql_real_escape_string($email));
@@ -258,7 +258,7 @@
 		if (TRUST_REMOTE_USER) {
 			$sql = sprintf("UPDATE user_info SET username = '%s',
                                		fullname='%s', picture='%s' WHERE uid='%s'",
-			       		mysql_real_escape_string($username), 
+			       		mysql_real_escape_string($username),
 			       		mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string($id));
 		}
 		if (!TRUST_REMOTE_USER) {

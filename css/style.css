@@ -14,6 +14,16 @@ body {
 	height: 100%;
 }
 
+#header { margin-top: 10px; }
+#top { vertical-align: middle; margin-bottom: 4px; }
+#titlediv { text-align:left;width:auto;float:left;vertical-align:top; }
+#countdowndiv { text-align:right;width:auto;float:right;vertical-align:top; }
+#countdown { margin-top: 0; }
+
+.clear { clear: both; }
+
+#navbar { float:left;width:100%;background-color:#efefef; }
+
 #container {
 	min-height: 100%;
 	position: relative;
@@ -55,6 +65,7 @@ ul.nav {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
+	float: left;
 }
 
 li.nav {
@@ -71,10 +82,10 @@ a.nav {
 	font-size: 1.2em;
 }
 
-a.nav:link {color:#000000;} 
-a.nav:visited {color:#000000;} 
-a.nav:hover {color:#FF0000;} 
-a.nav:active {color:#000000;} 
+a.nav:link {color:#000000;}
+a.nav:visited {color:#000000;}
+a.nav:hover {color:#FF0000;}
+a.nav:active {color:#000000;}
 
 a.selnav {
 	display: block;
@@ -85,10 +96,12 @@ a.selnav {
 	text-decoration: none;
 }
 
-a.selnav:link {color:#000000;} 
-a.selnav:visited {color:#000000;} 
-a.selnav:hover {color:#000000;} 
+a.selnav:link {color:#000000;}
+a.selnav:visited {color:#000000;}
+a.selnav:hover {color:#000000;}
 a.selnav:active {color:#000000;}
+
+div.navr { float: right; }
 
 tr.people, tr.comment, tr.puzz-new {
 	border-top: solid 1px;
@@ -261,14 +274,14 @@ th.pending-stats, td.pending-stats {
 }
 
 th.dead-stats, td.dead-stats {
-	background-color: #EFEFEF; 
+	background-color: #EFEFEF;
 	border: none;
 	padding-bottom: 0.1em;
 	padding-top: 0.1em;
 }
 
 th.admin-stats, td.admin-stats {
-	background-color: #EFEFEF; 
+	background-color: #EFEFEF;
 	border: none;
 	padding-bottom: 0.1em;
 	padding-top: 0.1em;
@@ -404,3 +417,10 @@ td.sd {
 	background-color: #faa;
 	padding: 10px;
 }
+
+table.boxed { border: 3px solid black; }
+.puzzledesc { background-color: #F0E8E0; }
+.small { font-size: 75%; }
+.longin { width: 40em; }
+.testdesc { vertical-align:middle;background-color: #A9D7FF; }
+.testdata { vertical-align:middle;background-color: #FAD97D; }

@@ -105,7 +105,7 @@ function displayWikiPage($pid)
 ?>
         <table style="border-width: 0px; vertical-align:middle;">
                 <tr>
-                        <td style="vertical-align:middle;background-color: #A9D7FF;">
+                        <td class="testdesc">
                                 Testsolve wiki page: <a href="<?php echo $page; ?>">
                                         <?php echo $page; ?>
                                 </a>
@@ -133,12 +133,12 @@ function displayDraft($pid)
 ?>
         <table style="border-width: 0px; vertical-align:middle;">
                 <tr>
-                        <td style="vertical-align:middle;background-color: #FAD97D;">
+                        <td class="testdata">
                                 Puzzle: <a href="<?php echo $draft['filename']; ?>">
                                         <?php echo $finfo['basename']; ?>
                                 </a>
                         </td>
-                        <td style="vertical-align:middle;background-color: #FAD97D;">
+                        <td class="testdata">
                                 Uploaded on <?php echo $draft['date']; ?>
                         </td>
                 </tr>
@@ -234,7 +234,7 @@ function displayFeedbackForm($uid, $pid)
                 <tr>
                         <td>
                         What did you like/dislike about this puzzle? </br>
-                        Is there anything you think should be changed with the puzzle?</br> 
+                        Is there anything you think should be changed with the puzzle?</br>
                         Is there anything wrong with the technical details/formatting of the puzzle?<br />
                         <textarea style="width:50em; height: 25em;" name="liked"></textarea>
                         </td>
@@ -245,7 +245,7 @@ function displayFeedbackForm($uid, $pid)
                         <textarea style="width:50em; height: 3em;" name="skills"></textarea>
                         </td>
                 </tr>
-        
+
                 <tr>
                         <td>
                         Describe a breakthrough point and what in the puzzle lead you to it<br />
@@ -263,7 +263,7 @@ function displayFeedbackForm($uid, $pid)
                         </SELECT>
                         </td>
                 </tr>
-                        
+
                 <tr>
                         <td>
                         Rate the overall difficulty of this puzzle. <SELECT NAME="difficulty">

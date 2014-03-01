@@ -484,17 +484,17 @@
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];
                 $approve = $_POST['puzzApprove'];
-                
+
                 setPuzzApprove($uid, $pid, $approve);
-                
+
                 header("Location: "  . URL . "/puzzle.php?pid=$pid");
                 exit(0);
         }
 
         if (isset($_POST['killPuzzle'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid']; 
-                
+                $uid = $_POST['uid'];
+
                 changeStatus($uid, $pid, getDeadStatusId());
 
                 header("Location: "  . URL . "/puzzle.php?pid=$pid");
@@ -506,7 +506,7 @@
                 $uid = $_POST['uid'];
 
                 markUnseen($uid, $pid);
-                
+
                 header("Location: " . URL);
                 exit(0);
         }
@@ -514,12 +514,12 @@
         if (isset($_POST['setUserTestTeam'])) {
                 $tid = $_POST['tid'];
                 $uid = $_POST['uid'];
-                
+
                 //echo "tid=$tid";
                 //echo "<br>uid=$uid";
 
                 setUserTestTeam($uid, $tid);
-                
+
                 header("Location: "  . URL . "/testsolveteams.php");
                 exit(0);
         }
@@ -535,7 +535,7 @@
                 setPuzzleTestTeam($pid, $tid);
 
                 if ($notfrompuzz == "YES") {
-                        header("Location: " .  URL  . "/testsolveteams.php");  
+                        header("Location: " .  URL  . "/testsolveteams.php");
                 } else {
                         header("Location: "  . URL . "/puzzle.php?pid=$pid");
                 }

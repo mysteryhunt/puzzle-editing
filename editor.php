@@ -32,7 +32,7 @@
                 <input type="submit" name="getPuzz" value="Get Puzzle" />
         </form>
         <br>(Hiding dead puzzles)<br>
-<?php 
+<?php
 	if (ALLOW_EDITOR_PICK) {
 	   echo '<br/>';
            echo '<h3>Needs Editor(s)</h3>';

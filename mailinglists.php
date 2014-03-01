@@ -23,7 +23,7 @@
 	    if (isMoiraList($no_mit_edu)) {
 	        return "LIST:" . $no_mit_edu;
             }
-	    
+
 	    return "STRING:" . $no_mit_edu;
         }
 

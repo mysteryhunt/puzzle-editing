@@ -87,9 +87,9 @@
                 <h2>Puzzle Idea Submission</h2>
                 <form method="post" action="submit-new.php">
                         <p> Puzzle Title (NO SPOILERS):</p>
-                        <input type='text' name='title' maxlength='255' style='width:50em;' />
+                        <input type='text' name='title' maxlength='255' class="longin" />
                         <p style='padding-top:1em;'>Puzzle Summary (a description in a few words; spoilers ok): </p>
-                        <input type="text" name="summary" maxlength="255" style="width:50em;" value="<?php echo $summary; ?>" />
+                        <input type="text" name="summary" maxlength="255" class="longin" value="<?php echo $summary; ?>" />
                         <p style='padding-top:1em;'>Puzzle description (basic HTML encouraged; spoilers ok):</p>
                         <textarea style="width:50em; height: 25em;" name="description"><?php echo $description; ?></textarea>
                         <p style='padding-top:1em;'>Select coauthors:</p>
