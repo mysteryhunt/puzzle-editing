@@ -189,7 +189,7 @@
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Commenter</th>';} ?>
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
-                                <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Editors</th>';} ?>
+                                <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Discussion Editors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approval Editors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approvals</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
