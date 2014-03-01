@@ -10,9 +10,8 @@
         // Start HTML
         head("spoiled");
 ?>
-        <h3>&nbsp;</h3>
-        <h3>Puzzles you're spoiled on</h3>
-        <br>(Hiding dead puzzles)<br>
+        <h2>Puzzles you're spoiled on</h2>
+        <p>(Hiding dead puzzles)</p>
 <?php
         $puzzles = getSpoiledPuzzles($uid);
         displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());

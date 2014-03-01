@@ -8,7 +8,7 @@
         head("resetpassword");
 
 ?>
-        <h3>Reset Password</h3>
+        <h2>Reset Password</h2>
 <?
         if (isset($_GET['token'])) {
                 $success = resetPasswordByToken($_GET['token']);
@@ -28,12 +28,7 @@
 ?>
 
         <form method="post" action="<?php echo SELF; ?>">
-        <table>
-                <tr>
-                        <td>Email Address</td>
-                        <td><input type="text" name="email" value=""/></td>
-                </tr>
-        </table>
+                Email Address <input type="text" name="email" value=""/>
         </form>
 
 <?php

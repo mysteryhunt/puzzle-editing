@@ -35,17 +35,17 @@ function computeComments()
                 else
                        $name = getUserName($user);
 
-               
 
-               
+
+
 		if (!(isset($a[$name])))
  		{
 		        $a[$name] = array ('name' => $name, 'total' => 0, 'correct' => 0, 'incorrect' => 0, 'cordif' => 0, 'responses' => 0, 'words' => 0);
 		}
 
- 
-                 
- 
+
+
+
 		$ct = $comment['comment'];
 
 
@@ -72,7 +72,7 @@ function computeComments()
 			else
 			  $offset = 92;
 
-       
+
 		       	$a[$name]['words'] += str_word_count($ct) - $offset;		
 		}
 
@@ -111,7 +111,7 @@ function computeComments()
                        </tr>
             </thead>
            <tbody>';
-   foreach ($a as $person) 
+   foreach ($a as $person)
    {
       echo '<tr class="puzz">';
       echo '<td class="puzzidea">' . $person['name'] . '</td>';
@@ -137,7 +137,7 @@ function computeComments()
       echo '<td class="puzzidea">' . sprintf('%0.2f',($person['words']/$person['responses'])) . '</td>';
       echo '</tr>';
    }
- 
+
 
    echo '</tbody></table>';
 

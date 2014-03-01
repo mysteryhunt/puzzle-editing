@@ -6,7 +6,7 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
+
         // Start HTML
         head();
 
@@ -67,7 +67,7 @@
         }
 
         // Allow author and lurkers to edit summary and description
-	echo '<p style="font-size:75%;"><a href="' . URL . "/puzzle.php?edit&pid=$pid" . '">';
+	echo '<p class="small"><a href="' . URL . "/puzzle.php?edit&pid=$pid" . '">';
         echo 'Edit Title, Summary and Description</a></p>';
 
         echo "</div>";
@@ -130,7 +130,7 @@
         }
 
         echo "</select><input type='submit' value='set' name='setPuzzleTestTeam'></form>\n";
-        echo "</div>"; 
+        echo "</div>";
         }
 
         // Show files
@@ -192,30 +192,15 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 
         $codename = getCodename($pid);
 ?>
-        <table>
-                <tr>
-                        <td><h1>
-                        <?php echo "$codename (puzzle #$pid): $title <br>"; 
-                        
-                        $puzzleround=getPuzzleRound($pid);
-                       
-                        echo "Round: $puzzleround"; ?>
-                        </h1></td>
-                </tr>
-                </h1>
-                <?php displayAnswers($uid, $pid); ?>
-                <tr class='hideFromTest'>
-                        <td style="background-color: #F0E8E0;">
-                                <?php echo $summary; ?>
-                        </td>
-                </tr>
-                <tr><td></td></tr>
-                <tr class='hideFromTest'>
-                        <td style="background-color: #F0E8E0;">
-                                <?php echo $description; ?>
-                        </td>
-                </tr>
-        </table>
+        <h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
+        <p><strong><?php echo "Round: $puzzleround"; ?></strong></p>
+        <p><?php displayAnswers($uid, $pid); ?></p>
+        <div class='hideFromTest puzzledesc'>
+                        <?php echo $summary; ?>
+        </div>
+        <div class='hideFromTest puzzledesc'>
+                        <?php echo $description; ?>
+        </div>
 <?php
 }
 
@@ -279,11 +264,11 @@ function editTitleSummaryDescription($uid, $pid, $title, $summary, $description)
 {
 ?>
         <form method="post" action="form-submit.php">
-                <h1>Puzzle <?php echo $pid; ?></h1>
+                <h2>Puzzle <?php echo $pid; ?></h2>
                 <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-                <p style="padding-top: 0.5em;">Title (NO SPOILERS): <input type="text" name="title" maxlength="255" style="width:30em;" value="<?php echo $title; ?>" /></p>
-                <p style="padding-top: 0.5em;">Summary (spoilers ok): <input type="text" name="summary" maxlength="255" style="width:40em;" value="<?php echo $summary; ?>" /></p>
+                <p style="padding-top: 0.5em;">Title (NO SPOILERS): <input type="text" name="title" maxlength="255" class="longin" value="<?php echo $title; ?>" /></p>
+                <p style="padding-top: 0.5em;">Summary (spoilers ok): <input type="text" name="summary" maxlength="255" class="longin" value="<?php echo $summary; ?>" /></p>
                 <p style="padding-top: 0.5em;">Description (spoilers ok):</p>
                 <textarea style="width:50em; height: 25em;" name="description"><?php echo $description; ?></textarea>
                 <p style="padding-top: 0.5em;">
@@ -750,7 +735,7 @@ function displayCredits($uid, $pid)
                                 <form method="post" action="form-submit.php">
                                         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-                                        <input type="text" name="credits" maxlength="255" style="width:40em;" value="<?php echo $notes; ?>"/>
+                                        <input type="text" name="credits" maxlength="255" class="longin" value="<?php echo $notes; ?>"/>
                                         <input type="submit" name="changeCredits" value="Change" />
                                 </form>
                         </td>
@@ -777,7 +762,7 @@ function displayNotes($uid, $pid)
                                 <form method="post" action="form-submit.php">
                                         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-                                        <input type="text" name="notes" maxlength="255" style="width:40em;" value="<?php echo $notes; ?>"/>
+                                        <input type="text" name="notes" maxlength="255" class="longin" value="<?php echo $notes; ?>"/>
                                         <input type="submit" name="changeNotes" value="Change" />
                                 </form>
                         </td>
@@ -804,7 +789,7 @@ function displayRuntime($uid, $pid)
                                 <form method="post" action="form-submit.php">
                                         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-                                        <input type="text" name="notes" maxlength="255" style="width:40em;" value="<?php echo $notes; ?>"/>
+                                        <input type="text" name="notes" maxlength="255" class="longin" value="<?php echo $notes; ?>"/>
                                         <input type="submit" name="changeRuntime" value="Change" />
                                 </form>
                         </td>
@@ -832,7 +817,7 @@ function displayWikiPage($uid, $pid)
                                 <form method="post" action="form-submit.php">
                                         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-                                        <input type="text" name="wikiPage" maxlength="255" style="width:40em;" value="<?php echo $page; ?>"/>
+                                        <input type="text" name="wikiPage" maxlength="255" class="longin" value="<?php echo $page; ?>"/>
                                         <input type="submit" name="changeWikiPage" value="Change" />
                                 </form>
                         </td>
@@ -1143,14 +1128,14 @@ function displayPuzzApproval($uid, $pid)
 <?php
         //only display approval form itself if you are an editor/approver on this puzzle
         if ((isEditorOnPuzzle($uid, $pid) && !USING_APPROVERS) ||
-	    (isApproverOnPuzzle($uid, $pid) && USING_APPROVERS)) { 
+	    (isApproverOnPuzzle($uid, $pid) && USING_APPROVERS)) {
 ?>
                 <tr>
                         <td>
                                 <form action="form-submit.php" method="post">
                                 <input type="radio" name="puzzApprove" value="1" checked />Approve
                         </td>
-                        <td> 
+                        <td>
                                 <input type="radio" name="puzzApprove" value="0" />Revise
                         </td>
                         <td>
@@ -1162,7 +1147,7 @@ function displayPuzzApproval($uid, $pid)
                 </tr>
 <?php
         }
-        
+
         //everyone gets to see approval table
         if ($approvals == NULL){
                 echo "<tr><td colspan=3>No existing editor feedback at this stage yet.</td></tr><br>";
@@ -1188,6 +1173,6 @@ function displayPuzzApproval($uid, $pid)
         }
 ?>
         </table>
-<?php                
+<?php
 }
 ?>

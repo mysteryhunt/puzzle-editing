@@ -30,9 +30,7 @@
 
         printPerson(getPerson($uid));
 ?>
-        <p><a href="<?php echo URL ?>/register.php">Edit your information</a></p>
-
-        <br />
+        <p class="pad-bottom"><a href="<?php echo URL ?>/register.php">Edit your information</a></p>
 
         <script type="text/javascript">
                 //<![CDATA[
@@ -59,7 +57,7 @@
                 //]]>
         </script>
 
-        <form method="post" action="<?php echo SELF; ?>" onsubmit="return validate(this)">
+        <form method="post" action="<?php echo SELF; ?>" onsubmit="return validate(this)" class="boxedform">
         <table>
                 <tr>
                         <td>Current Password</td>

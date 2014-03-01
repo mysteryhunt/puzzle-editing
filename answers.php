@@ -27,7 +27,7 @@
                 if ($result == FALSE) {
                         echo '<div class="errormsg">Error in submitting new round</div>';
                 }
-        } 
+        }
         displayAnswers($uid);
 
         // End HTML
@@ -46,7 +46,7 @@
                 foreach($rounds as $round) {
                     $answers = getAnswersForRound($round['rid']);
 ?>
-                <table style="border:3px solid black;">
+                <table class="boxed">
                     <tr>
                             <th colspan="4"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></th>
                     </tr>
@@ -79,10 +79,10 @@
                     </tr>
                </table>
                <br />
-<?php  
+<?php
               }
 ?>
-                <table style="border:3px solid black;">
+                <table class="boxed">
                     <tr>
                                 <th colspan="3"><b>New Round</b></th>
                     </tr>
@@ -106,9 +106,9 @@
                         echo("<div class='errormsg'>Blank Answer is unacceptable. Try again</div>\n");
                         return (FALSE);
                 }
-                
+
                 createAnswer ($newAnswer, $round);
-                printf ("<div class='okmsg'>Added new Answer: %s for Round %s</div>\n", $newAnswer, $round);  
+                printf ("<div class='okmsg'>Added new Answer: %s for Round %s</div>\n", $newAnswer, $round);
                 return(TRUE);
         }
 
@@ -122,7 +122,7 @@
                         printf("<div class='errormsg'>Blank Round Answer is unacceptable. Try again</div>\n");
                         return (FALSE);
                 }
-        
+
                 createRound ($roundname, $roundanswer);
                 printf ("<div class='okmsg'>Added new Round: %s with meta answer: %s</div>\n", $roundname, $roundanswer);
                 return(TRUE);

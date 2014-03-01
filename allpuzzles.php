@@ -22,8 +22,8 @@
         displayPuzzleStats($uid);
 ?>
 
-        <table><tr><td>
-        <form method="get" action="allpuzzles.php">
+        <div class="inlbox">
+        <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="status">
         <select name="filtervalue">
 <?php
@@ -35,9 +35,7 @@
         </select>
         <input type="submit" value="Filter status">
         </form>
-
-        </td><td>&nbsp;&nbsp;&nbsp;</td><td>
-        <form method="get" action="allpuzzles.php">
+        <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="editor">
         <select name="filtervalue">
 <?php
@@ -50,9 +48,7 @@
         </select>
         <input type="submit" value="Filter editor">
         </form>
-
-        </td><td>&nbsp;&nbsp;&nbsp;</td><td>
-        <form method="get" action="allpuzzles.php">
+        <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="author">
         <select name="filtervalue">
 <?php
@@ -65,14 +61,13 @@
         </select>
         <input type="submit" value="Filter author">
         </form>
-        </td></tr></table>
+        </div>
 <?php
 
         $puzzles = getAllPuzzles();
 	$uid = isLoggedIn();
         echo "(Hiding dead puzzles by default)<br><br>";
         displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, $filt);
-        
 
 
         // End HTML

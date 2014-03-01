@@ -36,7 +36,7 @@
         if ($title == NULL)
                 $title = '(untitled)';
 
-        echo "<h1>Puzzle $pid -- $title</h1>";
+        echo "<h2>Puzzle $pid -- $title</h2>";
         echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
         need it!</b><br><br> When you are done, PLEASE leave feedback indicating
         that you do not intend to return, <b>even if the rest is blank</b>. This
@@ -96,54 +96,38 @@ function maybeDisplayWarning($uid, $pid)
 
 function displayWikiPage($pid)
 {
+        echo '<div>';
         $page = getWikiPage($pid);
         if ($page == NULL) {
-                echo '<h3>No Testsolve Wiki Page</h3>';
-                return;
+                echo "<span class='testempty'>No Testsolve Wiki Page</span>";
+        } else {
+                echo "<span class='testdesc'>Testsolve wiki page: <a href='$page'>$page</a></span>";
         }
-
-?>
-        <table style="border-width: 0px; vertical-align:middle;">
-                <tr>
-                        <td style="vertical-align:middle;background-color: #A9D7FF;">
-                                Testsolve wiki page: <a href="<?php echo $page; ?>">
-                                        <?php echo $page; ?>
-                                </a>
-                        </td>
-                </tr>
-        </table>
-<?php
+        echo '</div>';
 }
 
 function displayDraft($pid)
 {
+        echo '<div>';
         $draft = getMostRecentDraftForPuzzle($pid);
 
         if ($draft == NULL) {
-                echo '<h3>No Draft</h3>';
-                return;
-        }
-
-        $finfo = pathinfo($draft['filename']);
-        if (isset($finfo['extension']))
-                $ext = $finfo['extension'];
-        else
-                $ext = 'folder';
-
+                echo '<span class="testempty">No Draft</span>';
+        } else {
+                $finfo = pathinfo($draft['filename']);
+                if (isset($finfo['extension']))
+                        $ext = $finfo['extension'];
+                else
+                        $ext = 'folder';
 ?>
-        <table style="border-width: 0px; vertical-align:middle;">
-                <tr>
-                        <td style="vertical-align:middle;background-color: #FAD97D;">
-                                Puzzle: <a href="<?php echo $draft['filename']; ?>">
-                                        <?php echo $finfo['basename']; ?>
-                                </a>
-                        </td>
-                        <td style="vertical-align:middle;background-color: #FAD97D;">
-                                Uploaded on <?php echo $draft['date']; ?>
-                        </td>
-                </tr>
-        </table>
+        <span class="testdata">
+                Puzzle: <a href="<?php echo $draft['filename']; ?>"><?php echo $finfo['basename']; ?></a>
+                <br/>
+                Uploaded on <?php echo $draft['date']; ?>
+        </span>
 <?php
+        }
+        echo '</div>';
 }
 
 function checkAnsForm($uid, $pid)
@@ -199,61 +183,44 @@ function displayFeedbackForm($uid, $pid)
         }
 ?>
 
-        <form method="post" action="form-submit.php">
+        <form method="post" action="form-submit.php" class="boxedform">
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-        <table>
-                <tr>
-                        <td>
-                        Do you intend to return to this puzzle?
-                        <input type="radio" name="done" value="yes" /> Yes
-                        <input type="radio" name="done" value="no" /> No
-                        <br><small>(Selecting "No" marks you as finished
-                        in the database. This is important for
-                        our records.)</small>
-                        </td>
-                </tr>
-                <tr>
-                        <td>
+        <p>
+                Do you intend to return to this puzzle?
+                <input type="radio" name="done" value="yes" /> Yes
+                <input type="radio" name="done" value="no" /> No
+                <br><small>(Selecting "No" marks you as finished
+                in the database. This is important for
+                our records.)</small>
+        </p>
+        <p>
                         If so, when do you plan to return to it?
                         <input type="text" name="when_return" />
-                        </td>
-                </tr>
-                <tr>
-                        <td>
+        </p>
+        <p>
                         How long did you spend on this puzzle (since your last feedback, if any)?
                         <input type="text" name="time" />
-                        </td>
-                </tr>
-                <tr>
-                        <td>
+        </p>
+        <p>
                         Describe what you tried. <br />
                         <textarea style="width:50em; height: 10em;" name="tried"></textarea>
-                        </td>
-                </tr>
-                <tr>
-                        <td>
+        </p>
+        <p>
                         What did you like/dislike about this puzzle? </br>
-                        Is there anything you think should be changed with the puzzle?</br> 
+                        Is there anything you think should be changed with the puzzle?</br>
                         Is there anything wrong with the technical details/formatting of the puzzle?<br />
                         <textarea style="width:50em; height: 25em;" name="liked"></textarea>
-                        </td>
-                </tr>
-                <tr>
-                        <td>
+        </p>
+        <p>
                         Were there any special skills required to solve this puzzle?<br />
                         <textarea style="width:50em; height: 3em;" name="skills"></textarea>
-                        </td>
-                </tr>
-        
-                <tr>
-                        <td>
-                        Describe a breakthrough point and what in the puzzle lead you to it<br />
+        </p>
+        <p>
+                        Describe a breakthrough point and what in the puzzle lead you to it:<br />
                         <textarea style="width:50em; height: 5em;" name="breakthrough"></textarea>
-                        </td>
-                </tr>
-                <tr>
-                        <td>
+        </p>
+        <p>
                         Rate the overall fun of this puzzle. <SELECT NAME="fun">
                         <OPTION>1</OPTION>
                         <OPTION>2</OPTION>
@@ -261,11 +228,8 @@ function displayFeedbackForm($uid, $pid)
                         <OPTION>4</OPTION>
                         <OPTION>5</OPTION>
                         </SELECT>
-                        </td>
-                </tr>
-                        
-                <tr>
-                        <td>
+        </p>
+        <p>
                         Rate the overall difficulty of this puzzle. <SELECT NAME="difficulty">
                         <OPTION>1</OPTION>
                         <OPTION>2</OPTION>
@@ -273,14 +237,9 @@ function displayFeedbackForm($uid, $pid)
                         <OPTION>4</OPTION>
                         <OPTION>5</OPTION>
                         </SELECT>
-                        </td>
-                </tr>
-                <tr>
-                        <td>
+        <p>
                                 <input type="submit" name="feedback" value="Submit Feedback" class="okSubmit" />
-                        </td>
-                </tr>
-        </table>
+        </p>
         </form>
 <?php
 }

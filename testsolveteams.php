@@ -17,7 +17,7 @@
                 exit(1);
         }
 
-        echo "<h1>Testsolve Team Puzzle Assignments</h1>";
+        echo "<h2>Testsolve Team Puzzle Assignments</h2>";
         echo "<table>";
         echo "<tr><th>Puzzle ID</th><th>TestSolve Team</th></tr>\n";
         $puzzles = getPuzzleTeamsList();
@@ -40,16 +40,16 @@
                 echo "</select><input type='submit' value='set' name='setPuzzleTestTeam'></form></td><tr>\n";
         }
         echo "</table>";
-        
-        echo "<h1>Testsolve Team People Assignments</h1>";
-        
+
+        echo "<h2>Testsolve Team People Assignments</h2>";
+
         echo "<table>";
-        echo "<tr><th>Person</th><th>TestSolve Team</th></tr>\n"; 
+        echo "<tr><th>Person</th><th>TestSolve Team</th></tr>\n";
         $people = getPeopleTeamsList();
         foreach ($people as $uid => $testteam) {
                 $name = getUserName($uid);
                 $teamid = getUserTestTeamID($uid);
-                
+
                 echo "<tr><td>$name</td>\n";
                 echo "<td><form method='post' action='form-submit.php'>\n";
                 echo "<input type='hidden' name='uid' value='$uid'>\n";
@@ -61,30 +61,30 @@
                         $teamname = $t['name'];
                         echo "<option value='$tid' ";
                         if ($tid == $teamid) { echo "SELECTED "; }
-                        echo ">$teamname\n"; 
+                        echo ">$teamname\n";
                 }
 
-                echo "</select><input type='submit' value='set' name='setUserTestTeam'></form></td><tr>\n"; 
-                
+                echo "</select><input type='submit' value='set' name='setUserTestTeam'></form></td><tr>\n";
+
         }
-        
+
         echo "</table>";
 
 
 
         foot();
-        
+
         function getPeopleTeamsList(){
                 $people = getPeople();
                 foreach ($people as $p) {
                         $uid = $p['uid'];
                         $testteam = getUserSolveTeam($uid);
-                        
+
                         $teamassignments["$uid"] = $testteam;
                 }
         asort($teamassignments);
         return($teamassignments);
- 
+
         }
 
         function getPuzzleTeamsList(){
@@ -92,11 +92,11 @@
                 foreach ($puzzles as $p) {
                         $pid = $p;
                         $testteam = getPuzzleTestTeam($pid);
-                        
+
                         $teamassignments["$pid"] = $testteam;
 
                 }
         asort($teamassignments);
         return($teamassignments);
         }
-?>        
+?>

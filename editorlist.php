@@ -10,7 +10,7 @@
         // Start HTML
         head("editorlist");
 
-        echo '<h1 style="margin-top: 0em; margin-bottom: 0em;">List of Editor Stats</h1>';
+        echo '<h2>List of Editor Stats</h2>';
 
         echo '<table>';
 

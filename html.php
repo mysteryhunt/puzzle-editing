@@ -9,6 +9,9 @@
                 }
         }
         function echoNav1($selnav, $name, $linktext, $condition) { echoNav($selnav == $name, $name . ".php", $linktext, $condition); }
+        function fullTitle() {
+                return 'MH2015 puzzletron authoring server (' . (DEVMODE ? 'test/dev' : (PRACMODE ? 'practice' : 'actual mystery hunt-writing')) . ' instance)';
+        }
         function head($selnav = "") {
         $hunt=mktime(12,00,00,1,HUNT_DOM,HUNT_YEAR);
         $now = time();
@@ -36,48 +39,32 @@
         <link rel="stylesheet" type="text/css" href="css/fonts-min.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
-
-	<title>MH2015 puzzletron authoring server
-	<?php if (DEVMODE) { ?> 
-		(test/dev instance) 
-	<?php } else if (PRACMODE) { ?> 
-		(practice instance) 
-	<?php } else { ?> 
-		(actual mystery hunt-writing instance) 
-	<?php } ?> </title>
- 
+        <title><?php echo fullTitle(); ?></title>
         <script type='text/javascript' src='jquery-1.4.2.js'></script>
         <script type='text/javascript' src='jquery.tablesorter.min.js'></script>
         <script type="text/javascript" src='js.js'></script>
 </head>
 <body>
 <div id="container">
-	<div id="header" style="margin-top:10px;">
-          <div id="titletext" style="vertical-align:middle; margin-bottom:4px;">
-                                <div style="text-align:left;width:auto;float:left;vertical-align:top;">
-                     <h1>MH2015 puzzletron authoring server
-        <?php if (DEVMODE) { ?>                 
-		(test/dev instance)         
-	<?php } else if (PRACMODE) { ?>
-                (practice instance) 
-        <?php } else { ?> 
-                (actual mystery hunt-writing instance) 
-        <?php } ?>
-		     </h1>
-        <?php if (isset($_SESSION['uid'])) { ?>
-                <h2>Logged in: [<?php echo getUserUsername(isLoggedIn()); ?>]</h2>
-        <?php } else { ?>
-                <h2>Not logged in</h2>
-        <?php } ?>
+	<div id="header">
+          <div id="top">
+                <div id="countdowndiv">
+                     <span id="countdown"> <span class="cdnum"><?php echo $days ?></span> days, <span class="cdnum"><?php echo $hrs ?></span> hours and <span class="cdnum"><?php echo $mins ?></span> minutes left until hunt.</span>
                 </div>
-                <div style="text-align:right;width:auto;float:right;vertical-align:top;">
-                     <h3 style="margin-top:0;"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>
-                                </div>
-                <div style="clear:both;"></div>
+                <div id="titlediv">
+                <h1><?php echo fullTitle(); ?></h1>
+                </div>
+                <div id="logindiv">
+        <?php if (isset($_SESSION['uid'])) { ?>
+                Logged in as <strong><?php echo getUserUsername(isLoggedIn()); ?></strong>
+                <?php if(!TRUST_REMOTE_USER) { ?><a href="logout.php">Logout</a><?php } ?>
+        <?php } else { ?>
+                <span class="notloggedin">Not logged in</span> <a href="login.php">Login</a>
+        <?php } ?></div>
                    </div>
-                  <div id="navbar" style="float:left;width:100%;background-color:#efefef;">
-                <ul class="nav" style="float:left;">
-			<li class="nav"><a class="nav" target="_blank" href="
+                  <div id="navbar">
+                <ul class="nav">
+			<li class="nav"><a class="nav wikinav" target="_blank" href="
 <?php echo WIKI_URL; ?> ">Wiki</a></li>
 <?php
         echoNav($selnav == "home", "index.php", "Home", true);
@@ -102,9 +89,8 @@
         }
 ?>
                 </ul>
-			<?php if(!TRUST_REMOTE_USER) { ?> <div style="float:right;"><?php if (isset($_SESSION['uid'])) { ?><a class="nav" href="logout.php">Logout</a><?php } ?> </div> <?php } ?>
                 </div>
-                        <div style="clear:both;"></div>
+                        <div class="clear"></div>
         </div>
         <div id="body">
 <?php
@@ -187,7 +173,6 @@
                 $statuses = getPuzzleStatuses();
 
                 $deadstatusid = getDeadStatusId();
-                
 ?>
                 <table class="tablesorter">
                 <thead>
@@ -266,12 +251,12 @@
                                 <?php if ($showAnswerAndSummary) {echo "<td class='puzzideasummary'>" . $puzzleInfo["summary"] . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
 				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["runtime_info"] . "</td>";} ?>
-                <?php 
-                if ($showAnswerAndSummary) { 
-                        if (getAnswersForPuzzleAsList($pid) != "") { 
-                                echo "<td class='puzzideasecure'>"; 
-                        } else  
-                                echo "<td class='puzzidea'>"; 
+                <?php
+                if ($showAnswerAndSummary) {
+                        if (getAnswersForPuzzleAsList($pid) != "") {
+                                echo "<td class='puzzideasecure'>";
+                        } else
+                                echo "<td class='puzzidea'>";
                         echo getAnswersForPuzzleAsList($pid) . "</td>";
                 } ?>
                                 <?php if (!$test) {echo "<td class='puzzidea'>$lastCommenter</td>";} ?>
@@ -475,11 +460,11 @@ function displayPuzzleStats($uid)
                                                 <td class="answer-stats"> Total Answers </td>
                                                 <td class="answer-stats"> <?php echo numAnswers(); ?> </td>
                                         </tr>
-                                        <tr>    
+                                        <tr>
                                                 <td class="answer-stats"> Assigned </td>
                                                 <td class="answer-stats"> <?php echo answersAssigned(); ?> </td>
                                         </tr>
-                                        <tr>    
+                                        <tr>
                                                 <td class="answer-stats"> Unassigned </td>
                                                 <td class="answer-stats"> <?php echo (numAnswers() - answersAssigned()); ?> </td>
                                         </tr>

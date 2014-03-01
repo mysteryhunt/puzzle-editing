@@ -22,7 +22,7 @@
 
         // Fetch current MOTD from database
         $motd = getCurMotd();
-        if ($motd != NULL) { 
+        if ($motd != NULL) {
             $motddate = $motd[1];
             $motdmsg = $motd[2];
 
@@ -31,13 +31,12 @@
             }
             printf ("<b> %s UTC:</b><br/>",$motddate);
             echo $motdmsg;
-            echo "<br/>"; 
+            echo "<br/>";
         }
 ?>
 </div>
-<h3 style="padding-bottom:0.5em;"><a href="updates.php">Past Updates</a><br>
-<a href="
-<?php echo BUGTRACK_URL ?>">Submit Bugs/Feature Requests Here</a><br>
+<a href="updates.php">Past Updates</a><br />
+<a href="<?php echo BUGTRACK_URL ?>">Submit Bugs/Feature Requests Here</a>
 <?        // End HTML
         foot();
 ?>
