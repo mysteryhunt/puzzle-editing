@@ -192,24 +192,15 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 
         $codename = getCodename($pid);
 ?>
-        <table>
-                <tr>
-                        <td><h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
-                        <strong><?php echo "Round: $puzzleround"; ?></strong></td>
-                </tr>
-                <?php displayAnswers($uid, $pid); ?>
-                <tr class='hideFromTest'>
-                        <td class="puzzledesc">
-                                <?php echo $summary; ?>
-                        </td>
-                </tr>
-                <tr><td></td></tr>
-                <tr class='hideFromTest'>
-                        <td class="puzzledesc">
-                                <?php echo $description; ?>
-                        </td>
-                </tr>
-        </table>
+        <h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
+        <p><strong><?php echo "Round: $puzzleround"; ?></strong></p>
+        <p><?php displayAnswers($uid, $pid); ?></p>
+        <div class='hideFromTest puzzledesc'>
+                        <?php echo $summary; ?>
+        </div>
+        <div class='hideFromTest puzzledesc'>
+                        <?php echo $description; ?>
+        </div>
 <?php
 }
 

@@ -26,11 +26,12 @@
                 }
         } else {
 ?>
-        <h3>Admin Reset Password</h3>
-        <form method="post" action="adminpassword.php" />
+        <h2>Admin Reset Password</h2>
+        <form method="post" action="adminpassword.php" class="boxedform" />
+        <p>
         Enter the username of the user to reset the password for: <input type="text" name="username" value=""/>
-        </form>
         </p>
+        </form>
 <?php
         }
         foot();

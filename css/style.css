@@ -428,9 +428,15 @@ td.sd {
 }
 
 table.boxed { border: 3px solid black; }
-.puzzledesc { background-color: #F0E8E0; }
+.puzzledesc { padding: 5px; background-color: #F0E8E0;  margin-bottom: 5px;}
 .small { font-size: 75%; }
 .longin { width: 40em; }
-.testdesc { vertical-align:middle;background-color: #A9D7FF; }
-.testdata { vertical-align:middle;background-color: #FAD97D; }
+.testdesc { vertical-align:middle;background-color: #A9D7FF; padding: 5px; display: inline-block; }
+.testempty { vertical-align:middle;background-color: #CCC; padding: 5px; display: inline-block; font-style: italic; color: #666; }
+.testdata { vertical-align:middle;background-color: #FAD97D; padding: 5px; display: inline-block;}
 a.goto { font-size: 108%; font-weight: bold; }
+.inlbox { padding: 5px 0; }
+.inlform { display: inline; margin-right: 2em; }
+.boxedform { border: 1px solid black; background-color: #fafafa; display: inline-block; }
+.boxedform p { margin: 1em; }
+.boxedform table { margin: 0.5em; }
