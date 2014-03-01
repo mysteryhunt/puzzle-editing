@@ -17,7 +17,7 @@
                 exit(1);
         }
 
-        echo "<h1>Testsolve Team Puzzle Assignments</h1>";
+        echo "<h2>Testsolve Team Puzzle Assignments</h2>";
         echo "<table>";
         echo "<tr><th>Puzzle ID</th><th>TestSolve Team</th></tr>\n";
         $puzzles = getPuzzleTeamsList();
@@ -41,7 +41,7 @@
         }
         echo "</table>";
 
-        echo "<h1>Testsolve Team People Assignments</h1>";
+        echo "<h2>Testsolve Team People Assignments</h2>";
 
         echo "<table>";
         echo "<tr><th>Person</th><th>TestSolve Team</th></tr>\n";

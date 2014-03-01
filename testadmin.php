@@ -18,7 +18,7 @@
                 exit(1);
         }
 
-        echo "<h1>Test Queue</h1>";
+        echo "<h2>Test Queue</h2>";
 
 ?>
         <form action="form-submit.php" method="post">
@@ -32,14 +32,14 @@
         $inTesting = count(getPuzzlesInTesting());
         $numNeedAdmin = count(getPuzzlesNeedTestAdmin());
 
-        echo "<h3>There are currently $inTesting puzzles in testing</h3>";
-        echo "<h3>$numNeedAdmin puzzles need a testing admin</h3>";
-        echo "<br />";
+        echo "There are currently <strong>$inTesting puzzles</strong> in testing<br/>";
+        echo "<strong>$numNeedAdmin puzzles</strong> need a testing admin</strong>";
+        echo "<br /><br />";
 
         if (isTestingAdmin($uid)) {
 
                 if (getPuzzleForTestAdminQueue($uid) == FALSE) {
-                        echo '<strong>No Puzzles To Add</strong>';
+                        echo '<div class="emptylist">No Puzzles To Add</div><br/>';
                 } else {
 ?>
                                 <form action="form-submit.php" method="post">
@@ -52,7 +52,7 @@
                 displayTestQueue($uid);
         }
 
-        echo "<h1>Puzzles needing testadmin</h1>";
+        echo "<h2>Puzzles needing testadmin</h2>";
         $testPuzzles = getPuzzlesNeedTestAdmin();
         // The 5th argument is 'show tester identities'? It should be FALSE,
         // but we've gotten lazy about using the testadmin system, which means
@@ -60,14 +60,14 @@
         displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, array());
 
 
-        echo "<h1>Testing Feed</h1>";
+        echo "<h2>Testing Feed</h2>";
         echo "<table>";
         echo "<div class='comments'>";
         displayTestingFeed();
         echo "</div>";
         echo "</table>";
 
-        echo "<h1>Testing Summary</h1>";
+        echo "<h2>Testing Summary</h2>";
         displayTestingSummary();
 
         // End HTML
@@ -157,7 +157,7 @@ function displayTestingSummary()
                     $r = mysql_fetch_assoc($result);
               }
         }
-        if (!$arr) echo "<strong>No comments</strong>";
+        if (!$arr) echo "<div class='emptylist'>No comments</div>";
 
         echo "<table class=\"testingtable\">\n";
         foreach ($arr as $key => $value) {

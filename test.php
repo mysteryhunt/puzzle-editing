@@ -36,7 +36,7 @@
         if ($title == NULL)
                 $title = '(untitled)';
 
-        echo "<h1>Puzzle $pid -- $title</h1>";
+        echo "<h2>Puzzle $pid -- $title</h2>";
         echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
         need it!</b><br><br> When you are done, PLEASE leave feedback indicating
         that you do not intend to return, <b>even if the rest is blank</b>. This

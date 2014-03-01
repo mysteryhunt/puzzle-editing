@@ -10,13 +10,13 @@
                 $_SESSION['SITEURL'] = URL;
 
                 if (!TRUST_REMOTE_USER) {
-                        echo '<h3> You are logged in. Would you like to <a href="logout.php">log out</a>?</h3><br>';
+                        echo '<div class="msg"> You are logged in. Would you like to <a href="logout.php">log out</a>?</div><br>';
                 } else {
                         echo '<h3> A new puzzletron session has been initialized for you via single-sign-on authentication <br>';
                         echo '(most likely because your previous session expired or this is your first visit to puzzletron in a while)<br>';
                         echo 'Would you like to <a href="logout.php">log out</a>?</h3><br>';
                 }
-                echo '<h3> <a href="index.php">Go to puzzletron main/welcome page.</a> </h3>';
+                echo '<a href="index.php" class="goto">Go to puzzletron main/welcome page.</a>';
 	} else if(TRUST_REMOTE_USER) {   //we are trusting apache remote_user header so use that
 		login($_SERVER['HTTP_REMOTE_USER'], "nopass");
 		// If login was successful, user was redirected to index.php
@@ -41,7 +41,7 @@
         function loginForm()
         {
 ?>
-		<h3> You Need to <a href="register.php">register for puzzletron</a> before you can use it.</h3>
+		<strong>You need to <a href="register.php">register for puzzletron</a> before you can use it.</strong>
 
                 <form method="post" action="<?php echo SELF; ?>">
                         <table>

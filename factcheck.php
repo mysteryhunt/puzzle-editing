@@ -44,7 +44,7 @@ whatever reason. But please don't go through viewing all the puzzles for fun. :-
 
         displayPuzzleStats($uid);
 
-        echo "<h1>Factchecking</h1>";
+        echo "<h2>Factchecking</h2>";
 
         ?>
         <form action="form-submit.php" method="post">

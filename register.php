@@ -61,7 +61,7 @@
                 echo "<h2>Registration</h2>";
 
                 if (alreadyRegistered($id)) {
-                        echo '<h3>You have already registered. You may edit your information, but must use the same password.</h3>';
+                        echo '<strong>You have already registered. You may edit your information, but must use the same password.</strong>';
                         $data = getPerson($id);
                 }
 

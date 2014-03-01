@@ -18,7 +18,7 @@
 ?>
         <hr>
         <br>
-        <h2>Warning: Please don't press this button. If you were supposed to press this button, you would know.</h2>
+        <div class="warning">Warning: Please don't press this button. If you were supposed to press this button, you would know.</div>
         <form action="form-submit.php" method="post">
         <input type="hidden" name="uid" value="<?php echo $uid ?>">
         <input type="submit" name="postprodAll" value="Re-postprod ALL puzzles (THIS CANNOT BE UNDONE) [This will take a LONG TIME!]">

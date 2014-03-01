@@ -194,15 +194,9 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 ?>
         <table>
                 <tr>
-                        <td><h2>
-                        <?php echo "$codename (puzzle #$pid): $title <br>";
-
-                        $puzzleround=getPuzzleRound($pid);
-
-                        echo "Round: $puzzleround"; ?>
-                        </h2></td>
+                        <td><h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
+                        <strong><?php echo "Round: $puzzleround"; ?></strong></td>
                 </tr>
-                </h1>
                 <?php displayAnswers($uid, $pid); ?>
                 <tr class='hideFromTest'>
                         <td class="puzzledesc">
@@ -279,7 +273,7 @@ function editTitleSummaryDescription($uid, $pid, $title, $summary, $description)
 {
 ?>
         <form method="post" action="form-submit.php">
-                <h1>Puzzle <?php echo $pid; ?></h1>
+                <h2>Puzzle <?php echo $pid; ?></h2>
                 <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                 <p style="padding-top: 0.5em;">Title (NO SPOILERS): <input type="text" name="title" maxlength="255" class="longin" value="<?php echo $title; ?>" /></p>

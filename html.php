@@ -61,15 +61,15 @@
         <?php } else { ?>
                 (actual mystery hunt-writing instance)
         <?php } ?>
-		     </h1>
+		     </h1><span id="loginst">
         <?php if (isset($_SESSION['uid'])) { ?>
-                <h2>Logged in: [<?php echo getUserUsername(isLoggedIn()); ?>]</h2>
+                Logged in: [<?php echo getUserUsername(isLoggedIn()); ?>]</span>
         <?php } else { ?>
-                <h2>Not logged in</h2>
-        <?php } ?>
+                Not logged in
+        <?php } ?></span>
                 </div>
                 <div id="countdowndiv">
-                     <h3 id="countdown"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>
+                     <span id="countdown"> <span class="cdnum"><?php echo $days ?></span> days, <span class="cdnum"><?php echo $hrs ?></span> hours and <span class="cdnum"><?php echo $mins ?></span> minutes left until hunt.</span>
                                 </div>
                 <div class="clear"></div>
                    </div>

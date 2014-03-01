@@ -15,7 +15,7 @@
                 echo '<div class="errormsg">You are already logged out.</div>';
         }
 
-        echo '<h2><a href="login.php">Log In</a></h2>';
+        echo '<a href="login.php" class="goto">Log In</a>';
 
         // End the HTML
         foot();
