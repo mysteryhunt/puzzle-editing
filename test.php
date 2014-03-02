@@ -36,7 +36,7 @@
         if ($title == NULL)
                 $title = '(untitled)';
 
-        echo "<h2>Puzzle $pid -- $title</h2>";
+        echo "<h2>Puzzle $pid &mdash; $title</h2>";
         echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
         need it!</b><br><br> When you are done, PLEASE leave feedback indicating
         that you do not intend to return, <b>even if the rest is blank</b>. This
@@ -134,7 +134,8 @@ function checkAnsForm($uid, $pid)
 {
 ?>
         <form method="post" action="form-submit.php">
-                Check an answer: (NOTE: If the title says "ANSWER NOT IN PUZZLETRON", this won't work and will always reject your answer.)
+                Check an answer:
+                <?php if (!getAnswersForPuzzle($pid)) { echo "<strong>Answer not in Puzzletron, so this will always reject your answer.</strong>"; } ?>
                 <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                 <input type="input" name="ans" />
@@ -151,23 +152,21 @@ function displayPrevAns($uid, $pid)
 
         $correct = getCorrectSolves($uid, $pid);
         if ($correct)
-                echo "<h4>Correct Answers: $correct</h4>";
+                echo "<h3>Correct Answers: $correct</h3>";
 
-        echo '<table>';
-        echo '<tr><td>Attempted Answers:</td></tr>';
+        echo '<h3>Attempted Answers:</h3>';
+        echo '<ul>';
 
         foreach($answers as $ans) {
-                echo '<tr>';
-                echo "<td class=\"test\">$ans</td>";
-                echo '</tr>';
+                echo "<li>$ans</li>";
         }
-        echo '</table>';
+        echo '</ul>';
 }
 
 function displayFeedbackForm($uid, $pid)
 {
 ?>
-        <h2>Feedback Form</h2>
+        <h3>Feedback Form</h3>
 <?php
         if(ANON_TESTERS) {
 ?>

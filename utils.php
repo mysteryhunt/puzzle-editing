@@ -2947,10 +2947,10 @@ function makeAnswerAttempt($uid, $pid, $answer)
         $check = checkAnswer($pid, $cleanAnswer);
         if ($check === FALSE) {
                 $comment = "Incorrect answer attempt: $cleanAnswer";
-                $_SESSION['answer'] = "<div class='msg'>$cleanAnswer is incorrect</div>";
+                $_SESSION['answer'] = "<div class='msg'>$cleanAnswer is <span class='incorr'>incorrect</span></div>";
         } else {
                 $comment = "Correct answer attempt: $cleanAnswer";
-                $_SESSION['answer'] = "<div class='msg'>$check is correct</div>";
+                $_SESSION['answer'] = "<div class='msg'>$check is <span class='corr'>correct</span></div>";
         }
 
         mysql_query('START TRANSACTION');
