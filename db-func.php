@@ -139,7 +139,7 @@
         function db_fail_message($query, $message)
         {
                 mysql_query('ROLLBACK');
-                echo "<div class='errormsg'>$message<br /><code>$query</code></div>";
+                echo "<div class='errormsg'>$message<br /><code>" . htmlspecialchars($query) . "</code></div>";
                 foot();
                 exit(1);
         }

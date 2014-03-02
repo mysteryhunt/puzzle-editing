@@ -23,7 +23,7 @@
                 }
 
                 $purifier = new HTMLPurifier();
-                $cleanTitle = $purifier->purify($title);
+                $cleanTitle = htmlspecialchars($title); // I don't think we need or want HTML in titles... do we?
                 $cleanSummary = $purifier->purify($summary);
                 $cleanDescription = $purifier->purify($description);
 
@@ -39,7 +39,7 @@
                 mysql_query('START TRANSACTION');
 
                 $sql = sprintf("INSERT INTO puzzle_idea (title, summary, description) VALUES ('%s', '%s', '%s')",
-                                mysql_real_escape_string($title),
+                                mysql_real_escape_string($cleanTitle),
                                 mysql_real_escape_string($cleanSummary),
                                 mysql_real_escape_string($cleanDescription));
                 query_db($sql);

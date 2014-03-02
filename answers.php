@@ -108,7 +108,7 @@
                 }
 
                 createAnswer ($newAnswer, $round);
-                printf ("<div class='okmsg'>Added new Answer: %s for Round %s</div>\n", $newAnswer, $round);
+                printf ("<div class='okmsg'>Added new Answer: %s for Round %s</div>\n", htmlspecialchars($newAnswer), $round);
                 return(TRUE);
         }
 
@@ -124,7 +124,7 @@
                 }
 
                 createRound ($roundname, $roundanswer);
-                printf ("<div class='okmsg'>Added new Round: %s with meta answer: %s</div>\n", $roundname, $roundanswer);
+                printf ("<div class='okmsg'>Added new Round: %s with meta answer: %s</div>\n", htmlspecialchars($roundname), htmlspecialchars($roundanswer));
                 return(TRUE);
         }
 ?>

@@ -575,7 +575,6 @@ function changeTitleSummaryDescription($uid, $pid, $title, $summary, $descriptio
         mysql_query('START TRANSACTION');
 
         // If title has changed, update it
-        $cleanTitle = $purifier->purify($title);
         $cleanTitle = htmlspecialchars($cleanTitle);
         if ($oldTitle !== $cleanTitle) {
                 updateTitle($uid, $pid, $oldTitle, $cleanTitle);
@@ -583,7 +582,6 @@ function changeTitleSummaryDescription($uid, $pid, $title, $summary, $descriptio
 
         // If summary has changed, update it
         $cleanSummary = $purifier->purify($summary);
-        $cleanSummary = htmlspecialchars($cleanSummary);
         if ($oldSummary !== $cleanSummary) {
                 updateSummary($uid, $pid, $oldSummary, $cleanSummary);
         }
@@ -874,7 +872,7 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
 
 function createAnswer($answer, $round)
 {
-        $sql = sprintf("INSERT INTO answers (answer) VALUES ('%s')", mysql_real_escape_string($answer));
+        $sql = sprintf("INSERT INTO answers (answer) VALUES ('%s')", mysql_real_escape_string(htmlspecialchars($answer)));
         query_db($sql);
         $sql = "SELECT LAST_INSERT_ID()";
         $result = query_db($sql);
@@ -888,7 +886,7 @@ function createAnswer($answer, $round)
 function createRound($round, $roundanswer)
 {
         $sql = sprintf("INSERT INTO rounds (name, answer) VALUES ('%s', '%s')", 
-                mysql_real_escape_string($round), mysql_real_escape_string($roundanswer));
+                mysql_real_escape_string(htmlspecialchars($round)), mysql_real_escape_string(htmlspecialchars($roundanswer)));
         $result = query_db($sql);
         return ($result);
 } 
@@ -2944,19 +2942,20 @@ function makeAnswerAttempt($uid, $pid, $answer)
 {
         if (!isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid))
                 return;
+        $cleanAnswer = htmlspecialchars($answer);
 
-        $check = checkAnswer($pid, $answer);
+        $check = checkAnswer($pid, $cleanAnswer);
         if ($check === FALSE) {
-                $comment = "Incorrect answer attempt: $answer";
-                $_SESSION['answer'] = "<div class='msg'>$answer is incorrect</div>";
+                $comment = "Incorrect answer attempt: $cleanAnswer";
+                $_SESSION['answer'] = "<div class='msg'>$cleanAnswer is incorrect</div>";
         } else {
-                $comment = "Correct answer attempt: $answer";
+                $comment = "Correct answer attempt: $cleanAnswer";
                 $_SESSION['answer'] = "<div class='msg'>$check is correct</div>";
         }
 
         mysql_query('START TRANSACTION');
         $sql = sprintf("INSERT INTO answer_attempts (pid, uid, answer) VALUES ('%s', '%s', '%s')",
-                        mysql_real_escape_string($pid), mysql_real_escape_string($uid), mysql_real_escape_string($answer));
+                        mysql_real_escape_string($pid), mysql_real_escape_string($uid), mysql_real_escape_string($cleanAnswer));
         query_db($sql);
 
         addComment($uid, $pid, $comment, FALSE, TRUE);
