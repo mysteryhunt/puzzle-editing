@@ -1667,8 +1667,8 @@ function addEditors($uid, $pid, $add)
                 // Email new editor
                 $title = getTitle($pid);
                 $codename = getCodename($pid);
-                $subject = "Editor on $codename (puzzle $pid)";
-                $message = "$name added you as an editor to $title (puzzle $pid).";
+                $subject = "Discussion editor on $codename (puzzle $pid)";
+                $message = "$name added you as a discussion editor to $title (puzzle $pid).";
                 $link = URL . "/puzzle.php?pid=$pid";
                 sendEmail($editor, $subject, $message, $link);
 
@@ -1678,7 +1678,7 @@ function addEditors($uid, $pid, $add)
 		}
         }
 
-        $comment .= ' as editor';
+        $comment .= ' as discussion editor';
         if (count($add) > 1)
                 $comment .= "s";
 
@@ -1690,7 +1690,7 @@ function removeEditorKill($uid, $pid, $editor)
         //echo "called removeEditorKill with editorid = $editor<br>";
 
         if (!isEditorOnPuzzle($editor, $pid))
-                utilsError(getUserName($editor) . " is not an editor on puzzle $pid");
+                utilsError(getUserName($editor) . " is not a discussion editor on puzzle $pid");
 
         $name = getUserName($uid);
 
@@ -1709,12 +1709,12 @@ function removeEditorKill($uid, $pid, $editor)
         // Email old editor
         $title = getTitle($pid);
         $codename = getCodename($pid);
-        $subject = "Editor on $codename (puzzle $pid)";
-        $message = "$name removed you as an editor on $title (puzzle $pid) by killing the puzzle.";
+        $subject = "Discussion editor on $codename (puzzle $pid)";
+        $message = "$name removed you as a discussion editor on $title (puzzle $pid) by killing the puzzle.";
         $link = URL . "/editor.php";
         sendEmail($editor, $subject, $message, $link);
 
-        $comment .= ' as editor';
+        $comment .= ' as discussion editor';
         if (count($remove) > 1)
                 $comment .= "s";
 
@@ -1738,7 +1738,7 @@ function removeEditors($uid, $pid, $remove)
         foreach ($remove as $editor) {
                 // Check that this editor is assigned to this puzzle
                 if (!isEditorOnPuzzle($editor, $pid))
-                        utilsError(getUserName($editor) . " is not an editor on puzzle $pid");
+                        utilsError(getUserName($editor) . " is not a discussion editor on puzzle $pid");
 
                 // Remove editor from puzzle
                 $sql = sprintf("DELETE FROM editor_queue WHERE uid='%s' AND pid='%s'",
@@ -1753,13 +1753,13 @@ function removeEditors($uid, $pid, $remove)
                 // Email old editor
                 $title = getTitle($pid);
                 $codename = getCodename($pid);
-                $subject = "Editor on $codename (puzzle $pid)";
-                $message = "$name removed you as an editor on $title (puzzle $pid).";
+                $subject = "Discussion editor on $codename (puzzle $pid)";
+                $message = "$name removed you as a discussion editor on $title (puzzle $pid).";
                 $link = URL . "/editor.php";
                 sendEmail($editor, $subject, $message, $link);
         }
 
-        $comment .= ' as editor';
+        $comment .= ' as discussion editor';
         if (count($remove) > 1)
                 $comment .= "s";
 
@@ -1894,7 +1894,7 @@ function canTestPuzzle($uid, $pid, $display = FALSE)
 
         if (isEditorOnPuzzle($uid, $pid)) {
                 if ($display)
-                        $_SESSION['testError'] = "You are an editor on puzzle $pid. Could not add to test queue.";
+                        $_SESSION['testError'] = "You are a discussion editor on puzzle $pid. Could not add to test queue.";
                 return FALSE;
         }
 
