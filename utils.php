@@ -1796,8 +1796,8 @@ function addApprovers($uid, $pid, $add)
                 // Email new approver
                 $title = getTitle($pid);
                 $codename = getCodename($pid);
-                $subject = "Approver on $codename (puzzle $pid)";
-                $message = "$name added you as an approver to $title (puzzle $pid).";
+                $subject = "Approval Editor on $codename (puzzle $pid)";
+                $message = "$name added you as an approval editor to $title (puzzle $pid).";
                 $link = URL . "/puzzle.php?pid=$pid";
                 sendEmail($approver, $subject, $message, $link);
 
@@ -1807,7 +1807,7 @@ function addApprovers($uid, $pid, $add)
 		}
         }
 
-        $comment .= ' as approver';
+        $comment .= ' as approval editor';
         if (count($add) > 1)
                 $comment .= "s";
 
@@ -1826,9 +1826,9 @@ function removeApprovers($uid, $pid, $remove)
 
         $comment = 'Removed ';
         foreach ($remove as $approver) {
-                // Check that this approver is assigned to this puzzle
+                // Check that this approval editor is assigned to this puzzle
                 if (!isApproverOnPuzzle($approver, $pid))
-                        utilsError(getUserName($approver) . " is not an approver on puzzle $pid");
+                        utilsError(getUserName($approver) . " is not an approval editor on puzzle $pid");
 
                 // Remove approver from puzzle
                 $sql = sprintf("DELETE FROM approver_queue WHERE uid='%s' AND pid='%s'",
@@ -1843,13 +1843,13 @@ function removeApprovers($uid, $pid, $remove)
                 // Email old approver
                 $title = getTitle($pid);
                 $codename = getCodename($pid);
-                $subject = "Approver on $codename (puzzle $pid)";
-                $message = "$name removed you as an approver on $title (puzzle $pid).";
+                $subject = "Approval on $codename (puzzle $pid)";
+                $message = "$name removed you as an approval on $title (puzzle $pid).";
                 $link = URL . "/editor.php";
                 sendEmail($approver, $subject, $message, $link);
         }
 
-        $comment .= ' as approver';
+        $comment .= ' as approval editor';
         if (count($remove) > 1)
                 $comment .= "s";
 
