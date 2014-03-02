@@ -55,10 +55,12 @@
                 <h1><?php echo fullTitle(); ?></h1>
                 </div>
                 <div id="logindiv">
-        <?php if (isset($_SESSION['uid'])) { ?>
-                Logged in as <strong><?php echo getUserUsername(isLoggedIn()); ?></strong>
-                <?php if(!TRUST_REMOTE_USER) { ?><a href="logout.php">Logout</a><?php } ?>
-        <?php } else { ?>
+        <?php if (isset($_SESSION['uid'])) {
+                echo 'Logged in as <strong>' . getUserUsername(isLoggedIn()) . '</strong>';
+                echo '<a href="account.php"' . ($selnav == "account" ? ' class="accsel"' : "") . '>Your Account</a>';
+                if(MAILING_LISTS) { echo '<a href="mailinglists.php"' . ($selnav == "mailinglists" ? ' class="accsel"' : "") . '>Mailing Lists</a>'; }
+                if(!TRUST_REMOTE_USER) { echo '<a href="logout.php">Logout</a>'; }
+        } else { ?>
                 <span class="notloggedin">Not logged in</span> <a href="login.php">Login</a>
         <?php } ?></div>
                    </div>
@@ -71,7 +73,6 @@
         if (isset($_SESSION['uid'])) {
                 $suid = $_SESSION['uid'];
                 echoNav1($selnav, "people",         "People",              true);
-                echoNav1($selnav, "account",        "Your Account",        true);
                 echoNav1($selnav, "admin",          "Admin",               isServerAdmin($suid));
                 echoNav1($selnav, "author",         "Author",              true);
                 echoNav1($selnav, "roundcaptain",   "Round Captain",       isRoundCaptain($suid));
@@ -85,7 +86,6 @@
                 echoNav1($selnav, "answers",        "Answers",             canChangeAnswers($suid));
                 echoNav1($selnav, "allpuzzles",     "All Puzzles",         canSeeAllPuzzles($suid));
                 echoNav1($selnav, "editorlist",     "Editor List",         isServerAdmin($suid));
-		echoNav1($selnav, "mailinglists",   "Mailing Lists",	   MAILING_LISTS);
         }
 ?>
                 </ul>
