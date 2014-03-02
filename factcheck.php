@@ -20,7 +20,7 @@ not use this page.
 
 <br>
 <br>
-Anybody can factcheck -- please start by reading
+Anybody can factcheck &mdash; please start by reading
 <a href="/HowToFactcheck">the instructions</a>.
 Once you've done that, the button below will grant you factchecking access.
 <br>

@@ -81,7 +81,7 @@
 
 
         ?>
-        <br><h3>Currently Testing -- (if you're done, please submit a report, even an empty one):</h3>
+        <br><h3>Currently Testing &mdash; (if you're done, please submit a report, even an empty one):</h3>
 <?php
 
   /* Commented out to disallow -- for now -- getting a random puzzle to test.
