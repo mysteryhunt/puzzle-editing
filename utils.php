@@ -35,18 +35,18 @@ function isValidPuzzleFilter()
         if (isset($_GET['filterkey']) && isset($_GET['filtervalue'])) {
                 $key = $_GET['filterkey'];
                 if ($key != "status" && $key != "author" && $key != "editor") {
-                        echo "Invalid sort key. What did you even do?";
+                        echo "<div class='errormsg'>Invalid sort key. What did you even do?</div>";
                         foot();
                         exit(1);
                 }
                 $val = $_GET['filtervalue'];
                 if ($key == "status" && !validPuzzleId($val)) {
-                        echo "Invalid puzzle status ID.";
+                        echo "<div class='errormsg'>Invalid puzzle status ID.</div>";
                         foot();
                         exit(1);
                 }
                 if (($key == "author" || $key == "editor") && !validUserId($val)) {
-                        echo "Invalid user ID.";
+                        echo "<div class='errormsg'>Invalid user ID.</div>";
                         foot();
                         exit(1);
                 }
@@ -59,7 +59,7 @@ function isValidPuzzleFilter()
 function isValidPuzzleURL()
 {
         if (!isset($_GET['pid'])) {
-                echo "Puzzle ID not found. Please try again.";
+                echo "<div class='errormsg'>Puzzle ID not found. Please try again.</div>";
                 foot();
                 exit(1);
         }
@@ -69,7 +69,7 @@ function isValidPuzzleURL()
         $sql = sprintf("SELECT * FROM puzzle_idea WHERE id='%s'",
                         mysql_real_escape_string($pid));
         if (!has_result($sql)) {
-                echo "Puzzle ID not valid. Please try again.";
+                echo "<div class='errormsg'>Puzzle ID not valid. Please try again.</div>";
                 foot();
                 exit(1);
         }
