@@ -145,7 +145,7 @@ a.selnav:active {color:#000000;}
 
 div.navr { float: right; }
 
-tr.people, tr.comment, tr.puzz-new {
+tr.people, tr.comment, tr.puzz, tr.puzz-new {
 	border-top: solid 1px;
 	border-bottom: solid 1px;
 	text-align: left;
@@ -158,12 +158,8 @@ tr.test-old {
 	background-color: #383838;
 }
 
-tr.puzz {
-	border-top: solid 1px;
-	border-bottom: solid 1px;
-	text-align: left;
-	background-color: #DDDDDD;
-}
+tr.puzz { background-color: #DDDDDD; }
+tr.puzz-new { background-color: #ffd; }
 
 tr.comment-new {
 	border-top: solid 5px;
