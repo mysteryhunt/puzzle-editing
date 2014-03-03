@@ -993,7 +993,7 @@ function sendEmail($uid, $subject, $message, $link)
 function sendAllEmail($isReal)
 {
         mysql_query("START TRANSACTION");
-        $sql = ("SELECT * from email_outbox");
+        $sql = ("SELECT * from email_outbox ORDER BY id");
         $mails = get_rows($sql);
         $sql = ("DELETE from email_outbox");
         query_db($sql);
