@@ -69,6 +69,18 @@
 	    }
 	}
 
+	function getListMembership($list, $list_type) {
+	    if ($list_type == "mailman") {
+	       $command = "athrun consult mmblanche " . $list . " -V " . MMBLANCHE_PASSWORDS ;
+	       $out = exec($command, $all_output, $return_var);
+	       return $all_output;
+	    } else {
+	       $command = "blanche -noauth -v " . $list;
+	       $out = exec($command, $all_output, $return_var);
+	       return $all_output;
+	    }
+	}
+
 	function addToMoiraList($list, $moira_entity, $krb5ccname) {
 	    $command = "KRB5CCNAME=" . $krb5ccname . " blanche " . $list . " -a " . escapeshellarg($moira_entity) . " 2>&1";
 	    exec($command, $all_output, $return_var);
@@ -117,7 +129,7 @@
 		}
 	    }
 	    print "</p><br>\n";
-	}
+	    	}
 
 	function deleteFromMailmanList($list, $email) {
 	    $command = "athrun consult mmblanche " . $list . " -d " . escapeshellarg($email) . " -V " . MMBLANCHE_PASSWORDS . " 2>&1";
@@ -187,6 +199,23 @@
 
 ?>
 
+	<script>
+	function toggle(list)
+	{
+	    var elm = document.getElementById(list);
+	    var elmbutton = document.getElementById(list.concat('-button'));
+	    if(elm.style.display == '')
+	    {
+	        elm.style.display = 'none'
+		elmbutton.innerHTML = "Show Membership List"
+	    } else if(elm.style.display == 'none')
+	    {
+	        elm.style.display = ''
+		elmbutton.innerHTML = "Hide Membership List"
+	    }
+	}
+	</script>
+
 	<p>This will take about 30 seconds to load while checking
 	mailman subscriptions.</p>
 	<br>
@@ -196,7 +225,9 @@
 	foreach ($lists as $list) {
 	    $list_type = getListType($list);
 	    $is_member = isMemberOfList($list, $list_type, $email, $moira_entity);
-	    print '<tr><td>';
+	    $membership = getListMembership($list, $list_type, $moira_entity);
+	    print '<tr>';
+	    print '<td>';
 	    print '<input name="' . $list . '" type="checkbox" value="true"';
 	    if ($is_member) {
 	        print ' checked';
@@ -208,7 +239,23 @@
 	    }
 	    print '">';
 	    print '<input name="' . $list . '-type" type="hidden" value="' . $list_type . '">';
-	    print "</td><td>" . $list . "</td><td>(" . $list_type . ")</td></tr>\n";
+
+	    print "</td>\n<td>" . $list . "</td>\n<td>(" . $list_type . ")</td>\n";
+
+	    print '<td><button id="' . $list . '-button" type="button" onclick="toggle(\'' . $list . '\')">Show Membership List</button></td></tr>';
+
+	    print '<tr id="' . $list . '" style="display:none;">';
+
+	    print '<td colspan = 4><ul>';
+
+	    foreach ($membership as $member) {
+	        print "<li>$member</li>";
+	    }
+
+	    print "</ul></td>";
+
+	    print "</tr>";
+	    print "\n";
 	}
 ?>
 	</table>
