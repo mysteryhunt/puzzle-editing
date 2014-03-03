@@ -2359,6 +2359,12 @@ function getPerson($uid)
         return get_row($sql);
 }
 
+function getPersonNull($uid)
+{
+        $sql = sprintf("SELECT * FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+        return get_row_null($sql);
+}
+
 function change_password($uid, $oldpass, $pass1, $pass2)
 {
         $sql = sprintf("SELECT username FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
@@ -3123,9 +3129,9 @@ function getNumberOfPuzzlesForUser($uid)
 
 function alreadyRegistered($uid)
 {
-        $person = getPerson($uid);
+        $person = getPersonNull($uid);
 
-        return (strlen($person['password']) > 0);
+        return $person !== NULL && (strlen($person['password']) > 0);
 }
 
 function getPic($uid)

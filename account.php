@@ -30,7 +30,7 @@
 
         printPerson(getPerson($uid));
 ?>
-        <p class="pad-bottom"><a href="<?php echo URL ?>/register.php">Edit your information</a></p>
+        <p class="pad-bottom"><a href="<?php echo URL ?>/edit-account.php">Edit your information</a></p>
 
         <script type="text/javascript">
                 //<![CDATA[

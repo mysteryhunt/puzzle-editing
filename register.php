@@ -6,9 +6,11 @@
 
         // Start HTML
         head();
-
-        // If an email address is submitted, see if is on the team mailing list.
-        if (isset($_POST['checkEmail'])) {
+        echo '<h2>Account Registration</h2>';
+        if (isset($_SESSION['uid'])) {
+                echo '<div class="msg">You are logged in. Would you like to <a href="edit-account.php">edit your account information</a>?</div>';
+        } else if (isset($_POST['checkEmail'])) {
+                // If an email address is submitted, see if is on the team mailing list.
                 $id = checkEmail($_POST['checkEmail'], $_POST['username']);
                 if($id != FALSE) {
                         // If it is, allow the user to register.
@@ -32,8 +34,6 @@
                         echo "<div class='errormsg'>$r</div>";
                         registerForm($_POST['id']);
                 }
-        } else if(isset($_SESSION['uid'])) {
-                registerForm($_SESSION['uid']);
         } else {
                 checkEmailForm();
         }
@@ -45,20 +45,20 @@
         function checkEmailForm()
         {
 ?>
-		<h2> Please enter your email address. <?php if (!TRUST_REMOTE_USER) { ?> and username <?php } ?> </h2>
-                <form method="post" action="register.php">
-                    E-mail address: <input type="text" name="checkEmail" /><br>
-		    <?php if (TRUST_REMOTE_USER) { ?> username: <?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?><br>
-		    <input type="hidden" name="username" value="<?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?>"/> <?php } ?>
-		    <?php if (!TRUST_REMOTE_USER) { ?> Desired username: <input type="text" name="username" /><br> <?php } ?>
-                    <input type="submit" value="Submit" />
+                <p><strong>Please enter your email address <?php if (!TRUST_REMOTE_USER) { ?> and desired username<?php } ?>.</strong></p>
+                <form method="post" action="register.php" class="boxedform">
+                        <table><tr><td>E-mail address:</td><td><input type="text" name="checkEmail" /></td></tr>
+                        <?php if (TRUST_REMOTE_USER) { ?><tr><td>Username:</td><td><?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?></td></tr>
+                        <input type="hidden" name="username" value="<?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?>"/> <?php } ?>
+                        <?php if (!TRUST_REMOTE_USER) { ?><tr><td>Desired username:</td><td><input type="text" name="username" /></td></tr><?php } ?>
+                        <tr><td colspan="2"><input type="submit" value="Submit" /></td></tr>
+                        </table>
                 </form>
 <?php
         }
 
         function registerForm($id)
         {
-                echo "<h2>Registration</h2>";
 
                 if (alreadyRegistered($id)) {
                         echo '<strong>You have already registered. You may edit your information, but must use the same password.</strong>';
