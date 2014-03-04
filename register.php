@@ -10,70 +10,32 @@
         echo '<h2>Account Registration</h2>';
         if (isset($_SESSION['uid'])) {
                 echo '<div class="msg">You are logged in. Would you like to <a href="edit-account.php">edit your account information</a>?</div>';
-        } else if (isset($_POST['checkEmail'])) {
-                // If an email address is submitted, see if is on the team mailing list.
-                $id = checkEmail($_POST['checkEmail'], $_POST['username']);
-                if($id != FALSE) {
-                        // If it is, allow the user to register.
-                        registerForm($id);
-                } else {
-                        // Otherwise, try again.
-                        echo '<div class="errormsg">';
-                        echo 'I\'m sorry. That email address is not authorized to register.<br />';
-                        echo 'Or there was some other failure in initial authorization check.<br />';
-                        echo 'Please try again, or contact the Server Administrators.<br />';
-                        echo '</div>';
-                        checkEmailForm();
-                }
         } else if(isset($_POST['register'])) {
-                $r = register();
+                $errors = register();
 
-                if ($r === TRUE) {
+                if ($errors) {
+                        echo "<div class='errormsg'>Registration failed.<ul>";
+                        foreach ($errors as $item => $msg) {
+                                echo "<li>$item: $msg</li>";
+                        }
+                        echo "</div>";
+                        registerForm();
+                } else {
                         echo '<div class="okmsg">Registration Successful.</div>';
                         echo '<a href="index.php">Log In</a>';
-                } else {
-                        echo "<div class='errormsg'>$r</div>";
-                        registerForm($_POST['id']);
                 }
         } else {
-                checkEmailForm();
+                registerForm();
         }
 
         // End HTML
         foot();
 
-//------------------------------------------------------------------------
-        function checkEmailForm()
+        function registerForm()
         {
-?>
-                <p><strong>Please enter your email address <?php if (!TRUST_REMOTE_USER) { ?> and desired username<?php } ?>.</strong></p>
-                <form method="post" action="register.php" class="boxedform">
-                        <table><tr><td>E-mail address:</td><td><input type="text" name="checkEmail" /></td></tr>
-                        <?php if (TRUST_REMOTE_USER) { ?><tr><td>Username:</td><td><?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?></td></tr>
-                        <input type="hidden" name="username" value="<?PHP echo $_SERVER['HTTP_REMOTE_USER']; ?>"/> <?php } ?>
-                        <?php if (!TRUST_REMOTE_USER) { ?><tr><td>Desired username:</td><td><input type="text" name="username" /></td></tr><?php } ?>
-                        <tr><td colspan="2"><input type="submit" value="Submit" /></td></tr>
-                        </table>
-                </form>
-<?php
-        }
-
-        function registerForm($id)
-        {
-
-                if (alreadyRegistered($id)) {
-                        echo '<strong>You have already registered. You may edit your information, but must use the same password.</strong>';
-                        $data = getPerson($id);
-                }
-
-                if (isset($_POST['username']))
-                        $data['username'] = $_POST['username'];
-                if (isset($_POST['checkEmail']))
-                        $data['email'] = $_POST['checkEmail'];
-                if (isset($_POST['email']))
-                        $data['email'] = $_POST['email'];
-                if (isset($_POST['fullname']))
-                        $data['fullname'] = $_POST['fullname'];
+                $username = isset($_POST['username']) ? $_POST['username'] : "";
+                $fullname = isset($_POST['fullname']) ? $_POST['fullname'] : "";
+                $email = isset($_POST['email']) ? $_POST['email'] : "";
 ?>
                 <p> All information (other than your password) will be visible to all members of the team. </p>
 
@@ -113,8 +75,8 @@
                 <form enctype="multipart/form-data" method="post" action="<?php echo SELF; ?>" onsubmit="return validate(this)">
                         <table>
                                 <tr>
-                                        <td>Email Address* (Will not change address on mailing lists)</td>
-                                        <td><input type="text" name="email" value="<?php echo $data['email']; ?>"  /></td>
+                                        <td>Email Address*</td>
+                                        <td><input type="text" name="email" value="<?php echo $email; ?>"  /></td>
                                 </tr>
                                 <tr>
                                         <td>Username*</td>
@@ -124,12 +86,12 @@
 					<?php } ?>
 
 					<?php if (!TRUST_REMOTE_USER) { ?>
-                                        <td><input type="text" name="username" value="<?php echo $data['username'] ?>"/></td>
+                                        <td><input type="text" name="username" value="<?php echo $username; ?>"/></td>
 					<?php } ?>
                                 </tr>
                                 <tr>
                                         <td>Full Name*</td>
-                                        <td><input type="text" name="fullname" value="<?php echo $data['fullname'] ?>"/></td>
+                                        <td><input type="text" name="fullname" value="<?php echo $fullname; ?>"/></td>
                                 </tr>
 				<?php if (!TRUST_REMOTE_USER) { ?>
                                 <tr>
@@ -155,13 +117,7 @@
                         foreach ($result as $r) {
                                 $shortname = $r['shortname'];
                                 $longname = $r['longname'];
-                                $user_key_id = $r['id'];
-                                $sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
-                                               mysql_real_escape_string($id), mysql_real_escape_string($user_key_id));
-                                $res = get_rows($sql);
-				$lastvalue = $res[0]['value'];
-				if (isset($_POST[$shortname]))
-					$lastvalue = $_POST[$shortname];
+                                $lastvalue = isset($_POST[$shortname]) ? $_POST[$shortname] : "";
 ?>
                                 <tr>
                                         <td><?php echo $longname; ?></td>
@@ -171,143 +127,103 @@
                         }
 ?>
                         </table>
-                        <input type="hidden" name="id" value="<?php echo($id); ?>" />
                         <input type="submit" name="register" value="Register" />
                 </form>
 <?php
         }
 
-//------------------------------------------------------------------------
-        //this function doesn't actually check for email authorization
-        //you'll need to change it somehow if you want it to do that.
-        function checkEmail($email, $username)
-        {
-                if ($username == ""){
-                        return false;
-                }
-                $sql = sprintf("SELECT * FROM user_info WHERE email='%s'",
-                               mysql_real_escape_string($email));
-                $result = query_db($sql);
-
-                if (mysql_num_rows($result) == 1) {
-                        $r = mysql_fetch_assoc($result);
-                        return $r['uid'];
-                } else if (mysql_num_rows($result) == 0) {
-                        //have it return false here if you plan to pre-populate user_info
-                        //with known valid team email addressees
-                        $sql = sprintf("INSERT INTO user_info (username, email) VALUES ('%s', '%s')",
-                                       mysql_real_escape_string($username),
-                                       mysql_real_escape_string($email));
-                        $result = query_db($sql);
-
-                        $sql = "SELECT LAST_INSERT_ID()";
-                        $result = query_db($sql);
-                        $r = mysql_fetch_row($result);
-                        return $r[0];
-                }
-        }
-
         function register()
         {
+                $errors = array();
                 $data = $_POST;
                 $picture = $_FILES['picture'];
-                $id = $data['id'];
+                $email = isset($data['email']) ? $data['email'] : "";
+                $username = isset($data['username']) ? $data['username'] : "";
+                $fullname = isset($data['fullname']) ? $data['fullname'] : "";
+                $pass1 = isset($data['pass1']) ? $data['pass1'] : "";
+                $pass2 = isset($data['pass2']) ? $data['pass2'] : "";
 
-                if ($data['email'] == "")
-                        return "Email may not be empty";
-                if ($data['username'] == "")
-                        return "Username may not be empty";
-                if ($data['fullname'] == "")
-                        return "Full name may not be empty";
+                if ($email === "") $errors['email'] = "Email may not be empty";
+                if ($username === "") $errors['username'] = "Username may not be empty";
+                if ($fullname === "") $errors['fullname'] = "Full name may not be empty";
 		if (!TRUST_REMOTE_USER) {
-                if ($data['pass1'] == "" || $data['pass2'] == "")
-                        return "Passwords may not be empty";
-                if ($data['pass1'] != $data['pass2'])
-                        return "Passwords do not match";
-                if (strlen($data['pass1']) < 6)
-                        return "Password must be at least 6 characters";
-		}
-                if ($data['id'] == "")
-                        return "Error: missing id";
-
-                if (alreadyRegistered($id)) {
-			if (!TRUST_REMOTE_USER) {
-                        if (!checkPassword($data['username'], $data['pass1'])) {
-                                return 'Incorrect Password. Please try again.';
-                        }
-			}
-                        if ($picture['name'] != '') {
-                                $pic = pictureHandling($id, $picture);
-                        } else {
-                                $pic = getPic($id);
-                        }
-                } else {
-                        if ($picture['name'] != '') {
-			        $pic = pictureHandling($id, $picture);
-			}
+                        if ($pass1 === "") $errors['pass1'] = "Passwords may not be empty";
+                        if ($pass2 === "") $errors['pass2'] = "Passwords may not be empty";
+                        else if ($pass1 !== $pass2) $errors['pass2'] = "Passwords do not match";
+                        else if (strlen($pass1) < 6) $errors['pass1'] = "Password must be at least 6 characters";
                 }
-
                 $purifier = new HTMLPurifier();
-                $id = $purifier->purify($id);
-                $username = $purifier->purify($data['username']);
-                $fullname = $purifier->purify($data['fullname']);
+                $username = $purifier->purify($username);
+                $fullname = $purifier->purify($fullname);
+                $email = $purifier->purify($email);
+
+                $sql = sprintf("SELECT * FROM user_info WHERE username='%s'", mysql_real_escape_string($username));
+                if (has_result($sql)) $errors['username'] = "Username already taken";
+                $sql = sprintf("SELECT * FROM user_info WHERE email='%s'", mysql_real_escape_string($email));
+                if (has_result($sql)) $errors['email'] = "There is already an account using that email";
+
+                if ($errors) return $errors;
+
+                if ($picture['name'] != '') $pic = pictureHandling($uid, $picture);
                 $pic = $purifier->purify($pic);
 
                 mysql_query('START TRANSACTION');
-                $failed = 0;
 
-		if (TRUST_REMOTE_USER) {
-			$sql = sprintf("UPDATE user_info SET username = '%s',
-                               		fullname='%s', picture='%s' WHERE uid='%s'",
-			       		mysql_real_escape_string($username),
-			       		mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string($id));
-		}
-		if (!TRUST_REMOTE_USER) {
-                $sql = sprintf("UPDATE user_info SET username = '%s', password=AES_ENCRYPT('%s', '%s%s'),
-                               fullname='%s', picture='%s' WHERE uid='%s'",
-                               mysql_real_escape_string($username), mysql_real_escape_string($data['pass1']),
-                               mysql_real_escape_string($username), mysql_real_escape_string($data['pass1']),
-                               mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string($id));
- 		}
+                if (TRUST_REMOTE_USER) {
+                        $sql = sprintf("INSERT INTO user_info (username, fullname, email) VALUES ('%s', '%s', '%s')",
+                                       mysql_real_escape_string($username), mysql_real_escape_string($fullname), mysql_real_escape_string($email)
+                               );
+                } else {
+                        $sql = sprintf("INSERT INTO user_info (username, password, fullname, email) VALUES ('%s', AES_ENCRYPT('%s', '%s%s'), '%s', '%s')",
+                                       mysql_real_escape_string($username), mysql_real_escape_string($pass1),
+                                       mysql_real_escape_string($username), mysql_real_escape_string($pass1),
+                                       mysql_real_escape_string($fullname), mysql_real_escape_string($email)
+                               );
+                }
 
                 $result = mysql_query($sql);
-                if ($result == FALSE)
-                        $failed = 1;
+                if ($result === FALSE) {
+                        mysql_query('ROLLBACK');
+                        return array("unknown" => "Registration error in adding user");
+                }
 
-                $sql = sprintf("DELETE from user_info_values WHERE person_id = '%s'", mysql_real_escape_string($id));
+                $uid = mysql_insert_id();
+
+                $failed = FALSE;
+
+                $sql = sprintf("UPDATE user_info SET picture='%s' WHERE uid='%s'", mysql_real_escape_string($pic), mysql_real_escape_string($uid));
                 $result = mysql_query($sql);
-                if ($result == FALSE)
-                        $failed = 1;
+                if ($result === FALSE) $failed = TRUE;
+
+                $sql = sprintf("DELETE from user_info_values WHERE person_id = '%s'", mysql_real_escape_string($uid));
+                $result = mysql_query($sql);
+                if ($result === FALSE) $failed = TRUE;
 
                 $sql = sprintf("SELECT id, shortname, longname FROM user_info_key");
                 $result = get_rows($sql);
-                if (!$result)
-                        $failed = 1;
 
                 foreach ($result as $r) {
                         $shortname = $r['shortname'];
                         $longname = $r['longname'];
                         $user_key_id = $r['id'];
-                        $value = $data[$shortname];
-                        $value = $purifier->purify($value);
 
-                        if ($data[$shortname] != "") {
+                        if (isset($data[$shortname]) && $data[$shortname] !== "") {
+                                $value = $purifier->purify($data[$shortname]);
                                 $sql = sprintf("INSERT INTO user_info_values VALUES ('%s', '%s', '%s')",
-                                               mysql_real_escape_string($id),
+                                               mysql_real_escape_string($uid),
                                                mysql_real_escape_string($user_key_id),
                                                mysql_real_escape_string($value));
                                 $res = mysql_query($sql);
-                                if ($res == FALSE)
-                                        $failed = 1;
+                                if ($res === FALSE) $failed = TRUE;
                         }
                 }
 
-                if ($failed == 1) {
+                if ($failed) {
                         mysql_query('ROLLBACK');
-                        return "Registration Failed";
+                        return array("unknown" => "Registration error in updating info");
                 } else {
                         mysql_query('COMMIT');
-                        return TRUE;
+                        return array();
                 }
         }
 ?>
