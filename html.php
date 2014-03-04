@@ -75,17 +75,17 @@
                 echoNav1($selnav, "people",         "People",              true);
                 echoNav1($selnav, "admin",          "Admin",               isServerAdmin($suid));
                 echoNav1($selnav, "author",         "Author",              true);
-                echoNav1($selnav, "roundcaptain",   "Round Captain",       isRoundCaptain($suid));
+                echoNav1($selnav, "roundcaptain",   "Round Captain",       (USING_ROUND_CAPTAINS) && isRoundCaptain($suid));
                 echoNav1($selnav, "spoiled",        "Spoiled",             true);
                 echoNav1($selnav, "editor",         "Editor",              isEditor($suid));
-                echoNav1($selnav, "ffc",            "Final Fact Check",    true);
-                echoNav1($selnav, "factcheck",      "Fact Check",          true);
+                echoNav1($selnav, "editorlist",     "Editor List",         isServerAdmin($suid));
                 echoNav1($selnav, "testsolving",    "Testsolving",         true);
+                echoNav1($selnav, "factcheck",      "Fact Check",          true);
+                echoNav1($selnav, "ffc",            "Final Fact Check",    true);
                 echoNav1($selnav, "testadmin",      "Testing Admin",       isTestingAdmin($suid));
                 echoNav1($selnav, "testsolveteams", "TS Team Assignments", (USING_TESTSOLVE_TEAMS) && isTestingAdmin($suid));
                 echoNav1($selnav, "answers",        "Answers",             canChangeAnswers($suid));
                 echoNav1($selnav, "allpuzzles",     "All Puzzles",         canSeeAllPuzzles($suid));
-                echoNav1($selnav, "editorlist",     "Editor List",         isServerAdmin($suid));
         }
 ?>
                 </ul>
