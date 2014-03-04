@@ -89,8 +89,8 @@
                                 } else if (f.username.value == "") {
                                         alert("You must enter a username.");
                                         return false;
-				} else if (TRUST_REMOTE_USER) {
-					return true;
+                                } else if (<?php echo TRUST_REMOTE_USER ? "true" : "false"; ?>) {
+                                        return true;
                                 } else if (f.pass1.value == "") {
                                         alert("You must enter a password.");
                                         return false;
