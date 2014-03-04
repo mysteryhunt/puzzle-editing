@@ -194,7 +194,7 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 ?>
         <h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
         <p><strong><?php echo "Round: $puzzleround"; ?></strong></p>
-        <p><?php displayAnswers($uid, $pid); ?></p>
+        <p><table><?php displayAnswers($uid, $pid); ?></table></p>
         <div class='hideFromTest puzzledesc'>
                         <?php echo $summary; ?>
         </div>
