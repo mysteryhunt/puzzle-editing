@@ -223,6 +223,11 @@ function isServerAdmin($uid)
         return hasPriv($uid, 'changeServer');
 }
 
+function isEditorChief($uid)
+{
+        return hasPriv($uid, 'canEditAll') && hasPriv($uid, 'seeTesters');
+}
+
 function canChangeStatus($uid)
 {
         return hasPriv($uid, 'changeStatus');

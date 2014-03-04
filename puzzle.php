@@ -444,7 +444,7 @@ function displayEditors($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Discussion Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                                <strong>Discussion Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
                 <tr>
@@ -492,7 +492,7 @@ function displayApprovers($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Approval Editors:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                                <strong>Approval Editors:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
                 <tr>
