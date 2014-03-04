@@ -764,9 +764,9 @@ DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
   `uid` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
-  `password` blob NOT NULL COMMENT 'AES_ENCRYPT(''password'',''usernamepassword'')',
+  `password` blob NOT NULL DEFAULT '' COMMENT 'AES_ENCRYPT(''password'',''usernamepassword'')',
   `email` varchar(255) NOT NULL,
-  `fullname` varchar(255) NOT NULL,
+  `fullname` varchar(255) NOT NULL DEFAULT '',
   `picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `username` (`username`),

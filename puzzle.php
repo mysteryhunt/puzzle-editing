@@ -194,7 +194,7 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 ?>
         <h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
         <p><strong><?php echo "Round: $puzzleround"; ?></strong></p>
-        <p><?php displayAnswers($uid, $pid); ?></p>
+        <p><table><?php displayAnswers($uid, $pid); ?></table></p>
         <div class='hideFromTest puzzledesc'>
                         <?php echo $summary; ?>
         </div>
@@ -444,7 +444,7 @@ function displayEditors($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Discussion Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                                <strong>Discussion Editors:</strong> <?php echo getEditorsAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
                 <tr>
@@ -492,7 +492,7 @@ function displayApprovers($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Approval Editors:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                                <strong>Approval Editors:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
                 <tr>

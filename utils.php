@@ -223,6 +223,11 @@ function isServerAdmin($uid)
         return hasPriv($uid, 'changeServer');
 }
 
+function isEditorChief($uid)
+{
+        return hasPriv($uid, 'canEditAll') && hasPriv($uid, 'seeTesters');
+}
+
 function canChangeStatus($uid)
 {
         return hasPriv($uid, 'changeStatus');
@@ -993,7 +998,7 @@ function sendEmail($uid, $subject, $message, $link)
 function sendAllEmail($isReal)
 {
         mysql_query("START TRANSACTION");
-        $sql = ("SELECT * from email_outbox");
+        $sql = ("SELECT * from email_outbox ORDER BY id");
         $mails = get_rows($sql);
         $sql = ("DELETE from email_outbox");
         query_db($sql);
@@ -2359,6 +2364,12 @@ function getPerson($uid)
         return get_row($sql);
 }
 
+function getPersonNull($uid)
+{
+        $sql = sprintf("SELECT * FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+        return get_row_null($sql);
+}
+
 function change_password($uid, $oldpass, $pass1, $pass2)
 {
         $sql = sprintf("SELECT username FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
@@ -3123,9 +3134,9 @@ function getNumberOfPuzzlesForUser($uid)
 
 function alreadyRegistered($uid)
 {
-        $person = getPerson($uid);
+        $person = getPersonNull($uid);
 
-        return (strlen($person['password']) > 0);
+        return $person !== NULL && (strlen($person['password']) > 0);
 }
 
 function getPic($uid)
