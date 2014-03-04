@@ -87,7 +87,7 @@
                                 <th colspan="3"><b>New Round</b></th>
                     </tr>
                     <tr>
-                                <td>Round Name</td><td>Meta Answer Word</td>
+                                <td>Round Name</td><td>Meta Answer Word</td><td></td>
                     </tr>
                     <tr>
                                 <form method="post" action="answers.php" />
