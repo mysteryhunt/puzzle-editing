@@ -8,10 +8,16 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("editor");
+        head("approver");
+
+        if (!USING_APPROVERS) {
+                echo "<div class='msg'>Puzzletron is not set up to use approvers</div>";
+                foot();
+                exit(1);
+        }
 
         // Check for editor permissions
-        if (!isEditor($uid)) {
+        if (!isApprover($uid)) {
                 echo "<div class='errormsg'>You do not have permission for this page.</div>";
                 foot();
                 exit(1);
@@ -33,17 +39,16 @@
         </form>
         <br>(Hiding dead puzzles)<br>
 <?php
-	if (ALLOW_EDITOR_PICK) {
-	   echo '<br/>';
-           echo '<h3>Needs Discussion Editor(s)</h3>';
-	   $puzzles = getPuzzlesNeedingEditors();
-           displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
-	}
+        if (ALLOW_EDITOR_PICK) {
+                echo '<br/><h3>Needs Approval Editor(s)</h3>';
+                $puzzles = getPuzzlesNeedingApprovers();
+                displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
+        }
 
-        echo '<br/>';
-        echo '<h3>Discussion Editor Queue:</h3>';
-        $puzzles = getPuzzlesInEditorQueue($uid);
-        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
+	echo '<br/>';
+	echo '<h3>Approval Editor Queue</h3>';
+	$puzzles = getPuzzlesInApproverQueue($uid);
+	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
 
         // End HTML
         foot();
