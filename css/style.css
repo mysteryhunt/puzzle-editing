@@ -463,7 +463,8 @@ td.sd {
 table.boxed { border: 3px solid black; }
 .puzzledesc { padding: 5px; background-color: #F0E8E0;  margin-bottom: 5px;}
 .small { font-size: 75%; }
-.longin { width: 40em; }
+input.longin { width: 40em; }
+input.shortin { width: 3em; }
 .testdesc { vertical-align:middle;background-color: #A9D7FF; padding: 5px; display: inline-block; }
 .testempty { vertical-align:middle;background-color: #CCC; padding: 5px; display: inline-block; font-style: italic; color: #666; }
 .testdata { vertical-align:middle;background-color: #FAD97D; padding: 5px; display: inline-block;}

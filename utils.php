@@ -439,12 +439,16 @@ function getEditorsAsList($pid)
         return getUserNamesAsList("editor_queue", $pid);
 }
 
+function getNeededEditors($pid) {
+        $sql = sprintf("SELECT needed_editors FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+        return get_element($sql);
+}
+
 function getEditorStatus($pid)
 {
         $sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN editor_queue ON user_info.uid=editor_queue.uid WHERE editor_queue.pid='%s'", mysql_real_escape_string($pid));
         $eds = get_elements($sql);
-        $sql = sprintf("SELECT needed_editors FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
-        $need = get_element($sql);
+        $need = getNeededEditors($pid);
 
         if ($eds) return count($eds) . "/$need: " . implode(", ", $eds);
         else return "<span class='emptylist'>0/$need</span>";
@@ -1780,6 +1784,15 @@ function removeEditors($uid, $pid, $remove)
                 $comment .= "s";
 
         addComment($uid, $pid, $comment, TRUE);
+}
+
+function changeNeededEditors($uid, $pid, $need) {
+        if (!isEditorChief($uid))
+                utilsError("You do not have permission to change the number of needed editors.");
+
+        $sql = sprintf("UPDATE puzzle_idea SET needed_editors='%s' WHERE id='%s'",
+                mysql_real_escape_string($need), mysql_real_escape_string($pid));
+        query_db($sql);
 }
 
 function addApprovers($uid, $pid, $add)

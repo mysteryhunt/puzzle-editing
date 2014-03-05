@@ -449,6 +449,15 @@ function displayEditors($uid, $pid)
                 </tr>
                 <tr>
                         <td>
+                                <?php if (isEditorChief($uid)) { ?>
+                                <div>
+                                        <form method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        Change # of needed editors: <input type="text" name="needed_editors" value="<?php echo getNeededEditors($pid); ?>" class="shortin" /> <input type="submit" name="changeNeededEditors" value="Go" />
+                                        </form>
+                                </div>
+                                <?php } ?>
                                 <table>
                                         <form method="post" action="form-submit.php">
                                         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />

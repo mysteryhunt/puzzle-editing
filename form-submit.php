@@ -117,6 +117,15 @@
                 exit(0);
         }
 
+        if (isset($_POST['changeNeededEditors'])) {
+                $uid = $_POST['uid'];
+                $pid = $_POST['pid'];
+                $need = $_POST['needed_editors'];
+                changeNeededEditors($uid, $pid, $need);
+                header("Location: " . URL . "/puzzle.php?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['changeEditors'])) {
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];
