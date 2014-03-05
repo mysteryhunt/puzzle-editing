@@ -2,20 +2,14 @@
         require_once "config.php";
         require_once "db-func.php";
         require_once "utils.php";
-        function generateRandomString($alphabet, $retlen) {
-                $pass = "";
-                $len = strlen($alphabet);
-                for ($i = 0; $i < $retlen; $i++) {
-                        // note: this is not cryptographically secure
-                        $pass .= $alphabet[mt_rand(0, $len - 1)];
-                }
-                return $pass;
+        function generateRandomString($bytelen) {
+                return bin2hex(openssl_random_pseudo_bytes($bytelen));
         }
         function addAndSendToken($email) {
                 $user = get_row_null(sprintf("SELECT * FROM user_info WHERE email='%s'", mysql_real_escape_string($email)));
                 if (!$user) { return FALSE; }
                 $uid = $user["uid"];
-                $token = generateRandomString("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 20);
+                $token = generateRandomString(16);
                 $escaped_token = mysql_real_escape_string($token);
                 $sql = sprintf("INSERT INTO reset_password_tokens (uid, token) VALUES ('%s', '%s') ON DUPLICATE KEY UPDATE token='%s'", mysql_real_escape_string($uid), $escaped_token, $escaped_token);
                 query_db($sql);
@@ -32,7 +26,7 @@
                 $uid = $row["uid"];
                 $username = $row["username"];
                 $email = $row["email"];
-                $pass = generateRandomString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 20);
+                $pass = generateRandomString(16);
                 newPass($uid, $username, $pass, $pass);
 
                 $subject = "Password Reset Notice";
