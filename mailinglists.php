@@ -57,16 +57,13 @@
 	    return "moira";
 	}
 
-	function isMemberOfList($list, $list_type, $email, $moira_entity) {
+	function isMemberOfList($membership, $list_type, $email, $moira_entity) {
 	    if ($list_type == "mailman") {
-		$command = "athrun consult mmblanche " . $list . " -V " . MMBLANCHE_PASSWORDS . " | grep -F -x " . escapeshellarg($email) . " 2>&1";
-		$out = exec($command, $all_output, $return_var);
-		return (bool)$out;
-	    } else {
-	        $command = "blanche -noauth -v " . $list . " | grep -F -x " . escapeshellarg($moira_entity);
-	    	$out = exec($command, $all_output, $return_var);
-	        return (bool)$out;
+		return in_array($email, $membership);
+	    } else if ($list_type == "moira") {
+	        return in_array($moira_entity, $membership);
 	    }
+	    return false;
 	}
 
 	function getListMembership($list, $list_type) {
@@ -79,6 +76,7 @@
 	       $out = exec($command, $all_output, $return_var);
 	       return $all_output;
 	    }
+	    return array();
 	}
 
 	function addToMoiraList($list, $moira_entity, $krb5ccname) {
@@ -185,7 +183,7 @@
 			    deleteFromMailmanList($list, $email);
 			}
 		    } else {
-		        print "Don't know how to manage " . $list . " (" . $list_type . ")";
+		        print "<p>Don't know how to manage " . $list . " (" . $list_type . ")</p><br>";
 		    }
 		}
 	    }
@@ -224,8 +222,8 @@
 <?php
 	foreach ($lists as $list) {
 	    $list_type = getListType($list);
-	    $is_member = isMemberOfList($list, $list_type, $email, $moira_entity);
 	    $membership = getListMembership($list, $list_type, $moira_entity);
+	    $is_member = isMemberOfList($membership, $list_type, $email, $moira_entity);
 	    print '<tr>';
 	    print '<td>';
 	    print '<input name="' . $list . '" type="checkbox" value="true"';
