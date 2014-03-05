@@ -386,7 +386,7 @@ CREATE TABLE `priv` (
 
 LOCK TABLES `priv` WRITE;
 /*!40000 ALTER TABLE `priv` DISABLE KEYS */;
-INSERT INTO `priv` VALUES (2,'Puzzle Herder',1,0,0,0,0,0,1,0,0,0,0),(3,'Director',1,1,1,1,1,0,1,1,1,1,1),(4,'Puzzle Editor',0,1,0,0,0,0,1,1,1,0,0),(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0,0,0),(7,'Producer',1,0,0,0,0,0,1,0,0,1,0),(8,'Server Admin',1,0,1,0,1,0,1,1,0,0,0),(9,'Editor in Chief',1,1,0,1,1,0,1,1,1,1,1),(13,'Testing Admin',0,0,0,0,1,0,1,0,0,0,0),(14,'Decision Editor',0,1,0,0,0,0,1,1,1,0,1),(15,'Cohesion Editor',1,1,0,1,0,0,1,1,1,0,1);
+INSERT INTO `priv` VALUES (2,'Puzzle Herder',1,0,0,0,0,0,1,0,0,0,0),(3,'Director',1,1,1,1,1,0,1,1,1,1,1),(4,'Discussion Editor',0,1,0,0,0,0,1,1,1,0,0),(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0,0,0),(7,'Producer',1,0,0,0,0,0,1,0,0,1,0),(8,'Server Admin',1,0,1,0,1,0,1,1,0,0,0),(9,'Editor in Chief',1,1,0,1,1,0,1,1,1,1,1),(10,'Server Maintainer',0,0,1,0,0,0,1,0,0,0,0),(13,'Testing Admin',0,0,0,0,1,0,1,0,0,0,0),(14,'Approval Editor',0,1,0,0,0,0,1,1,1,0,1),(15,'Cohesion Editor',1,1,0,1,0,0,1,1,1,0,1);
 /*!40000 ALTER TABLE `priv` ENABLE KEYS */;
 UNLOCK TABLES;
 
