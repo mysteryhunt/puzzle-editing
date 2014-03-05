@@ -2472,6 +2472,17 @@ function getNumEditors($pid)
 
 }
 
+function getNumApprovers($pid)
+{
+        $sql = sprintf("SELECT puzzle_idea.id, COUNT(approver_queue.uid) FROM puzzle_idea
+                                        LEFT JOIN approver_queue ON puzzle_idea.id=approver_queue.pid
+                                        WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+        $result = get_row($sql);
+
+        return $result['COUNT(approver_queue.uid)'];
+
+}
+
 function getNumTesters($pid)
 {
         $sql = sprintf("SELECT puzzle_idea.id, COUNT(test_queue.uid) FROM puzzle_idea
@@ -2614,7 +2625,19 @@ function sortByNumEditors($puzzles)
                 $sorted[$pid] = getNumEditors($pid);
         }
 
-        arsort($sorted);
+        asort($sorted);
+
+        return array_keys($sorted);
+}
+
+function sortByNumApprovers($puzzles)
+{
+        $sorted = array();
+        foreach ($puzzles as $pid) {
+                $sorted[$pid] = getNumApprovers($pid);
+        }
+
+        asort($sorted);
 
         return array_keys($sorted);
 }
@@ -2625,16 +2648,11 @@ function getNewPuzzleForEditor($uid)
         $puzzles = get_elements($sql);
         $puzzles = sortByNumEditors($puzzles);
 
-        $foundPuzzle = FALSE;
-
-        while (!$foundPuzzle && count($puzzles) > 0) {
-                $p = array_pop($puzzles);        // Pop first puzzle from array
-                if (isEditorAvailable($uid, $p)) {
-                        $foundPuzzle = $p;
-                }
+        foreach ($puzzles as $p) {
+                if (isEditorAvailable($uid, $p)) return $p;
         }
 
-        return $foundPuzzle;
+        return FALSE;
 }
 
 function addPuzzleToEditorQueue($uid, $pid)
@@ -2879,14 +2897,14 @@ function getPuzzlesNeedingEditors() {
         $sql = "SELECT puzzle from (SELECT count(*) num_editors, puzzle_idea.id puzzle FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < " . MIN_EDITORS;
         $puzzles = get_elements($sql);
 
-        return sortByLastCommentDate($puzzles);
+        return sortByNumEditors($puzzles);
 }
 
 function getPuzzlesNeedingApprovers() {
         $sql = "SELECT puzzle from (SELECT count(*) num_editors, puzzle_idea.id puzzle FROM puzzle_idea LEFT JOIN approver_queue ON puzzle_idea.id=approver_queue.pid GROUP by puzzle) puzzle_count where num_editors < " . MIN_APPROVERS;
         $puzzles = get_elements($sql);
 
-        return sortByLastCommentDate($puzzles);
+        return sortByNumApprovers($puzzles);
 }
 
 function getUnclaimedPuzzlesInFactChecking() {
