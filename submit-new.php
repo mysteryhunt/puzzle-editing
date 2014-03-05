@@ -38,10 +38,11 @@
 
                 mysql_query('START TRANSACTION');
 
-                $sql = sprintf("INSERT INTO puzzle_idea (title, summary, description) VALUES ('%s', '%s', '%s')",
+                $sql = sprintf("INSERT INTO puzzle_idea (title, summary, description, needed_editors) VALUES ('%s', '%s', '%s', '%s')",
                                 mysql_real_escape_string($cleanTitle),
                                 mysql_real_escape_string($cleanSummary),
-                                mysql_real_escape_string($cleanDescription));
+                                mysql_real_escape_string($cleanDescription),
+                                mysql_real_escape_string(MIN_EDITORS));
                 query_db($sql);
 
                 $sql = sprintf("SELECT id FROM puzzle_idea WHERE summary='%s' AND description='%s'",

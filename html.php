@@ -263,7 +263,7 @@
                                 <?php if (!$test) {echo "<td class='puzzidea'>$lastCommenter</td>";} ?>
                                 <?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
-                                <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getEditorsAsList($pid) . "</td>";} ?>
+                                <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getEditorStatus($pid) . "</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getApproversAsList($pid) . "</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . countPuzzApprovals($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" . getCurrentTestersAsList($pid) . "</td>";} ?>

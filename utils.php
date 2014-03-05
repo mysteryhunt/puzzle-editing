@@ -421,7 +421,7 @@ function getUserNamesAsList($table, $pid)
                                         $table, $table, $table, mysql_real_escape_string($pid));
         $users = get_elements($sql);
 
-        return ($users ? implode(", ", $users) : "(none)" );
+        return ($users ? implode(", ", $users) : "<span class='emptylist'>(none)</span>" );
 }
 
 function getAuthorsAsList($pid)
@@ -437,6 +437,17 @@ function getRoundCaptainsAsList($pid)
 function getEditorsAsList($pid)
 {
         return getUserNamesAsList("editor_queue", $pid);
+}
+
+function getEditorStatus($pid)
+{
+        $sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN editor_queue ON user_info.uid=editor_queue.uid WHERE editor_queue.pid='%s'", mysql_real_escape_string($pid));
+        $eds = get_elements($sql);
+        $sql = sprintf("SELECT needed_editors FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+        $need = get_element($sql);
+
+        if ($eds) return count($eds) . "/$need: " . implode(", ", $eds);
+        else return "<span class='emptylist'>0/$need</span>";
 }
 
 function getApproversAsList($pid)
@@ -2894,7 +2905,7 @@ function isPuzzleInPostprod($pid)
 }
 
 function getPuzzlesNeedingEditors() {
-        $sql = "SELECT puzzle from (SELECT count(*) num_editors, puzzle_idea.id puzzle FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < " . MIN_EDITORS;
+        $sql = "SELECT puzzle from (SELECT count(*) num_editors, puzzle_idea.id puzzle, puzzle_idea.needed_editors need FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < need";
         $puzzles = get_elements($sql);
 
         return sortByNumEditors($puzzles);
