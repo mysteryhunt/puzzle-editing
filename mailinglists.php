@@ -147,11 +147,10 @@
 
 	$email = getEmail($uid);
 	$moira_entity = getMoiraEntity($email);
-	$lists = explode(",", MAILING_LISTS);
 
 	$first_time = true;
 	$krb5ccname = "";
-	foreach ($lists as $list) {
+	foreach ($mailing_lists as $list => $description) {
 	    if (isset($_POST[$list . "-type"])) {
 	        $list_type = $_POST[$list . "-type"];
 		$old_value = $_POST[$list . "-original"];
@@ -220,7 +219,7 @@
 	<form method="post">
 	<table>
 <?php
-	foreach ($lists as $list) {
+	foreach ($mailing_lists as $list => $description) {
 	    $list_type = getListType($list);
 	    $membership = getListMembership($list, $list_type, $moira_entity);
 	    $is_member = isMemberOfList($membership, $list_type, $email, $moira_entity);
@@ -238,13 +237,13 @@
 	    print '">';
 	    print '<input name="' . $list . '-type" type="hidden" value="' . $list_type . '">';
 
-	    print "</td>\n<td>" . $list . "</td>\n<td>(" . $list_type . ")</td>\n";
+	    print "</td>\n<td>" . $list . "</td>\n<td>" . $description . "</td>\n<td>(" . $list_type . ")</td>\n";
 
 	    print '<td><button id="' . $list . '-button" type="button" onclick="toggle(\'' . $list . '\')">Show Membership List</button></td></tr>';
 
 	    print '<tr id="' . $list . '" style="display:none;">';
 
-	    print '<td colspan = 4><ul>';
+	    print '<td colspan = 5><ul>';
 
 	    foreach ($membership as $member) {
 	        print "<li>$member</li>";
