@@ -8,7 +8,6 @@
 
         if (isset($_POST['editTSD'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
                 $title = $_POST['title'];
                 $summary = $_POST['summary'];
                 $description = $_POST['description'];
@@ -28,7 +27,6 @@
 
         if (isset($_POST['changeAnswers'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 if (isset($_POST['addAns']))
                         $add = $_POST['addAns'];
@@ -48,7 +46,6 @@
 
         if (isset($_POST['changeFactcheckers'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 if (isset($_POST['addFactchecker']))
                         $add = $_POST['addFactchecker'];
@@ -68,7 +65,6 @@
 
         if (isset($_POST['changeAuthors'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 if (isset($_POST['addAuth'])) {
                         $add = $_POST['addAuth'];
@@ -93,7 +89,6 @@
 
         if (isset($_POST['changeSpoiled'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 if (isset($_POST['removeSpoiledUser']))
                         $removeUser = $_POST['removeSpoiledUser'];
@@ -118,7 +113,6 @@
         }
 
         if (isset($_POST['changeNeededEditors'])) {
-                $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
                 $need = $_POST['needed_editors'];
                 changeNeededEditors($uid, $pid, $need);
@@ -128,7 +122,6 @@
 
         if (isset($_POST['changeEditors'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 if (isset($_POST['addEditor'])) {
                         $add = $_POST['addEditor'];
@@ -156,7 +149,6 @@
 
         if (isset($_POST['changeApprovers'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 if (isset($_POST['addApprover'])) {
                         $add = $_POST['addApprover'];
@@ -184,7 +176,6 @@
 
         if (isset($_POST['changeRoundCaptain'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 if (isset($_POST['addRoundCaptain']))
                         $add = $_POST['addRoundCaptain'];
@@ -204,7 +195,6 @@
 
         if (isset($_POST['changeStatus'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 $status = $_POST['status'];
 
@@ -216,7 +206,6 @@
 
         if (isset($_POST['changeCredits'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 $credits = $_POST['credits'];
 
@@ -228,7 +217,6 @@
 
         if (isset($_POST['changeNotes'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 $notes = $_POST['notes'];
 
@@ -240,7 +228,6 @@
 
         if (isset($_POST['changeRuntime'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 $notes = $_POST['notes'];
 
@@ -252,7 +239,6 @@
 
         if (isset($_POST['changeWikiPage'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 $wikiPage = $_POST['wikiPage'];
 
@@ -264,7 +250,6 @@
 
         if (isset($_POST['uploadFile'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 $type = $_POST['filetype'];
                 $file = $_FILES['fileupload'];
@@ -277,7 +262,6 @@
 
         if (isset($_POST['addcomment'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 $comment = $_POST['comment'];
 
@@ -289,7 +273,6 @@
 
         if (isset($_POST['requestTestsolve'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
                 $notes = $_POST['notes'];
 
                 requestTestsolve($uid, $pid, $notes);
@@ -300,7 +283,6 @@
 
         if (isset($_POST['clearTestsolveRequests'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 clearTestsolveRequests($pid);
 
@@ -310,7 +292,6 @@
 
         if (isset($_POST['clearOneTestsolveRequest'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 clearOneTestsolveRequest($pid);
 
@@ -319,7 +300,6 @@
         }
 
         if (isset($_POST['emailSub'])) {
-                $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
                 subscribe($uid, $pid);
 
@@ -328,7 +308,6 @@
         }
 
         if (isset($_POST['emailUnsub'])) {
-                $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
                 unsubscribe($uid, $pid);
 
@@ -337,7 +316,6 @@
         }
 
         if (isset($_POST['getTest'])) {
-                 $uid = $_POST['uid'];
 
                 $pid = getPuzzleToTest($uid);
                 if ($pid)
@@ -351,14 +329,12 @@
 
         if (isset($_POST['SelfAddFactchecker'])) {
           // User wishes to opt in to factchecking duty.
-          $uid = $_POST['uid'];
           grantFactcheckPowers($uid);
                       header("Location: " . URL . "/factcheck");
                       exit(0);
         }
 
         if (isset($_POST['FactcheckPuzzle'])) {
-                $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
                 addFactcheckers($uid, $pid, array($uid));
@@ -368,7 +344,6 @@
         }
 
         if (isset($_POST['TestAdminPuzzle'])) {
-                $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
                 if (!addToTestAdminQueue($uid, $pid))
@@ -379,7 +354,6 @@
         }
 
         if (isset($_POST['getTestId'])) {
-                $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
 		if (!validPuzzleId($pid))
@@ -404,7 +378,6 @@
         }
 
         if (isset($_POST['getPuzz'])) {
-                $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
                 if ($pid && isEditorAvailable($uid, $pid)) {
@@ -423,7 +396,6 @@
         }
 
         if (isset($_POST['checkAns'])) {
-                $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
                 $answer = $_POST['ans'];
 
@@ -437,7 +409,6 @@
 
         if (isset($_POST['feedback'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
                 $done = $_POST['done'];
                 $time = $_POST['time'];
                 $tried = $_POST['tried'];
@@ -458,7 +429,6 @@
         }
 
         if (isset($_POST['getTestAdminPuzz'])) {
-                $uid = $_POST['uid'];
 
                 $p = getPuzzleForTestAdminQueue($uid);
                 if ($p != FALSE)
@@ -472,7 +442,6 @@
 
         if (isset($_POST['postprod'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 pushToPostProd($uid, $pid);
 
@@ -481,7 +450,6 @@
         }
 
         if (isset($_POST['postprodAll'])) {
-                $uid = $_POST['uid'];
 
                 postprodAll($uid);
 
@@ -491,7 +459,6 @@
 
         if (isset($_POST['setPuzzApprove'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
                 $approve = $_POST['puzzApprove'];
 
                 setPuzzApprove($uid, $pid, $approve);
@@ -502,7 +469,6 @@
 
         if (isset($_POST['killPuzzle'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 changeStatus($uid, $pid, getDeadStatusId());
 
@@ -512,7 +478,6 @@
 
         if (isset($_POST['markunseen'])) {
                 $pid = $_POST['pid'];
-                $uid = $_POST['uid'];
 
                 markUnseen($uid, $pid);
 
@@ -522,7 +487,6 @@
 
         if (isset($_POST['setUserTestTeam'])) {
                 $tid = $_POST['tid'];
-                $uid = $_POST['uid'];
 
                 //echo "tid=$tid";
                 //echo "<br>uid=$uid";

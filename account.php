@@ -12,7 +12,7 @@
 
         $passwd = '';
         if (isset($_POST['changepwd'])) {
-                $passwd = change_password($_POST['uid'], $_POST['oldpass'],
+                $passwd = change_password($uid, $_POST['oldpass'],
                                                                 $_POST['pass1'], $_POST['pass2']);
         }
 
