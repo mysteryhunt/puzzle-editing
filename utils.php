@@ -595,7 +595,7 @@ function changeTitleSummaryDescription($uid, $pid, $title, $summary, $descriptio
         mysql_query('START TRANSACTION');
 
         // If title has changed, update it
-        $cleanTitle = htmlspecialchars($cleanTitle);
+        $cleanTitle = htmlspecialchars($title);
         if ($oldTitle !== $cleanTitle) {
                 updateTitle($uid, $pid, $oldTitle, $cleanTitle);
         }
