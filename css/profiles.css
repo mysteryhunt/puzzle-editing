@@ -1,18 +1,14 @@
-.profilebox {
-	background-color: #E2E9EB;
+.profilebox, .specprofilebox, .seeallprofilebox, .approverprofilebox {
 	border: 1px solid #999999;
 	padding: 10px;
 	width: 800px;
 	margin-bottom:15px;
 }
 
-.specprofilebox {
-	background-color: #F0D7B0;
-	border: 1px solid #999999;
-	padding: 10px;
-	width: 800px;
-	margin-bottom:15px;
-}
+.profilebox { background-color: #E2E9EB; }
+.specprofilebox { background-color: #C6CCE8; }
+.seeallprofilebox { background-color: #F0D7B0; }
+.approverprofilebox { background-color: #C5ECD1; }
 
 .profileimg {
 	float:left;
@@ -31,9 +27,11 @@
 .profiletitle {
 	font-size:1em;
 	font-weight:bold;
-	color:#993300;
 	display:block;
 }
+.seeallprofilebox .profiletitle { color:#993300; }
+.approverprofilebox .profiletitle { color:#006611; }
+.specprofilebox .profiletitle { color:#112299; }
 
 .profilesect {
 	font-size:1em;

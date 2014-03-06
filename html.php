@@ -135,8 +135,17 @@
                 }
 
                 $jobNames = getUserJobsAsList($id);
+                if (canSeeAllPuzzles($id)) {
+                        $profclass = "seeallprofilebox";
+                } else if (isApprover($id)) {
+                        $profclass = "approverprofilebox";
+                } else if ($jobNames) {
+                        $profclass = "specprofilebox";
+                } else {
+                        $profclass = "profilebox";
+                }
                 ?>
-                <div class="<?php echo ($jobNames) ? "specprofilebox" : "profilebox"; ?>">
+                <div class="<?php echo $profclass; ?>">
                         <div class="profileimg"><?php echo $pic ?></div>
                         <div class="profiletxt">
                                 <span class="profilename"><?php echo "$fullname"; ?> (<?php echo "$uname"; ?>)</span>
