@@ -77,8 +77,8 @@
                 echoNav1($selnav, "author",         "Author",              true);
                 echoNav1($selnav, "roundcaptain",   "Round Captain",       (USING_ROUND_CAPTAINS) && isRoundCaptain($suid));
                 echoNav1($selnav, "spoiled",        "Spoiled",             true);
-                echoNav1($selnav, "editor",         "Editor",              isEditor($suid));
-                echoNav1($selnav, "approver",       "Approver",            (USING_APPROVERS) && isApprover($suid));
+                echoNav1($selnav, "editor",         "Discussion Editor",   isEditor($suid));
+                echoNav1($selnav, "approver",       "Approval Editor",     (USING_APPROVERS) && isApprover($suid));
                 echoNav1($selnav, "testsolving",    "Testsolving",         true);
                 echoNav1($selnav, "factcheck",      "Fact Check",          true);
                 echoNav1($selnav, "ffc",            "Final Fact Check",    true);
