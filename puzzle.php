@@ -268,7 +268,7 @@ function editTitleSummaryDescription($uid, $pid, $title, $summary, $description)
                 <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                 <p style="padding-top: 0.5em;">Title (NO SPOILERS): <input type="text" name="title" maxlength="255" class="longin" value="<?php echo $title; ?>" /></p>
-                <p style="padding-top: 0.5em;">Summary (spoilers ok): <input type="text" name="summary" maxlength="255" class="longin" value="<?php echo $summary; ?>" /></p>
+                <p style="padding-top: 0.5em;">Summary (MINIMAL SPOILERS): <input type="text" name="summary" maxlength="255" class="longin" value="<?php echo $summary; ?>" /></p>
                 <p style="padding-top: 0.5em;">Description (spoilers ok):</p>
                 <textarea style="width:50em; height: 25em;" name="description"><?php echo $description; ?></textarea>
                 <p style="padding-top: 0.5em;">
