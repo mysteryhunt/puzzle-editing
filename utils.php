@@ -866,6 +866,10 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
                 $typeName = "Testsolver";
         } else if (isAuthorOnPuzzle($uid, $pid)) {
                 $typeName = "Author";
+        } else if (isEditorChief($uid)) {
+                $typeName = "EIC";
+        } else if (isApproverOnPuzzle($uid, $pid)) {
+                $typeName = "Approver";
         } else if (isEditorOnPuzzle($uid, $pid)) {
                 $typeName = "Editor";
         } else if (isTesterOnPuzzle($uid, $pid)) {
