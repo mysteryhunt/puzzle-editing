@@ -869,9 +869,9 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
         } else if (isEditorChief($uid)) {
                 $typeName = "EIC";
         } else if (isApproverOnPuzzle($uid, $pid)) {
-                $typeName = "Approver";
+                $typeName = "Approval Editor";
         } else if (isEditorOnPuzzle($uid, $pid)) {
-                $typeName = "Editor";
+                $typeName = "Discussion Editor";
         } else if (isTesterOnPuzzle($uid, $pid)) {
                 $typeName = "Testsolver";
         } else if (isTestingAdminOnPuzzle($uid, $pid)) {
