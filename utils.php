@@ -2924,7 +2924,7 @@ function isPuzzleInPostprod($pid)
 }
 
 function getPuzzlesNeedingEditors() {
-        $sql = "SELECT puzzle from (SELECT count(*) num_editors, puzzle_idea.id puzzle, puzzle_idea.needed_editors need FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < need";
+        $sql = "SELECT puzzle from (SELECT count(editor_queue.uid) num_editors, puzzle_idea.id puzzle, puzzle_idea.needed_editors need FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < need";
         $puzzles = get_elements($sql);
 
         return sortByNumEditors($puzzles);
