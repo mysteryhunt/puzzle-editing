@@ -14,7 +14,7 @@
         <p>(Hiding dead puzzles)</p>
 <?php
         $puzzles = getSpoiledPuzzles($uid);
-        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
+        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
 
         // End the HTML
         foot();

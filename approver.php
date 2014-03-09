@@ -42,13 +42,13 @@
         if (ALLOW_EDITOR_PICK) {
                 echo '<br/><h3>Needs Approval Editor(s)</h3>';
                 $puzzles = getPuzzlesNeedingApprovers();
-                displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
+                displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
         }
 
 	echo '<br/>';
 	echo '<h3>Approval Editor Queue</h3>';
 	$puzzles = getPuzzlesInApproverQueue($uid);
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
+	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
 
         // End HTML
         foot();

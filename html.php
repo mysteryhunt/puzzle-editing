@@ -174,7 +174,7 @@
 <?php
         }
 
-        function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $hidedeadpuzzles, $filter = array())
+        function displayQueue($uid, $puzzles, $showNotes, $showAnswer, $showSummary, $showAuthorsAndEditors, $test, $showTesters, $hidedeadpuzzles, $filter = array())
         {
                 if (!$puzzles) {
                         echo "<span class='emptylist'>No puzzles to list</span><br/>";
@@ -192,10 +192,10 @@
                                 <th class="puzzidea">Title</th>
                                 <th class="puzzidea">Puzzle Status</th>
                                 <th class="puzzidea">Round</th>
-                                <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
+                                <?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
                                 <?php if ($showNotes) {echo '<th class="puzzidea">Status Notes</th>';} ?>
 				<?php if ($showNotes) {echo '<th class="puzzidea">Runtime Info</th>';} ?>
-                                <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Answer</th>';} ?>
+                                <?php if ($showAnswer) {echo '<th class="puzzidea">Answer</th>';} ?>
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Commenter</th>';} ?>
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
@@ -258,11 +258,11 @@
                                 <td class='puzzidea'><?php echo $title; ?></td>
                                 <td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
                                 <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>
-                                <?php if ($showAnswerAndSummary) {echo "<td class='puzzideasummary'>" . $puzzleInfo["summary"] . "</td>";} ?>
+                                <?php if ($showSummary) {echo "<td class='puzzideasummary'>" . $puzzleInfo["summary"] . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
 				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["runtime_info"] . "</td>";} ?>
                 <?php
-                if ($showAnswerAndSummary) {
+                if ($showAnswer) {
                         if (getAnswersForPuzzleAsList($pid) != "") {
                                 echo "<td class='puzzideasecure'>";
                         } else

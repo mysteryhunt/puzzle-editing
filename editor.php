@@ -37,13 +37,13 @@
 	   echo '<br/>';
            echo '<h3>Needs Discussion Editor(s)</h3>';
 	   $puzzles = getPuzzlesNeedingEditors();
-           displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
+           displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
 	}
 
         echo '<br/>';
         echo '<h3>Discussion Editor Queue:</h3>';
         $puzzles = getPuzzlesInEditorQueue($uid);
-        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
+        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
 
         // End HTML
         foot();

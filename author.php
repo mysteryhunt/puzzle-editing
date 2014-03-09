@@ -16,7 +16,7 @@
 
 <?php
         $puzzles = getPuzzlesForAuthor($uid);
-        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, array());
+        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, array());
 
         // End the HTML
         foot();

@@ -14,7 +14,7 @@
 
 <?php
         $puzzles = getPuzzlesInPostprod($uid);
-        displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
+        displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, array());
 ?>
         <hr>
         <br>
