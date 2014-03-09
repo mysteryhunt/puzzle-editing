@@ -258,7 +258,7 @@
                                 <td class='puzzidea'><?php echo $title; ?></td>
                                 <td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
                                 <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>
-                                <?php if ($showSummary) {echo "<td class='puzzideasummary'>" . $puzzleInfo["summary"] . "</td>";} ?>
+                                <?php if ($showSummary) {echo "<td class='puzzideasecure'>" . $puzzleInfo["summary"] . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
 				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["runtime_info"] . "</td>";} ?>
                 <?php
