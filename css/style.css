@@ -227,6 +227,14 @@ td.EditorComment {
 	background-color:#B4C1E0;
 }
 
+td.ApproverComment {
+	background-color:#22D0E0;
+}
+
+td.EICComment {
+	background-color:#0000F0;
+}
+
 td.ServerComment {
 	background-color:#E0E0B4;
 }

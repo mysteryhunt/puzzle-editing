@@ -40,7 +40,7 @@ function isValidPuzzleFilter()
                         exit(1);
                 }
                 $val = $_GET['filtervalue'];
-                if ($key == "status" && !validPuzzleId($val)) {
+                if ($key == "status" && !validPuzzleStatus($val)) {
                         echo "<div class='errormsg'>Invalid puzzle status ID.</div>";
                         foot();
                         exit(1);
@@ -869,9 +869,9 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
         } else if (isEditorChief($uid)) {
                 $typeName = "EIC";
         } else if (isApproverOnPuzzle($uid, $pid)) {
-                $typeName = "Approval Editor";
+                $typeName = "Approver";
         } else if (isEditorOnPuzzle($uid, $pid)) {
-                $typeName = "Discussion Editor";
+                $typeName = "Discuss Editor";
         } else if (isTesterOnPuzzle($uid, $pid)) {
                 $typeName = "Testsolver";
         } else if (isTestingAdminOnPuzzle($uid, $pid)) {
