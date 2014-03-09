@@ -101,9 +101,64 @@
                 <form method="post" action="submit-new.php">
                         <p> Puzzle Title (NO SPOILERS):</p>
                         <input type='text' name='title' maxlength='255' class="longin" />
-                        <p style='padding-top:1em;'>Puzzle Summary (a description in a few words; MINIMAL SPOILERS): </p>
+                        <p style='padding-top:1em;'>Puzzle Summary:
+
+			<p>The summary should be a non-spoilery
+			description of the puzzle in a few words. We
+			suggest a description of what the solver will
+			see upon first opening the puzzle or a few
+			general keywords describing the puzzle
+			type. Examples:</p>
+			<ul>
+			<li><a
+			href="http://web.mit.edu/puzzle/www/2014/puzzle/blast_from_the_past/">BLAST
+			from the Past</a>: "DNA sequences"</li>
+
+			<li><a
+			href="http://web.mit.edu/puzzle/www/2014/puzzle/stalk_us_maybe/">Stalk
+			Us Maybe</a>: "Profiles of team members"</li>
+
+			</ul>
+
+			<p>If you're not quite sure what your puzzle
+			will look like, giving general keywords is
+			also okay. Possible examples: "square dancing
+			puzzle", "NPL flats", "puzzle where you wander
+			around MIT"</p>
+
+			<p>It will <strong>occasionally</strong> be
+			appropriate to put spoilers in this field, if
+			your puzzle is about something significantly
+			different than it first appears. Possible
+			examples:</p>
+			
+			<ul>
+			<li><a
+			href="http://web.mit.edu/puzzle/www/2014/puzzle/i_came_across_a_japanese_rose_garden/">I
+			Came Across a Japanese Rose Garden</a>: A
+			summary like "Drawings cluing nail polish
+			colors" could be appropriate although this is
+			a minor spoiler.
+			<li><a
+			href="http://web.mit.edu/puzzle/www/2007/puzzles/war_dances/">War
+			Dances</a>: "Videos of the author performing
+			dances from World of Warcraft" would be
+			appropriate.
+			</ul>
+
+			<p>If you're uncertain, <strong>err on the
+			side of leaving spoilers out of the
+			summary</strong>.</p>
+
                         <input type="text" name="summary" maxlength="255" class="longin" value="<?php echo $summary; ?>" />
-                        <p style='padding-top:1em;'>Puzzle description (basic HTML encouraged; spoilers ok):</p>
+                        <p style='padding-top:1em;'>Puzzle description:</p>
+
+			<p>Please put as much detail about how your
+			puzzle works as you have. Often examples of
+			how puzzle mechanisms would work is
+			helpful. You can use basic HTML in this
+			field. Spoilers are fine.</p>
+
                         <textarea style="width:50em; height: 25em;" name="description"><?php echo $description; ?></textarea>
                         <p style='padding-top:1em;'>Select coauthors:</p>
 <?php
