@@ -267,10 +267,10 @@ function editTitleSummaryDescription($uid, $pid, $title, $summary, $description)
                 <h2>Puzzle <?php echo $pid; ?></h2>
                 <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-                <p style="padding-top: 0.5em;">Title (NO SPOILERS): <input type="text" name="title" maxlength="255" class="longin" value="<?php echo $title; ?>" /></p>
-                <p style="padding-top: 0.5em;">Summary (MINIMAL SPOILERS): <input type="text" name="summary" maxlength="255" class="longin" value="<?php echo $summary; ?>" /></p>
+                <p style="padding-top: 0.5em;">Title (NO SPOILERS): <input type="text" name="title" maxlength="255" class="longin" value="<?php echo htmlspecialchars($title); ?>" /></p>
+                <p style="padding-top: 0.5em;">Summary (MINIMAL SPOILERS): <input type="text" name="summary" maxlength="255" class="longin" value="<?php echo htmlspecialchars($summary); ?>" /></p>
                 <p style="padding-top: 0.5em;">Description (spoilers ok):</p>
-                <textarea style="width:50em; height: 25em;" name="description"><?php echo $description; ?></textarea>
+                <textarea style="width:50em; height: 25em;" name="description"><?php echo htmlspecialchars($description); ?></textarea>
                 <p style="padding-top: 0.5em;">
                         <input type="submit" name="editTSD" value="Change" />
                         <input type="submit" name="cancelTSD" value="Cancel" />
