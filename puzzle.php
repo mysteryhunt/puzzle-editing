@@ -29,7 +29,9 @@
 
         // Record this user's visit (in two ways)
         $lastVisit = updateLastVisit($uid, $pid);
-        addSpoiledUserQuietly($uid, $pid);
+        if(!isEditorChief($uid) && !isCohesion($uid)) {
+                addSpoiledUserQuietly($uid, $pid);
+        }
 
         // If author is a blind tester, turn page background red
         if (isAnyAuthorBlind($pid)) {
