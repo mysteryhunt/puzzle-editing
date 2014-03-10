@@ -225,9 +225,19 @@ function isServerAdmin($uid)
         return hasPriv($uid, 'changeServer');
 }
 
+function isDirector($uid)
+{
+        return isPriv($uid, 3);
+}
+
 function isEditorChief($uid)
 {
-        return hasPriv($uid, 'canEditAll') && hasPriv($uid, 'seeTesters');
+        return isPriv($uid, 9);
+}
+
+function isCohesion($uid)
+{
+        return isPriv($uid, 15);
 }
 
 function canChangeStatus($uid)
@@ -249,6 +259,13 @@ function hasPriv($uid, $priv)
         $sql = sprintf("SELECT name FROM jobs LEFT JOIN priv ON jobs.jid = priv.jid
                                         WHERE uid='%s' AND %s='1'",
                                         mysql_real_escape_string($uid), mysql_real_escape_string($priv));
+        return has_result($sql);
+}
+
+function isPriv($uid, $jid)
+{
+        $sql = sprintf("SELECT name FROM jobs WHERE uid='%s' AND jid='%d'",
+                                        mysql_real_escape_string($uid), mysql_real_escape_string($jid));
         return has_result($sql);
 }
 
@@ -866,8 +883,12 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
                 $typeName = "Testsolver";
         } else if (isAuthorOnPuzzle($uid, $pid)) {
                 $typeName = "Author";
+        } else if (isDirector($uid)) {
+                $typeName = "Director";
         } else if (isEditorChief($uid)) {
                 $typeName = "EIC";
+        } else if (isCohesion($uid)) {
+                $typeName = "Cohesion";
         } else if (isApproverOnPuzzle($uid, $pid)) {
                 $typeName = "Approver";
         } else if (isEditorOnPuzzle($uid, $pid)) {

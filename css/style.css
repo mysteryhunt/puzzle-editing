@@ -234,8 +234,16 @@ td.ApproverComment {
 	background-color:#22D0E0;
 }
 
+td.DirectorComment {
+	background-color:#FF4F4F;
+}
+
 td.EICComment {
 	background-color:#D0ADFF;
+}
+
+td.CohesionComment {
+	background-color:#ADF2FF;
 }
 
 td.ServerComment {
