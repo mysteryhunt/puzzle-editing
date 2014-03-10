@@ -264,7 +264,7 @@ function hasPriv($uid, $priv)
 
 function isPriv($uid, $jid)
 {
-        $sql = sprintf("SELECT name FROM jobs WHERE uid='%s' AND jid='%d'",
+        $sql = sprintf("SELECT * FROM jobs WHERE uid='%s' AND jid='%d'",
                                         mysql_real_escape_string($uid), mysql_real_escape_string($jid));
         return has_result($sql);
 }
