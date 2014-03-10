@@ -1086,6 +1086,7 @@ function displayComments($uid, $pid, $lastVisit)
 
 function addCommentForm($uid, $pid)
 {
+  if (isAuthorOnPuzzle($uid, $pid) || isApproverOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isCohesion($uid) || isEditorChief($uid) || isTesterOnPuzzle($uid, $pid)) {
 ?>
                 <form action="form-submit.php" method="post">
                         <tr class="comment">
@@ -1098,6 +1099,7 @@ function addCommentForm($uid, $pid)
                                 </tr>
                 </form>
 <?php
+      }
 }
 
 function emailSubButton($uid, $pid)

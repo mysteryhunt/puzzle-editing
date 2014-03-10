@@ -898,8 +898,10 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
         } else if (isTestingAdminOnPuzzle($uid, $pid)) {
                 $typeName = "TestingAdmin";
         } else if (isLurker($uid)) {
+                return;
                 $typeName = "Lurker";
         } else {
+                return;
                 $typeName = "Unknown";
         }
 
