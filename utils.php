@@ -883,18 +883,18 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
                 $typeName = "Testsolver";
         } else if (isAuthorOnPuzzle($uid, $pid)) {
                 $typeName = "Author";
-        } else if (isDirector($uid)) {
-                $typeName = "Director";
-        } else if (isEditorChief($uid)) {
-                $typeName = "EIC";
-        } else if (isCohesion($uid)) {
-                $typeName = "Cohesion";
         } else if (isApproverOnPuzzle($uid, $pid)) {
                 $typeName = "Approver";
         } else if (isEditorOnPuzzle($uid, $pid)) {
                 $typeName = "Discuss Editor";
+        } else if (isCohesion($uid)) {
+                $typeName = "Cohesion";
+        } else if (isEditorChief($uid)) {
+                $typeName = "EIC";
         } else if (isTesterOnPuzzle($uid, $pid)) {
                 $typeName = "Testsolver";
+        } else if (isDirector($uid)) {
+                $typeName = "Director";
         } else if (isTestingAdminOnPuzzle($uid, $pid)) {
                 $typeName = "TestingAdmin";
         } else if (isLurker($uid)) {
