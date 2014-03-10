@@ -95,7 +95,7 @@
 
                 <p>By submitting any puzzle-related content to Puzzletron (the
                 “Content”), you agree to grant Adam Rosenfield and Iolanthe
-                Chronis the sole and perpetual right to publish, modify, adapt,
+                Chronis the perpetual right to publish, modify, adapt,
                 or relicense the Content in any form.</p>
 
                 <form method="post" action="submit-new.php">
