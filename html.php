@@ -174,7 +174,7 @@
 <?php
         }
 
-        function displayQueue($uid, $puzzles, $showNotes, $showAnswer, $showSummary, $showAuthorsAndEditors, $test, $showTesters, $hidedeadpuzzles, $filter = array())
+        function displayQueue($uid, $puzzles, $showNotes, $showAnswer, $showSummary, $showAuthorsAndEditors, $test, $showTesters, $hidedeadpuzzles, $filter = array(), $addLinkArgs = "")
         {
                 if (!$puzzles) {
                         echo "<span class='emptylist'>No puzzles to list</span><br/>";
@@ -250,9 +250,9 @@
                                 echo '<tr class="puzz">';
 
                         if ($test)
-				echo "<td class='puzzidea'><a href='test.php?pid=$pid'>$pid</a></td>";
+				echo "<td class='puzzidea'><a href='test.php?pid=$pid$addLinkArgs'>$pid</a></td>";
                         else
-				echo "<td class='puzzidea'><a href='puzzle.php?pid=$pid'>$pid</a></td>";
+				echo "<td class='puzzidea'><a href='puzzle.php?pid=$pid$addLinkArgs'>$pid</a></td>";
 ?>
                                 <?php if (USING_CODENAMES) {echo '<td class="puzzidea">' . $codename . '</th>';} ?>
                                 <td class='puzzidea'><?php echo $title; ?></td>

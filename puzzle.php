@@ -31,6 +31,9 @@
         $lastVisit = updateLastVisit($uid, $pid);
         if(!isEditorChief($uid) && !isCohesion($uid)) {
                 addSpoiledUserQuietly($uid, $pid);
+                if ($_GET['discuss'] && isEditorAvailable($uid, $pid)) {
+                        changeEditors($uid, $pid, array($uid), array());
+                }
         }
 
         // If author is a blind tester, turn page background red
