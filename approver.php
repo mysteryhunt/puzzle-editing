@@ -42,7 +42,9 @@
         if (ALLOW_EDITOR_PICK) {
                 echo '<br/><h3>Needs Approval Editor(s)</h3>';
                 $puzzles = getPuzzlesNeedingApprovers();
-                displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
+                echo '<p><strong class="impt">IMPORTANT:</strong> <strong>Clicking a puzzle below will add you as an approval editor</strong> (unless you already have a role on the puzzle or can see all puzzles.)</p>';
+                echo '<p><strong>Please click judiciously and give comments to improve the puzzles you decide to approve.</strong> (You can still remove yourself from being an approval editor later, however.)</p>';
+                displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, array(), "&approve=1");
         }
 
 	echo '<br/>';

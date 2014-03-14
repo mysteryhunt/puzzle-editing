@@ -33,6 +33,8 @@
                 addSpoiledUserQuietly($uid, $pid);
                 if ($_GET['discuss'] && isEditorAvailable($uid, $pid)) {
                         changeEditors($uid, $pid, array($uid), array());
+                } else if ($_GET['approve'] && isApproverAvailable($uid, $pid)) {
+                        changeApprovers($uid, $pid, array($uid), array());
                 }
         }
 
