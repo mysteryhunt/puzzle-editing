@@ -336,9 +336,14 @@ function displayPuzzleStats($uid)
 {
         $max_rows = 6;
 
+
+
         $totalNumberOfPuzzles = count(getAllLivePuzzles());
-        $numberOfEditors = getNumberOfEditorsOnPuzzles();
+        $numberOfEditors = getNumberOfEditorsOnPuzzles("discuss");
         $moreThanThree = $totalNumberOfPuzzles - $numberOfEditors['0'] - $numberOfEditors['1'] - $numberOfEditors['2'] - $numberOfEditors['3'];
+
+        $numberOfApprovalEditors = getNumberOfEditorsOnPuzzles("approval");
+        $moreThanThreeApproval = $totalNumberOfPuzzles - $numberOfApprovalEditors['0'] - $numberOfApprovalEditors['1'] - $numberOfApprovalEditors['2'] - $numberOfApprovalEditors['3'];
 
         $userNumbers = getNumberOfPuzzlesForUser($uid);
 
@@ -378,30 +383,57 @@ function displayPuzzleStats($uid)
                                         </tr>
                                 </table>
                         </td>
-                        <td class="ed-stats">
+                        <td class="discussion-ed-stats">
                                 <table>
                                         <tr>
-                                                <th class="ed-stats" colspan="2">Num of Editors</th>
+                                                <th class="discussion-ed-stats" colspan="2">Discuss Eds</th>
                                         </tr>
                                         <tr>
-                                                <td class="ed-stats">Zero</td>
-                                                <td class="ed-stats"><?php echo $numberOfEditors['0']; ?></td>
+                                                <td class="discussion-ed-stats">Zero</td>
+                                                <td class="discussion-ed-stats"><?php echo $numberOfEditors['0']; ?></td>
                                         </tr>
                                         <tr>
-                                                <td class="ed-stats">One</td>
-                                                <td class="ed-stats"><?php echo $numberOfEditors['1']; ?></td>
+                                                <td class="discussion-ed-stats">One</td>
+                                                <td class="discussion-ed-stats"><?php echo $numberOfEditors['1']; ?></td>
                                         </tr>
                                         <tr>
-                                                <td class="ed-stats">Two</td>
-                                                <td class="ed-stats"><?php echo $numberOfEditors['2']; ?></td>
+                                                <td class="discussion-ed-stats">Two</td>
+                                                <td class="discussion-ed-stats"><?php echo $numberOfEditors['2']; ?></td>
                                         </tr>
                                         <tr>
-                                                <td class="ed-stats">Three</td>
-                                                <td class="ed-stats"><?php echo $numberOfEditors['3']; ?></td>
+                                                <td class="discussion-ed-stats">Three</td>
+                                                <td class="discussion-ed-stats"><?php echo $numberOfEditors['3']; ?></td>
                                         </tr>
                                         <tr>
-                                                <td class="ed-stats">&gt;Three</td>
-                                                <td class="ed-stats"><?php echo $moreThanThree; ?></td>
+                                                <td class="discussion-ed-stats">&gt;Three</td>
+                                                <td class="discussion-ed-stats"><?php echo $moreThanThree; ?></td>
+                                        </tr>
+                                </table>
+                        </td>
+                        <td class="approval-ed-stats">
+                                <table>
+                                        <tr>
+                                                <th class="approval-ed-stats" colspan="2">Approval Eds</th>
+                                        </tr>
+                                        <tr>
+                                                <td class="approval-ed-stats">Zero</td>
+                                                <td class="approval-ed-stats"><?php echo $numberOfApprovalEditors['0']; ?></td>
+                                        </tr>
+                                        <tr>
+                                                <td class="approval-ed-stats">One</td>
+                                                <td class="approval-ed-stats"><?php echo $numberOfApprovalEditors['1']; ?></td>
+                                        </tr>
+                                        <tr>
+                                                <td class="approval-ed-stats">Two</td>
+                                                <td class="approval-ed-stats"><?php echo $numberOfApprovalEditors['2']; ?></td>
+                                        </tr>
+                                        <tr>
+                                                <td class="approval-ed-stats">Three</td>
+                                                <td class="approval-ed-stats"><?php echo $numberOfApprovalEditors['3']; ?></td>
+                                        </tr>
+                                        <tr>
+                                                <td class="approval-ed-stats">&gt;Three</td>
+                                                <td class="approval-ed-stats"><?php echo $moreThanThreeApproval; ?></td>
                                         </tr>
                                 </table>
                         </td>

@@ -273,8 +273,15 @@ th.puzz-stats, td.puzz-stats {
 	padding-top: 0.1em;
 }
 
-th.ed-stats, td.ed-stats {
+th.approval-ed-stats, td.approval-ed-stats {
 	background-color: #B4C1E0;
+	border: none;
+	padding-bottom: 0.1em;
+	padding-top: 0.1em;
+}
+
+th.discussion-ed-stats, td.discussion-ed-stats {
+	background-color: #E4C4BA;
 	border: none;
 	padding-bottom: 0.1em;
 	padding-top: 0.1em;

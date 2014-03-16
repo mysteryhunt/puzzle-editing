@@ -3156,11 +3156,17 @@ function getRoundForPuzzle($pid)
         return get_rows($sql);
 }
 
-function getNumberOfEditorsOnPuzzles()
+function getNumberOfEditorsOnPuzzles($type)
 {
+		if ($type == "discuss") {
+			$queue = "editor_queue";
+		} else {
+			$queue = "approver_queue";
+		}
+	
         $deadstatusid = getDeadStatusId();
-        $sql = sprintf('SELECT COUNT(editor_queue.uid) FROM puzzle_idea
-                        LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid WHERE puzzle_idea.pstatus != %d
+        $sql = sprintf('SELECT COUNT('.$queue.'.uid) FROM puzzle_idea
+                        LEFT JOIN '.$queue.' ON puzzle_idea.id='.$queue.'.pid WHERE puzzle_idea.pstatus != %d
                         GROUP BY id', $deadstatusid);
         $numbers = get_elements($sql);
 
