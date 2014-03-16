@@ -362,8 +362,12 @@ function displayPuzzleStats($uid)
                                                 <th class="puzz-stats" colspan="2"><?php echo $totalNumberOfPuzzles; ?> Total Live Puzzles/Ideas</th>
                                         </tr>
                                         <tr>
-                                                <td class="puzz-stats">You Are Editor</td>
+                                                <td class="puzz-stats">You Are Discuss Ed</td>
                                                 <td class="puzz-stats"><?php echo $editor; ?></td>
+                                        </tr>
+                                        <tr>
+                                                <td class="puzz-stats">You Are Approve Ed</td>
+                                                <td class="puzz-stats"><?php echo $userNumbers['approver']; ?></td>
                                         </tr>
                                         <tr>
                                                 <td class="puzz-stats">You Are Author</td>
@@ -377,10 +381,10 @@ function displayPuzzleStats($uid)
                                                 <td class="puzz-stats">You Are Tester</td>
                                                 <td class="puzz-stats"><?php echo $tester; ?></td>
                                         </tr>
-                                        <tr>
+                                   <!--     <tr>
                                                 <td class="puzz-stats">Available To Edit</td>
                                                 <td class="puzz-stats"><?php echo $userNumbers['available']; ?></td>
-                                        </tr>
+                                        </tr>-->
                                 </table>
                         </td>
                         <td class="discussion-ed-stats">

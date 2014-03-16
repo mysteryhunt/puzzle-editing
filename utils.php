@@ -3188,6 +3188,7 @@ function getNumberOfPuzzlesForUser($uid)
 {
         $numbers['author'] = 0;
         $numbers['editor'] = 0;
+		$numbers['approver'] = 0;
         $numbers['spoiled'] = 0;
         $numbers['currentTester'] = 0;
         $numbers['doneTester'] = 0;
@@ -3201,6 +3202,9 @@ function getNumberOfPuzzlesForUser($uid)
                 }
                 if (isEditorOnPuzzle($uid, $pid)) {
                         $numbers['editor']++;
+                }
+                if (isApproverOnPuzzle($uid, $pid)) {
+                        $numbers['approver']++;
                 }
                 if (isSpoiledOnPuzzle($uid, $pid)) {
                         $numbers['spoiled']++;
