@@ -2046,13 +2046,21 @@ function getAllAuthors()
         return get_assoc_array("select user_info.uid, fullname from user_info, authors where user_info.uid = authors.uid group by uid", "uid", "fullname");
 }
 
-function getEditorStats()
+function getApprovalEditorStats()
 {
         // This one is a bit messy.
         return get_assoc_array("select fullname, count(pid) as pcount from
                                         (select user_info.uid, fullname from user_info, jobs, priv
-                                        where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 group by uid)
-                                as editors left join editor_queue on editors.uid = editor_queue.uid group by editors.uid", "fullname", "pcount");
+                                        where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 and isApprover = 1 group by uid)
+                                as editors left join approver_queue on editors.uid = approver_queue.uid group by editors.uid", "fullname", "pcount");
+}
+
+function getDiscussionEditorStats()
+{
+        // This one is a bit messy.
+        return get_assoc_array("select fullname, count(pid) as pcount from
+                                        (select user_info.uid, fullname from user_info)
+                                as editors right join editor_queue on editors.uid = editor_queue.uid group by editors.uid", "fullname", "pcount");
 }
 
 function getPuzzleStatuses()

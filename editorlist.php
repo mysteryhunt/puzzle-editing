@@ -10,17 +10,26 @@
         // Start HTML
         head("editorlist");
 
-        echo '<h2>List of Editor Stats</h2>';
+        $approval_counts = getApprovalEditorStats();
+		$discussion_counts = getDiscussionEditorStats();
 
-        echo '<table>';
+        echo '<h2>List of Approval Editor Stats</h2>';
 
-        $counts = getEditorStats();
-
-        arsort($counts, SORT_NUMERIC);
-        foreach (array_keys($counts) as $editor) {
-                echo "<tr><td class='ed-stats'>$editor</td><td class='ed-stats'>$counts[$editor]</td></tr>";
+        echo '<table>';		
+        arsort($approval_counts, SORT_NUMERIC);
+        foreach (array_keys($approval_counts) as $editor) {
+                echo "<tr><td class='ed-stats'>$editor</td><td class='ed-stats'>$approval_counts[$editor]</td></tr>";
         }
+        echo '</table><br><br>';
 
+
+        echo '<h2>List of Discussion Editor Stats</h2>';
+
+        echo '<table>';		
+        arsort($discussion_counts, SORT_NUMERIC);
+        foreach (array_keys($discussion_counts) as $editor) {
+                echo "<tr><td class='ed-stats'>$editor</td><td class='ed-stats'>$discussion_counts[$editor]</td></tr>";
+        }
         echo '</table>';
 
         foot();
