@@ -556,7 +556,7 @@ function isAnyAuthorBlind($pid)
 
 function getPuzzleInfo($pid)
 {
-        $sql = sprintf("SELECT * FROM puzzle_idea WHERE id='%s'", mysql_escape_string($pid));
+        $sql = sprintf("SELECT * FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
         return get_row($sql);
 }
 
@@ -2962,8 +2962,18 @@ function getPuzzlesNeedingEditors() {
         return sortByNumEditors($puzzles);
 }
 
-function getPuzzlesNeedingApprovers() {
-        $sql = "SELECT puzzle from (SELECT count(*) num_editors, puzzle_idea.id puzzle FROM puzzle_idea LEFT JOIN approver_queue ON puzzle_idea.id=approver_queue.pid GROUP by puzzle) puzzle_count where num_editors < " . MIN_APPROVERS;
+function getPuzzlesNeedingApprovers($uid) {
+		$sql = "SELECT x.pid as puzzle from 
+			((SELECT count(*) as num_editors, pid, count(if(uid = $uid,1,NULL)) as am_i_an_ed_already 
+				FROM  approver_queue 
+				GROUP by pid) as x
+			LEFT JOIN
+			(SELECT  count(if(uid =$uid,1,NULL)) as am_i_an_author, pid 
+				From authors 
+				Group by pid) as y
+			on x.pid=y.pid)
+			where num_editors < ".MIN_APPROVERS." and x.am_i_an_ed_already=0 and y.am_i_an_author=0";
+
         $puzzles = get_elements($sql);
 
         return sortByNumApprovers($puzzles);
