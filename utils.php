@@ -1698,6 +1698,16 @@ function addEditors($uid, $pid, $add)
         $name = getUserName($uid);
 
         $comment = 'Added ';
+
+	if (EDITOR_MAILING_LIST) {
+	    $list_type = getListType(EDITOR_MAILING_LIST);
+	    if ($list_type == "moira") {
+	        $krb5ccname = tempnam(TMPDIR, "krb5ccname");
+	        exec("KRB5CCNAME=" . $krb5ccname . " " . GET_KEYTAB);
+	    }
+	    $membership = getListMembership(EDITOR_MAILING_LIST, $list_type, $moira_entity);
+	}
+
         foreach ($add as $editor) {
                 // Check that this editor is available for this puzzle
                 if (!isEditorAvailable($editor, $pid)) {
@@ -1726,7 +1736,23 @@ function addEditors($uid, $pid, $add)
 		if (isAutoSubEditor($editor)){
                    subscribe($editor, $pid);
 		}
+
+		if (EDITOR_MAILING_LIST) {
+		    $email = getEmail($editor);
+		    $moira_entity = getMoiraEntity($email);
+		    if (!isMemberOfList($membership, $list_type, $email, $moira_entity)) {
+		        if ($list_type == "moira") {
+		            addToMoiraList(EDITOR_MAILING_LIST, $moira_entity, $krb5ccname);
+			} else if ($list_type == "mailman") {
+		            addToMailmanList(EDITOR_MAILING_LIST, $email);
+			}
+		    }
+		}
         }
+
+	if (EDITOR_MAILING_LIST && list_type == "moira") {
+	    unlink($krb5ccname);
+	}
 
         $comment .= ' as discussion editor';
         if (count($add) > 1)
@@ -3493,5 +3519,140 @@ function startsWith($haystack, $needle)
 function endsWith($haystack, $needle)
 {
         return substr($haystack, -strlen($needle))===$needle;
+}
+
+function getMoiraEntity($email) {
+    if (!endsWith($email, "@mit.edu")) {
+        return "STRING:" . $email;
+    }
+
+    $no_mit_edu = substr($email, 0, -strlen("@mit.edu"));
+    if (isMoiraUser($no_mit_edu)) {
+    	return "USER:" . $no_mit_edu;
+    }
+
+    if (isMoiraList($no_mit_edu)) {
+        return "LIST:" . $no_mit_edu;
+    }
+
+    return "STRING:" . $no_mit_edu;
+}
+
+function isMoiraList($listname) {
+    $command = "blanche -noauth " . escapeshellarg($listname) . " -i | grep '^Description' | grep -v '^Description: User Group$'";
+    $out = exec($command, $all_output, $return_var);
+    return (bool)$out;
+}
+
+function isMoiraUser($username) {
+    $command = "dig +short -t txt " . $username . ".passwd.ns.athena.mit.edu";
+    $out = exec($command, $all_output, $return_var);
+    return (bool)($all_output);
+}
+
+function getListType($listname) {
+    $command = "blanche -noauth " . $listname . " -i";
+    $out = exec($command, $all_output, $return_var);
+    $mailman = (bool)$out;
+
+    if ($return_var != 0) {
+        return "unknown";
+    }
+
+    foreach ($all_output as $line) {
+        if (startsWith($line, $listname . " is a Mailman list")) {
+	    return "mailman";
+	}
+    }
+
+    return "moira";
+}
+
+function isMemberOfList($membership, $list_type, $email, $moira_entity) {
+    if ($list_type == "mailman") {
+	return in_array($email, $membership);
+    } else if ($list_type == "moira") {
+        return in_array($moira_entity, $membership);
+    }
+    return false;
+}
+
+function getListMembership($list, $list_type) {
+    if ($list_type == "mailman") {
+       $command = "athrun consult mmblanche " . $list . " -V " . MMBLANCHE_PASSWORDS ;
+       $out = exec($command, $all_output, $return_var);
+       return $all_output;
+    } else {
+       $command = "blanche -noauth -v " . $list;
+       $out = exec($command, $all_output, $return_var);
+       return $all_output;
+    }
+    return array();
+}
+
+function addToMoiraList($list, $moira_entity, $krb5ccname) {
+    $command = "KRB5CCNAME=" . $krb5ccname . " blanche " . $list . " -a " . escapeshellarg($moira_entity) . " 2>&1";
+    exec($command, $all_output, $return_var);
+    print "<p>";
+    print "Adding " . $moira_entity . " to moira list " . $list . ": ";
+    if ($return_var == 0) {
+        print "Success!";
+    } else {
+        print "Failed.<br>\n";
+        foreach ($all_output as $line) {
+	    print $line . "<br>\n";
+	}
+    }
+    print "</p><br>\n";
+}
+
+function deleteFromMoiraList($list, $moira_entity, $krb5ccname) {
+    $command = "KRB5CCNAME=" . $krb5ccname . " blanche " . $list . " -d " . escapeshellarg($moira_entity) . " 2>&1";
+    exec($command, $all_output, $return_var);
+    print "<p>";
+    print "Deleting " . $moira_entity . " from moira list " . $list . ": ";
+    if ($return_var == 0) {
+        print "Success!";
+    } else {
+        print "Failed.<br>\n";
+        foreach ($all_output as $line) {
+	    print $line . "<br>\n";
+	}
+    }
+    print "</p><br>\n";
+}
+
+function addToMailmanList($list, $email) {
+    $command = "athrun consult mmblanche " . $list . " -a " . escapeshellarg($email) . " -V " . MMBLANCHE_PASSWORDS . " 2>&1";
+    exec($command, $all_output, $return_var);
+    print "<p>";
+    print "Adding " . $email . " to mailman list " . $list . ": ";
+    if (count($all_output) == 0) {
+        print "Success!";
+    } else {
+        print "Failed.<br>\n";
+        foreach ($all_output as $line) {
+	    if ($line != "") {
+	        print $line . "<br>\n";
+	    }
+	}
+    }
+    print "</p><br>\n";
+    	}
+
+function deleteFromMailmanList($list, $email) {
+    $command = "athrun consult mmblanche " . $list . " -d " . escapeshellarg($email) . " -V " . MMBLANCHE_PASSWORDS . " 2>&1";
+    exec($command, $all_output, $return_var);
+    print "<p>";
+    print "Deleting " . $email . " from mailman list " . $list . ": ";
+    if (count($all_output) == 0) {
+        print "Success!";
+    } else {
+        print "Failed.<br>\n";
+        foreach ($all_output as $line) {
+	    print $line . "<br>\n";
+	}
+    }
+    print "</p><br>\n";
 }
 ?>
