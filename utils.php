@@ -875,6 +875,7 @@ function getAnswerWord($aid)
 function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
 {
         $purifier = new HTMLPurifier();
+	$textComment = strip_tags($comment);
         $cleanComment = $purifier->purify($comment);
 
         if ($server == TRUE) {
@@ -914,9 +915,9 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
         query_db($sql);
 
         if ($typeName == "Testsolver")
-                emailComment($uid, $pid, $cleanComment, TRUE);
+                emailComment($uid, $pid, $textComment, TRUE);
         else
-                emailComment($uid, $pid, $cleanComment);
+                emailComment($uid, $pid, $textComment);
 }
 
 function createAnswer($answer, $round)
@@ -1060,8 +1061,6 @@ function sendAllEmail($isReal)
                 $subject = $mail[2];
                 $msg = $mail[3];
                 $headers = 'From: ' . PTRON_FROM_EMAIL . "\r\n";
-		$headers .= "MIME-Version: 1.0\r\n";
-		$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
                 //subject line conditional on what instance of ptron this is
                 if (DEVMODE)
@@ -3115,26 +3114,43 @@ function doneTestingPuzzle($uid, $pid)
 function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return)
 {
         $comment = "
-        <p><strong>Do you intend to return to this puzzle?</strong></p>
-        <p>$done</p><br />
-        <p><strong>If so, when do you plan to return to it?</strong></p>
-        <p>$when_return</p><br />
-        <p><strong>How long did you spend on this puzzle (since your last feedback, if any)?</strong></p>
-        <p>$time</p><br />
-        <p><strong>Describe what you tried.</p></strong>
-        <p>$tried</p><br />
-        <p><strong>What did you like/dislike about this puzzle? </br>
-        Is there anything you think should be changed with the puzzle?</br>
-        Is there anything wrong with the technical details/formatting of the puzzle?</strong><br /></p>
-        <p>$liked</p><br />
-        <p><strong>Were there any special skills required to solve this puzzle?</strong></p>
-        <p>$skills</p><br />
-        <p><strong>What was the breakthrough point for you in this puzzle?</strong></p>
-        <p>$breakthrough</p><br />
-        <p><strong>How fun was this puzzle?</p></strong></p>
-        <p>$fun</p><br />
-        <p><strong>How would you rate the difficulty of this puzzle?</p></strong></p>
-        <p>$difficulty</p>";
+<p><strong>Do you intend to return to this puzzle?</strong></p>
+
+<p>$done</p><br />
+
+<p><strong>If so, when do you plan to return to it?</strong></p>
+
+<p>$when_return</p><br />
+
+<p><strong>How long did you spend on this puzzle (since your last feedback, if any)?</strong></p>
+
+<p>$time</p><br />
+
+<p><strong>Describe what you tried.</p></strong>
+
+<p>$tried</p><br />
+
+<p><strong>What did you like/dislike about this puzzle? </br>
+Is there anything you think should be changed with the puzzle?</br>
+Is there anything wrong with the technical details/formatting of the puzzle?</strong><br /></p>
+
+<p>$liked</p><br />
+
+<p><strong>Were there any special skills required to solve this puzzle?</strong></p>
+
+<p>$skills</p><br />
+
+<p><strong>What was the breakthrough point for you in this puzzle?</strong></p>
+
+<p>$breakthrough</p><br />
+
+<p><strong>How fun was this puzzle?</p></strong></p>
+
+<p>$fun</p><br />
+ 
+<p><strong>How would you rate the difficulty of this puzzle?</p></strong></p>
+
+<p>$difficulty</p>";
         return $comment;
 }
 
