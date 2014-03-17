@@ -31,9 +31,9 @@
         $lastVisit = updateLastVisit($uid, $pid);
         if(!isEditorChief($uid) && !isCohesion($uid)) {
                 addSpoiledUserQuietly($uid, $pid);
-                if ($_GET['discuss'] && isEditorAvailable($uid, $pid)) {
+                if ($_GET['discuss'] && isEditorAvailable($uid, $pid) && !isEditorChief($uid)) {
                         changeEditors($uid, $pid, array($uid), array());
-                } else if ($_GET['approve'] && isApproverAvailable($uid, $pid)) {
+                } else if ($_GET['approve'] && isApproverAvailable($uid, $pid) && !isEditorChief($uid)) {
                         changeApprovers($uid, $pid, array($uid), array());
                 }
         }
