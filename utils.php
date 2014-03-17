@@ -1335,7 +1335,7 @@ function addSpoiledUser($uid, $pid, $addUser)
                 $codename = getCodename($pid);
                 $subject = "Spoiled on $codename (puzzle $pid)";
                 $message = "$name added you as spoiled on $title (puzzle $pid).";
-                $link = URL;
+                $link = URL . "/puzzle?pid=$pid";
                 sendEmail($user, $subject, $message, $link);
         }
 
