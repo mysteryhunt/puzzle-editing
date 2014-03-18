@@ -2989,16 +2989,16 @@ function getPuzzlesNeedingEditors() {
 }
 
 function getPuzzlesNeedingApprovers($uid) {
-		$sql = "SELECT x.pid as puzzle from 
+		$sql = "SELECT y.pid as puzzle from 
 			((SELECT count(*) as num_editors, pid, count(if(uid = $uid,1,NULL)) as am_i_an_ed_already 
 				FROM  approver_queue 
 				GROUP by pid) as x
-			LEFT JOIN
+			RIGHT JOIN
 			(SELECT  count(if(uid =$uid,1,NULL)) as am_i_an_author, pid 
 				From authors 
 				Group by pid) as y
 			on x.pid=y.pid)
-			where num_editors < ".MIN_APPROVERS." and x.am_i_an_ed_already=0 and y.am_i_an_author=0";
+			where (num_editors < ".MIN_APPROVERS." or num_editors is null) and (x.am_i_an_ed_already=0 or x.am_i_an_ed_already is null) and y.am_i_an_author=0";
 
         $puzzles = get_elements($sql);
 
