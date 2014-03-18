@@ -24,7 +24,7 @@
         }
         $data = getPerson($uid);
 ?>
-        <p> All information (other than your password) will be visible to all members of the team. </p>
+        <p> All information will be visible to all members of the team. </p>
 
         <script type="text/javascript">
         //<![CDATA[
@@ -40,9 +40,6 @@
                         return false;
                 } else if (TRUST_REMOTE_USER) {
                         return true;
-                } else if (f.pass.value === "") {
-                        alert("You must enter your password.");
-                        return false;
                 }
                 return true;
         }
@@ -60,10 +57,6 @@
                                 <?php } else { ?>
                                 <td><strong><?php echo $data['username'] ?></strong></td>
                                 <?php } ?>
-                        </tr>
-                        <tr>
-                                <td><strong>Current password*</strong></td>
-                                <td><input type="password" name="pass" value=""/></td>
                         </tr>
                         <?php } ?>
                         <tr>
@@ -112,11 +105,6 @@
                 $user = getPerson($uid);
                 $picture = $_FILES['picture'];
 
-                if (!TRUST_REMOTE_USER) {
-                        if (!checkPassword($user['username'], $_POST['pass'])) {
-                                return 'Incorrect Password. Please try again.';
-                        }
-                }
                 if ($_POST['email'] == "")
                         return "Email may not be empty";
                 if ($_POST['fullname'] == "")
