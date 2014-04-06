@@ -2168,12 +2168,10 @@ function changeStatus($uid, $pid, $status)
                 if (getTestsolveRequestsForPuzzle($pid) == 0) {
                         requestTestsolve($uid, $pid, "Automatic testsolve request.");
                 }
-        }
-
-        // Self-service testsolving is 25.
-        if ($status == 25 && (getWikiPage($pid) == "" || getWikiPage($pid) == NULL)) {
-                $newpage = defaultWikiPageForPuzzle($pid);
-                updateWikiPage($uid, $pid, "", $newpage);
+		if (getWikiPage($pid) == "" || getWikiPage($pid) == NULL) {
+		   $newpage = defaultWikiPageForPuzzle($pid);
+                   updateWikiPage($uid, $pid, "", $newpage);
+		}
         }
 
         $fcs = getFactcheckersForPuzzle($pid);
