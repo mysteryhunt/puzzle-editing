@@ -40,7 +40,7 @@
 		  $result = $client->putObject(array(
                            'Bucket' => AWS_BUCKET,
                            'Key'    => $key,
-                           'Body'   => file_get_contents($picture['tmp_name'])));
+                           'Body'   => file_get_contents($upfile)));
 		}
 
                 makeThumb($upfile, $thumb);
