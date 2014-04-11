@@ -881,7 +881,10 @@ function displayFileList ($uid, $pid, $type) {
         foreach ($fileList as $file) {
                 $finfo = pathinfo($file['filename']);
                 $filename = $finfo['basename'];
-                $link = $file['filename'];
+                $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $file['filename'];
+                if(strpos($file['filename'], '_dir', strlen($file['filename']) - 4) !== false) {
+		  $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $file['filename'];
+		}
                 $date = $file['date'];
 
                 if ($first) {
