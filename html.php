@@ -130,8 +130,7 @@
                 $pic = "<img src=\"nophoto.gif\" />";
                 if ($picture != "") {
                         $picsrc = "https://' . AWS_BUCKET . '.s3.amazonaws.com/uploads/pictures/thumbs/$id.jpg";
-                        if (file_exists($picsrc))
-                                $pic = "<img src=\"".$picsrc."\" />";
+			$pic = "<img src=\"".$picsrc."\" />";
                 }
 
                 $jobNames = getUserJobsAsList($id);
