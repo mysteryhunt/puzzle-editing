@@ -2356,7 +2356,7 @@ function uploadFiles($uid, $pid, $type, $file) {
                 $extension = end($filename_parts);
         }
 
-1	$client = S3Client::factory(array(
+	$client = S3Client::factory(array(
 	    'key'    => AWS_ACCESS_KEY,
 	    'secret' => AWS_SECRET_KEY));
 
