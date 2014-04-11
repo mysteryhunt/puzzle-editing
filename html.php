@@ -129,7 +129,7 @@
 
                 $pic = "<img src=\"nophoto.gif\" />";
                 if ($picture != "") {
-                        $picsrc = "https://' . AWS_BUCKET . '.s3.amazonaws.com/uploads/pictures/thumbs/$id.jpg";
+                        $picsrc = "https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/pictures/thumbs/$id.jpg";
 			$pic = "<img src=\"".$picsrc."\" />";
                 }
 
