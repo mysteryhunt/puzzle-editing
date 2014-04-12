@@ -119,9 +119,17 @@ function displayDraft($pid)
                         $ext = $finfo['extension'];
                 else
                         $ext = 'folder';
+		if(strpos($draft['filename'], 'http') !== false) {
+		  $link = $draft['filename'];
+		} else if(strpos($draft['filename'], '_dir', strlen($draft['filename']) - 4) !== false) {
+		  $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $draft['filename'];
+		} else {
+		  $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $draft['filename'];
+		}
+
 ?>
         <span class="testdata">
-                Puzzle: <a href="<?php echo $draft['filename']; ?>"><?php echo $finfo['basename']; ?></a>
+                Puzzle: <a href="<?php echo $link; ?>"><?php echo $finfo['basename']; ?></a>
                 <br/>
                 Uploaded on <?php echo $draft['date']; ?>
         </span>
