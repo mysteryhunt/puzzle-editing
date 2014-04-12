@@ -2382,8 +2382,7 @@ function uploadFiles($uid, $pid, $type, $file) {
                                 mysql_real_escape_string($target_path), mysql_real_escape_string($pid),
                                 mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
                         query_db($sql);
-
-                        addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.",TRUE);
+                        addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/list.html?prefix=$new_path\">$type</a> has been uploaded.",TRUE);
                 } else {
                         $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited)";
                 }
@@ -2402,7 +2401,7 @@ function uploadFiles($uid, $pid, $type, $file) {
                                 mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
                         query_db($sql);
 
-                        addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
+                        addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/$target_path\">$type</a> has been uploaded.",TRUE);
                 } else {
                         $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited) " . serialize($file);
                 }
