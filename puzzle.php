@@ -1085,7 +1085,9 @@ function displayComments($uid, $pid, $lastVisit)
 
                 echo "<br />$timestamp<br />$type <small>(Comment #$id)</small>";
                 echo "<td class='$type" . "Comment'>";
-                echo nl2br(preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2">\\2</a>', ($comment['comment'])));
+		$pcomment = preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2">\\2</a>', ($comment['comment']));
+		$pcomment = str_replace("=\"uploads/", "=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/", $pcomment);		
+                echo nl2br($pcomment);
                 #echo nl2br($comment['comment']);
                 echo '</td>';
                 echo '</tr>';
