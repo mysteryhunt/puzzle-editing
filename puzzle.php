@@ -881,7 +881,7 @@ function displayFileList ($uid, $pid, $type) {
         foreach ($fileList as $file) {
                 $finfo = pathinfo($file['filename']);
                 $filename = $finfo['basename'];
-		if(strpos($link, 'http') !== false) {
+		if(strpos($file['filename'], 'http') !== false) {
 		  $link = $file['filename'];
 		} else if(strpos($file['filename'], '_dir', strlen($file['filename']) - 4) !== false) {
 		  $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $file['filename'];
