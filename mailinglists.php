@@ -119,6 +119,7 @@
 
 	    print "</tr>";
 	    print "\n";
+	    flush();
 	}
 ?>
 	</table>
