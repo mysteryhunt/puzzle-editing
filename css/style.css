@@ -262,6 +262,10 @@ td.TestingAdminComment {
 	background-color: #B4E0E0;
 }
 
+td.FactcheckerComment {
+	background-color: #B4D8C8;
+}
+
 td.stats {
 	padding: 0em 0em 0em 0em;
 }

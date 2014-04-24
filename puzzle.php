@@ -1091,7 +1091,7 @@ function displayComments($uid, $pid, $lastVisit)
 
 function addCommentForm($uid, $pid)
 {
-  if (isAuthorOnPuzzle($uid, $pid) || isApproverOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isCohesion($uid) || isEditorChief($uid) || isTesterOnPuzzle($uid, $pid)) {
+  if (canComment($uid, $pid)) {
 ?>
                 <form action="form-submit.php" method="post">
                         <tr class="comment">
