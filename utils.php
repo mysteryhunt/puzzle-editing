@@ -6,15 +6,20 @@
 
 // Check that the user is logged in.
 // If so, update the session (to provent timing out) and return the uid;
-// If not, redirect to login page.
+// If not, redirect to login page.  Preserve POST data if redirecting.
 function isLoggedIn()
 {
         if (isset($_SESSION['uid']) && ($_SESSION['SITEURL'] == URL)) {
                 $_SESSION['time'] = time();
+		if (isset($_SESSION['postdata'])) {
+		   $_POST = $_SESSION['postdata'];
+                   unset($_SESSION['postdata']);
+		}
                 return $_SESSION['uid'];
         } else {
                 unset($_SESSION['uid']);
                 $_SESSION['redirect_to'] = $_SERVER['REQUEST_URI'];
+		$_SESSION['postdata'] = $_POST;
                 header("Location: " . URL . "/login.php");
                 exit(0);
         }
@@ -873,6 +878,33 @@ function getAnswerWord($aid)
         return $ans;
 }
 
+function getCommentTypeName($uid, $pid)
+{
+        if (isAuthorOnPuzzle($uid, $pid)) {
+                return "Author";
+        } else if (isApproverOnPuzzle($uid, $pid)) {
+                return "Approver";
+        } else if (isEditorOnPuzzle($uid, $pid)) {
+                return "Discuss Editor";
+        } else if (isCohesion($uid)) {
+                return "Cohesion";
+        } else if (isEditorChief($uid)) {
+                return "EIC";
+        } else if (isTesterOnPuzzle($uid, $pid)) {
+                return "Testsolver";
+        } else if (isDirector($uid)) {
+                return "Director";
+        } else if (isTestingAdminOnPuzzle($uid, $pid)) {
+                return "TestingAdmin";
+        } else if (isFactcheckerOnPuzzle($uid, $pid)) {
+                return "Factchecker";
+        } else {
+                return NULL; // lurker or unknown, cannot comment
+        }
+}
+function canComment($uid, $pid) {
+        return getCommentTypeName($uid, $pid) !== NULL;
+}
 
 function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
 {
@@ -884,30 +916,10 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
                 $typeName = "Server";
         } else if ($testing == TRUE) {
                 $typeName = "Testsolver";
-        } else if (isAuthorOnPuzzle($uid, $pid)) {
-                $typeName = "Author";
-        } else if (isApproverOnPuzzle($uid, $pid)) {
-                $typeName = "Approver";
-        } else if (isEditorOnPuzzle($uid, $pid)) {
-                $typeName = "Discuss Editor";
-        } else if (isCohesion($uid)) {
-                $typeName = "Cohesion";
-        } else if (isEditorChief($uid)) {
-                $typeName = "EIC";
-        } else if (isTesterOnPuzzle($uid, $pid)) {
-                $typeName = "Testsolver";
-        } else if (isDirector($uid)) {
-                $typeName = "Director";
-        } else if (isTestingAdminOnPuzzle($uid, $pid)) {
-                $typeName = "TestingAdmin";
-        } else if (isLurker($uid)) {
-                return;
-                $typeName = "Lurker";
         } else {
-                return;
-                $typeName = "Unknown";
+                $typeName = getCommentTypeName($uid, $pid);
+                if ($typeName === NULL) return;
         }
-
         $sql = sprintf("SELECT id FROM comment_type WHERE name='%s'", mysql_real_escape_string($typeName));
         $type = get_element($sql);
 

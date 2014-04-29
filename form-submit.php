@@ -330,7 +330,7 @@
         if (isset($_POST['SelfAddFactchecker'])) {
           // User wishes to opt in to factchecking duty.
           grantFactcheckPowers($uid);
-                      header("Location: " . URL . "/factcheck");
+                      header("Location: " . URL . "/factcheck.php");
                       exit(0);
         }
 
@@ -339,7 +339,7 @@
 
                 addFactcheckers($uid, $pid, array($uid));
 
-                header("Location: " . URL . "/factcheck");
+                header("Location: " . URL . "/factcheck.php");
                 exit(0);
         }
 
