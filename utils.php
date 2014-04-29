@@ -4,15 +4,20 @@
 
 // Check that the user is logged in.
 // If so, update the session (to provent timing out) and return the uid;
-// If not, redirect to login page.
+// If not, redirect to login page.  Preserve POST data if redirecting.
 function isLoggedIn()
 {
         if (isset($_SESSION['uid']) && ($_SESSION['SITEURL'] == URL)) {
                 $_SESSION['time'] = time();
+		if (isset($_SESSION['postdata'])) {
+		   $_POST = $_SESSION['postdata'];
+                   unset($_SESSION['postdata']);
+		}
                 return $_SESSION['uid'];
         } else {
                 unset($_SESSION['uid']);
                 $_SESSION['redirect_to'] = $_SERVER['REQUEST_URI'];
+		$_SESSION['postdata'] = $_POST;
                 header("Location: " . URL . "/login.php");
                 exit(0);
         }

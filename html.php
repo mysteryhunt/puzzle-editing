@@ -56,7 +56,7 @@
                 </div>
                 <div id="logindiv">
         <?php if (isset($_SESSION['uid'])) {
-                echo 'Logged in as <strong>' . getUserUsername(isLoggedIn()) . '</strong>';
+                echo 'Logged in as <strong>' . getUserUsername($_SESSION['uid']) . '</strong>';
                 echo '<a href="account.php"' . ($selnav == "account" ? ' class="accsel"' : "") . '>Your Account</a>';
                 if(MAILING_LISTS) { echo '<a href="mailinglists.php"' . ($selnav == "mailinglists" ? ' class="accsel"' : "") . '>Mailing Lists</a>'; }
                 if(!TRUST_REMOTE_USER) { echo '<a href="logout.php">Logout</a>'; }
