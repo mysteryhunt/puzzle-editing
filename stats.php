@@ -93,10 +93,19 @@ function computeComments()
 
 
 
+        echo '
+        <script type="text/javascript">
+        $(document).ready(function() {
+            // call the tablesorter plugin
+            $("#solverstats").tablesorter({
+                sortList: [[3,1],[0,0]]
+            });
+        });
+        </script>
+        ';
 
 
-
-        echo ' <table class="tablesorter">
+        echo ' <table id="solverstats" class="tablesorter">
                  <thead>
                         <tr>
                                 <th class="puzzidea">Solver</th>
