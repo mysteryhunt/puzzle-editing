@@ -3,8 +3,8 @@
         require_once "db-func.php";
         if(USING_AWS) {
 	  require 'aws.phar';
-	  use Aws\S3\S3Client;
 	}
+	use Aws\S3\S3Client;
 
 // Check that the user is logged in.
 // If so, update the session (to provent timing out) and return the uid;

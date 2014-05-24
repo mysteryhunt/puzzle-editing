@@ -2,8 +2,9 @@
         require_once "config.php";
         if(USING_AWS) {
 	  require 'aws.phar';
-	  use Aws\S3\S3Client;
 	}
+        use Aws\S3\S3Client;
+
         function pictureHandling($id, $picture)
         {
                 if ($picture == NULL) return ""; // No file uploaded
