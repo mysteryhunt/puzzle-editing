@@ -1,6 +1,10 @@
 <?php
         require_once "config.php";
         require_once "db-func.php";
+        if(USING_AWS) {
+	  require 'aws.phar';
+	  use Aws\S3\S3Client;
+	}
 
 // Check that the user is logged in.
 // If so, update the session (to provent timing out) and return the uid;
@@ -2366,14 +2370,30 @@ function uploadFiles($uid, $pid, $type, $file) {
                 $extension = end($filename_parts);
         }
 
+	if(USING_AWS) {
+	  $client = S3Client::factory(array(
+					    'key'    => AWS_ACCESS_KEY,
+					    'secret' => AWS_SECRET_KEY));
+	}
+
         if ($extension == "zip") {
                 $filetype = "dir";
                 if (move_uploaded_file($file['tmp_name'], $target_path)) {
+		  if(USING_AWS) {
+		    $key = $target_path;
+		    $result = $client->putObject(array(
+		      'Bucket' => AWS_BUCKET,
+		      'Key'    => $key,
+		      'Body'   => file_get_contents($target_path)));
+		  }
                         $new_path = $target_path . "_" . $filetype;
                         #echo "target_path is $target_path<br>";
                         #echo "new_path is $new_path<br>";
                         $res = exec("/usr/bin/unzip $target_path -d $new_path");
 
+			if(USING_AWS) {
+			  $result = $client->uploadDirectory($new_path, AWS_BUCKET, $new_path);
+			}
                         $sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
                                 mysql_real_escape_string($new_path), mysql_real_escape_string($pid),
                                 mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
@@ -2383,7 +2403,11 @@ function uploadFiles($uid, $pid, $type, $file) {
                                 mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
                         query_db($sql);
 
-                        addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.",TRUE);
+			if(USING_AWS) {
+			  addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/list.html?prefix=$new_path\">$type</a> has been uploaded.",TRUE);
+			} else {
+			  addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.",TRUE);
+			}
                 } else {
                         $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited)";
                 }
@@ -2392,12 +2416,24 @@ function uploadFiles($uid, $pid, $type, $file) {
         else {
                 $upload_error = "";
                 if (move_uploaded_file($file['tmp_name'], $target_path)) {
+		  if(USING_AWS) {
+		    $key = $target_path;
+		    $result = $client->putObject(array(
+		      'Bucket' => AWS_BUCKET,
+		      'Key'    => $key,
+		      'Body'   => file_get_contents($target_path)));		    
+		  }
+
                         $sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
                                 mysql_real_escape_string($target_path), mysql_real_escape_string($pid),
                                 mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
                         query_db($sql);
 
-                        addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
+			if(USING_AWS) {
+			  addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/$target_path\">$type</a> has been uploaded.",TRUE);
+			} else {
+			  addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
+			}
                 } else {
                         $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited) " . serialize($file);
                 }
@@ -3589,7 +3625,7 @@ function isMemberOfList($membership, $list_type, $email, $moira_entity) {
 
 function getListMembership($list, $list_type) {
     if ($list_type == "mailman") {
-       $command = "athrun consult mmblanche " . $list . " -V " . MMBLANCHE_PASSWORDS ;
+       $command = MMBLANCHE_CMD . " " . $list . " -V " . MMBLANCHE_PASSWORDS ;
        $out = exec($command, $all_output, $return_var);
        return $all_output;
     } else {
@@ -3633,7 +3669,7 @@ function deleteFromMoiraList($list, $moira_entity, $krb5ccname) {
 }
 
 function addToMailmanList($list, $email) {
-    $command = "athrun consult mmblanche " . $list . " -a " . escapeshellarg($email) . " -V " . MMBLANCHE_PASSWORDS . " 2>&1";
+    $command = MMBLANCHE_CMD . " " . $list . " -a " . escapeshellarg($email) . " -V " . MMBLANCHE_PASSWORDS . " 2>&1";
     exec($command, $all_output, $return_var);
     print "<p>";
     print "Adding " . $email . " to mailman list " . $list . ": ";
@@ -3651,7 +3687,7 @@ function addToMailmanList($list, $email) {
     	}
 
 function deleteFromMailmanList($list, $email) {
-    $command = "athrun consult mmblanche " . $list . " -d " . escapeshellarg($email) . " -V " . MMBLANCHE_PASSWORDS . " 2>&1";
+    $command = MMBLANCHE_CMD . " " . $list . " -d " . escapeshellarg($email) . " -V " . MMBLANCHE_PASSWORDS . " 2>&1";
     exec($command, $all_output, $return_var);
     print "<p>";
     print "Deleting " . $email . " from mailman list " . $list . ": ";

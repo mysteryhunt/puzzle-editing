@@ -1,5 +1,9 @@
 <?php
         require_once "config.php";
+        if(USING_AWS) {
+	  require 'aws.phar';
+	  use Aws\S3\S3Client;
+	}
         function pictureHandling($id, $picture)
         {
                 if ($picture == NULL) return ""; // No file uploaded
@@ -26,12 +30,32 @@
                 $upfile = picName($id, $picture['name']);
                 $thumb = thumbName($id);
 
+		if(USING_AWS) {
+		  $client = S3Client::factory(array(
+						    'key'    => AWS_ACCESS_KEY,
+						    'secret' => AWS_SECRET_KEY));
+		}
+
                 if (!move_uploaded_file($picture['tmp_name'], $upfile)) {
                         echo "Problem: Could not move picture into pictures directory";
                         return "";
-                }
+                } else if(USING_AWS) {
+		  $key = $upfile;
+		  $result = $client->putObject(array(
+                           'Bucket' => AWS_BUCKET,
+                           'Key'    => $key,
+                           'Body'   => file_get_contents($upfile)));
+		}
 
                 makeThumb($upfile, $thumb);
+
+		if(USING_AWS) {
+		  $key = $thumb;
+		  $result = $client->putObject(array(
+                           'Bucket' => AWS_BUCKET,
+                           'Key'    => $key,
+                           'Body'   => file_get_contents($key)));
+		}
 
                 return $upfile;
         }

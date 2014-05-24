@@ -47,7 +47,22 @@
         define("USING_ROUND_CAPTAINS", FALSE);
         define("USING_APPROVERS", FALSE);
         define("USING_CREDITS", FALSE);
-	
+	define("USING_AWS", FALSE);
+
+        define("ENABLE_WRITING_WIKI", FALSE);
+        define("ANON_TESTERS", FALSE);
+        define("USING_CODENAMES", TRUE);
+
+        define("MAILING_LISTS", TRUE);
+        define("GET_KEYTAB", "kinit -k -t KEYTAB_FILE PRINCIPAL");
+        define("MMBLANCHE_CMD", "athrun consult mmblanche");
+        define("MMBLANCHE_PASSWORDS", "PASSWORD_DIR");
+        define("EDITOR_MAILING_LIST", "EDITOR_LIST");
+
+        $mailing_lists = array(
+            "LIST" => "DESCRIPTION",
+	);
+
         //when is hunt
         define("HUNT_YEAR",2014);
         define("HUNT_DOM",17);

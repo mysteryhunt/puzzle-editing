@@ -881,7 +881,14 @@ function displayFileList ($uid, $pid, $type) {
         foreach ($fileList as $file) {
                 $finfo = pathinfo($file['filename']);
                 $filename = $finfo['basename'];
-                $link = $file['filename'];
+		if(strpos($file['filename'], 'http') !== false || !USING_AWS) {
+		  $link = $file['filename'];
+		} else if(strpos($file['filename'], '_dir', strlen($file['filename']) - 4) !== false) {
+		  $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $file['filename'];
+		} else {
+		  $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $file['filename'];
+		}
+
                 $date = $file['date'];
 
                 if ($first) {
@@ -1082,8 +1089,12 @@ function displayComments($uid, $pid, $lastVisit)
 
                 echo "<br />$timestamp<br />$type <small>(Comment #$id)</small>";
                 echo "<td class='$type" . "Comment'>";
-                echo nl2br(preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2">\\2</a>', ($comment['comment'])));
-                #echo nl2br($comment['comment']);
+
+		$pcomment = preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2">\\2</a>', ($comment['comment']));
+		if(USING_AWS) {
+		  $pcomment = str_replace("=\"uploads/", "=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/", $pcomment);
+		}
+                echo nl2br($pcomment);
                 echo '</td>';
                 echo '</tr>';
         }

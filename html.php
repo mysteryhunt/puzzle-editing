@@ -129,9 +129,14 @@
 
                 $pic = "<img src=\"nophoto.gif\" />";
                 if ($picture != "") {
+		  if(USING_AWS) {
+                        $picsrc = "https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/pictures/thumbs/$id.jpg";
+			$pic = "<img src=\"".$picsrc."\" />";
+		  } else {
                         $picsrc = "uploads/pictures/thumbs/$id.jpg";
                         if (file_exists($picsrc))
                                 $pic = "<img src=\"".$picsrc."\" />";
+		  }
                 }
 
                 $jobNames = getUserJobsAsList($id);
