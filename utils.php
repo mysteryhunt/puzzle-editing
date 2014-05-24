@@ -3159,27 +3159,33 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
 {
         mysql_query('START TRANSACTION');
 
-        $comment = createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
-        addComment($uid, $pid, $comment, FALSE, TRUE);
-
         if (strcmp($done, 'yes') == 0) {
+	  $donetext = 'Yes';
 	  $done = 0;
 	} else if(strcmp($done, 'no') == 0) {
 	  doneTestingPuzzle($uid, $pid);
+	  $donetext = 'No';
 	  $done = 1;
 	} else if(strcmp($done, 'notype') == 0) {
 	  doneTestingPuzzle($uid, $pid);
+	  $donetext = 'No, this isn\'t a puzzle type I like.';
 	  $done = 2;
 	} else if(strcmp($done, 'nostuck') == 0) {
 	  doneTestingPuzzle($uid, $pid);
+	  $donetext = 'No, I\'m not sure what to do and don\'t feel like working on it anymore.';
 	  $done = 3;
 	} else if(strcmp($done, 'nofun') == 0) {
 	  doneTestingPuzzle($uid, $pid);
+	  $donetext = 'No, I think I know what to do but it isn\'t fun/I\'m not making progress.';
 	  $done = 4;
 	} else if(strcmp($done, 'nospoiled') == 0) {
 	  doneTestingPuzzle($uid, $pid);
+	  $donetext = 'No, I was already spoiled on this puzzle';
 	  $done = 5;
 	} 
+
+        $comment = createFeedbackComment($donetext, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
+        addComment($uid, $pid, $comment, FALSE, TRUE);
 
         $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
                         VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
