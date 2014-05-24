@@ -98,7 +98,7 @@
   */
 
         $testPuzzles = getActivePuzzlesInTestQueue($uid);
-        displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, array());
+        displayQueue($uid, $testPuzzles, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, array());
 
         echo '<br />';
         echo '<br />';
