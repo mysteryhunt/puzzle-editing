@@ -908,7 +908,7 @@ function canComment($uid, $pid) {
         return getCommentTypeName($uid, $pid) !== NULL;
 }
 
-function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
+function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE, $important = FALSE)
 {
         $purifier = new HTMLPurifier();
 	$textComment = strip_tags($comment);
@@ -931,9 +931,9 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
         query_db($sql);
 
         if ($typeName == "Testsolver")
-                emailComment($uid, $pid, $textComment, TRUE);
+	  emailComment($uid, $pid, $textComment, TRUE, $important);
         else
-                emailComment($uid, $pid, $textComment);
+	  emailComment($uid, $pid, $textComment, FALSE, $important);
 }
 
 function createAnswer($answer, $round)
@@ -996,7 +996,7 @@ function clearTestsolveRequests($pid)
         query_db($sql);
 }
 
-function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE)
+function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $isImportant = FALSE)
 {
         if ($isTestsolveComment && ANON_TESTERS)
                 $name = "Anonymous Testsolver";
@@ -1020,7 +1020,8 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE)
         foreach ($users as $user)
         {
                 if ($user != $uid) {
-                        sendEmail($user, $subject, $message, $link);
+		  if((emailLevel($user) > 0 && $isImportant) || emailLevel($user) > 1)
+		    sendEmail($user, $subject, $message, $link);
                 }
         }
         foreach ($admins as $user)
@@ -1030,7 +1031,8 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE)
                 // author/editor/etc., they will get mail twice. This is
                 // arguably not great, but we'll live with it.
                 if ($user != $uid) {
-                        sendEmail($user, "[Testsolve] $subject", $message, $link);
+		  if((emailLevel($user) > 0 && $isImportant) || emailLevel($user) > 1)
+		    sendEmail($user, "[Testsolve] $subject", $message, $link);
                 }
         }
 }
@@ -2312,7 +2314,7 @@ function emailTesters($pid, $status)
 
         $testers = getCurrentTestersForPuzzle($pid);
         foreach ($testers as $uid => $name) {
-                sendEmail($uid, $subject, $message, $link);
+	    sendEmail($uid, $subject, $message, $link);
         }
 }
 
@@ -2328,7 +2330,7 @@ function emailFactcheckers($pid)
 
         $fcs = getFactcheckersForPuzzle($pid);
         foreach ($fcs as $uid => $name) {
-                sendEmail($uid, $subject, $message, $link);
+	    sendEmail($uid, $subject, $message, $link);
         }
 }
 
@@ -3185,7 +3187,7 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
 	} 
 
         $comment = createFeedbackComment($donetext, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
-        addComment($uid, $pid, $comment, FALSE, TRUE);
+        addComment($uid, $pid, $comment, FALSE, TRUE, TRUE);
 
         $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
                         VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",

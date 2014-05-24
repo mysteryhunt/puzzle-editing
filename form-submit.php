@@ -265,7 +265,7 @@
 
                 $comment = $_POST['comment'];
 
-                addComment($uid, $pid, $comment);
+                addComment($uid, $pid, $comment, FALSE, FALSE, TRUE);
 
                 header("Location: " . URL . "/puzzle.php?pid=" . $pid);
                 exit(0);
