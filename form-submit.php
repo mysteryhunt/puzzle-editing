@@ -421,10 +421,10 @@
                 insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
                 $_SESSION['feedback'] = "Thank you for giving feedback on this puzzle!";
 
-                if (strcmp($done, 'no') == 0) {
-			header("Location: " . URL . "/testsolving.php");
-                } else
+                if (strcmp($done, 'yes') == 0) {
 			header("Location: " . URL . "/test.php?pid=$pid");
+                } else
+			header("Location: " . URL . "/testsolving.php");
                 exit(0);
         }
 

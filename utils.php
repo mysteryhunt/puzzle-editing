@@ -3162,11 +3162,24 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
         $comment = createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
         addComment($uid, $pid, $comment, FALSE, TRUE);
 
-        if (strcmp($done, 'no') == 0) {
-                $done = 1;
-                doneTestingPuzzle($uid, $pid);
-        } else
-                $done = 0;
+        if (strcmp($done, 'yes') == 0) {
+	  $done = 0;
+	} else if(strcmp($done, 'no') == 0) {
+	  doneTestingPuzzle($uid, $pid);
+	  $done = 1;
+	} else if(strcmp($done, 'notype') == 0) {
+	  doneTestingPuzzle($uid, $pid);
+	  $done = 2;
+	} else if(strcmp($done, 'nostuck') == 0) {
+	  doneTestingPuzzle($uid, $pid);
+	  $done = 3;
+	} else if(strcmp($done, 'nofun') == 0) {
+	  doneTestingPuzzle($uid, $pid);
+	  $done = 4;
+	} else if(strcmp($done, 'nospoiled') == 0) {
+	  doneTestingPuzzle($uid, $pid);
+	  $done = 5;
+	} 
 
         $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
                         VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",

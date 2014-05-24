@@ -632,7 +632,7 @@ DROP TABLE IF EXISTS `testing_feedback`;
 CREATE TABLE `testing_feedback` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
-  `done` tinyint(1) NOT NULL DEFAULT '0',
+  `done` tinyint(11) NOT NULL DEFAULT '0',
   `how_long` varchar(255) DEFAULT NULL,
   `tried` text,
   `liked` text,

@@ -196,7 +196,11 @@ function displayFeedbackForm($uid, $pid)
         <p>
                 Do you intend to return to this puzzle?
                 <input type="radio" name="done" value="yes" /> Yes
-                <input type="radio" name="done" value="no" /> No
+                <input type="radio" name="done" value="notype" /> No, this isn't a puzzle type I like.
+                <input type="radio" name="done" value="nostuck" /> No, I'm not sure what to do and don't feel like working on it anymore.
+                <input type="radio" name="done" value="nofun" /> No, I think I know what to do but it isn't fun/I'm not making progress.
+                <input type="radio" name="done" value="nospoiled" /> No, I was already spoiled on this puzzle
+                <input type="radio" name="done" value="no" /> No (please give reason in the comments)
                 <br><small>(Selecting "No" marks you as finished
                 in the database. This is important for
                 our records.)</small>
@@ -261,10 +265,18 @@ function displayPrevFeedback($uid, $pid)
         echo '<table>';
 
         foreach ($prevFeedback as $pf) {
-                if ($pf['done'] == 1)
-                        $done = 'no';
-                else
-                        $done = 'yes';
+	if($pf['done'] == 0)
+	  $done = 'Yes';
+	else if($pf['done'] == 1)
+	  $done = 'No';
+	else if($pf['done'] == 2)
+	  $done = 'No, this isn\'t a puzzle type I like.';
+	else if($pf['done'] == 3)
+	  $done = 'No, I\'m not sure what to do and don\'t feel like working on it anymore.';
+	else if($pf['done'] == 4)
+	  $done = 'No, I think I know what to do but it isn\'t fun/I\'m not making progress.';
+	else if($pf['done'] == 5)
+	  $done = 'No, I was already spoiled on this puzzle';
 
                 $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
                 $purifier = new HTMLPurifier();
