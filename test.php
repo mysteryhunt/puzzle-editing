@@ -194,13 +194,13 @@ function displayFeedbackForm($uid, $pid)
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
         <p>
-                Do you intend to return to this puzzle?
-                <input type="radio" name="done" value="yes" /> Yes
-                <input type="radio" name="done" value="notype" /> No, this isn't a puzzle type I like.
-                <input type="radio" name="done" value="nostuck" /> No, I'm not sure what to do and don't feel like working on it anymore.
-                <input type="radio" name="done" value="nofun" /> No, I think I know what to do but it isn't fun/I'm not making progress.
-                <input type="radio" name="done" value="nospoiled" /> No, I was already spoiled on this puzzle
-                <input type="radio" name="done" value="no" /> No (please give reason in the comments)
+                Do you intend to return to this puzzle?<br/>
+                <input type="radio" name="done" value="yes" /> Yes<br/>
+                <input type="radio" name="done" value="notype" /> No, this isn't a puzzle type I like.<br/>
+                <input type="radio" name="done" value="nostuck" /> No, I'm not sure what to do and don't feel like working on it anymore.<br/>
+                <input type="radio" name="done" value="nofun" /> No, I think I know what to do but it isn't fun/I'm not making progress.<br/>
+                <input type="radio" name="done" value="nospoiled" /> No, I was already spoiled on this puzzle<br/>
+                <input type="radio" name="done" value="no" /> No (please give reason in the comments)<br/>
                 <br><small>(Selecting "No" marks you as finished
                 in the database. This is important for
                 our records.)</small>
