@@ -74,6 +74,14 @@
                                         <input type="file" name="picture" />
                                 </td>
                         </tr>
+                        <tr>
+                                <td>Update Email Preferences</td>
+                                <td>
+	  <input type="radio" name="email_pref" value="0" <?php if($data['email_level'] == 0) echo "checked" ?>/>Minimal Email<br/>
+	                          <input type="radio" name="email_pref" value="1" <?php if($data['email_level'] == 1) echo "checked" ?>/>Human Comments on Puzzles<br/>
+	                          <input type="radio" name="email_pref" value="2" <?php if($data['email_level'] == 2) echo "checked" ?>/>All Puzzle Updates<br/>
+                                </td>
+                        </tr>
 <?php
                         // Start by getting the list of rows of user_info_keys into arrays.
                         $sql = "SELECT id, shortname, longname FROM user_info_key";
@@ -117,12 +125,13 @@
                 $purifier = new HTMLPurifier();
                 $fullname = $purifier->purify($_POST['fullname']);
                 $pic = $purifier->purify($pic);
+		$email_level = $purifier->purify($_POST['email_pref']);
 
                 mysql_query('START TRANSACTION');
                 $failed = 0;
 
-                $sql = sprintf("UPDATE user_info SET fullname='%s', picture='%s' WHERE uid='%s'",
-                                mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string($uid));
+                $sql = sprintf("UPDATE user_info SET fullname='%s', picture='%s', email_level='%s' WHERE uid='%s'",
+			       mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string(($email_level)), mysql_real_escape_string($uid));
 
                 $result = mysql_query($sql);
                 if ($result == FALSE)

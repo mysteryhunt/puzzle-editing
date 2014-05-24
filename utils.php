@@ -385,6 +385,12 @@ function getEmail($uid)
         return get_element($sql);
 }
 
+function getEmailLevel($uid)
+{
+        $sql = sprintf("SELECT email_level FROM user_info WHERE uid='%s'",
+                                        mysql_real_escape_string($uid));
+        return get_element($sql);
+}
 
 // Get associative array of users' uid and name
 function getUsersForPuzzle($table, $pid)
@@ -1020,7 +1026,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $i
         foreach ($users as $user)
         {
                 if ($user != $uid) {
-		  if((emailLevel($user) > 0 && $isImportant) || emailLevel($user) > 1)
+		  if((getEmailLevel($user) > 0 && $isImportant) || getEmailLevel($user) > 1)
 		    sendEmail($user, $subject, $message, $link);
                 }
         }
@@ -1031,7 +1037,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $i
                 // author/editor/etc., they will get mail twice. This is
                 // arguably not great, but we'll live with it.
                 if ($user != $uid) {
-		  if((emailLevel($user) > 0 && $isImportant) || emailLevel($user) > 1)
+		  if((getEmailLevel($user) > 0 && $isImportant) || getEmailLevel($user) > 1)
 		    sendEmail($user, "[Testsolve] $subject", $message, $link);
                 }
         }
