@@ -157,6 +157,11 @@
         echo "</div>";
 
         echo "<br />";
+        echo "<div class='priority'>";
+        displayPuzzPriority($uid, $pid);
+        echo "</div>";
+
+        echo "<br />";
         echo "<div class='markasunseen'>";
         displayMarkAsUnseen($uid, $pid);
         echo "</div>";
@@ -1177,7 +1182,7 @@ function displayPuzzApproval($uid, $pid)
 <?php
         }
 
-        //everyone gets to see approval table
+       //everyone gets to see approval table
         if ($approvals == NULL){
                 echo "<tr><td colspan=3>No existing editor feedback at this stage yet.</td></tr><br>";
         }
@@ -1203,5 +1208,37 @@ function displayPuzzApproval($uid, $pid)
 ?>
         </table>
 <?php
+}
+
+function displayPuzzPriority($uid, $pid)
+{
+  $priority = getPriority($pid);
+  //only display approval form itself if you are an editor/approver on this puzzle
+  if ((isEditorChief($uid)) ||
+      (isApproverOnPuzzle($uid, $pid) && USING_APPROVERS)) {
+?>
+        <b>Testsolving Priority (1 is Highest):</b> <br/>
+        <table>
+                <tr>
+                        <td>
+                                <form action="form-submit.php" method="post">
+	    <input type="radio" name="puzzPriority" value="1" <?php if($priority == 1) echo "checked" ?> />1
+	    <input type="radio" name="puzzPriority" value="2" <?php if($priority == 2) echo "checked" ?> />2
+	    <input type="radio" name="puzzPriority" value="3" <?php if($priority == 3) echo "checked" ?> />3
+	    <input type="radio" name="puzzPriority" value="4" <?php if($priority == 4) echo "checked" ?> />4
+	    <input type="radio" name="puzzPriority" value="5" <?php if($priority == 5) echo "checked" ?> />5
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                                <input type="hidden" name="uid" value='<?php echo $uid; ?>' />
+                                <input type="hidden" name="pid" value='<?php echo $pid; ?>' />
+                                <input type="submit" name="setPuzzPriority" value="Submit" />
+                                </form>
+                        </td>
+                </tr>
+        </table>
+<?php
+        }
 }
 ?>

@@ -467,6 +467,16 @@
                 exit(0);
         }
 
+        if (isset($_POST['setPuzzPriority'])) {
+                $pid = $_POST['pid'];
+                $priority = $_POST['puzzPriority'];
+
+                setPuzzPriority($uid, $pid, $priority);
+
+                header("Location: "  . URL . "/puzzle.php?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['killPuzzle'])) {
                 $pid = $_POST['pid'];
 

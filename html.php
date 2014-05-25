@@ -200,6 +200,7 @@
                                 <?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
                                 <?php if ($showNotes) {echo '<th class="puzzidea">Status Notes</th>';} ?>
 				<?php if ($showNotes) {echo '<th class="puzzidea">Runtime Info</th>';} ?>
+				<?php if ($showNotes) {echo '<th class="puzzidea">Priority</th>';} ?>
                                 <?php if ($showAnswer) {echo '<th class="puzzidea">Answer</th>';} ?>
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Commenter</th>';} ?>
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
@@ -266,6 +267,7 @@
                                 <?php if ($showSummary) {echo "<td class='puzzideasecure'>" . $puzzleInfo["summary"] . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
 				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["runtime_info"] . "</td>";} ?>
+				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["priority"] . "</td>";} ?>
                 <?php
                 if ($showAnswer) {
                         if (getAnswersForPuzzleAsList($pid) != "") {

@@ -466,6 +466,7 @@ CREATE TABLE `puzzle_idea` (
   `credits` varchar(255) NOT NULL DEFAULT '',
   `runtime_info` varchar(255) NOT NULL DEFAULT '',
   `needed_editors` int(11) NOT NULL DEFAULT '2',
+  `priority` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `pstatus` (`pstatus`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

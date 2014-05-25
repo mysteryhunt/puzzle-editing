@@ -478,6 +478,11 @@ function getNeededEditors($pid) {
         return get_element($sql);
 }
 
+function getPriority($pid) {
+        $sql = sprintf("SELECT priority FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+        return get_element($sql);
+}
+
 function getEditorStatus($pid)
 {
         $sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN editor_queue ON user_info.uid=editor_queue.uid WHERE editor_queue.pid='%s'", mysql_real_escape_string($pid));
@@ -2085,6 +2090,22 @@ function setPuzzApprove($uid, $pid, $approve)
         
 }
 
+function setPuzzPriority($uid, $pid, $priority)
+{
+        $sql = sprintf("UPDATE puzzle_idea SET priority='%s' WHERE id='%s'",
+                        mysql_real_escape_string($priority), mysql_real_escape_string($pid));
+
+        $result = query_db($sql);
+        $name = getUserName($uid);
+        $title = getTitle($pid);
+        
+        //add comment noting this approval or disapproval
+
+	$comment = sprintf("%s changed testsolving priority of puzzle %s to %s", $name, $title, $priority);
+        addComment ($uid, $pid, $comment, TRUE);
+        
+}
+
 function getAllEditors()
 {
         return get_assoc_array("select user_info.uid, fullname from user_info, jobs, priv where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 group by uid", "uid", "fullname");
@@ -2843,6 +2864,7 @@ function addPuzzleToTestQueue($uid, $pid)
 // Lower numbers are HIGHER priorities.
 function getPuzzleTestPriority($pid)
 {
+  $priority = getPriority($pid);
         $status = getStatusForPuzzle($pid);
         $numTesters = getNumTesters($pid);
 
@@ -2858,7 +2880,7 @@ function getPuzzleTestPriority($pid)
                 $num = $numTesters;
         */
         $num = $numTesters;
-        return $num;
+        return 100 * $priority + $num;
         // Lower numbers are HIGHER priorities.
 }
 
@@ -2972,7 +2994,7 @@ function isPuzzleInTesting($pid)
 function getPuzzlesInTesting()
 {
         $sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
-                        WHERE pstatus.inTesting = '1'";
+                        WHERE pstatus.inTesting = '1' ORDER BY puzzle_idea.priority";
         return get_elements($sql);
 }
 
