@@ -3212,6 +3212,10 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
 	  doneTestingPuzzle($uid, $pid);
 	  $donetext = 'No, I was already spoiled on this puzzle';
 	  $done = 5;
+	} else if(strcmp($done, 'nodone') == 0) {
+	  doneTestingPuzzle($uid, $pid);
+	  $donetext = 'No, I\'ve solved it.';
+	  $done = 6;
 	} 
 
         $comment = createFeedbackComment($donetext, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);

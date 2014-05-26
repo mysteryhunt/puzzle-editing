@@ -200,6 +200,7 @@ function displayFeedbackForm($uid, $pid)
                 <input type="radio" name="done" value="nostuck" /> No, I'm not sure what to do and don't feel like working on it anymore.<br/>
                 <input type="radio" name="done" value="nofun" /> No, I think I know what to do but it isn't fun/I'm not making progress.<br/>
                 <input type="radio" name="done" value="nospoiled" /> No, I was already spoiled on this puzzle<br/>
+                <input type="radio" name="done" value="nodone" /> No, I've solved it.<br/>
                 <input type="radio" name="done" value="no" /> No (please give reason in the comments)<br/>
                 <br><small>(Selecting "No" marks you as finished
                 in the database. This is important for
@@ -277,6 +278,8 @@ function displayPrevFeedback($uid, $pid)
 	  $done = 'No, I think I know what to do but it isn\'t fun/I\'m not making progress.';
 	else if($pf['done'] == 5)
 	  $done = 'No, I was already spoiled on this puzzle';
+	else if($pf['done'] == 6)
+	  $done = 'No, I\'ve solved it.';
 
                 $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
                 $purifier = new HTMLPurifier();
