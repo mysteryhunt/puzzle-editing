@@ -3248,6 +3248,13 @@ function doneTestingPuzzle($uid, $pid)
 
 function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return)
 {
+  $difficulty_text = $difficulty;
+  if($difficulty == 0)
+    $difficulty_text = "-";
+  $fun_text = $fun;
+  if($fun == 0)
+    $fun_text = "-";
+
         $comment = "
 <p><strong>Do you intend to return to this puzzle?</strong></p>
 
@@ -3281,11 +3288,11 @@ Is there anything wrong with the technical details/formatting of the puzzle?</st
 
 <p><strong>How fun was this puzzle?</p></strong></p>
 
-<p>$fun</p><br />
+<p>$fun_text</p><br />
  
 <p><strong>How would you rate the difficulty of this puzzle?</p></strong></p>
 
-<p>$difficulty</p>";
+<p>$difficulty_text</p>";
         return $comment;
 }
 

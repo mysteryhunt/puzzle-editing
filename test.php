@@ -234,18 +234,20 @@ function displayFeedbackForm($uid, $pid)
         </p>
         <p>
                         Rate the overall fun of this puzzle. <SELECT NAME="fun">
+			<OPTION VALUE="0" SELECTED>-</OPTION>
                         <OPTION>1</OPTION>
                         <OPTION>2</OPTION>
-                        <OPTION SELECTED> 3</OPTION>
+                        <OPTION>3</OPTION>
                         <OPTION>4</OPTION>
                         <OPTION>5</OPTION>
                         </SELECT>
         </p>
         <p>
                         Rate the overall difficulty of this puzzle. <SELECT NAME="difficulty">
+			<OPTION VALUE="0" SELECTED>-</OPTION>
                         <OPTION>1</OPTION>
                         <OPTION>2</OPTION>
-                        <OPTION SELECTED> 3</OPTION>
+                        <OPTION>3</OPTION>
                         <OPTION>4</OPTION>
                         <OPTION>5</OPTION>
                         </SELECT>
