@@ -688,7 +688,7 @@ function updateDescription($uid = 0, $pid, $oldDescription, $cleanDescription)
 
         $comment = "<p><strong>Changed description</strong></p>";
         $comment .= "<p><a class='description' href='#'>[View Old Description]</a></p>";
-        $comment .= "<p>$oldDescription</p>";
+        $comment .= "<div>$oldDescription</div>";
 
         addComment($uid, $pid, $comment, TRUE);
 }
@@ -3219,7 +3219,12 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
 	} 
 
         $comment = createFeedbackComment($donetext, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
-        addComment($uid, $pid, $comment, FALSE, TRUE, TRUE);
+
+	$ncomment = "<p><strong>Testing Feedback</strong></p>";
+	$ncomment .= "<p><a class='description' href='#'>[View Feedback]</a></p>";
+	$ncomment .= "<div>$comment</div>";
+
+        addComment($uid, $pid, $ncomment, FALSE, TRUE, TRUE);
 
         $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
                         VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
