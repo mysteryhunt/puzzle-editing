@@ -688,7 +688,7 @@ function updateDescription($uid = 0, $pid, $oldDescription, $cleanDescription)
 
         $comment = "<p><strong>Changed description</strong></p>";
         $comment .= "<p><a class='description' href='#'>[View Old Description]</a></p>";
-        $comment .= "<p>$oldDescription</p>";
+        $comment .= "<div>$oldDescription</div>";
 
         addComment($uid, $pid, $comment, TRUE);
 }
@@ -3212,10 +3212,19 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
 	  doneTestingPuzzle($uid, $pid);
 	  $donetext = 'No, I was already spoiled on this puzzle';
 	  $done = 5;
+	} else if(strcmp($done, 'nodone') == 0) {
+	  doneTestingPuzzle($uid, $pid);
+	  $donetext = 'No, I\'ve solved it.';
+	  $done = 6;
 	} 
 
         $comment = createFeedbackComment($donetext, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
-        addComment($uid, $pid, $comment, FALSE, TRUE, TRUE);
+
+	$ncomment = "<p><strong>Testing Feedback</strong></p>";
+	$ncomment .= "<p><a class='description' href='#'>[View Feedback]</a></p>";
+	$ncomment .= "<div>$comment</div>";
+
+        addComment($uid, $pid, $ncomment, FALSE, TRUE, TRUE);
 
         $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
                         VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
@@ -3244,6 +3253,13 @@ function doneTestingPuzzle($uid, $pid)
 
 function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return)
 {
+  $difficulty_text = $difficulty;
+  if($difficulty == 0)
+    $difficulty_text = "-";
+  $fun_text = $fun;
+  if($fun == 0)
+    $fun_text = "-";
+
         $comment = "
 <p><strong>Do you intend to return to this puzzle?</strong></p>
 
@@ -3277,11 +3293,11 @@ Is there anything wrong with the technical details/formatting of the puzzle?</st
 
 <p><strong>How fun was this puzzle?</p></strong></p>
 
-<p>$fun</p><br />
+<p>$fun_text</p><br />
  
 <p><strong>How would you rate the difficulty of this puzzle?</p></strong></p>
 
-<p>$difficulty</p>";
+<p>$difficulty_text</p>";
         return $comment;
 }
 

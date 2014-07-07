@@ -69,7 +69,7 @@ $(document).ready(function()
 	
 	$('.description').parent().next().hide();
 	$('.description').click(function() {
-		$('.description').parent().next().toggle();
+		$(this).parent().next().toggle();
 		return false;
 	})
 	
