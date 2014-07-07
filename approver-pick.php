@@ -37,17 +37,17 @@
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                 Enter Puzzle ID to edit: <input type="text" name="pid" />
                 <input type="submit" name="getPuzz" value="Get Puzzle" />
-<?php  if (ALLOW_EDITOR_PICK) {
-          echo 'or view the <a href="approver-pick.php">list of puzzles that need approval editors</a>.';
-       }
-?>
+                or view your current <a href="approver.php">approval editor queue</a>.
         </form>
 <?php
+        if (ALLOW_EDITOR_PICK) {
+                echo '<br/><h3>Needs Approval Editor(s)</h3>';
+                $puzzles = getPuzzlesNeedingApprovers($uid);
+                echo '<p><strong class="impt">IMPORTANT:</strong> <strong>Clicking a puzzle below will add you as an approval editor</strong> (unless you already have a role on the puzzle or can see all puzzles.)</p>';
+                echo '<p><strong>Please click judiciously and give comments to improve the puzzles you decide to approve.</strong> (You can still remove yourself from being an approval editor later, however.)</p>';
+                displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, array(), "&approve=1");
+        }
 
-	echo '<br/>';
-	echo '<h3>Approval Editor Queue</h3>';
-	$puzzles = getPuzzlesInApproverQueue($uid);
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
         echo  '<br>(Hiding dead puzzles)<br>';
         // End HTML
         foot();

@@ -8,22 +8,16 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("approver", "Approval Editor Overview");
-
-        if (!USING_APPROVERS) {
-                echo "<div class='msg'>Puzzletron is not set up to use approvers</div>";
-                foot();
-                exit(1);
-        }
+        head("editor", "Discussion Editor (add new puzzles)");
 
         // Check for editor permissions
-        if (!isApprover($uid) && !isEditorChief($uid)) {
+        if (!isEditor($uid)) {
                 echo "<div class='errormsg'>You do not have permission for this page.</div>";
                 foot();
                 exit(1);
         }
 
-        if (array_key_exists('failedToAddEdit',$_SESSION) and $_SESSION['failedToAddEdit'] == TRUE){
+        if ($_SESSION['failedToAddEdit'] == TRUE){
                 echo "<div class='errormsg'>Failed to add puzzle to your editing queue<br/>";
                 echo "Perhaps you are an author, are testsolving it, or are already editing it?</div>";
                 unset($_SESSION['failedToAddEdit']);
@@ -37,18 +31,20 @@
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                 Enter Puzzle ID to edit: <input type="text" name="pid" />
                 <input type="submit" name="getPuzz" value="Get Puzzle" />
-<?php  if (ALLOW_EDITOR_PICK) {
-          echo 'or view the <a href="approver-pick.php">list of puzzles that need approval editors</a>.';
-       }
-?>
+                or view your current <a href="editor.php">discussion editor queue</a>.
         </form>
 <?php
+	if (ALLOW_EDITOR_PICK) {
+	   echo '<br/>';
+           echo '<h3>Needs Discussion Editor(s)</h3>';
+           echo '<p><strong class="impt">IMPORTANT:</strong> <strong>Clicking a puzzle below will add you as a discussion editor</strong> (unless you already have a role on the puzzle or can see all puzzles.)</p>';
+           echo '<p><strong>Please click judiciously and give comments to improve the puzzles you decide to edit.</strong> (You can still remove yourself from being a discussion editor later, however.)</p>';
+	   $puzzles = getPuzzlesNeedingEditors();
+           displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, array(), "&discuss=1");
+	}
 
-	echo '<br/>';
-	echo '<h3>Approval Editor Queue</h3>';
-	$puzzles = getPuzzlesInApproverQueue($uid);
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
-        echo  '<br>(Hiding dead puzzles)<br>';
+        echo '<br/>';
+
         // End HTML
         foot();
 
