@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("answers");
+        head("answers", "Answers");
 
         // Check for answers permissions
         if (!canChangeAnswers($uid)) {

@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("ffc");
+        head("ffc", "Final Fact Check");
 
         $puzzles = getPuzzlesInFinalFactChecking();
         displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, array());

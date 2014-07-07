@@ -7,11 +7,11 @@
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
 
-        // Start HTML
-        head();
-
         // Get puzzle id
         $pid = isValidPuzzleURL();
+
+        // Start HTML
+        head("", "Puzzle $pid: editing");
 
         // Is the user testing this puzzle?
         if (isTesterOnPuzzle($uid, $pid)) {

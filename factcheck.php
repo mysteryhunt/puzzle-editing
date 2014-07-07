@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("factcheck");
+        head("factcheck", "Fact Checking Overview");
 
         // Check for permissions
         if (!isFactChecker($uid)) {

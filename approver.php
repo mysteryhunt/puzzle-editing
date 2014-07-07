@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("approver");
+        head("approver", "Approval Editor Overview");
 
         if (!USING_APPROVERS) {
                 echo "<div class='msg'>Puzzletron is not set up to use approvers</div>";

@@ -7,17 +7,18 @@
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
 
-        // Start HTML
-        head();
-
         // Check for puzzle id
         if (!isset($_GET['pid'])) {
+                head("", "Error");
                 echo "Puzzle ID not found. Please try again.";
                 foot();
                 exit(1);
         }
 
         $pid = $_GET['pid'];
+
+        // Start HTML
+        head("", "Puzzle $pid: Testsolving");
 
         // Check permissions
         if (!isTestingAdmin($uid)) {

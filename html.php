@@ -12,7 +12,8 @@
         function fullTitle() {
                 return 'MH2015 puzzletron authoring server (' . (DEVMODE ? 'test/dev' : (PRACMODE ? 'practice' : 'actual mystery hunt-writing')) . ' instance)';
         }
-        function head($selnav = "") {
+        function head($selnav = "", $title = -1) {
+        if ($title == -1) {$title = fullTitle();}
         $hunt=mktime(12,00,00,1,HUNT_DOM,HUNT_YEAR);
         $now = time();
         $timediff = abs($hunt-$now);
@@ -39,7 +40,7 @@
         <link rel="stylesheet" type="text/css" href="css/fonts-min.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
-        <title><?php echo fullTitle(); ?></title>
+        <title><?php echo $title; ?></title>
         <script type='text/javascript' src='jquery-1.4.2.js'></script>
         <script type='text/javascript' src='jquery.tablesorter.min.js'></script>
         <script type="text/javascript" src='js.js'></script>

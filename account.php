@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("account");
+        head("account", "Account Overview");
 
         $passwd = '';
         if (isset($_POST['changepwd'])) {

@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("testsolving");
+        head("testsolving", "Testsolving Overview");
 
         if (isset($_SESSION['testError'])) {
                 echo '<div class="errormsg">' . $_SESSION['testError'] . '</div>';

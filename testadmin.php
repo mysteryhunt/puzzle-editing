@@ -9,7 +9,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("testadmin");
+        head("testadmin", "Test Admin");
 
         // Check for permissions
         if (!isTestingAdmin($uid)) {

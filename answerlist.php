@@ -8,7 +8,7 @@ require_once "utils.php";
 $uid = isLoggedIn();
 
 // Start HTML
-head("answerlist");
+head("answerlist", "Answer List");
 
 displayAnswers($uid);
 

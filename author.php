@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("author");
+        head("author", "Author Overview");
 ?>
         <h3><a href="submit-new.php">Submit New Puzzle Idea</a></h3>
         <h3>&nbsp;</h3>

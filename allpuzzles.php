@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("allpuzzles");
+        head("allpuzzles", "All Puzzles");
         echo '<style type="text/css">.puzzideasummary {background-color: #000000;}</style>';
         // Check for lurker permissions
         if (!canSeeAllPuzzles($uid)) {
