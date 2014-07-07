@@ -26,6 +26,8 @@
                 <input type="submit" name="getTestId" value="Go" />
         </form>
 
+        <br/><h3><a href="stats.php">Testsolver stats</a></h3>
+
         <br />
 <?php if (ALLOW_TESTSOLVE_PICK) { ?>
         <h2>Available for you to test (In order of priority):</h2>

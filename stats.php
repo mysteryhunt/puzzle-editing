@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head();
+        head("", "Testsolving Statistics");
 
 
 
