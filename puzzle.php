@@ -11,7 +11,7 @@
         $pid = isValidPuzzleURL();
 
         // Start HTML
-        head("", "Puzzle $pid: editing");
+        head("", "Puzzle $pid");
 
         // Is the user testing this puzzle?
         if (isTesterOnPuzzle($uid, $pid)) {
