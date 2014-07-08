@@ -11,7 +11,7 @@
         head("ffc", "Final Fact Check");
 
         $puzzles = getPuzzlesInFinalFactChecking();
-        displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, array());
+        displayQueue($uid, $puzzles, "notes", FALSE);
 
 
         // End HTML

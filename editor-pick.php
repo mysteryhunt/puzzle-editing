@@ -40,7 +40,7 @@
            echo '<p><strong class="impt">IMPORTANT:</strong> <strong>Clicking a puzzle below will add you as a discussion editor</strong> (unless you already have a role on the puzzle or can see all puzzles.)</p>';
            echo '<p><strong>Please click judiciously and give comments to improve the puzzles you decide to edit.</strong> (You can still remove yourself from being a discussion editor later, however.)</p>';
 	   $puzzles = getPuzzlesNeedingEditors();
-           displayQueue($uid, $puzzles, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, array(), "&discuss=1");
+           displayQueue($uid, $puzzles, "notes summary authorsandeditors", FALSE, array(), "");
 	}
 
         echo '<br/>';

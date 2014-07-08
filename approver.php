@@ -47,7 +47,7 @@
 	echo '<br/>';
 	echo '<h3>Approval Editor Queue</h3>';
 	$puzzles = getPuzzlesInApproverQueue($uid);
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, array());
+	displayQueue($uid, $puzzles, "notes answer summary authorsandeditors", FALSE);
         echo  '<br>(Hiding dead puzzles)<br>';
         // End HTML
         foot();

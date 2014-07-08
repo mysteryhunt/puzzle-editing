@@ -180,8 +180,15 @@
 <?php
         }
 
-        function displayQueue($uid, $puzzles, $showNotes, $showAnswer, $showSummary, $showAuthorsAndEditors, $test, $showTesters, $hidedeadpuzzles, $filter = array(), $addLinkArgs = "")
+        function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLinkArgs = "", $hidedeadpuzzles = TRUE)
         {
+             $fields = explode(" ", $fields);
+             $showNotes = in_array("notes", $fields);
+             $showAnswer = in_array("answer", $fields);
+             $showSummary = in_array("summary", $fields);
+             $showAuthorsAndEditors = in_array("authorsandeditors", $fields);
+             $showNumTesters = in_array("numtesters", $fields);
+             $showTesters = in_array("testers", $fields);
                 if (!$puzzles) {
                         echo "<span class='emptylist'>No puzzles to list</span><br/>";
                         return;
@@ -209,6 +216,7 @@
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Discussion Editors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approval Editors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approvals</th>';} ?>
+                                <?php if ($showNumTesters) {echo '<th class="puzzidea"># Testers</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Last Test Report</th>';} ?>
                                 <?php if (($showTesters) && (USING_TESTSOLVE_REQUESTS)){echo '<th class="puzzidea">Testsolve requests</th>';} ?>
@@ -283,6 +291,7 @@
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getEditorStatus($pid) . "</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getApproversAsList($pid) . "</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . countPuzzApprovals($pid) . "</td>";} ?>
+                                <?php if ($showNumTesters) {echo "<td class='puzzidea'>" . getNumTesters($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" . getCurrentTestersAsList($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" .  getLastTestReportDate($pid) . "</td>";} ?>
                                 <?php if (($showTesters) && (USING_TESTSOLVE_REQUESTS)) {echo "<td class='puzzidea'>" .  getTestsolveRequestsForPuzzle($pid) . "</td>";} ?>

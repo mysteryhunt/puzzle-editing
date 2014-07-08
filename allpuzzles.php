@@ -67,7 +67,7 @@
         $puzzles = getAllPuzzles();
 	$uid = isLoggedIn();
         echo "(Hiding dead puzzles by default)<br><br>";
-        displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, $filt);
+        displayQueue($uid, $puzzles, "notes answer summary authorsandeditors", FALSE, $filt);
 
 
         // End HTML
