@@ -1182,7 +1182,7 @@ function isFactcheckerAvailable($uid, $pid)
 
 function defaultWikiPageForPuzzle($pid)
 {
-        return TESTSOLVE_WIKI . getCodename($pid) . "/Testsolve_1";
+        return TESTSOLVE_WIKI . urlencode(getCodename($pid)) . "/Testsolve_1";
 }
 
 function getCurrentTestersAsEmailList($pid)
