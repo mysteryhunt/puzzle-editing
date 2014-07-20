@@ -11,7 +11,7 @@
         head("answers", "Answers");
 
         // Check for answers permissions
-        if (!canChangeAnswers($uid)) {
+        if (!canChangeAnswers($uid) && !isApprover($uid)) {
                 echo "<div class='errormsg'>You do not have permission for this page.</div>";
                 foot();
                 exit(1);
