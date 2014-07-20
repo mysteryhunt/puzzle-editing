@@ -80,6 +80,20 @@
                 return $rows;
         }
 
+        // Get multiple rows from database, as an array of associative arrays.
+        // Return an empty array if no result found.
+        function get_row_dicts($query)
+        {
+                $result = query_db($query);
+
+                $rows = array();
+                while ($r = mysql_fetch_assoc($result)) {
+                        $rows[] = $r;
+                }
+
+                return $rows;
+        }
+
         // Get an associative array
         function get_assoc_array($query, $key_col, $val_col)
         {

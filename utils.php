@@ -2116,22 +2116,49 @@ function getAllAuthors()
         return get_assoc_array("select user_info.uid, fullname from user_info, authors where user_info.uid = authors.uid group by uid", "uid", "fullname");
 }
 
+function getRoleStats($queue_table, $comment_type) {
+    $sql = sprintf("
+SELECT fullname, puzzle_count, comment_count, recent_comment_count
+FROM
+  user_info
+  LEFT JOIN
+    (SELECT uid, COUNT(pid) as puzzle_count
+     FROM %s GROUP BY uid) AS t1
+    USING (uid)
+  LEFT JOIN
+    (SELECT uid, COUNT(*) as comment_count
+     FROM comments WHERE type = %s
+     GROUP BY uid) AS t2
+     USING (uid)
+  LEFT JOIN
+    (SELECT uid, COUNT(*) as recent_comment_count
+     FROM comments WHERE type = %s
+     AND timestamp > DATE_SUB(curdate(), INTERVAL 1 WEEK)
+     GROUP BY uid) AS t3
+     USING (uid)
+ WHERE comment_count > 0
+ ORDER BY puzzle_count DESC, comment_count DESC
+  ", $queue_table, $comment_type, $comment_type);
+  echo $sql;
+  return get_row_dicts($sql);
+}
+
+
 function getApprovalEditorStats()
 {
-        // This one is a bit messy.
-        return get_assoc_array("select fullname, count(pid) as pcount from
-                                        (select user_info.uid, fullname from user_info, jobs, priv
-                                        where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 and isApprover = 1 group by uid)
-                                as editors left join approver_queue on editors.uid = approver_queue.uid group by editors.uid", "fullname", "pcount");
+    return getRoleStats('approver_queue', '9');
 }
 
 function getDiscussionEditorStats()
 {
-        // This one is a bit messy.
-        return get_assoc_array("select fullname, count(pid) as pcount from
-                                        (select user_info.uid, fullname from user_info)
-                                as editors right join editor_queue on editors.uid = editor_queue.uid group by editors.uid", "fullname", "pcount");
+    return getRoleStats('editor_queue', '4');
 }
+
+function getAuthorStats()
+{
+    return getRoleStats('authors', '3');
+}
+
 
 function getPuzzleStatuses()
 {
