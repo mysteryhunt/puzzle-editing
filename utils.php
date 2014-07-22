@@ -2139,6 +2139,7 @@ FROM
  WHERE comment_count > 0
  ORDER BY puzzle_count DESC, comment_count DESC
   ", $queue_table, $comment_type, $comment_type);
+  echo "<!-- $sql -->";
   return get_row_dicts($sql);
 }
 
