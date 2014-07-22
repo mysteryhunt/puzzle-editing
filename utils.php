@@ -2127,26 +2127,25 @@ FROM
     USING (uid)
   LEFT JOIN
     (SELECT uid, COUNT(*) as comment_count
-     FROM comments WHERE type = %s
+     FROM comments WHERE type in (%s)
      GROUP BY uid) AS t2
      USING (uid)
   LEFT JOIN
     (SELECT uid, COUNT(*) as recent_comment_count
-     FROM comments WHERE type = %s
+     FROM comments WHERE type in (%s)
      AND timestamp > DATE_SUB(curdate(), INTERVAL 1 WEEK)
      GROUP BY uid) AS t3
      USING (uid)
  WHERE comment_count > 0
  ORDER BY puzzle_count DESC, comment_count DESC
   ", $queue_table, $comment_type, $comment_type);
-  echo $sql;
   return get_row_dicts($sql);
 }
 
 
 function getApprovalEditorStats()
 {
-    return getRoleStats('approver_queue', '9');
+    return getRoleStats('approver_queue', '9,5,11');
 }
 
 function getDiscussionEditorStats()
