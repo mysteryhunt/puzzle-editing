@@ -609,7 +609,7 @@ function displayTags($uid, $pid)
 {
 ?>
                 <tr>
-                        <td class='tagInfo'>
+                        <td class='peopleInfo'>
                                 <strong>Tags:</strong> <?php echo getTagsAsList($pid); ?>&nbsp;&nbsp;<?php if (isCohesion($uid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
