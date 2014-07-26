@@ -631,7 +631,7 @@ function displayTags($uid, $pid)
                                         </tr>
                                         <tr>
                                                 <td colspan="2">
-                                                        <input type="submit" name="changeApprovers" value="Change Tags" />
+                                                        <input type="submit" name="changeTags" value="Change Tags" />
                                                 </td>
                                         </tr>
                                         </form>
