@@ -448,7 +448,7 @@ function getTagsForPuzzle($pid)
   return get_assoc_array($sql, "id", "name");
 }
 
-function isTagOnPuzzle($pid, $tid)
+function isTagOnPuzzle($tid, $pid)
 {
   $sql = sprintf("SELECT * FROM puzzle_tags WHERE pid='%s' AND tid='%s'", 
 		 mysql_real_escape_string($pid), mysql_real_escape_string($tid));
