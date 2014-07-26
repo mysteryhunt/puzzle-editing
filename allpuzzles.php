@@ -61,13 +61,26 @@
         </select>
         <input type="submit" value="Filter author">
         </form>
+        <form method="get" action="allpuzzles.php" class="inlform">
+        <input type="hidden" name="filterkey" value="tag">
+        <select name="filtervalue">
+<?php
+        $tags = getAllTags();
+        asort($tags);
+        foreach ($tags as $tid => $name) {
+                echo "<option value='$tid'>$name</option>";
+        }
+?>
+        </select>
+        <input type="submit" value="Filter tag">
+        </form>
         </div>
 <?php
 
         $puzzles = getAllPuzzles();
 	$uid = isLoggedIn();
         echo "(Hiding dead puzzles by default)<br><br>";
-        displayQueue($uid, $puzzles, "notes answer summary authorsandeditors", FALSE, $filt);
+        displayQueue($uid, $puzzles, "notes answer summary tags authorsandeditors", FALSE, $filt);
 
 
         // End HTML

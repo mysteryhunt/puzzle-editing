@@ -301,6 +301,7 @@ function displayPeople($uid, $pid)
         <?php displayEditors($uid, $pid); ?>
         <?php if (USING_APPROVERS) {displayApprovers($uid, $pid);} ?>
         <?php displayFactcheckers($uid, $pid); ?>
+        <?php displayTags($uid, $pid); ?>
         <?php if (canSeeTesters($uid, $pid)) {displayTesters($uid, $pid);} ?>
         <?php displayTestingAdmin($uid, $pid); ?>
         </table>
@@ -602,6 +603,54 @@ function displayAddFactchecker($pid)
 {
         $factcheckers = getAvailableFactcheckersForPuzzle($pid);
         makeOptionElements($factcheckers, 'addFactchecker');
+}
+
+function displayTags($uid, $pid)
+{
+?>
+                <tr>
+                        <td class='tagInfo'>
+                                <strong>Tags:</strong> <?php echo getTagsAsList($pid); ?>&nbsp;&nbsp;<?php if (isCohesion($uid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                        </td>
+                </tr>
+                <tr>
+                        <td>
+                                <table>
+                                        <form method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <tr>
+                                                <td>
+                                                        <p><strong>Remove Tags:</strong></p>
+                                                        <?php echo displayRemoveTags($pid)?>
+                                                </td>
+                                                <td>
+                                                        <p><strong>Add Tags:</strong></p>
+                                                        <?php echo displayAddTags($pid); ?>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan="2">
+                                                        <input type="submit" name="changeApprovers" value="Change Tags" />
+                                                </td>
+                                        </tr>
+                                        </form>
+                                </table><?php } ?>
+                        </td>
+                </tr>
+<?php
+}
+
+function displayRemoveTag($pid)
+{
+  $tags = getTagsForPuzzle($pid);
+  makeOptionElements($tags, 'removeTag');
+}
+
+function displayAddTag($pid)
+{
+  $tags = getAvailableTagsForPuzzle($pid);
+  makeOptionElements($tags, 'addTag');
 }
 
 function displayTesters($uid, $pid)

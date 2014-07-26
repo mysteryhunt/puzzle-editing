@@ -43,7 +43,7 @@ function isValidPuzzleFilter()
 {
         if (isset($_GET['filterkey']) && isset($_GET['filtervalue'])) {
                 $key = $_GET['filterkey'];
-                if ($key != "status" && $key != "author" && $key != "editor") {
+                if ($key != "status" && $key != "author" && $key != "editor" && $key != "tag") {
                         echo "<div class='errormsg'>Invalid sort key. What did you even do?</div>";
                         foot();
                         exit(1);
@@ -58,6 +58,11 @@ function isValidPuzzleFilter()
                         echo "<div class='errormsg'>Invalid user ID.</div>";
                         foot();
                         exit(1);
+                }
+                if (($key == "tag") && !validTag($val)) {
+		  echo "<div class='errormsg'>Invalid tag ID.</div>";
+		  foot();
+		  exit(1);
                 }
                 return array($key, $val);
         }
@@ -419,6 +424,103 @@ function getEditorsForPuzzle($pid)
 function getApproversForPuzzle($pid)
 {
         return getUsersForPuzzle("approver_queue", $pid);
+}
+
+function validTag($id)
+{
+        $sql = sprintf("SELECT * FROM tag_names WHERE id='%s'", mysql_real_escape_string($id));
+        return has_result($sql);
+}
+
+
+function getTagssAsList($pid)
+{
+  // This is only called from the below functions, where $table is a hardcoded string
+  $sql = sprintf("SELECT tag_names.name FROM tag_names INNER JOIN puzzle_tags ON tag_names.id=puzzle_tags.tid WHERE puzzle_tags.pid='%s'", mysql_real_escape_string($pid));
+  $tags = get_elements($sql);
+
+  return ($tags ? implode(", ", $tags) : "<span class='emptylist'>(none)</span>" );
+}
+
+function getTagsForPuzzle($pid)
+{
+  $sql = sprintf("SELECT tag_names.id, tag_names.name FROM tag_names INNER JOIN puzzle_tags ON tag_names.id=puzzle_tags.tid WHERE puzzle_tags.pid='%s'", mysql_real_escape_string($pid));
+  return get_assoc_array($sql, "id", "name");
+}
+
+function isTagOnPuzzle($pid, $tid)
+{
+  $sql = sprintf("SELECT * FROM puzzle_tags WHERE pid='%s' AND tid='%s'", 
+		 mysql_real_escape_string($pid), mysql_real_escape_string($tid));
+  return has_result($sql);
+}
+
+function getAvailableTagsForPuzzle($pid)
+{
+  // Get all tags
+  $sql = 'SELECT id,name FROM tag_names';
+  $all_tags = get_assoc_array($sql, "id", "name");
+
+  $tags = array();
+  foreach ($all_tags as $tid => $name) {
+    if (!isTagOnPuzzle($tid, $pid)) {
+      $tags[$tid] = $name;
+    }
+  }
+
+  return $tags;
+}
+
+function getAllTags()
+{
+  $sql = 'SELECT id,name FROM tag_names';
+  return get_assoc_array($sql, "id", "name");
+}
+
+function addTags($uid, $pid, $add)
+{
+  if (!$add)
+    return;
+
+  if (!canViewPuzzle($uid, $pid))
+    utilsError("You do not have permission to modify puzzle $pid.");
+
+  foreach ($add as $tag) {
+    if (isTagOnPuzzle($tid, $pid)) {
+      utilsError('Tag is not available.');
+    }
+
+    $sql = sprintf("INSERT INTO puzzle_tags (pid, tid) VALUES ('%s', '%s')",
+		   mysql_real_escape_string($pid), mysql_real_escape_string($tag));
+    query_db($sql);
+  }
+}
+
+function removeTags($uid, $pid, $remove)
+{
+  if (!$remove)
+    return;
+
+  if (!canViewPuzzle($uid, $pid))
+    utilsError("You do not have permission to modify puzzle $pid.");
+
+  foreach ($remove as $tag) {
+    if (!isTagOnPuzzle($tid, $pid)) {
+      utilsError('Tag is not available.');
+    }
+
+    $sql = sprintf("DELETE FROM puzzle_tags WHERE pid='%s' AND tid='%s'",
+		   mysql_real_escape_string($pid), mysql_real_escape_string($tag));
+    query_db($sql);
+  }
+}
+
+function changeTags($uid, $pid, $add, $remove)
+{
+        mysql_query('START TRANSACTION');
+        addTags($uid, $pid, $add);
+        removeTags($uid, $pid, $remove);
+        mysql_query('COMMIT');
 }
 
 function getSpoiledUsersForPuzzle($pid)

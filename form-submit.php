@@ -174,6 +174,27 @@
                 exit(0);
         }
 
+        if (isset($_POST['changeTags'])) {
+                $pid = $_POST['pid'];
+
+                if (isset($_POST['addTag'])) {
+                        $add = $_POST['addTag'];
+                }
+                else
+                        $add = NULL;
+
+                if (isset($_POST['removeTag'])) {
+                        $remove = $_POST['removeTag'];
+                }
+                else
+                        $remove = NULL;
+
+                changeTags($uid, $pid, $add, $remove);
+
+                header("Location: " . URL . "/puzzle.php?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['changeRoundCaptain'])) {
                 $pid = $_POST['pid'];
 

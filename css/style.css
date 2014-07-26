@@ -387,6 +387,14 @@ div.peopleInfo {
 	padding-top: 1em;
 }
 
+td.tagInfo {
+	padding: .25em 0em 0em 0em;
+}
+
+div.tagInfo {
+	padding-top: 1em;
+}
+
 div.statusInfo {
 	padding-top: 1em;
 }

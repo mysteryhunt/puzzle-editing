@@ -186,6 +186,7 @@
              $showNotes = in_array("notes", $fields);
              $showAnswer = in_array("answer", $fields);
              $showSummary = in_array("summary", $fields);
+             $showTags = in_array("tags", $fields);
              $showAuthorsAndEditors = in_array("authorsandeditors", $fields);
              $showNumTesters = in_array("numtesters", $fields);
              $showTesters = in_array("testers", $fields);
@@ -206,6 +207,7 @@
                                 <th class="puzzidea">Puzzle Status</th>
                                 <th class="puzzidea">Round</th>
                                 <?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
+                                <?php if ($showTags) {echo '<th class="puzzidea">Tags</th>';} ?>
                                 <?php if ($showNotes) {echo '<th class="puzzidea">Status Notes</th>';} ?>
 				<?php if ($showNotes) {echo '<th class="puzzidea">Runtime Info</th>';} ?>
 				<?php if ($showNotes) {echo '<th class="puzzidea">Priority</th>';} ?>
@@ -228,7 +230,7 @@
 
                 foreach ($puzzles as $pid) {
                         $puzzleInfo = getPuzzleInfo($pid);
-
+			$tags = getTagsAsList($pid);
                         // This is totally the wrong way to do this. The right way involves
                         // writing SQL.
                         if ($filter) {
@@ -239,6 +241,9 @@
                                   continue;
                                 }
                                 if ($filter[0] == "editor" && !isEditorOnPuzzle($filter[1], $pid)) {
+                                  continue;
+                                }
+                                if ($filter[0] == "tag" && !isTagOnPuzzle($filter[1], $pid)) {
                                   continue;
                                 }
                                 if ($filter[0] != "status" && $hidedeadpuzzles && $puzzleInfo["pstatus"] == $deadstatusid) {
@@ -274,6 +279,7 @@
                                 <td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
                                 <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>
                                 <?php if ($showSummary) {echo "<td class='puzzideasecure'>" . $puzzleInfo["summary"] . "</td>";} ?>
+                                <?php if ($showTags) {echo "<td class='puzzideasecure'>" . $tags . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
 				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["runtime_info"] . "</td>";} ?>
 				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["priority"] . "</td>";} ?>
