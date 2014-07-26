@@ -433,7 +433,7 @@ function validTag($id)
 }
 
 
-function getTagssAsList($pid)
+function getTagsAsList($pid)
 {
   // This is only called from the below functions, where $table is a hardcoded string
   $sql = sprintf("SELECT tag_names.name FROM tag_names INNER JOIN puzzle_tags ON tag_names.id=puzzle_tags.tid WHERE puzzle_tags.pid='%s'", mysql_real_escape_string($pid));
