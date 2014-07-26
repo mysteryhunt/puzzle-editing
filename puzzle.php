@@ -641,13 +641,13 @@ function displayTags($uid, $pid)
 <?php
 }
 
-function displayRemoveTag($pid)
+function displayRemoveTags($pid)
 {
   $tags = getTagsForPuzzle($pid);
   makeOptionElements($tags, 'removeTag');
 }
 
-function displayAddTag($pid)
+function displayAddTags($pid)
 {
   $tags = getAvailableTagsForPuzzle($pid);
   makeOptionElements($tags, 'addTag');
