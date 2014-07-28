@@ -16,7 +16,7 @@
 
 <?php
         $puzzles = getPuzzlesForAuthor($uid);
-        displayQueue($uid, $puzzles, "notes summary answer authorsandeditors", FALSE);
+        displayQueue($uid, $puzzles, "notes summary editornotes answer authorsandeditors", FALSE);
 
         // End the HTML
         foot();

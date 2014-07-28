@@ -45,7 +45,7 @@
                 $puzzles = getPuzzlesNeedingApprovers($uid);
                 echo '<p><strong class="impt">IMPORTANT:</strong> <strong>Clicking a puzzle below will add you as an approval editor</strong> (unless you already have a role on the puzzle or can see all puzzles.)</p>';
                 echo '<p><strong>Please click judiciously and give comments to improve the puzzles you decide to approve.</strong> (You can still remove yourself from being an approval editor later, however.)</p>';
-                displayQueue($uid, $puzzles, "notes summary authorsandeditors", FALSE, array(), "&approve=1");
+                displayQueue($uid, $puzzles, "notes summary editornotes authorsandeditors", FALSE, array(), "&approve=1");
         }
 
         echo  '<br>(Hiding dead puzzles)<br>';
