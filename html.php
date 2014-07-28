@@ -186,6 +186,7 @@
              $showNotes = in_array("notes", $fields);
              $showAnswer = in_array("answer", $fields);
              $showSummary = in_array("summary", $fields);
+             $showEditorNotes = in_array("editornotes", $fields);
              $showTags = in_array("tags", $fields);
              $showAuthorsAndEditors = in_array("authorsandeditors", $fields);
              $showNumTesters = in_array("numtesters", $fields);
@@ -207,7 +208,7 @@
                                 <th class="puzzidea">Puzzle Status</th>
                                 <th class="puzzidea">Round</th>
                                 <?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
-				<?php if ($showNotes) {echo '<th class="puzzidea">Editor Notes</th>';} ?>
+				<?php if ($showEditorNotes) {echo '<th class="puzzidea">Editor Notes</th>';} ?>
                                 <?php if ($showTags) {echo '<th class="puzzidea">Tags</th>';} ?>
                                 <?php if ($showNotes) {echo '<th class="puzzidea">Status Notes</th>';} ?>
 				<?php if ($showNotes) {echo '<th class="puzzidea">Runtime Info</th>';} ?>
@@ -280,7 +281,7 @@
                                 <td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
                                 <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>
                                 <?php if ($showSummary) {echo "<td class='puzzideasecure'>" . $puzzleInfo["summary"] . "</td>";} ?>
-                                <?php if ($showNotes) {echo "<td class='puzzideasecure'>" . $puzzleInfo["editor_notes"] . "</td>";} ?>
+                                <?php if ($showEditorNotes) {echo "<td class='puzzideasecure'>" . $puzzleInfo["editor_notes"] . "</td>";} ?>
                                 <?php if ($showTags) {echo "<td class='puzzideasecure'>" . $tags . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
 				<?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["runtime_info"] . "</td>";} ?>
