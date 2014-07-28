@@ -94,6 +94,11 @@
         displayNotes($uid, $pid);
         echo "</div>";
 
+        // List puzzle editor notes
+        echo "<div class='notesInfo'>";
+        displayEditorNotes($uid, $pid);
+        echo "</div>";
+
         // List puzzle runtime info
         echo "<div class='notesInfo'>";
         displayRuntime($uid, $pid);
@@ -834,6 +839,33 @@ function displayNotes($uid, $pid)
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                                         <input type="text" name="notes" maxlength="255" class="longin" value="<?php echo $notes; ?>"/>
                                         <input type="submit" name="changeNotes" value="Change" />
+                                </form>
+                        </td>
+                </tr>
+        </table>
+<?php
+}
+function displayEditorNotes($uid, $pid)
+{
+        $notes = getEditorNotes($pid);
+
+?>
+        <table class="statusInfo">
+                <tr>
+                        <td class='statusInfo'>
+                                <strong>Editor Notes: </strong> <?php echo $notes; ?>
+                        </td>
+                        <td class='statusInfo'>
+                                <a href="#" class="changeLink">[Change]</a>
+                        </td>
+                </tr>
+                <tr>
+                        <td colspan='2'>
+                                <form method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <input type="text" name="notes" maxlength="255" class="longin" value="<?php echo $notes; ?>"/>
+                                        <input type="submit" name="changeEditorNotes" value="Change" />
                                 </form>
                         </td>
                 </tr>
