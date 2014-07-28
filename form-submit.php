@@ -250,7 +250,7 @@
         if (isset($_POST['changeEditorNotes'])) {
                 $pid = $_POST['pid'];
 
-                $notes = $_POST['asnotes'];
+                $notes = $_POST['notes'];
 
                 changeEditorNotes($uid, $pid, $notes);
 
