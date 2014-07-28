@@ -700,6 +700,12 @@ function getNotes($pid)
         return get_element($sql);
 }
 
+function getEditorNotes($pid)
+{
+        $sql = sprintf("SELECT editor_notes FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+        return get_element($sql);
+}
+
 function getRuntime($pid)
 {
         $sql = sprintf("SELECT runtime_info FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
@@ -813,6 +819,17 @@ function updateNotes($uid = 0, $pid, $oldNotes, $cleanNotes)
         query_db($sql);
 
         $comment = "Changed status notes from \"$oldNotes\" to \"$cleanNotes\"";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+
+function updateEditorNotes($uid = 0, $pid, $oldNotes, $cleanNotes)
+{
+        $sql = sprintf("UPDATE puzzle_idea SET editor_notes='%s' WHERE id='%s'",
+                        mysql_real_escape_string($cleanNotes), mysql_real_escape_string($pid));
+        query_db($sql);
+
+        $comment = "Changed editor notes from \"$oldNotes\" to \"$cleanNotes\"";
 
         addComment($uid, $pid, $comment, TRUE);
 }
@@ -2419,6 +2436,22 @@ function changeNotes($uid, $pid, $notes)
         updateNotes($uid, $pid, $oldNotes, $cleanNotes);
 
         mysql_query('COMMIT');
+}
+
+function changeEditorNotes($uid, $pid, $notes)
+{
+  if (!canViewPuzzle($uid, $pid))
+    utilsError("You do not have permission to modify this puzzle.");
+
+  $purifier = new HTMLPurifier();
+  mysql_query('START TRANSACTION');
+
+  $oldNotes = getEditorNotes($pid);
+  $cleanNotes = $purifier->purify($notes);
+  $cleanNotes = htmlspecialchars($cleanNotes);
+  updateEditorNotes($uid, $pid, $oldNotes, $cleanNotes);
+
+  mysql_query('COMMIT');
 }
 
 function changeRuntime($uid, $pid, $runtime)

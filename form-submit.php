@@ -247,6 +247,17 @@
                 exit(0);
         }
 
+        if (isset($_POST['changeEditorNotes'])) {
+                $pid = $_POST['pid'];
+
+                $notes = $_POST['asnotes'];
+
+                changeEditorNotes($uid, $pid, $notes);
+
+                header("Location: " . URL . "/puzzle.php?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['changeRuntime'])) {
                 $pid = $_POST['pid'];
 

@@ -462,6 +462,7 @@ CREATE TABLE `puzzle_idea` (
   `title` varchar(255) NOT NULL DEFAULT '',
   `update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `notes` varchar(512) NOT NULL DEFAULT '',
+  `editor_notes` varchar(512) NOT NULL DEFAULT '',
   `wikipage` varchar(512) NOT NULL DEFAULT '',
   `credits` varchar(255) NOT NULL DEFAULT '',
   `runtime_info` varchar(255) NOT NULL DEFAULT '',
