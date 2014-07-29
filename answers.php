@@ -66,6 +66,7 @@
 			        <td><?php echo ($pid ? "<a href=\"puzzle.php?pid=$pid\">".$pid."</a>" : "unassigned") ?></td>
                                 <td><?php echo ($pid ? getTitle($pid) : "") ?></td>
                                 <td><?php echo ($pid ? getStatusNameForPuzzle($pid) : "") ?></td>
+	            		<td><?php echo ($pid ? getEditorNotes($pid) : "") ?></td>
                         </tr>
 <?php
                     }
