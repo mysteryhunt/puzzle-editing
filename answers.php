@@ -48,13 +48,13 @@
 ?>
                 <table class="boxed">
                     <tr>
-                            <th colspan="4"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></th>
+                            <th colspan="5"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></th>
                     </tr>
 <?php
                     if (!$answers) {
 ?>
                         <tr>
-                                <td colspan="4"><span class="emptylist">No answers added yet</span></td>
+                                <td colspan="5"><span class="emptylist">No answers added yet</span></td>
                         </tr>
 <?php
                     }
