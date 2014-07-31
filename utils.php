@@ -2255,7 +2255,7 @@ FROM
      AND timestamp > DATE_SUB(curdate(), INTERVAL 1 WEEK)
      GROUP BY uid) AS t3
      USING (uid)
- WHERE comment_count > 0
+ WHERE puzzle_count > 0
  ORDER BY puzzle_count DESC, comment_count DESC
   ", $queue_table, $comment_type, $comment_type);
   echo "<!-- $sql -->";
