@@ -268,8 +268,10 @@
                         $lastVisit = getLastVisit($uid, $pid);
                         $flagged = in_array($pid, $flaggedPuzzles);
 
-                        if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test || $flagged)
+                        if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test)
                                 echo '<tr class="puzz-new">';
+                        else if ($flagged)
+                                echo '<tr class="puzz-flag">';
                         else
                                 echo '<tr class="puzz">';
 
