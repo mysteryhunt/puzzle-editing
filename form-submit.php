@@ -518,6 +518,19 @@
                 exit(0);
         }
 
+        if (isset($_POST['setflag'])) {
+                $pid = $_POST['pid'];
+                $flag = $_POST['flag'];
+
+                if ($flag)
+                  setFlag($uid, $pid, 1);
+                else
+                  setFlag($uid, $pid, 0);
+
+                header("Location: " . URL . "/puzzle.php?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['markunseen'])) {
                 $pid = $_POST['pid'];
 

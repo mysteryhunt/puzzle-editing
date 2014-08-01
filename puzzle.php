@@ -1074,18 +1074,15 @@ return;
 function displayMarkAsUnseen($uid, $pid)
 {
 ?>
-<table>
-<tr>
-<td><strong>Mark This Puzzle Unread:</strong></td>
-<td>
-<form method="post" action="form-submit.php" target="_blank">
+<form method="post" action="form-submit.php">
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-        <input type="submit" name="markunseen" value="Mark unread" />
+<strong>Highlight until next time you post:</strong>
+        <input type="checkbox" name="flag" value="yes" <?php if (getFlag($uid, $pid)) echo "checked"; ?> />
+        <input type="submit" name="setflag" value="Update" />
+or simply
+        <input type="submit" name="markunseen" value="Mark unread for now" />
 </form>
-</td>
-</tr>
-</table>
 <?php
         return;
 }

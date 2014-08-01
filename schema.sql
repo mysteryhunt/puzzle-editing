@@ -329,6 +329,30 @@ LOCK TABLES `last_visit` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user_puzzle_settings`
+--
+
+DROP TABLE IF EXISTS `user_puzzle_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_puzzle_settings` (
+  `uid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `flag` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`uid`,`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_puzzle_settings`
+--
+
+LOCK TABLES `user_puzzle_settings` WRITE;
+/*!40000 ALTER TABLE `user_puzzle_settings` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_puzzle_settings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `motd`
 --
 

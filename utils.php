@@ -348,6 +348,31 @@ function isTestingAdminOnPuzzle($uid, $pid)
 }
 
 
+function setFlag($uid, $pid, $value)
+{
+        $sql = sprintf("INSERT INTO user_puzzle_settings (pid, uid, flag) VALUES ('%s', '%s', '%s')
+                                        ON DUPLICATE KEY UPDATE flag='%s'", mysql_real_escape_string($pid),
+                                        mysql_real_escape_string($uid),
+                                        mysql_real_escape_string($value),
+                                        mysql_real_escape_string($value));
+        query_db($sql);
+}
+
+
+function getFlag($uid, $pid)
+{
+        $sql = sprintf("SELECT flag FROM user_puzzle_settings WHERE pid='%s' AND uid='%s'",
+                        mysql_real_escape_string($pid), mysql_real_escape_string($uid));
+        return get_element_null($sql);
+}
+
+function getFlaggedPuzzles($uid)
+{
+        $sql = sprintf("SELECT pid FROM user_puzzle_settings WHERE uid='%s' AND flag",
+                        mysql_real_escape_string($uid));
+        return get_elements($sql);
+}
+
 
 function updateLastVisit($uid, $pid)
 {
@@ -1051,6 +1076,8 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE, $im
         } else {
                 $typeName = getCommentTypeName($uid, $pid);
                 if ($typeName === NULL) return;
+
+                setFlag($uid, $pid, 0);
         }
         $sql = sprintf("SELECT id FROM comment_type WHERE name='%s'", mysql_real_escape_string($typeName));
         $type = get_element($sql);

@@ -198,6 +198,7 @@
                 $statuses = getPuzzleStatuses();
 
                 $deadstatusid = getDeadStatusId();
+                $flaggedPuzzles = getFlaggedPuzzles($uid);
 ?>
                 <table class="tablesorter">
                 <thead>
@@ -265,8 +266,9 @@
                         $lastComment = getLastCommentDate($pid);
                         $lastCommenter = getLastCommenter($pid);
                         $lastVisit = getLastVisit($uid, $pid);
+                        $flagged = in_array($pid, $flaggedPuzzles);
 
-                        if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test)
+                        if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test || $flagged)
                                 echo '<tr class="puzz-new">';
                         else
                                 echo '<tr class="puzz">';
