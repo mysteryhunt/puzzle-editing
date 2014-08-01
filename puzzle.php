@@ -1078,10 +1078,10 @@ function displayMarkAsUnseen($uid, $pid)
 <tr>
 <td><strong>Mark This Puzzle Unread:</strong></td>
 <td>
-<form method="post" action="form-submit.php">
+<form method="post" action="form-submit.php" target="_blank">
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-        <input type="submit" name="markunseen" value="unread" />
+        <input type="submit" name="markunseen" value="Mark unread" />
 </form>
 </td>
 </tr>
