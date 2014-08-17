@@ -76,10 +76,10 @@ $(document).ready(function()
 	$(".tablesorter").tablesorter();
 	
 	$('textarea').one('keyup',function() {
-		$('BODY').attr('onbeforeunload',"return 'Leaving this page will cause any unsaved data to be lost.';");
+		$(window).bind('beforeunload',function() { return 'Leaving this page will cause any unsaved data to be lost.'; });
 	});
 
 	$('.okSubmit').click(function() {
-		$('BODY').removeAttr('onbeforeunload');
+		$(window).unbind('beforeunload');
 	});
 })
