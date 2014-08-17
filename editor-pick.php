@@ -41,6 +41,15 @@
            echo '<p><strong>Please click judiciously and give comments to improve the puzzles you decide to edit.</strong> (You can still remove yourself from being a discussion editor later, however.)</p>';
 	   $puzzles = getPuzzlesNeedingEditors();
            displayQueue($uid, $puzzles, "notes summary editornotes authorsandeditors", FALSE, array(), "");
+		   ?>
+<script type="text/javascript">
+$(document).ready(function() {
+    // decreasing by needed editors, then increasing by ID
+    // (I don't have any words to describe how fragile this is; be careful!)
+    $(".tablesorter").trigger("sorton", [[[14,1],[0,0]]]);
+});
+</script>
+<?php
 	}
 
         echo '<br/>';
