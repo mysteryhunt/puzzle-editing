@@ -928,7 +928,7 @@ DROP TABLE IF EXISTS `puzzle_tags`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `puzzle_tags` (
   `pid` int(11) NOT NULL,
-  `tid` int(11) NOT NULL,
+  `tid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -937,6 +937,6 @@ DROP TABLE IF EXISTS `tag_names`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tag_names` (
   `id` int(11) NOT NULL,
-  `name` varchar(32) NOT NULL,
+  `name` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
