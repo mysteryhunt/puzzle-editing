@@ -913,6 +913,20 @@ function getAvailableAnswers()
         return $answers;
 }
 
+function getAvailableAnswersForRound($rid)
+{
+        $answers = get_elements(sprintf("SELECT answer FROM answers_rounds JOIN answers ON answers.aid=answers_rounds.aid WHERE answers_rounds.rid='%s'", mysql_real_escape_string($rid)));
+        natcasesort($answers);
+        return $answers;
+}
+
+function getAvailableAnswersNotForRound($rid)
+{
+        $answers = get_elements(sprintf("SELECT answer FROM answers_rounds JOIN answers ON answers.aid=answers_rounds.aid WHERE answers_rounds.rid!='%s'", mysql_real_escape_string($rid)));
+        natcasesort($answers);
+        return $answers;
+}
+
 // Get count of total answers
 function numAnswers()
 {
