@@ -2617,7 +2617,8 @@ function uploadFiles($uid, $pid, $type, $file) {
 		    $result = $client->putObject(array(
 		      'Bucket' => AWS_BUCKET,
 		      'Key'    => $key,
-		      'Body'   => file_get_contents($target_path)));
+		      'Body'   => file_get_contents($target_path),
+		      'ContentDisposition' => 'inline'));
 		  }
                         $new_path = $target_path . "_" . $filetype;
                         #echo "target_path is $target_path<br>";
@@ -2654,7 +2655,8 @@ function uploadFiles($uid, $pid, $type, $file) {
 		    $result = $client->putObject(array(
 		      'Bucket' => AWS_BUCKET,
 		      'Key'    => $key,
-		      'Body'   => file_get_contents($target_path)));		    
+		      'Body'   => file_get_contents($target_path),
+		      'ContentDisposition' => 'inline'));		    
 		  }
 
                         $sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",

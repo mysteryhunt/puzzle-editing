@@ -45,7 +45,8 @@
 		  $result = $client->putObject(array(
                            'Bucket' => AWS_BUCKET,
                            'Key'    => $key,
-                           'Body'   => file_get_contents($upfile)));
+                           'Body'   => file_get_contents($upfile),
+			   'ContentDisposition' => 'inline'));
 		}
 
                 makeThumb($upfile, $thumb);
@@ -55,7 +56,8 @@
 		  $result = $client->putObject(array(
                            'Bucket' => AWS_BUCKET,
                            'Key'    => $key,
-                           'Body'   => file_get_contents($key)));
+                           'Body'   => file_get_contents($key),
+			   'ContentDisposition' => 'inline'));
 		}
 
                 return $upfile;
