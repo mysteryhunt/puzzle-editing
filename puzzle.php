@@ -462,7 +462,7 @@ function displayEditors($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Discussion Editors:</strong> <?php echo getEditorStatus($pid); ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                                <strong>Discussion Editors:</strong> <?php $est = getEditorStatus($pid); echo $est[0]; ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
                 <tr>

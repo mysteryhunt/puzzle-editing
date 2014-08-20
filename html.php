@@ -219,6 +219,7 @@
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Discussion Editors</th>';} ?>
+                                <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">D.Eds Needed</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approval Editors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approvals</th>';} ?>
                                 <?php if ($showNumTesters) {echo '<th class="puzzidea"># Testers</th>';} ?>
@@ -301,7 +302,11 @@
                                 <?php if (!$test) {echo "<td class='puzzidea'>$lastCommenter</td>";} ?>
                                 <?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
-                                <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getEditorStatus($pid) . "</td>";} ?>
+                                <?php if ($showAuthorsAndEditors) {
+                                    $est = getEditorStatus($pid);
+                                    echo "<td class='puzzidea'>" . $est[0] . "</td>";
+                                    echo "<td class='puzzidea'>" . $est[1] . "</td>";
+                                } ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getApproversAsList($pid) . "</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . countPuzzApprovals($pid) . "</td>";} ?>
                                 <?php if ($showNumTesters) {echo "<td class='puzzidea'>" . getNumTesters($pid) . "</td>";} ?>
