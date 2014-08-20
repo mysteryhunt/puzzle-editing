@@ -614,11 +614,10 @@ function getEditorStatus($pid)
 {
         $sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN editor_queue ON user_info.uid=editor_queue.uid WHERE editor_queue.pid='%s'", mysql_real_escape_string($pid));
         $eds = get_elements($sql);
-        $need = getNeededEditors($pid); // warning: total needed, not additional
-        $edc = count($eds);
+        $need = getNeededEditors($pid);
 
-        if ($eds) return array($edc . "/$need: " . implode(", ", $eds), $need - $edc);
-        else return array("<span class='emptylist'>0/$need</span>", $need - $edc);
+        if ($eds) return count($eds) . "/$need: " . implode(", ", $eds);
+        else return "<span class='emptylist'>0/$need</span>";
 }
 
 function getApproversAsList($pid)
