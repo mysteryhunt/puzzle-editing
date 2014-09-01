@@ -511,7 +511,7 @@ function addTags($uid, $pid, $add)
     utilsError("You do not have permission to modify puzzle $pid.");
 
   foreach ($add as $tag) {
-    if (isTagOnPuzzle($tid, $pid)) {
+    if (isTagOnPuzzle($tag, $pid)) {
       utilsError('Tag is not available.');
     }
 
@@ -530,7 +530,7 @@ function removeTags($uid, $pid, $remove)
     utilsError("You do not have permission to modify puzzle $pid.");
 
   foreach ($remove as $tag) {
-    if (!isTagOnPuzzle($tid, $pid)) {
+    if (!isTagOnPuzzle($tag, $pid)) {
       utilsError('Tag is not available.');
     }
 
