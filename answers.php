@@ -48,13 +48,21 @@
 ?>
                 <table class="boxed">
                     <tr>
-                            <th colspan="5"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></th>
+                            <th colspan="6"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></th>
                     </tr>
+                   <tr>
+                   <td><b>Answer</b></td>
+                   <td><b>ID</b></td>
+                   <td><b>Title</b></td>
+                   <td><b>Status</b></td>
+                   <td><b>Editor Notes</b></td>
+                   <td><b>Status Notes</b></td>
+                   </tr>
 <?php
                     if (!$answers) {
 ?>
                         <tr>
-                                <td colspan="5"><span class="emptylist">No answers added yet</span></td>
+                                <td colspan="6"><span class="emptylist">No answers added yet</span></td>
                         </tr>
 <?php
                     }
@@ -67,6 +75,7 @@
                                 <td><?php echo ($pid ? getTitle($pid) : "") ?></td>
                                 <td><?php echo ($pid ? getStatusNameForPuzzle($pid) : "") ?></td>
 	            		<td><?php echo ($pid ? getEditorNotes($pid) : "") ?></td>
+	            		<td><?php echo ($pid ? getNotes($pid) : "") ?></td>
                         </tr>
 <?php
                     }
@@ -76,7 +85,7 @@
                                 <form method="post" action="answers.php" />
                                 <td><input type="text" name="newAnswer" />
                                 <input type="hidden" name="round" value='<?php echo $round['rid']; ?>'/></td>
-                                <td colspan=3><input type="submit" value='Add Answer For Round <?php echo ($round['rid']); ?>' /></td></form>
+                                <td colspan="5"><input type="submit" value='Add Answer For Round <?php echo ($round['rid']); ?>' /></td></form>
                     </tr>
                </table>
                <br />
