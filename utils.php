@@ -2307,7 +2307,7 @@ FROM
 
 function getApprovalEditorStats()
 {
-    return getRoleStats('approver_queue', '9,5,11');
+    return getRoleStats('approver_queue', '9,5,10,11');
 }
 
 function getDiscussionEditorStats()
