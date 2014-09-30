@@ -11,7 +11,11 @@
         $pid = isValidPuzzleURL();
 
         // Start HTML
-        head("", "Puzzle $pid");
+        $title = "Puzzle $pid";
+        if (USING_CODENAMES) {
+           $title .= ": " . getCodename($pid);
+        }
+        head("", $title);
 
         // Is the user testing this puzzle?
         if (isTesterOnPuzzle($uid, $pid)) {
