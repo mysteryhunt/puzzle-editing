@@ -334,11 +334,11 @@ function displayAuthors($uid, $pid)
                                         <tr>
                                                 <td>
                                                         <p><strong>Remove Author(s):</strong></p>
-                                                        <?php echo displayRemoveAuthor($pid); ?>
+                                                        <?php echo displayRemoveAuthor($pid, $uid); ?>
                                                 </td>
                                                 <td>
                                                         <p><strong>Add Author(s):</strong></p>
-                                                        <?php echo displayAddAuthor($pid); ?>
+                                                        <?php echo displayAddAuthor($pid, $uid); ?>
                                                 </td>
                                         </tr>
                                         <tr>
@@ -353,16 +353,16 @@ function displayAuthors($uid, $pid)
 <?php
 }
 
-function displayRemoveAuthor($pid)
+function displayRemoveAuthor($pid, $uid)
 {
         $authors = getAuthorsForPuzzle($pid);
-        makeOptionElements($authors, 'removeAuth');
+        makeOptionElements($authors, 'removeAuth', $uid);
 }
 
-function displayAddAuthor($pid)
+function displayAddAuthor($pid, $uid)
 {
         $authors = getAvailableAuthorsForPuzzle($pid);
-        makeOptionElements($authors, 'addAuth');
+        makeOptionElements($authors, 'addAuth', $uid);
 }
 
 function displaySpoiled($uid, $pid)
@@ -382,11 +382,11 @@ function displaySpoiled($uid, $pid)
                                         <tr>
                                                 <td>
                                                         <p><strong>Remove Spoiled:</strong></p>
-                                                        <?php echo displayRemoveSpoiledUsers($pid); ?>
+                                                        <?php echo displayRemoveSpoiledUsers($pid, $uid); ?>
                                                 </td>
                                                 <td>
                                                         <p><strong>Add Spoiled:</strong></p>
-                                                        <?php echo displayAddSpoiledUsers($pid); ?>
+                                                        <?php echo displayAddSpoiledUsers($pid, $uid); ?>
                                                 </td>
                                         </tr>
                                         <tr>
@@ -401,16 +401,16 @@ function displaySpoiled($uid, $pid)
 <?php
 }
 
-function displayRemoveSpoiledUsers($pid)
+function displayRemoveSpoiledUsers($pid, $uid)
 {
         $spoiled = getSpoiledUsersForPuzzle($pid);
-        makeOptionElements($spoiled, 'removeSpoiledUser');
+        makeOptionElements($spoiled, 'removeSpoiledUser', $uid);
 }
 
-function displayAddSpoiledUsers($pid)
+function displayAddSpoiledUsers($pid, $uid)
 {
         $spoiled = getAvailableSpoiledUsersForPuzzle($pid);
-        makeOptionElements($spoiled, 'addSpoiledUser');
+        makeOptionElements($spoiled, 'addSpoiledUser', $uid);
 }
 
 function displayRoundCaptain($uid, $pid)
@@ -430,11 +430,11 @@ function displayRoundCaptain($uid, $pid)
                                         <tr>
                                                 <td>
                                                         <p><strong>Remove Round Captain(s):</strong></p>
-                                                        <?php echo displayRemoveRoundCaptain($pid); ?>
+                                                        <?php echo displayRemoveRoundCaptain($pid, $uid); ?>
                                                 </td>
                                                 <td>
                                                         <p><strong>Add Round Captain(s):</strong></p>
-                                                        <?php echo displayAddRoundCaptain($pid); ?>
+                                                        <?php echo displayAddRoundCaptain($pid, $uid); ?>
                                                 </td>
                                         </tr>
                                         <tr>
@@ -449,16 +449,16 @@ function displayRoundCaptain($uid, $pid)
 <?php
 }
 
-function displayRemoveRoundCaptain($pid)
+function displayRemoveRoundCaptain($pid, $uid)
 {
         $capts = getRoundCaptainsForPuzzle($pid);
-        makeOptionElements($capts, 'removeRoundCaptain');
+        makeOptionElements($capts, 'removeRoundCaptain', $uid);
 }
 
-function displayAddRoundCaptain($pid)
+function displayAddRoundCaptain($pid, $uid)
 {
         $capts = getAvailableRoundCaptainsForPuzzle($pid);
-        makeOptionElements($capts, 'addRoundCaptain');
+        makeOptionElements($capts, 'addRoundCaptain', $uid);
 }
 
 function displayEditors($uid, $pid)
@@ -488,11 +488,11 @@ function displayEditors($uid, $pid)
                                         <tr>
                                                 <td>
                                                         <p><strong>Remove Discussion Editor(s):</strong></p>
-                                                        <?php echo displayRemoveEditor($pid)?>
+                                                        <?php echo displayRemoveEditor($pid, $uid)?>
                                                 </td>
                                                 <td>
                                                         <p><strong>Add Discussion Editor(s):</strong></p>
-                                                        <?php echo displayAddEditor($pid); ?>
+                                                        <?php echo displayAddEditor($pid, $uid); ?>
                                                 </td>
                                         </tr>
                                         <tr>
@@ -507,16 +507,16 @@ function displayEditors($uid, $pid)
 <?php
 }
 
-function displayRemoveEditor($pid)
+function displayRemoveEditor($pid, $uid)
 {
         $editors = getEditorsForPuzzle($pid);
-        makeOptionElements($editors, 'removeEditor');
+        makeOptionElements($editors, 'removeEditor', $uid);
 }
 
-function displayAddEditor($pid)
+function displayAddEditor($pid, $uid)
 {
         $editors = getAvailableEditorsForPuzzle($pid);
-        makeOptionElements($editors, 'addEditor');
+        makeOptionElements($editors, 'addEditor', $uid);
 }
 
 function displayApprovers($uid, $pid)
@@ -536,11 +536,11 @@ function displayApprovers($uid, $pid)
                                         <tr>
                                                 <td>
                                                         <p><strong>Remove Approval Editor(s):</strong></p>
-                                                        <?php echo displayRemoveApprover($pid)?>
+                                                        <?php echo displayRemoveApprover($pid, $uid)?>
                                                 </td>
                                                 <td>
                                                         <p><strong>Add Approval Editor(s):</strong></p>
-                                                        <?php echo displayAddApprover($pid); ?>
+                                                        <?php echo displayAddApprover($pid, $uid); ?>
                                                 </td>
                                         </tr>
                                         <tr>
@@ -555,16 +555,16 @@ function displayApprovers($uid, $pid)
 <?php
 }
 
-function displayRemoveApprover($pid)
+function displayRemoveApprover($pid, $uid)
 {
         $approvers = getApproversForPuzzle($pid);
-        makeOptionElements($approvers, 'removeApprover');
+        makeOptionElements($approvers, 'removeApprover', $uid);
 }
 
-function displayAddApprover($pid)
+function displayAddApprover($pid, $uid)
 {
         $approvers = getAvailableApproversForPuzzle($pid);
-        makeOptionElements($approvers, 'addApprover');
+        makeOptionElements($approvers, 'addApprover', $uid);
 }
 
 function displayFactcheckers($uid, $pid)
@@ -584,11 +584,11 @@ function displayFactcheckers($uid, $pid)
                                         <tr>
                                                 <td>
                                                         <p><strong>Remove Factchecker(s):</strong></p>
-                                                        <?php echo displayRemoveFactchecker($pid)?>
+                                                        <?php echo displayRemoveFactchecker($pid, $uid)?>
                                                 </td>
                                                 <td>
                                                         <p><strong>Add Factchecker(s):</strong></p>
-                                                        <?php echo displayAddFactchecker($pid); ?>
+                                                        <?php echo displayAddFactchecker($pid, $uid); ?>
                                                 </td>
                                         </tr>
                                         <tr>
@@ -603,16 +603,16 @@ function displayFactcheckers($uid, $pid)
 <?php
 }
 
-function displayRemoveFactchecker($pid)
+function displayRemoveFactchecker($pid, $uid)
 {
         $factcheckers = getFactcheckersForPuzzle($pid);
-        makeOptionElements($factcheckers, 'removeFactchecker');
+        makeOptionElements($factcheckers, 'removeFactchecker', $uid);
 }
 
-function displayAddFactchecker($pid)
+function displayAddFactchecker($pid, $uid)
 {
         $factcheckers = getAvailableFactcheckersForPuzzle($pid);
-        makeOptionElements($factcheckers, 'addFactchecker');
+        makeOptionElements($factcheckers, 'addFactchecker', $uid);
 }
 
 function displayTags($uid, $pid)

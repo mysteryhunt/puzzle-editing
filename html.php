@@ -325,7 +325,7 @@
 
 // Make groups of checkboxes
 // Takes an associative array and the name of the form element
-function makeOptionElements($toDisplay, $name)
+function makeOptionElements($toDisplay, $name, $highlightKey = NULL)
 {
         if (!$toDisplay) {
                 echo '<em>(none)</em>';
@@ -350,10 +350,13 @@ function makeOptionElements($toDisplay, $name)
                         echo '<tr>';
 
                 // Add answer information
-                echo '<td>';
-                echo "<input type='checkbox' name='$name" . "[]' value='$key' />";
+                if ($key == $highlightKey) {
+                    echo "<td class='highlightkey'>";
+                } else {
+                    echo '<td>';
+                }
+                echo "<label><input type='checkbox' name='$name" . "[]' value='$key' /> $value</label>";
                 echo '</td>';
-                echo "<td>$value</td>";
 
                 // End row, if number of columns reached
                 if (($i % $numCol) == 0)
