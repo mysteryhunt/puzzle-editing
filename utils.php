@@ -2033,7 +2033,7 @@ function removeEditors($uid, $pid, $remove)
 }
 
 function changeNeededEditors($uid, $pid, $need) {
-        if (!isEditorChief($uid))
+        if (!canChangeEditorsNeeded($uid, $pid))
                 utilsError("You do not have permission to change the number of needed editors.");
 
         $sql = sprintf("UPDATE puzzle_idea SET needed_editors='%s' WHERE id='%s'",
@@ -2142,6 +2142,9 @@ function canViewPuzzle($uid, $pid)
           isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) ||
           isTestingAdminOnPuzzle($uid, $pid) || canFactCheckPuzzle($uid, $pid) ||
           isSpoiledOnPuzzle($uid, $pid) || isPuzzleInPostprod($pid);
+}
+function canChangeEditorsNeeded($uid, $pid) {
+        return isEditorChief($uid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid);
 }
 
 function canChangeAnswers($uid)

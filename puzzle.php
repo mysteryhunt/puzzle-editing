@@ -466,12 +466,13 @@ function displayEditors($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Discussion Editors:</strong> <?php $est = getEditorStatus($pid); echo $est[0]; ?>&nbsp;&nbsp;<?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+                                <strong>Discussion Editors:</strong> <?php $est = getEditorStatus($pid); echo $est[0]; ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
+                        <!-- There was an if statement around this entire [change] block before, but non-authors should be able to add themselves as discussion editors, and authors should be able to change the number of discussion editors needed, so that's, like, everybody... -->
                         </td>
                 </tr>
                 <tr>
                         <td>
-                                <?php if (isEditorChief($uid)) { ?>
+                                <?php if (canChangeEditorsNeeded($uid, $pid)) { ?>
                                 <div>
                                         <form method="post" action="form-submit.php">
                                         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
@@ -500,7 +501,7 @@ function displayEditors($uid, $pid)
                                                 </td>
                                         </tr>
                                         </form>
-                                </table><?php } ?>
+                                </table>
                         </td>
                 </tr>
 <?php
