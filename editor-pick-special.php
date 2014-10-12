@@ -8,7 +8,7 @@
         $uid = isLoggedIn();
 
         // Start HTML
-        head("editor", "Discussion Editor (add new puzzles)");
+        head("editor-pick-special", "Discussion Editor (find puzzles needing help)");
 
         // Check for editor permissions
         if (!isEditor($uid)) {
