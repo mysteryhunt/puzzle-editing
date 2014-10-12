@@ -37,8 +37,7 @@
 	if (ALLOW_EDITOR_PICK) {
 	   echo '<br/>';
            echo '<h3>Needs Discussion Editor(s)</h3>';
-           echo '<p><strong class="impt">IMPORTANT:</strong> <strong>Clicking a puzzle below will add you as a discussion editor</strong> (unless you already have a role on the puzzle or can see all puzzles.)</p>';
-           echo '<p><strong>Please click judiciously and give comments to improve the puzzles you decide to edit.</strong> (You can still remove yourself from being a discussion editor later, however.)</p>';
+           echo '<p>(Clicking on a puzzle below will no longer automatically add you as a discussion editor. You may choose to add yourself on the puzzle page. Please give comments to improve the puzzles you decide to edit.)</p>';
 	   $puzzles = getPuzzlesNeedingEditors();
            displayQueue($uid, $puzzles, "notes summary editornotes authorsandeditors", FALSE, array(), "");
 		   ?>
