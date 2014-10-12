@@ -11,7 +11,7 @@
         head("allpuzzles", "All Puzzles");
         echo '<style type="text/css">.puzzideasummary {background-color: #000000;}</style>';
         // Check for lurker permissions
-        if (!canSeeAllPuzzles($uid)) {
+        if (!canSeeAllPuzzles($uid)  && !isApprover($uid)) {
                 echo "<div class='errormsg'>You do not have permissions for this page.</div>";
                 foot();
                 exit(1);
