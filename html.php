@@ -88,6 +88,7 @@
                 echoNav1($selnav, "testsolveteams", "TS Team Assignments", (USING_TESTSOLVE_TEAMS) && isTestingAdmin($suid));
                 echoNav1($selnav, "answers",        "Answers",             canChangeAnswers($suid));
                 echoNav1($selnav, "allpuzzles",     "All Puzzles",         canSeeAllPuzzles($suid));
+                echoNav1($selnav, "editor-pick-special",     "Puzzles Needing Help",         true);
         }
 ?>
                 </ul>

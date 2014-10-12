@@ -3270,6 +3270,13 @@ function getPuzzlesNeedingEditors() {
         return sortByNumEditors($puzzles);
 }
 
+function getPuzzlesNeedingSpecialEditors() {
+        $sql = "SELECT puzzle from (SELECT count(editor_queue.uid) num_editors, puzzle_idea.id puzzle, puzzle_idea.needed_editors need FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid WHERE notes != '' AND notes NOT LIKE '%Draft by %' GROUP by puzzle) puzzle_count where num_editors < need";
+        $puzzles = get_elements($sql);
+
+        return sortByNumEditors($puzzles);
+}
+
 function getPuzzlesNeedingApprovers($uid) {
 		$sql = "SELECT y.pid as puzzle from 
 			((SELECT count(*) as num_editors, pid, count(if(uid = $uid,1,NULL)) as am_i_an_ed_already 
