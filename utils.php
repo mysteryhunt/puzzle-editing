@@ -149,6 +149,7 @@ function pushToPostProd($uid, $pid)
 }
 
 function pushToPostProdHelper($uid, $pid) {
+  return;
   $rinfo = getRoundForPuzzle($pid);
   #$runscript = "/usr/bin/env | grep ^CATTLEPROD";
   #$runscript = "/srv/veil/venv/bin/cattleprod 2>&1";
