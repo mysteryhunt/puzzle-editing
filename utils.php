@@ -2276,6 +2276,11 @@ function getAllEditors()
         return get_assoc_array("select user_info.uid, fullname from user_info, jobs, priv where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 group by uid", "uid", "fullname");
 }
 
+function getAllApprovalEditors()
+{
+        return get_assoc_array("select user_info.uid, fullname from user_info, jobs, priv where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.isApprover = 1 group by uid", "uid", "fullname");
+}
+
 function getAllAuthors()
 {
         return get_assoc_array("select user_info.uid, fullname from user_info, authors where user_info.uid = authors.uid group by uid", "uid", "fullname");

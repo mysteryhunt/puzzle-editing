@@ -40,6 +40,7 @@
         <select name="filtervalue">
 <?php
         $editors = getAllEditors();
+	if(USING_APPROVERS) { $editors = getAllApprovalEditors(); }
         asort($editors);
         foreach ($editors as $uid => $fullname) {
                 echo "<option value='$uid'>$fullname</option>";
