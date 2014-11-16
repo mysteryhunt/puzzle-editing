@@ -248,6 +248,9 @@
                                 if ($filter[0] == "editor" && !isEditorOnPuzzle($filter[1], $pid)) {
                                   continue;
                                 }
+                                if ($filter[0] == "approver" && !isApproverOnPuzzle($filter[1], $pid)) {
+                                  continue;
+                                }
                                 if ($filter[0] == "tag" && !isTagOnPuzzle($filter[1], $pid)) {
                                   continue;
                                 }

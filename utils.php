@@ -43,7 +43,7 @@ function isValidPuzzleFilter()
 {
         if (isset($_GET['filterkey']) && isset($_GET['filtervalue'])) {
                 $key = $_GET['filterkey'];
-                if ($key != "status" && $key != "author" && $key != "editor" && $key != "tag") {
+                if ($key != "status" && $key != "author" && $key != "editor" && $key != "approver" && $key != "tag") {
                         echo "<div class='errormsg'>Invalid sort key. What did you even do?</div>";
                         foot();
                         exit(1);
@@ -54,7 +54,7 @@ function isValidPuzzleFilter()
                         foot();
                         exit(1);
                 }
-                if (($key == "author" || $key == "editor") && !validUserId($val)) {
+                if (($key == "author" || $key == "editor" || $key == "approver") && !validUserId($val)) {
                         echo "<div class='errormsg'>Invalid user ID.</div>";
                         foot();
                         exit(1);

@@ -36,7 +36,7 @@
         <input type="submit" value="Filter status">
         </form>
         <form method="get" action="allpuzzles.php" class="inlform">
-        <input type="hidden" name="filterkey" value="editor">
+        <input type="hidden" name="filterkey" value="approver">
         <select name="filtervalue">
 <?php
         $editors = getAllEditors();
@@ -47,7 +47,7 @@
         }
 ?>
         </select>
-        <input type="submit" value="Filter editor">
+        <input type="submit" value="Filter approver">
         </form>
         <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="author">
