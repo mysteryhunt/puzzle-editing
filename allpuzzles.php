@@ -19,6 +19,13 @@
 
         $filt = isValidPuzzleFilter();
 
+	function selected($key, $value) {
+		if(count($filt) == 2 && $filt[0] == $key && $filt[1] == $value) {
+			return "selected";
+		}
+		return "";
+	}
+
         displayPuzzleStats($uid);
 ?>
 
@@ -26,10 +33,12 @@
         <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="status">
         <select name="filtervalue">
+	<option value='-'>-</option>
 <?php
         $statuses = getPuzzleStatuses();
         foreach ($statuses as $sid => $sname) {
-                echo "<option value='$sid'>$sname</option>";
+                $slct = selected('status', $sid);
+                echo "<option value='$sid' $slct>$sname</option>";
         }
 ?>
         </select>
@@ -38,12 +47,14 @@
         <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="approver">
         <select name="filtervalue">
+	<option value='-'>-</option>
 <?php
         $editors = getAllEditors();
 	if(USING_APPROVERS) { $editors = getAllApprovalEditors(); }
         asort($editors);
         foreach ($editors as $uid => $fullname) {
-                echo "<option value='$uid'>$fullname</option>";
+                $slct = selected('approver', $uid);
+                echo "<option value='$uid' $slct>$fullname</option>";
         }
 ?>
         </select>
@@ -52,11 +63,13 @@
         <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="author">
         <select name="filtervalue">
+	<option value='-'>-</option>
 <?php
         $authors = getAllAuthors();
         asort($authors);
         foreach ($authors as $uid => $fullname) {
-                echo "<option value='$uid'>$fullname</option>";
+                $slct = selected('author', $uid);
+                echo "<option value='$uid' $slct>$fullname</option>";
         }
 ?>
         </select>
@@ -65,11 +78,13 @@
         <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="tag">
         <select name="filtervalue">
+	<option value='-'>-</option>
 <?php
         $tags = getAllTags();
         asort($tags);
         foreach ($tags as $tid => $name) {
-                echo "<option value='$tid'>$name</option>";
+                $slct = selected('tag', $tid);
+                echo "<option value='$tid' $slct>$name</option>";
         }
 ?>
         </select>
