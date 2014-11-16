@@ -20,6 +20,8 @@
         $filt = isValidPuzzleFilter();
 
 	function selected($key, $value) {
+		global $filt;
+
 		if(count($filt) == 2 && $filt[0] == $key && $filt[1] == $value) {
 			return "selected";
 		}
