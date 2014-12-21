@@ -119,11 +119,11 @@ function postprodAll($uid)
     foreach ($allofem as $puz) {
         print "$puz ... ";
         ob_flush(); flush();
-        $out = pushToPostProdHelper($uid, $puz);
-        if (!$out) {
-            print "OK\n";
+        $status = pushToPostProdHelper($uid, $puz, $output);
+        if ($status == 0) {
+            print "OK\n\n$output\n\n";
         } else {
-            print "FAILED\n\n$out\n\n";
+            print "FAILED\n\n$output\n\n";
         }
         ob_flush(); flush();
     }
@@ -132,13 +132,17 @@ function postprodAll($uid)
 
 function pushToPostProd($uid, $pid)
 {
-  $out = pushToPostProdHelper($uid, $pid);
-  if ($out) {
-    utilsError($out);
+  $status = pushToPostProdHelper($uid, $pid, $output);
+  if ($status == 0) {
+    print "<pre>OK\n\n$output</pre>";
+  } else {
+    utilsError($output);
   }
+
+  exit(0);
 }
 
-function pushToPostProdHelper($uid, $pid) {
+function pushToPostProdHelper($uid, $pid, &$output) {
   $rinfo = getRoundForPuzzle($pid);
   $answer_dict = getAnswersAndDeepForPuzzle($pid);
   $aid = $answer_dict['aid'];
@@ -171,10 +175,11 @@ function pushToPostProdHelper($uid, $pid) {
   putenv("CATTLEPROD_DEEP=" . $deep);
   putenv("CATTLEPROD_PUSHER=" . $username);
 #  putenv("CATTLEPROD_ASSET_PATH=/nfs/enigma/mh2013/chazelle/assets");
-  $output = shell_exec($runscript);
-  if ($output) {
-    return "Push failed: $output";
-  }
+
+  exec($runscript, $output, $exit_status);
+  $output = implode("\n", $output);
+
+  return $exit_status;
 }
 
 function isStatusInPostProd($sid)
