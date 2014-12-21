@@ -103,17 +103,7 @@ function postprodCanon($s)
 
 function postprodCanonRound($s)
 {
-  $roundslugmap = array(
-    'Get Smart' => 'get_smart',
-    'Sneakers' => 'sneakers',
-    'Rubik' => 'rubik',
-    'Feynman' => 'feynman',
-    "Ocean's 11" => 'oceans_11',
-    'Indiana Jones' => 'indiana',
-    'Movable answers' => 'movable',
-    'Opening' => 'enigmavalley');
-  $s = $roundslugmap[$s];
-  return $s;
+  return postprodCanon($s);
 }
 
 function postprodAll($uid)
@@ -149,11 +139,15 @@ function pushToPostProd($uid, $pid)
 }
 
 function pushToPostProdHelper($uid, $pid) {
-  return;
   $rinfo = getRoundForPuzzle($pid);
+  $answer_dict = getAnswersAndDeepForPuzzle($pid);
+  $aid = $answer_dict['aid'];
+  $deep = $answer_dict['deep'];
+  $answer = $answer_dict['answer'];
   #$runscript = "/usr/bin/env | grep ^CATTLEPROD";
   #$runscript = "/srv/veil/venv/bin/cattleprod 2>&1";
-  $runscript = "/nfs/sages/deploy/mh2013/present/bin/cattleprod 2>&1";
+#  $runscript = "/nfs/sages/deploy/mh2013/present/bin/cattleprod 2>&1";
+  $runscript = "/home/puzzletron/cattleprod.py 2>&1";
   $roundname = $rinfo['name'];
   $roundslug = postprodCanonRound($roundname);
   $title = getTitle($pid);
@@ -164,12 +158,19 @@ function pushToPostProdHelper($uid, $pid) {
   if (empty($filename)) {
     return "Nothing in the postproduction slot of this puzzle: Nothing to push!";
   }
-  $fileprefix = "/srv/puzzle-editing/";
-  putenv("CATTLEPROD_PUZZLE_SLUG=beta_" . $titleslug); 
+  $username = getUserUsername($uid);
+# ???
+  putenv("CATTLEPROD_PUZZLE_SLUG=" . $titleslug); 
   putenv("CATTLEPROD_ROUND_SLUG=" . $roundslug);
+  putenv("CATTLEPROD_ROUND_NAME=" . $roundname);
   putenv("CATTLEPROD_TITLE=" . $title);
-  putenv("CATTLEPROD_MEDIA=" . $fileprefix . $filename);
-  putenv("CATTLEPROD_ASSET_PATH=/nfs/enigma/mh2013/chazelle/assets");
+  putenv("CATTLEPROD_MEDIA=" . "$filename");
+  putenv("CATTLEPROD_ANSWER_ID=" . $aid);
+  putenv("CATTLEPROD_PUZZLE_ID=" . $pid);
+  putenv("CATTLEPROD_ANSWER=" . $answer);
+  putenv("CATTLEPROD_DEEP=" . $deep);
+  putenv("CATTLEPROD_PUSHER=" . $username);
+#  putenv("CATTLEPROD_ASSET_PATH=/nfs/enigma/mh2013/chazelle/assets");
   $output = shell_exec($runscript);
   if ($output) {
     return "Push failed: $output";
@@ -891,6 +892,19 @@ function getAnswersForPuzzle($pid)
                         mysql_real_escape_string($pid));
         return get_assoc_array($sql, "aid", "answer");
 }
+
+function getAnswersAndDeepForPuzzle($pid)
+{
+        $sql = sprintf("SELECT aid, answer, deep FROM answers WHERE pid='%s'",
+                        mysql_real_escape_string($pid));
+        $arr = get_row($sql);
+	$ret = array();
+	$ret["aid"] = $arr[0];
+	$ret["answer"] = $arr[1];
+	$ret["deep"] = $arr[2];
+	return $ret;
+}
+
 
 // Get the current answers for a puzzle as a comma separated list
 function getAnswersForPuzzleAsList($pid)
@@ -2684,7 +2698,7 @@ function uploadFiles($uid, $pid, $type, $file) {
         }
 
         if ($type == "postprod") {
-                pushToPostProd($uid, $pid);      
+//                pushToPostProd($uid, $pid);      
         }
 }
 
