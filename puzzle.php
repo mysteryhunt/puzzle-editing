@@ -39,6 +39,8 @@
                         changeEditors($uid, $pid, array($uid), array());
                 } else if ($_GET['approve'] && isApproverAvailable($uid, $pid) && !isEditorChief($uid)) {
                         changeApprovers($uid, $pid, array($uid), array());
+                } else if ($_GET['factcheck'] && isFactcheckerAvailable($uid, $pid) && !isEditorChief($uid)) {
+                        changeFactcheckers($uid, $pid, array($uid), array());
                 }
         }
 

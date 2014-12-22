@@ -3317,8 +3317,8 @@ function getClaimedPuzzlesInFactChecking() {
         return sortByLastCommentDate($puzzles);
 }
 
-function getPuzzlesInFinalFactChecking() {
-        $sql = "SELECT puzzle_idea.id FROM puzzle_idea INNER JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1'";
+function getAvailablePuzzlesToFFCForUser($uid) {
+        $sql = sprintf("SELECT puzzle_idea.id FROM puzzle_idea INNER JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1' AND NOT EXISTS (SELECT 1 FROM factcheck_queue WHERE factcheck_queue.pid=puzzle_idea.id) AND NOT EXISTS (SELECT 1 FROM spoiled WHERE spoiled.uid='%s' AND spoiled.pid=puzzle_idea.id)", mysql_real_escape_string($uid));
         $puzzles = get_elements($sql);
 
         return sortByLastCommentDate($puzzles);
