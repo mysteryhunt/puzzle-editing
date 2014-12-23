@@ -3578,42 +3578,29 @@ function getNumberOfEditorsOnPuzzles($type)
         return $count;
 }
 
+function countPuzzlesForUser($table, $uid) {
+        // like getUsersForPuzzle, this is only called from the below functions, where $table is a hardcoded string
+        $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea INNER JOIN $table ON puzzle_idea.id=$table.pid WHERE $table.uid='%s'",
+                mysql_real_escape_string($uid));
+        return get_element($sql);
+}
+function countAvailablePuzzlesForEditor($uid) {
+        $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea WHERE %s AND %s AND %s AND %s",
+                sqlUserNotRelatedClause('authors',        $uid),
+                sqlUserNotRelatedClause('editor_queue',   $uid),
+                sqlUserNotRelatedClause('approver_queue', $uid),
+                sqlUserNotRelatedClause('test_queue',     $uid));
+        return get_element($sql);
+}
 function getNumberOfPuzzlesForUser($uid)
 {
-        $numbers['author'] = 0;
-        $numbers['editor'] = 0;
-		$numbers['approver'] = 0;
-        $numbers['spoiled'] = 0;
-        $numbers['currentTester'] = 0;
-        $numbers['doneTester'] = 0;
-        $numbers['available'] = 0;
-
-        $puzzles = getAllLivePuzzles();
-
-        foreach ($puzzles as $pid) {
-                if (isAuthorOnPuzzle($uid, $pid)) {
-                        $numbers['author']++;
-                }
-                if (isEditorOnPuzzle($uid, $pid)) {
-                        $numbers['editor']++;
-                }
-                if (isApproverOnPuzzle($uid, $pid)) {
-                        $numbers['approver']++;
-                }
-                if (isSpoiledOnPuzzle($uid, $pid)) {
-                        $numbers['spoiled']++;
-                }
-                if (isTesterOnPuzzle($uid, $pid)) {
-                        $numbers['currentTester']++;
-                }
-                if (isFormerTesterOnPuzzle($uid, $pid)) {
-                        $numbers['doneTester']++;
-                }
-                if (isEditorAvailable($uid, $pid)) {
-                        $numbers['available']++;
-                }
-        }
-
+        $numbers['author']        = countPuzzlesForUser('authors',        $uid);
+        $numbers['editor']        = countPuzzlesForUser('editor_queue',   $uid);
+        $numbers['approver']      = countPuzzlesForUser('approver_queue', $uid);
+        $numbers['spoiled']       = countPuzzlesForUser('spoiled',        $uid);
+        $numbers['currentTester'] = countPuzzlesForUser('test_queue',     $uid);
+        $numbers['doneTester']    = countPuzzlesForUser('doneTesting',    $uid);
+        $numbers['available']     = isEditor($uid) ? countAvailablePuzzlesForEditor($uid) : 0;
         return $numbers;
 }
 
