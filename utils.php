@@ -3580,12 +3580,14 @@ function getNumberOfEditorsOnPuzzles($type)
 
 function countPuzzlesForUser($table, $uid) {
         // like getUsersForPuzzle, this is only called from the below functions, where $table is a hardcoded string
-        $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea INNER JOIN $table ON puzzle_idea.id=$table.pid WHERE $table.uid='%s'",
+        $deadpuzzleid = getDeadStatusId();
+        $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea INNER JOIN $table ON puzzle_idea.id=$table.pid WHERE puzzle_idea.pstatus != $deadpuzzleid AND $table.uid='%s'",
                 mysql_real_escape_string($uid));
         return get_element($sql);
 }
 function countAvailablePuzzlesForEditor($uid) {
-        $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea WHERE %s AND %s AND %s AND %s",
+        $deadpuzzleid = getDeadStatusId();
+        $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea WHERE puzzle_idea.pstatus != $deadpuzzleid AND %s AND %s AND %s AND %s",
                 sqlUserNotRelatedClause('authors',        $uid),
                 sqlUserNotRelatedClause('editor_queue',   $uid),
                 sqlUserNotRelatedClause('approver_queue', $uid),
