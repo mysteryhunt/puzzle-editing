@@ -295,7 +295,7 @@ function editTitleSummaryDescription($uid, $pid, $title, $summary, $description)
                 <p style="padding-top: 0.5em;">Description (spoilers ok):</p>
                 <textarea style="width:50em; height: 25em;" name="description"><?php echo htmlspecialchars($description); ?></textarea>
                 <p style="padding-top: 0.5em;">
-                        <input type="submit" name="editTSD" value="Change" />
+                        <input type="submit" name="editTSD" class="okSubmit" value="Change" />
                         <input type="submit" name="cancelTSD" value="Cancel" />
                 </p>
         </form>
