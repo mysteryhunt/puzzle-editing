@@ -3250,6 +3250,10 @@ function getAllLivePuzzles() {
         $puzzles = get_elements($sql);
         return sortByLastCommentDate($puzzles);
 }
+function countLivePuzzles() {
+        $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea WHERE pstatus != %d", getDeadStatusId());
+        return get_element($sql);
+}
 
 function isPuzzleInFactChecking($pid)
 {

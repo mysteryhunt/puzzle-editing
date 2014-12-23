@@ -380,7 +380,7 @@ function displayPuzzleStats($uid)
 
 
 
-        $totalNumberOfPuzzles = count(getAllLivePuzzles());
+        $totalNumberOfPuzzles = countLivePuzzles();
         $numberOfEditors = getNumberOfEditorsOnPuzzles("discuss");
         $moreThanThree = $totalNumberOfPuzzles - $numberOfEditors['0'] - $numberOfEditors['1'] - $numberOfEditors['2'] - $numberOfEditors['3'];
 
