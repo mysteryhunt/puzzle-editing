@@ -1,8 +1,9 @@
+/* vim:set ts=4 sw=4 sts=4 et: */
 .profilebox, .specprofilebox, .seeallprofilebox, .approverprofilebox {
-	border: 1px solid #999999;
-	padding: 10px;
-	width: 800px;
-	margin-bottom:15px;
+    border: 1px solid #999999;
+    padding: 10px;
+    width: 800px;
+    margin-bottom:15px;
 }
 
 .profilebox { background-color: #E2E9EB; }
@@ -10,42 +11,36 @@
 .seeallprofilebox { background-color: #F0D7B0; }
 .approverprofilebox { background-color: #C5ECD1; }
 
-.profileimg {
-	float:left;
-}
+.profileimg { float:left; }
 
-.profiletxt {
-	margin-left:140px;
-}
+.profiletxt { margin-left:140px; }
 
 .profilename {
- 	font-size:1.2em;
-	font-weight:bold;
-	display:block;
+    font-size:1.2em;
+    font-weight:bold;
+    display:block;
 }
 
 .profiletitle {
-	font-size:1em;
-	font-weight:bold;
-	display:block;
+    font-size:1em;
+    font-weight:bold;
+    display:block;
 }
 .seeallprofilebox .profiletitle { color:#993300; }
 .approverprofilebox .profiletitle { color:#006611; }
 .specprofilebox .profiletitle { color:#112299; }
 
 .profilesect {
-	font-size:1em;
-	color:#000066;
-	display:block;
-	margin-top:7px;
+    font-size:1em;
+    color:#000066;
+    display:block;
+    margin-top:7px;
 }
 
 .profilecontact {
-	font-size:0.8em;
-	color:#999999;
-	display:block;
+    font-size:0.8em;
+    color:#999999;
+    display:block;
 }
 
-.profilefooter {
-	clear:both;
-}
+.profilefooter { clear:both; }
