@@ -21,7 +21,7 @@
         // Fetch array of MOTDs from database
         $motds = getAllMotd();
         if (!$motds) echo "<strong>No updates to list</strong>";
-        
+
         foreach ($motds as $motd) {
             $motddate = $motd[1];
             $motdmsg = $motd[2];

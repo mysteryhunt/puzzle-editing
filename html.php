@@ -231,8 +231,6 @@
                 </thead>
                 <tbody>
 <?php
-
-
                 foreach ($puzzles as $pid) {
                         $puzzleInfo = getPuzzleInfo($pid);
 			$tags = getTagsAsList($pid);

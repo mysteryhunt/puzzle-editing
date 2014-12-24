@@ -182,7 +182,6 @@
         displayKillPuzzle($uid, $pid);
         echo "</div>";
 
-
         // Display & add comments
         echo "<div class='comments'>";
         echo "<table>";
@@ -194,9 +193,6 @@
 
         // End HTML
         foot();
-
-
-
 
 //------------------------------------------------------
 function displayPuzzleInfo($uid, $pid, $puzzleInfo)

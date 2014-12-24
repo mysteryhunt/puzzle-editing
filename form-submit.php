@@ -81,7 +81,6 @@
                         $remove = NULL;
 
                 changeAuthors($uid, $pid, $add, $remove);
-		
 
 		header("Location: " . URL . "/puzzle.php?pid=$pid");
                 exit(0);

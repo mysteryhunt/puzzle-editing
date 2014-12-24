@@ -10,9 +10,6 @@
         // Start HTML
         head("", "Testsolving Statistics");
 
-
-
-
 function computeComments()
 {
 	$a = array();
@@ -20,7 +17,6 @@ function computeComments()
         $comments = getTestCommentsAll();
         if (!$comments)
                 return;
-
 
         foreach ($comments as $comment)
         {
@@ -35,20 +31,12 @@ function computeComments()
                 else
                        $name = getUserName($user);
 
-
-
-
 		if (!(isset($a[$name])))
- 		{
+		{
 		        $a[$name] = array ('name' => $name, 'total' => 0, 'correct' => 0, 'incorrect' => 0, 'cordif' => 0, 'responses' => 0, 'words' => 0);
 		}
 
-
-
-
 		$ct = $comment['comment'];
-
-
 
 		if ($ct == 'Added testsolver')
                 {
@@ -72,26 +60,10 @@ function computeComments()
 			else
 			  $offset = 92;
 
-
-		       	$a[$name]['words'] += str_word_count($ct) - $offset;		
+			$a[$name]['words'] += str_word_count($ct) - $offset;
 		}
 
-
-
-
-
-
         }
-	
-
-
-
-
-
-
-
-
-
 
         echo '
         <script type="text/javascript">
@@ -103,7 +75,6 @@ function computeComments()
         });
         </script>
         ';
-
 
         echo ' <table id="solverstats" class="tablesorter">
                  <thead>
@@ -147,11 +118,7 @@ function computeComments()
       echo '</tr>';
    }
 
-
    echo '</tbody></table>';
-
-
-
 }
 
 function getTestCommentsAll()

@@ -10,7 +10,6 @@
         // Start HTML
         head("mailinglists");
 
-
 	$email = getEmail($uid);
 	$moira_entity = getMoiraEntity($email);
 

@@ -60,7 +60,6 @@
         // I need to see testers for puzzles that have no testadmin.
         displayQueue($uid, $puzzles, "notes summary testers", FALSE);
 
-
         echo "<h2>Testing Feed</h2>";
         echo "<table>";
         echo "<div class='comments'>";

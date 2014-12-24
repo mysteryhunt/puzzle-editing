@@ -62,10 +62,10 @@
         <br/>
         <hr/>
         <br/>
-<?php } 
+<?php }
 
         if (USING_TESTSOLVE_TEAMS == 'TRUE') {
-        
+
                 $myteam = getUserTestTeamID($uid);
                 if ($myteam == NULL) {
                         echo "<h2>Puzzletron doesn't know your testsolve team at this time. Consult the testsolve team assignment spreadsheet manually for an ID to enter above. No puzzles listed.</h2>";
@@ -79,10 +79,7 @@
                 displayQueue($uid, $teampuzzles, "notes summary", TRUE);
                 }
                 }
-        }
-
-
-        ?>
+        } ?>
         <br><h3>Currently Testing &mdash; (if you're done, please submit a report, even an empty one):</h3>
 <?php
 

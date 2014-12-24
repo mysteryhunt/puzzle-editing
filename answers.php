@@ -111,7 +111,7 @@
         }
 
         function submitAnswersForm($newAnswer, $round)
-        {		
+        {
                 if ($newAnswer == "") {
                         echo("<div class='errormsg'>Blank Answer is unacceptable. Try again</div>\n");
                         return (FALSE);

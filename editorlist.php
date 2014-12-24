@@ -10,7 +10,6 @@
         // Start HTML
         head("editorlist");
 
-
         echo '
         <script type="text/javascript">
         $(document).ready(function() {

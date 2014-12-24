@@ -7,7 +7,6 @@
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
 
-
         // Start HTML
         head();
 
@@ -131,7 +130,7 @@
 			your puzzle is about something significantly
 			different than it first appears. Possible
 			examples:</p>
-			
+
 			<ul>
 			<li><a
 			href="http://web.mit.edu/puzzle/www/2014/puzzle/i_came_across_a_japanese_rose_garden/">I

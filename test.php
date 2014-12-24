@@ -94,7 +94,6 @@ function maybeDisplayWarning($uid, $pid)
 <?php
 }
 
-
 function displayWikiPage($pid)
 {
         echo '<div>';

@@ -70,8 +70,6 @@
 
         echo "</table>";
 
-
-
         foot();
 
         function getPeopleTeamsList(){

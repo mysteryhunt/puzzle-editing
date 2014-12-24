@@ -1,59 +1,59 @@
 
 $(document).ready(function()
 {
-	$('.changeLink').parent().parent().next().hide();	
+	$('.changeLink').parent().parent().next().hide();
 	$('.changeLink').click(function() {
 		$(this).parent().parent().next().toggle();
 		$(this).text($(this).text() == "[Change]" ? "[Hide]" : "[Change]");
 		return false;
 	})
-	
+
 	$('#showTestLink').click(function() {
 		$('.hideFromTest').show();
 		$('#showTestLink').hide();
 		$('#hideTestLink').show();
 		return false;
 	})
-	
+
 	$('#hideTestLink').click(function() {
 		$('.hideFromTest').hide();
 		$('#showTestLink').show();
 		$('#hideTestLink').hide();
 		return false;
 	})
-	
-	$('#uploaddraft').hide();	
+
+	$('#uploaddraft').hide();
 	$('#uploaddraftLink').click(function() {
 		$('#uploaddraft').toggle();
 		$(this).text($(this).text() == "[Upload New]" ? "[Hide]" : "[Upload New]");
-		return false; 
+		return false;
 	})
-	
-	$('#uploadsolution').hide();	
+
+	$('#uploadsolution').hide();
 	$('#uploadsolutionLink').click(function() {
 		$('#uploadsolution').toggle();
 		$(this).text($(this).text() == "[Upload New]" ? "[Hide]" : "[Upload New]");
-		return false; 
+		return false;
 	})
-	
-	$('#uploadmisc').hide();	
+
+	$('#uploadmisc').hide();
 	$('#uploadmiscLink').click(function() {
 		$('#uploadmisc').toggle();
 		$(this).text($(this).text() == "[Upload New]" ? "[Hide]" : "[Upload New]");
-		return false; 
+		return false;
 	})
-	
-	$('#uploadpostprod').hide();	
+
+	$('#uploadpostprod').hide();
 	$('#uploadpostprodLink').click(function() {
 		$('#uploadpostprod').toggle();
 		$(this).text($(this).text() == "[Upload New]" ? "[Hide]" : "[Upload New]");
-		return false; 
+		return false;
 	})
-	
+
 	$('.fileInfoOld').hide();
 	$('#toggleFiles').click(function() {
 		$('.fileInfoOld').toggle();
-		
+
 		if ($('#toggleFiles').text() == "Show Older Files") {
 			$('#toggleFiles').text("Hide Older Files");
 			$('td.fileInfoLatest').css('padding-top', '1em');
@@ -66,15 +66,15 @@ $(document).ready(function()
 
 		return false;
 	})
-	
+
 	$('.description').parent().next().hide();
 	$('.description').click(function() {
 		$(this).parent().next().toggle();
 		return false;
 	})
-	
+
 	$(".tablesorter").tablesorter();
-	
+
 	$('textarea').one('keyup',function() {
 		$(window).bind('beforeunload',function() { return 'Leaving this page will cause any unsaved data to be lost.'; });
 	});

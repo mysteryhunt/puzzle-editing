@@ -100,7 +100,6 @@
         echo "(Hiding dead puzzles by default)<br><br>";
         displayQueue($uid, $puzzles, "notes answer summary editornotes tags authorsandeditors", FALSE, $filt);
 
-
         // End HTML
         foot();
 ?>

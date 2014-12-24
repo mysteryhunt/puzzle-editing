@@ -32,7 +32,7 @@
 	define("HELP_EMAIL", "systems-help@blahblahblah.org");
 	define("WIKI_URL", "https://blahblahblah.org/wiki");
 	define("BUGTRACK_URL", "https://github.com/mysteryhunt/puzzle-editing/issues");
-        
+
         //puzzletron options
 	define("TRUST_REMOTE_USER", FALSE);  // Use internal puzzletron authentication
                                             // This is if you're behind an SSO system / apache proxy that does auth

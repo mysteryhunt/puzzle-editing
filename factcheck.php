@@ -16,7 +16,7 @@
 <h3>Not a factchecker</h3>
 <br>
 You are not currently a factchecker. (If you are a blind testsolver, please do
-not use this page. 
+not use this page.
 
 <br>
 <br>

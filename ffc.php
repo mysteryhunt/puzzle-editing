@@ -21,7 +21,6 @@
         $puzzles = getAvailablePuzzlesToFFCForUser($uid);
         displayQueue($uid, $puzzles, "notes summary editornotes", FALSE, array(), "&factcheck=1");
 
-
         // End HTML
         foot();
 ?>
