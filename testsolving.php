@@ -20,15 +20,15 @@ if (isset($_SESSION['feedback'])) {
 }
 ?>
 
-        <form action="form-submit.php" method="post">
-                <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-                Enter Puzzle ID to testsolve: <input type="text" name="pid" />
-                <input type="submit" name="getTestId" value="Go" />
-        </form>
+    <form action="form-submit.php" method="post">
+        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+        Enter Puzzle ID to testsolve: <input type="text" name="pid" />
+        <input type="submit" name="getTestId" value="Go" />
+    </form>
 
-        <br/><h3><a href="stats.php">Testsolver stats</a></h3>
+    <br/><h3><a href="stats.php">Testsolver stats</a></h3>
 
-        <br />
+    <br />
 <?php if (ALLOW_TESTSOLVE_PICK) { ?>
         <h2>Available for you to test (In order of priority):</h2>
         <strong class="impt">IMPORTANT:</strong> <b>Clicking a puzzle below will

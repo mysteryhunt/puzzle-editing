@@ -71,26 +71,26 @@ $(document).ready(function() {
     // call the tablesorter plugin
     $("#solverstats").tablesorter({
         sortList: [[3,1],[0,0]]
-});
+    });
 });
         </script>
         ';
 
-        echo ' <table id="solverstats" class="tablesorter">
-                 <thead>
-                        <tr>
-                                <th class="puzzidea">Solver</th>
-                                <th class="puzzidea">Puzzles Viewed</th>
-                                <th class="puzzidea">Proportion Solved</th>
-                                <th class="puzzidea">Correct Guesses</th>
-                                <th class="puzzidea">Incorrect Guesses</th>
-                                <th class="puzzidea">Proportion of Guesses Correct</th>
-                                <th class="puzzidea">Feedback Responses</th>
-                                <th class="puzzidea">Total Feedback Word Count</th>
-                                <th class="puzzidea">Average Feedback Word Count</th>
-                       </tr>
-            </thead>
-           <tbody>';
+        echo '<table id="solverstats" class="tablesorter">
+                  <thead>
+                  <tr>
+                      <th class="puzzidea">Solver</th>
+                      <th class="puzzidea">Puzzles Viewed</th>
+                      <th class="puzzidea">Proportion Solved</th>
+                      <th class="puzzidea">Correct Guesses</th>
+                      <th class="puzzidea">Incorrect Guesses</th>
+                      <th class="puzzidea">Proportion of Guesses Correct</th>
+                      <th class="puzzidea">Feedback Responses</th>
+                      <th class="puzzidea">Total Feedback Word Count</th>
+                      <th class="puzzidea">Average Feedback Word Count</th>
+                  </tr>
+                  </thead>
+                  <tbody>';
    foreach ($a as $person)
    {
        echo '<tr class="puzz">';
