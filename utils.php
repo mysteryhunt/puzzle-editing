@@ -29,13 +29,13 @@ function isLoggedIn()
 
 function validUserId($uid)
 {
-        $sql = sprintf("SELECT * FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+        $sql = sprintf("SELECT 1 FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
         return has_result($sql);
 }
 
 function validPuzzleId($uid)
 {
-        $sql = sprintf("SELECT * FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($uid));
+        $sql = sprintf("SELECT 1 FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($uid));
         return has_result($sql);
 }
 
@@ -80,7 +80,7 @@ function isValidPuzzleURL()
 
         $pid = $_GET['pid'];
 
-        $sql = sprintf("SELECT * FROM puzzle_idea WHERE id='%s'",
+        $sql = sprintf("SELECT 1 FROM puzzle_idea WHERE id='%s'",
                         mysql_real_escape_string($pid));
         if (!has_result($sql)) {
                 echo "<div class='errormsg'>Puzzle ID not valid. Please try again.</div>";
@@ -271,7 +271,7 @@ function canRequestTestsolve($uid, $pid)
 
 function hasPriv($uid, $priv)
 {
-        $sql = sprintf("SELECT name FROM jobs LEFT JOIN priv ON jobs.jid = priv.jid
+        $sql = sprintf("SELECT 1 FROM jobs LEFT JOIN priv ON jobs.jid = priv.jid
                                         WHERE uid='%s' AND %s='1'",
                                         mysql_real_escape_string($uid), mysql_real_escape_string($priv));
         return has_result($sql);
@@ -279,73 +279,51 @@ function hasPriv($uid, $priv)
 
 function isPriv($uid, $jid)
 {
-        $sql = sprintf("SELECT * FROM jobs WHERE uid='%s' AND jid='%d'",
+        $sql = sprintf("SELECT 1 FROM jobs WHERE uid='%s' AND jid='%d'",
                                         mysql_real_escape_string($uid), mysql_real_escape_string($jid));
         return has_result($sql);
 }
 
-
+function isRelatedBy($table, $uid, $pid) {
+    $sql = sprintf("SELECT 1 FROM $table WHERE uid='%s' AND pid='%s'",
+        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
+    return has_result($sql);
+}
 function isAuthorOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM authors WHERE uid='%s' AND pid='%s'",
-                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-        return has_result($sql);
+    return isRelatedBy("authors", $uid, $pid);
 }
-
 function isRoundCaptainOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM round_captain_queue WHERE uid='%s' AND pid='%s'",
-                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-        return has_result($sql);
+    return isRelatedBy("round_captain_queue", $uid, $pid);
 }
-
 function isEditorOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM editor_queue WHERE uid='%s' AND pid='%s'",
-                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-        return has_result($sql);
+    return isRelatedBy("editor_queue", $uid, $pid);
 }
-
 function isApproverOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM approver_queue WHERE uid='%s' AND pid='%s'",
-                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-        return has_result($sql);
+    return isRelatedBy("approver_queue", $uid, $pid);
 }
-
 function isTesterOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM test_queue WHERE uid='%s' AND pid='%s'",
-                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-        return has_result($sql);
+    return isRelatedBy("test_queue", $uid, $pid);
 }
-
 function isFactcheckerOnPuzzle($uid, $pid)
 {
-  $sql = sprintf("SELECT * FROM factcheck_queue WHERE uid='%s' AND pid='%s'",
-      mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-  return has_result($sql);
+    return isRelatedBy("factcheck_queue", $uid, $pid);
 }
-
 function isFormerTesterOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM doneTesting WHERE uid='%s' AND pid='%s'",
-                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-        return has_result($sql);
+    return isRelatedBy("doneTesting", $uid, $pid);
 }
-
 function isSpoiledOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM spoiled WHERE uid='%s' AND pid='%s'",
-                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-        return has_result($sql);
+    return isRelatedBy("spoiled", $uid, $pid);
 }
-
 function isTestingAdminOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM testAdminQueue WHERE uid='%s' AND pid='%s'",
-                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
-        return has_result($sql);
+    return isRelatedBy("testAdminQueue", $uid, $pid);
 }
 
 
@@ -454,7 +432,7 @@ function getApproversForPuzzle($pid)
 
 function validTag($id)
 {
-        $sql = sprintf("SELECT * FROM tag_names WHERE id='%s'", mysql_real_escape_string($id));
+        $sql = sprintf("SELECT 1 FROM tag_names WHERE id='%s'", mysql_real_escape_string($id));
         return has_result($sql);
 }
 
@@ -476,9 +454,9 @@ function getTagsForPuzzle($pid)
 
 function isTagOnPuzzle($tid, $pid)
 {
-  $sql = sprintf("SELECT * FROM puzzle_tags WHERE pid='%s' AND tid='%s'", 
-		 mysql_real_escape_string($pid), mysql_real_escape_string($tid));
-  return has_result($sql);
+    $sql = sprintf("SELECT 1 FROM puzzle_tags WHERE pid='%s' AND tid='%s'",
+        mysql_real_escape_string($pid), mysql_real_escape_string($tid));
+    return has_result($sql);
 }
 
 function getAvailableTagsForPuzzle($pid)
@@ -1025,7 +1003,7 @@ function removeAnswers($uid, $pid, $remove)
 
 function isAnswerAvailable($aid)
 {
-        $sql = sprintf("SELECT * FROM answers WHERE aid='%s' AND pid IS NULL",
+        $sql = sprintf("SELECT 1 FROM answers WHERE aid='%s' AND pid IS NULL",
                         mysql_real_escape_string($aid));
 
         return has_result($sql);
@@ -1033,7 +1011,7 @@ function isAnswerAvailable($aid)
 
 function isAnswerOnPuzzle($pid, $aid)
 {
-        $sql = sprintf("SELECT * FROM answers WHERE aid='%s' AND pid='%s'",
+        $sql = sprintf("SELECT 1 FROM answers WHERE aid='%s' AND pid='%s'",
                         mysql_real_escape_string($aid), mysql_real_escape_string($pid));
 
         return has_result($sql);
@@ -2576,7 +2554,7 @@ function emailFactcheckers($pid)
 
 function validPuzzleStatus($id)
 {
-        $sql = sprintf("SELECT * FROM pstatus WHERE id='%s'", mysql_real_escape_string($id));
+        $sql = sprintf("SELECT 1 FROM pstatus WHERE id='%s'", mysql_real_escape_string($id));
         return has_result($sql);
 }
 
@@ -2709,7 +2687,7 @@ function getTestFeedComments()
 
 function isSubbedOnPuzzle($uid, $pid)
 {
-        $sql = sprintf("SELECT * FROM email_sub WHERE uid='%s' AND pid='%s'",
+        $sql = sprintf("SELECT 1 FROM email_sub WHERE uid='%s' AND pid='%s'",
                         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
         return has_result($sql);
 }
@@ -3194,14 +3172,14 @@ function isInTargetedTestsolving($pid)
 
 function isPuzzleInAddToTestAdminQueue($pid)
 {
-        $sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+        $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE puzzle_idea.id='%s' AND pstatus.addToTestAdminQueue='1'", mysql_real_escape_string($pid));
         return has_result($sql);
 }
 
 function isPuzzleInTesting($pid)
 {
-        $sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+        $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE puzzle_idea.id='%s' AND pstatus.inTesting='1'", mysql_real_escape_string($pid));
         return has_result($sql);
 }
@@ -3257,21 +3235,21 @@ function countLivePuzzles() {
 
 function isPuzzleInFactChecking($pid)
 {
-        $sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+        $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE puzzle_idea.id='%s' AND pstatus.needsFactcheck='1'", mysql_real_escape_string($pid));
         return has_result($sql);
 }
 
 function isPuzzleInFinalFactChecking($pid)
 {
-        $sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+        $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE puzzle_idea.id='%s' AND pstatus.finalFactcheck='1'", mysql_real_escape_string($pid));
         return has_result($sql);
 }
 
 function isPuzzleInPostprod($pid)
 {
-        $sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+        $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE puzzle_idea.id='%s' AND pstatus.postprod='1'", mysql_real_escape_string($pid));
         return has_result($sql);
 }
@@ -3367,7 +3345,7 @@ function getPreviousFeedback($uid, $pid)
 
 function hasAnswer($pid)
 {
-        $sql = sprintf("SELECT answer FROM answers WHERE pid='%s'",
+        $sql = sprintf("SELECT 1 FROM answers WHERE pid='%s'",
                         mysql_real_escape_string($pid));
         return has_result($sql);
 }
@@ -3678,7 +3656,7 @@ function getInTestAdminQueue($uid)
 
 function canAcceptDrafts($pid)
 {
-        $sql = sprintf("SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+        $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE pstatus.acceptDrafts = '1' AND puzzle_idea.id='%s'", mysql_real_escape_string($pid));
         return has_result($sql);
 }
