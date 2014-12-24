@@ -1,23 +1,23 @@
-<?php
-        require_once "config.php";
-        require_once "html.php";
-        require_once "db-func.php";
-        require_once "utils.php";
+<?php // vim:set ts=4 sw=4 sts=4 et:
+require_once "config.php";
+require_once "html.php";
+require_once "db-func.php";
+require_once "utils.php";
 
-        // Redirect to the login page, if not logged in
-        $uid = isLoggedIn();
+// Redirect to the login page, if not logged in
+$uid = isLoggedIn();
 
-        // Start HTML
-        head("testsolving", "Testsolving Overview");
+// Start HTML
+head("testsolving", "Testsolving Overview");
 
-        if (isset($_SESSION['testError'])) {
-                echo '<div class="errormsg">' . $_SESSION['testError'] . '</div>';
-                unset($_SESSION['testError']);
-        }
-        if (isset($_SESSION['feedback'])) {
-                echo '<p><strong>' . $_SESSION['feedback'] . '</strong></p><br />';
-                unset($_SESSION['feedback']);
-        }
+if (isset($_SESSION['testError'])) {
+    echo '<div class="errormsg">' . $_SESSION['testError'] . '</div>';
+    unset($_SESSION['testError']);
+}
+if (isset($_SESSION['feedback'])) {
+    echo '<p><strong>' . $_SESSION['feedback'] . '</strong></p><br />';
+    unset($_SESSION['feedback']);
+}
 ?>
 
         <form action="form-submit.php" method="post">
@@ -36,86 +36,86 @@
         <br>
 <?php
 
-        $availPuzzles = getAvailablePuzzlesToTestForUser($uid);
-        if ($availPuzzles != NULL)
-        {
-                // Sort descending, by MINUS priority, then reverse.
-                // Trust me on this.
-                //
-                // (We want to sort by priority descending, then by puzzle ID
-                // ascending. This is the easiest way to (sort of mostly)
-                // accomplish that.  "Mostly" because PHP's asort is not
-                // stable, so this method of using a secondary sort key doesn't
-                // quite work.)
-                foreach ($availPuzzles as $pid)
-                {
-                        $sort[$pid] = -getPuzzleTestPriority($pid);
-                }
-                asort($sort);
-                $availPuzzles = array_keys($sort);
-                $availPuzzles = array_reverse($availPuzzles);
-        }
-        displayQueue($uid, $availPuzzles, "notes summary numtesters", TRUE);
+$availPuzzles = getAvailablePuzzlesToTestForUser($uid);
+if ($availPuzzles != NULL)
+{
+    // Sort descending, by MINUS priority, then reverse.
+    // Trust me on this.
+    //
+    // (We want to sort by priority descending, then by puzzle ID
+    // ascending. This is the easiest way to (sort of mostly)
+    // accomplish that.  "Mostly" because PHP's asort is not
+    // stable, so this method of using a secondary sort key doesn't
+    // quite work.)
+    foreach ($availPuzzles as $pid)
+    {
+        $sort[$pid] = -getPuzzleTestPriority($pid);
+    }
+    asort($sort);
+    $availPuzzles = array_keys($sort);
+    $availPuzzles = array_reverse($availPuzzles);
+}
+displayQueue($uid, $availPuzzles, "notes summary numtesters", TRUE);
 
 ?>
-        <br/>
-        <br/>
-        <hr/>
-        <br/>
+    <br/>
+    <br/>
+    <hr/>
+    <br/>
 <?php }
 
-        if (USING_TESTSOLVE_TEAMS == 'TRUE') {
+if (USING_TESTSOLVE_TEAMS == 'TRUE') {
 
-                $myteam = getUserTestTeamID($uid);
-                if ($myteam == NULL) {
-                        echo "<h2>Puzzletron doesn't know your testsolve team at this time. Consult the testsolve team assignment spreadsheet manually for an ID to enter above. No puzzles listed.</h2>";
-                } else {
-                $myteamname = getTestTeamName($myteam);
-                echo "<h2>Listing available puzzles to testsolve for team $myteamname </h2>";
-                $teampuzzles = getTestTeamPuzzles($myteam);
-                if (!$teampuzzles) {
-                echo "This testsolving team has no puzzles assigned at this time.";
-                } else {
-                displayQueue($uid, $teampuzzles, "notes summary", TRUE);
-                }
-                }
-        } ?>
+    $myteam = getUserTestTeamID($uid);
+    if ($myteam == NULL) {
+        echo "<h2>Puzzletron doesn't know your testsolve team at this time. Consult the testsolve team assignment spreadsheet manually for an ID to enter above. No puzzles listed.</h2>";
+    } else {
+        $myteamname = getTestTeamName($myteam);
+        echo "<h2>Listing available puzzles to testsolve for team $myteamname </h2>";
+        $teampuzzles = getTestTeamPuzzles($myteam);
+        if (!$teampuzzles) {
+            echo "This testsolving team has no puzzles assigned at this time.";
+        } else {
+            displayQueue($uid, $teampuzzles, "notes summary", TRUE);
+        }
+    }
+} ?>
         <br><h3>Currently Testing &mdash; (if you're done, please submit a report, even an empty one):</h3>
 <?php
 
-  /* Commented out to disallow -- for now -- getting a random puzzle to test.
-        if (getPuzzleToTest($uid) == FALSE) {
-                echo '<strong>No Puzzles To Add</strong>';
-        } else {
+/* Commented out to disallow -- for now -- getting a random puzzle to test.
+    if (getPuzzleToTest($uid) == FALSE) {
+        echo '<strong>No Puzzles To Add</strong>';
+    } else {
 ?>
-                        <form action="form-submit.php" method="post">
-                                <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-                                <input type="submit" name="getTest" value="Get Puzzle" />
-                        </form>
+        <form action="form-submit.php" method="post">
+            <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+            <input type="submit" name="getTest" value="Get Puzzle" />
+        </form>
 <?php
-        }
-  */
+    }
+*/
 
-        $testPuzzles = getActivePuzzlesInTestQueue($uid);
-        displayQueue($uid, $testPuzzles, "notes summary numtesters", TRUE);
+$testPuzzles = getActivePuzzlesInTestQueue($uid);
+displayQueue($uid, $testPuzzles, "notes summary numtesters", TRUE);
 
-        echo '<br />';
-        echo '<br />';
+echo '<br />';
+echo '<br />';
 
-        echo '<h3>Finished Testing</h3>';
-        $donePuzzles = getActiveDoneTestingPuzzlesForUser($uid);
-        displayQueue($uid, $donePuzzles, "notes summary", TRUE);
+echo '<h3>Finished Testing</h3>';
+$donePuzzles = getActiveDoneTestingPuzzlesForUser($uid);
+displayQueue($uid, $donePuzzles, "notes summary", TRUE);
 
-        echo '<br />';
-        echo '<br />';
+echo '<br />';
+echo '<br />';
 
-        echo '<h3>Puzzles Not Currently In Testing</h3>';
-        $inactivePuzzles = getInactiveTestPuzzlesForUser($uid);
-        displayQueue($uid, $inactivePuzzles, "", TRUE);
+echo '<h3>Puzzles Not Currently In Testing</h3>';
+$inactivePuzzles = getInactiveTestPuzzlesForUser($uid);
+displayQueue($uid, $inactivePuzzles, "", TRUE);
 
-        // End HTML
-        foot();
+// End HTML
+foot();
 
-        if (isset($_SESSION['testError']))
-                unset($_SESSION['testError']);
+if (isset($_SESSION['testError']))
+    unset($_SESSION['testError']);
 ?>
