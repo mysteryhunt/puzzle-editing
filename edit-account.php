@@ -13,7 +13,7 @@ head("edit-account");
 
 echo "<h2>Edit Account Information</h2>";
 
-if(isset($_POST['editAccount'])) {
+if (isset($_POST['editAccount'])) {
     $r = editAccount($uid);
 
     if ($r === TRUE) {
@@ -77,9 +77,9 @@ $data = getPerson($uid);
         <tr>
             <td>Update Email Preferences</td>
             <td>
-                <input type="radio" name="email_pref" value="0" <?php if($data['email_level'] == 0) echo "checked" ?>/>Minimal Email<br/>
-                <input type="radio" name="email_pref" value="1" <?php if($data['email_level'] == 1) echo "checked" ?>/>Human Comments on Puzzles<br/>
-                <input type="radio" name="email_pref" value="2" <?php if($data['email_level'] == 2) echo "checked" ?>/>All Puzzle Updates<br/>
+                <input type="radio" name="email_pref" value="0" <?php if ($data['email_level'] == 0) echo "checked" ?>/>Minimal Email<br/>
+                <input type="radio" name="email_pref" value="1" <?php if ($data['email_level'] == 1) echo "checked" ?>/>Human Comments on Puzzles<br/>
+                <input type="radio" name="email_pref" value="2" <?php if ($data['email_level'] == 2) echo "checked" ?>/>All Puzzle Updates<br/>
             </td>
         </tr>
 <?php

@@ -120,9 +120,9 @@ function displayDraft($pid)
         else
             $ext = 'folder';
 
-        if(strpos($draft['filename'], 'http') !== false || !USING_AWS) {
+        if (strpos($draft['filename'], 'http') !== false || !USING_AWS) {
             $link = $draft['filename'];
-        } else if(strpos($draft['filename'], '_dir', strlen($draft['filename']) - 4) !== false) {
+        } else if (strpos($draft['filename'], '_dir', strlen($draft['filename']) - 4) !== false) {
             $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $draft['filename'];
         } else {
             $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $draft['filename'];
@@ -165,7 +165,7 @@ function displayPrevAns($uid, $pid)
     echo '<h3>Attempted Answers:</h3>';
     echo '<ul>';
 
-    foreach($answers as $ans) {
+    foreach ($answers as $ans) {
         echo "<li>$ans</li>";
     }
     echo '</ul>';
@@ -176,7 +176,7 @@ function displayFeedbackForm($uid, $pid)
 ?>
         <h3>Feedback Form</h3>
 <?php
-    if(ANON_TESTERS) {
+    if (ANON_TESTERS) {
 ?>
         <p>Your name will be visible to testing admins and the board,
         but not to other puzzle editors or authors.</p>
@@ -268,19 +268,19 @@ function displayPrevFeedback($uid, $pid)
     echo '<table>';
 
     foreach ($prevFeedback as $pf) {
-        if($pf['done'] == 0)
+        if ($pf['done'] == 0)
             $done = 'Yes';
-        else if($pf['done'] == 1)
+        else if ($pf['done'] == 1)
             $done = 'No';
-        else if($pf['done'] == 2)
+        else if ($pf['done'] == 2)
             $done = 'No, this isn\'t a puzzle type I like.';
-        else if($pf['done'] == 3)
+        else if ($pf['done'] == 3)
             $done = 'No, I\'m not sure what to do and don\'t feel like working on it anymore.';
-        else if($pf['done'] == 4)
+        else if ($pf['done'] == 4)
             $done = 'No, I think I know what to do but it isn\'t fun/I\'m not making progress.';
-        else if($pf['done'] == 5)
+        else if ($pf['done'] == 5)
             $done = 'No, I was already spoiled on this puzzle';
-        else if($pf['done'] == 6)
+        else if ($pf['done'] == 6)
             $done = 'No, I\'ve solved it.';
 
         $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);

@@ -14,7 +14,7 @@ function fullTitle() {
 }
 function head($selnav = "", $title = -1) {
     if ($title == -1) {$title = fullTitle();}
-$hunt=mktime(12,00,00,1,HUNT_DOM,HUNT_YEAR);
+$hunt = mktime(12, 00, 00, 1, HUNT_DOM, HUNT_YEAR);
 $now = time();
 $timediff = abs($hunt-$now);
 $days = floor($timediff/(60 * 60 * 24));
@@ -59,8 +59,8 @@ if ($now > $hunt) {
 <?php if (isset($_SESSION['uid'])) {
     echo 'Logged in as <strong>' . getUserUsername($_SESSION['uid']) . '</strong>';
     echo '<a href="account.php"' . ($selnav == "account" ? ' class="accsel"' : "") . '>Your Account</a>';
-    if(MAILING_LISTS) { echo '<a href="mailinglists.php"' . ($selnav == "mailinglists" ? ' class="accsel"' : "") . '>Mailing Lists</a>'; }
-    if(!TRUST_REMOTE_USER) { echo '<a href="logout.php">Logout</a>'; }
+    if (MAILING_LISTS) { echo '<a href="mailinglists.php"' . ($selnav == "mailinglists" ? ' class="accsel"' : "") . '>Mailing Lists</a>'; }
+    if (!TRUST_REMOTE_USER) { echo '<a href="logout.php">Logout</a>'; }
 } else { ?>
                 <span class="notloggedin">Not logged in</span> <a href="login.php">Login</a>
         <?php } ?>
@@ -135,7 +135,7 @@ function printPerson($p)
 
     $pic = "<img src=\"nophoto.gif\" />";
     if ($picture != "") {
-        if(USING_AWS) {
+        if (USING_AWS) {
             $picsrc = "https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/pictures/thumbs/$id.jpg";
             $pic = "<img src=\"".$picsrc."\" />";
         } else {

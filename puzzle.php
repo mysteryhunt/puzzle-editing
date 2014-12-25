@@ -33,7 +33,7 @@ if (!canViewPuzzle($uid, $pid)) {
 
 // Record this user's visit (in two ways)
 $lastVisit = updateLastVisit($uid, $pid);
-if(!isEditorChief($uid) && !isCohesion($uid)) {
+if (!isEditorChief($uid) && !isCohesion($uid)) {
     addSpoiledUserQuietly($uid, $pid);
     if ($_GET['discuss'] && isEditorAvailable($uid, $pid) && !isEditorChief($uid)) {
         changeEditors($uid, $pid, array($uid), array());
@@ -974,9 +974,9 @@ function displayFileList ($uid, $pid, $type) {
     foreach ($fileList as $file) {
         $finfo = pathinfo($file['filename']);
         $filename = $finfo['basename'];
-        if(strpos($file['filename'], 'http') !== false || !USING_AWS) {
+        if (strpos($file['filename'], 'http') !== false || !USING_AWS) {
             $link = $file['filename'];
-        } else if(strpos($file['filename'], '_dir', strlen($file['filename']) - 4) !== false) {
+        } else if (strpos($file['filename'], '_dir', strlen($file['filename']) - 4) !== false) {
             $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $file['filename'];
         } else {
             $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $file['filename'];
@@ -1171,7 +1171,7 @@ function displayComments($uid, $pid, $lastVisit)
             if (canSeeTesters($uid, $pid)) {
                 echo $name . '<br />';
             }
-            echo 'Testsolver '.substr(md5(strval($pid).strval($user)),0,8);
+            echo 'Testsolver '.substr(md5(strval($pid).strval($user)), 0, 8);
         } else
             echo $name;
 
@@ -1179,7 +1179,7 @@ function displayComments($uid, $pid, $lastVisit)
         echo "<td class='$type" . "Comment'>";
 
         $pcomment = preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2">\\2</a>', ($comment['comment']));
-        if(USING_AWS) {
+        if (USING_AWS) {
             $pcomment = str_replace("=\"uploads/", "=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/", $pcomment);
         }
         echo nl2br($pcomment);
@@ -1286,7 +1286,7 @@ function displayPuzzApproval($uid, $pid)
             echo "<b>X</b>";
         }
 
-        printf ("</td><td>%s</td></tr>",$fullname);
+        printf("</td><td>%s</td></tr>", $fullname);
     }
 ?>
         </table>
@@ -1305,11 +1305,11 @@ function displayPuzzPriority($uid, $pid)
             <tr>
                 <form action="form-submit.php" method="post">
                 <td>
-                    <input type="radio" name="puzzPriority" value="1" <?php if($priority == 1) echo "checked" ?> />1
-                    <input type="radio" name="puzzPriority" value="2" <?php if($priority == 2) echo "checked" ?> />2
-                    <input type="radio" name="puzzPriority" value="3" <?php if($priority == 3) echo "checked" ?> />3
-                    <input type="radio" name="puzzPriority" value="4" <?php if($priority == 4) echo "checked" ?> />4
-                    <input type="radio" name="puzzPriority" value="5" <?php if($priority == 5) echo "checked" ?> />5
+                    <input type="radio" name="puzzPriority" value="1" <?php if ($priority == 1) echo "checked" ?> />1
+                    <input type="radio" name="puzzPriority" value="2" <?php if ($priority == 2) echo "checked" ?> />2
+                    <input type="radio" name="puzzPriority" value="3" <?php if ($priority == 3) echo "checked" ?> />3
+                    <input type="radio" name="puzzPriority" value="4" <?php if ($priority == 4) echo "checked" ?> />4
+                    <input type="radio" name="puzzPriority" value="5" <?php if ($priority == 5) echo "checked" ?> />5
                 </td>
                 <td></td>
                 <td>

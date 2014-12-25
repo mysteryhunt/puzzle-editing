@@ -68,14 +68,14 @@ if (isset($_POST['changeAuthors'])) {
 
     if (isset($_POST['addAuth'])) {
         $add = $_POST['addAuth'];
-        subscribe ($uid, $pid);
+        subscribe($uid, $pid);
     }
     else
         $add = NULL;
 
     if (isset($_POST['removeAuth'])) {
         $remove = $_POST['removeAuth'];
-        unsubscribe ($uid, $pid);
+        unsubscribe($uid, $pid);
     }
     else
         $remove = NULL;
@@ -454,8 +454,9 @@ if (isset($_POST['feedback'])) {
 
     if (strcmp($done, 'yes') == 0) {
         header("Location: " . URL . "/test.php?pid=$pid");
-    } else
+    } else {
         header("Location: " . URL . "/testsolving.php");
+    }
     exit(0);
 }
 

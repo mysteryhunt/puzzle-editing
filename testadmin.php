@@ -101,7 +101,7 @@ function displayTestingSummary()
     echo '.testingtable .name, .testingtable .current, .testingtable .past { color: #000000; font-weight: bold; }';
 
     $currqueue = array();
-    foreach($result as $r) {
+    foreach ($result as $r) {
         $currclass = NULL;
         $uid = $r['uid'];
         $pid = $r['pid'];

@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("allpuzzles", "All Puzzles");
 echo '<style type="text/css">.puzzideasummary {background-color: #000000;}</style>';
 // Check for lurker permissions
-if (!canSeeAllPuzzles($uid)  && !isApprover($uid)) {
+if (!canSeeAllPuzzles($uid) && !isApprover($uid)) {
     echo "<div class='errormsg'>You do not have permissions for this page.</div>";
     foot();
     exit(1);
@@ -22,7 +22,7 @@ $filt = isValidPuzzleFilter();
 function selected($key, $value) {
     global $filt;
 
-    if(count($filt) == 2 && $filt[0] == $key && $filt[1] == $value) {
+    if (count($filt) == 2 && $filt[0] == $key && $filt[1] == $value) {
         return "selected";
     }
     return "";
@@ -51,7 +51,7 @@ displayPuzzleStats($uid);
         <option value='-'>-</option>
         <?php
             $editors = getAllEditors();
-            if(USING_APPROVERS) { $editors = getAllApprovalEditors(); }
+            if (USING_APPROVERS) { $editors = getAllApprovalEditors(); }
             asort($editors);
             foreach ($editors as $uid => $fullname) {
                 $slct = selected('approver', $uid);

@@ -1,6 +1,6 @@
 <?php // vim:set ts=4 sw=4 sts=4 et:
 require_once "config.php";
-if(USING_AWS) {
+if (USING_AWS) {
     require 'aws.phar';
 }
 use Aws\S3\S3Client;
@@ -31,7 +31,7 @@ function pictureHandling($id, $picture)
     $upfile = picName($id, $picture['name']);
     $thumb = thumbName($id);
 
-    if(USING_AWS) {
+    if (USING_AWS) {
         $client = S3Client::factory(array(
             'key'    => AWS_ACCESS_KEY,
             'secret' => AWS_SECRET_KEY));
@@ -40,7 +40,7 @@ function pictureHandling($id, $picture)
     if (!move_uploaded_file($picture['tmp_name'], $upfile)) {
         echo "Problem: Could not move picture into pictures directory";
         return "";
-    } else if(USING_AWS) {
+    } else if (USING_AWS) {
         $key = $upfile;
         $result = $client->putObject(array(
             'Bucket' => AWS_BUCKET,
@@ -51,7 +51,7 @@ function pictureHandling($id, $picture)
 
     makeThumb($upfile, $thumb);
 
-    if(USING_AWS) {
+    if (USING_AWS) {
         $key = $thumb;
         $result = $client->putObject(array(
             'Bucket' => AWS_BUCKET,
@@ -96,7 +96,7 @@ function makeThumb($uploaded, $thumbName)
     if ($type == IMAGETYPE_JPEG) {
         $source = imagecreatefromjpeg($uploaded);
     } else if ($type == IMAGETYPE_GIF) {
-        $source = imagecreatefromgif($uploaded);
+        $source = imagecreatefromgif ($uploaded);
     } else if ($type == IMAGETYPE_PNG) {
         $source = imagecreatefrompng($uploaded);
     } else {

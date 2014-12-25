@@ -1,7 +1,7 @@
 <?php // vim:set ts=4 sw=4 sts=4 et:
 require_once "config.php";
 require_once "db-func.php";
-if(USING_AWS) {
+if (USING_AWS) {
     require 'aws.phar';
 }
 use Aws\S3\S3Client;
@@ -117,8 +117,8 @@ function postprodCanonRound($s)
 
 function postprodAll($uid)
 {
-    @ini_set('zlib.output_compression',0);
-    @ini_set('implicit_flush',1);
+    @ini_set('zlib.output_compression', 0);
+    @ini_set('implicit_flush', 1);
     @ob_end_clean();
     set_time_limit(0);
     header( 'Content-type: text/plain; charset=utf-8' );
@@ -209,7 +209,6 @@ function isAutoSubEditor($uid)
 function isRoundCaptain($uid)
 {
     return hasPriv($uid, 'addToRoundCaptainQueue');
-
 }
 
 function isTestingAdmin($uid)
@@ -456,7 +455,7 @@ function isTagOnPuzzle($tid, $pid)
 function getAvailableTagsForPuzzle($pid)
 {
     // Get all tags
-    $sql = 'SELECT id,name FROM tag_names';
+    $sql = 'SELECT id, name FROM tag_names';
     $all_tags = get_assoc_array($sql, "id", "name");
 
     $tags = array();
@@ -465,13 +464,12 @@ function getAvailableTagsForPuzzle($pid)
             $tags[$tid] = $name;
         }
     }
-
     return $tags;
 }
 
 function getAllTags()
 {
-    $sql = 'SELECT id,name FROM tag_names';
+    $sql = 'SELECT id, name FROM tag_names';
     return get_assoc_array($sql, "id", "name");
 }
 
@@ -626,8 +624,7 @@ function getFinishedTestersAsList($pid)
 // Get comma-separated list of users' names, with email addresses
 function getUserNamesAndEmailsAsList($users)
 {
-    if (!$users)
-        return '(none)';
+    if (!$users) return '(none)';
 
     $list = '';
     foreach ($users as $uid) {
@@ -1095,7 +1092,7 @@ function createRound($round, $roundanswer)
 function addNewMotd($message)
 {
     $sql = sprintf("INSERT INTO motd (message, uid) VALUES ('%s', '%s')",
-        mysql_real_escape_string($message),$_SESSION['uid']);
+        mysql_real_escape_string($message), $_SESSION['uid']);
     $result = query_db($sql);
     return ($result);
 }
@@ -1155,7 +1152,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $i
     foreach ($users as $user)
     {
         if ($user != $uid) {
-            if((getEmailLevel($user) > 0 && $isImportant) || getEmailLevel($user) > 1)
+            if ((getEmailLevel($user) > 0 && $isImportant) || getEmailLevel($user) > 1)
                 sendEmail($user, $subject, $message, $link);
         }
     }
@@ -1166,7 +1163,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $i
         // author/editor/etc., they will get mail twice. This is
         // arguably not great, but we'll live with it.
         if ($user != $uid) {
-            if((getEmailLevel($user) > 0 && $isImportant) || getEmailLevel($user) > 1)
+            if ((getEmailLevel($user) > 0 && $isImportant) || getEmailLevel($user) > 1)
                 sendEmail($user, "[Testsolve] $subject", $message, $link);
         }
     }
@@ -2000,8 +1997,7 @@ function changeNeededEditors($uid, $pid, $need) {
 
 function addApprovers($uid, $pid, $add)
 {
-    if (!$add)
-        return;
+    if (!$add) return;
 
     if (!canViewPuzzle($uid, $pid))
         utilsError("You do not have permission to modify puzzle $pid.");
@@ -2048,8 +2044,7 @@ function addApprovers($uid, $pid, $add)
 
 function removeApprovers($uid, $pid, $remove)
 {
-    if (!$remove)
-        return;
+    if (!$remove) return;
 
     if (!canViewPuzzle($uid, $pid))
         utilsError("You do not have permission to modify puzzle $pid.");
@@ -2391,10 +2386,8 @@ function changeStatus($uid, $pid, $status)
             //echo "removing editor id $ekey<br>";
             removeEditorKill($uid, $pid, $ekey);
         }
-
         //utilsError("Debug Breakpoint");
     }
-
 }
 
 function isStatusInTesting($sid)
@@ -2563,7 +2556,7 @@ function uploadFiles($uid, $pid, $type, $file) {
         $extension = end($filename_parts);
     }
 
-    if(USING_AWS) {
+    if (USING_AWS) {
         $client = S3Client::factory(array(
             'key'    => AWS_ACCESS_KEY,
             'secret' => AWS_SECRET_KEY));
@@ -2572,7 +2565,7 @@ function uploadFiles($uid, $pid, $type, $file) {
     if ($extension == "zip") {
         $filetype = "dir";
         if (move_uploaded_file($file['tmp_name'], $target_path)) {
-            if(USING_AWS) {
+            if (USING_AWS) {
                 $key = $target_path;
                 $result = $client->putObject(array(
                     'Bucket' => AWS_BUCKET,
@@ -2585,7 +2578,7 @@ function uploadFiles($uid, $pid, $type, $file) {
             #echo "new_path is $new_path<br>";
             $res = exec("/usr/bin/unzip $target_path -d $new_path");
 
-            if(USING_AWS) {
+            if (USING_AWS) {
                 $result = $client->uploadDirectory($new_path, AWS_BUCKET, $new_path);
             }
             $sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
@@ -2597,10 +2590,10 @@ function uploadFiles($uid, $pid, $type, $file) {
                 mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
             query_db($sql);
 
-            if(USING_AWS) {
-                addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/list.html?prefix=$new_path\">$type</a> has been uploaded.",TRUE);
+            if (USING_AWS) {
+                addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/list.html?prefix=$new_path\">$type</a> has been uploaded.", TRUE);
             } else {
-                addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.",TRUE);
+                addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.", TRUE);
             }
         } else {
             $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited)";
@@ -2610,7 +2603,7 @@ function uploadFiles($uid, $pid, $type, $file) {
     else {
         $upload_error = "";
         if (move_uploaded_file($file['tmp_name'], $target_path)) {
-            if(USING_AWS) {
+            if (USING_AWS) {
                 $key = $target_path;
                 $result = $client->putObject(array(
                     'Bucket' => AWS_BUCKET,
@@ -2624,10 +2617,10 @@ function uploadFiles($uid, $pid, $type, $file) {
                 mysql_real_escape_string($uid), mysql_real_escape_string(-1), mysql_real_escape_string($type));
             query_db($sql);
 
-            if(USING_AWS) {
-                addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/$target_path\">$type</a> has been uploaded.",TRUE);
+            if (USING_AWS) {
+                addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/$target_path\">$type</a> has been uploaded.", TRUE);
             } else {
-                addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
+                addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.", TRUE);
             }
         } else {
             $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited) " . serialize($file);
@@ -2908,7 +2901,6 @@ function getInactiveTestPuzzlesForUser($uid)
     }
 
     sort($inactive);
-
     return $inactive;
 }
 
@@ -2941,7 +2933,6 @@ function sortByLastCommentDate($puzzles)
     }
 
     arsort($sorted);
-
     return array_keys($sorted);
 }
 
@@ -2953,7 +2944,6 @@ function sortByNumEditors($puzzles)
     }
 
     asort($sorted);
-
     return array_keys($sorted);
 }
 
@@ -2965,7 +2955,6 @@ function sortByNumApprovers($puzzles)
     }
 
     asort($sorted);
-
     return array_keys($sorted);
 }
 
@@ -2990,7 +2979,7 @@ function addPuzzleToEditorQueue($uid, $pid)
     query_db($sql);
 
     $comment = "Added to " . getUserName($uid) . "'s queue";
-    addComment($uid, $pid,$comment,TRUE);
+    addComment($uid, $pid, $comment, TRUE);
     mysql_query('COMMIT');
 
     // Subscribe editors to comments on the puzzles they edit
@@ -3183,7 +3172,6 @@ function getMostRecentDraftNameForPuzzle($pid) {
 
     if ($file == FALSE)
         return '';
-
     else
         return $file['filename'];
 }
@@ -3241,11 +3229,11 @@ function getPuzzlesNeedingSpecialEditors() {
 
 function getPuzzlesNeedingApprovers($uid) {
     $sql = "SELECT y.pid as puzzle from
-        ((SELECT count(*) as num_editors, pid, count(if(uid = $uid,1,NULL)) as am_i_an_ed_already
+        ((SELECT count(*) as num_editors, pid, count(if (uid = $uid,1,NULL)) as am_i_an_ed_already
             FROM  approver_queue
             GROUP by pid) as x
         RIGHT JOIN
-        (SELECT  count(if(uid =$uid,1,NULL)) as am_i_an_author, pid
+        (SELECT  count(if (uid =$uid,1,NULL)) as am_i_an_author, pid
             From authors
             Group by pid) as y
         on x.pid=y.pid)
@@ -3355,7 +3343,7 @@ function checkAnswer($pid, $attempt)
     foreach ($actual as $a) {
         $answers = explode(',', $a);
         foreach ($answers as $ans) {
-            if (strcasecmp(preg_replace("/[^a-zA-Z0-9]/","",$attempt), preg_replace("/[^a-zA-Z0-9]/","",$ans)) == 0) {
+            if (strcasecmp(preg_replace("/[^a-zA-Z0-9]/", "", $attempt), preg_replace("/[^a-zA-Z0-9]/", "", $ans)) == 0) {
                 $_SESSION['answer'] = $ans;
                 return $ans;
             }
@@ -3372,27 +3360,27 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
     if (strcmp($done, 'yes') == 0) {
         $donetext = 'Yes';
         $done = 0;
-    } else if(strcmp($done, 'no') == 0) {
+    } else if (strcmp($done, 'no') == 0) {
         doneTestingPuzzle($uid, $pid);
         $donetext = 'No';
         $done = 1;
-    } else if(strcmp($done, 'notype') == 0) {
+    } else if (strcmp($done, 'notype') == 0) {
         doneTestingPuzzle($uid, $pid);
         $donetext = 'No, this isn\'t a puzzle type I like.';
         $done = 2;
-    } else if(strcmp($done, 'nostuck') == 0) {
+    } else if (strcmp($done, 'nostuck') == 0) {
         doneTestingPuzzle($uid, $pid);
         $donetext = 'No, I\'m not sure what to do and don\'t feel like working on it anymore.';
         $done = 3;
-    } else if(strcmp($done, 'nofun') == 0) {
+    } else if (strcmp($done, 'nofun') == 0) {
         doneTestingPuzzle($uid, $pid);
         $donetext = 'No, I think I know what to do but it isn\'t fun/I\'m not making progress.';
         $done = 4;
-    } else if(strcmp($done, 'nospoiled') == 0) {
+    } else if (strcmp($done, 'nospoiled') == 0) {
         doneTestingPuzzle($uid, $pid);
         $donetext = 'No, I was already spoiled on this puzzle';
         $done = 5;
-    } else if(strcmp($done, 'nodone') == 0) {
+    } else if (strcmp($done, 'nodone') == 0) {
         doneTestingPuzzle($uid, $pid);
         $donetext = 'No, I\'ve solved it.';
         $done = 6;
@@ -3434,10 +3422,10 @@ function doneTestingPuzzle($uid, $pid)
 function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return)
 {
     $difficulty_text = $difficulty;
-    if($difficulty == 0)
+    if ($difficulty == 0)
         $difficulty_text = "-";
     $fun_text = $fun;
-    if($fun == 0)
+    if ($fun == 0)
         $fun_text = "-";
 
     $comment = "
@@ -3643,7 +3631,7 @@ function getPuzzleRound($pid)
     if (!$aid) {
         return ("");
     }
-    $sql = sprintf("SELECT rounds.name FROM rounds,answers_rounds WHERE rounds.rid=answers_rounds.rid AND answers_rounds.aid=%d", $aid);
+    $sql = sprintf("SELECT rounds.name FROM rounds, answers_rounds WHERE rounds.rid=answers_rounds.rid AND answers_rounds.aid=%d", $aid);
     $roundname=get_element($sql);
 
     return($roundname);
@@ -3746,7 +3734,7 @@ function getTestTeamPuzzles($tid)
     $sql = sprintf("SELECT pstatus.id FROM pstatus WHERE pstatus.inTesting = '1'");
     $testingstatusid = get_element($sql);
 
-    $sql = sprintf('SELECT pid FROM testsolve_team_queue,puzzle_idea WHERE tid=%s AND puzzle_idea.id = testsolve_team_queue.pid AND puzzle_idea.pstatus = %s',
+    $sql = sprintf('SELECT pid FROM testsolve_team_queue, puzzle_idea WHERE tid=%s AND puzzle_idea.id = testsolve_team_queue.pid AND puzzle_idea.pstatus = %s',
         mysql_real_escape_string($tid), mysql_real_escape_string($testingstatusid));
     return(get_elements($sql));
 }

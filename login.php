@@ -17,7 +17,7 @@ if (isset($_SESSION['uid'])) {
         echo 'Would you like to <a href="logout.php">log out</a>?</h3><br>';
     }
     echo '<a href="index.php" class="goto">Go to puzzletron main/welcome page.</a>';
-} else if(TRUST_REMOTE_USER) {   //we are trusting apache remote_user header so use that
+} else if (TRUST_REMOTE_USER) {   //we are trusting apache remote_user header so use that
     login($_SERVER['HTTP_REMOTE_USER'], "nopass");
     // If login was successful, user was redirected to index.php
     head();
@@ -29,7 +29,8 @@ if (isset($_SESSION['uid'])) {
     // If login was successful, user was redirected to index.php
     head();
     echo "<div class='errormsg'>Incorrect Username or Password</div>";
-} else {		//otherwise display login form
+} else {
+    // otherwise display login form
     head();
     loginForm();
 }

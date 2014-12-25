@@ -17,7 +17,7 @@ if (!canChangeAnswers($uid) && !isApprover($uid)) {
     exit(1);
 }
 if (isset($_POST['newAnswer'])) {
-    $result = submitAnswersForm(strtoupper($_POST['newAnswer']),$_POST['round']);
+    $result = submitAnswersForm(strtoupper($_POST['newAnswer']), $_POST['round']);
     if ($result == FALSE) {
         echo '<div class="errormsg">Error in submitting new answer</div>';
     }
@@ -43,7 +43,7 @@ function displayAnswers($uid)
 <span class="emptylist">No rounds to list</span>
 <?php
     }
-    foreach($rounds as $round) {
+    foreach ($rounds as $round) {
         $answers = getAnswersForRound($round['rid']);
 ?>
         <table class="boxed">
@@ -62,7 +62,7 @@ function displayAnswers($uid)
             <tr><td colspan="6"><span class="emptylist">No answers added yet</span></td></tr>
     <?php
         }
-        foreach($answers as $answer) {
+        foreach ($answers as $answer) {
             $pid = $answer['pid'];
     ?>
             <tr><td><?php echo $answer['answer'] ?></td>
@@ -114,7 +114,7 @@ function submitAnswersForm($newAnswer, $round)
     return TRUE;
 }
 
-function submitNewRound($roundname,$roundanswer)
+function submitNewRound($roundname, $roundanswer)
 {
     if ($roundname == "") {
         printf("<div class='errormsg'>Blank Round Name is unacceptable. Try again</div>\n");

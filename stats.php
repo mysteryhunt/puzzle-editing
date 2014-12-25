@@ -100,21 +100,21 @@ $(document).ready(function() {
            # Prevent division by zero.
            $person['total'] = 1;
        }
-       echo '<td class="puzzidea">' . sprintf('%0.3f',($person['correct']/$person['total'])) . '</td>';
+       echo '<td class="puzzidea">' . sprintf('%0.3f', ($person['correct']/$person['total'])) . '</td>';
        echo '<td class="puzzidea">' . $person['correct'] . '</td>';
        echo '<td class="puzzidea">' . $person['incorrect'] . '</td>';
        if ($person['correct'] + $person['incorrect'] == 0) {
            # Prevent division by zero.
            $person['incorrect'] = 1;
        }
-       echo '<td class="puzzidea">' . sprintf('%0.3f',($person['correct']/($person['correct']+$person['incorrect']))) . '</td>';
+       echo '<td class="puzzidea">' . sprintf('%0.3f', ($person['correct']/($person['correct']+$person['incorrect']))) . '</td>';
        echo '<td class="puzzidea">' . $person['responses'] . '</td>';
        echo '<td class="puzzidea">' . $person['words'] . '</td>';
        if ($person['responses'] == 0) {
            # Prevent division by zero.
            $person['responses'] = 1;
        }
-       echo '<td class="puzzidea">' . sprintf('%0.2f',($person['words']/$person['responses'])) . '</td>';
+       echo '<td class="puzzidea">' . sprintf('%0.2f', ($person['words']/$person['responses'])) . '</td>';
        echo '</tr>';
    }
 

@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("answerlist", "Answer List");
 
 if (isset($_GET['rid'])) {
-    displayAnswersClassifiedByRound($uid,$_GET['rid']);
+    displayAnswersClassifiedByRound($uid, $_GET['rid']);
 } else {
     displayAnswers($uid);
 }
@@ -27,19 +27,19 @@ function displayAnswers($uid)
 ?>
     <table class="boxed">
     <tr><th><b>Available Answers</b></th></tr>
-        <?php foreach($answers as $answer) { ?>
+        <?php foreach ($answers as $answer) { ?>
             <tr><td><?php echo $answer ?></td></tr>
         <?php } ?>
     </table>
 <?php
 }
-function displayAnswersClassifiedByRound($uid,$rid)
+function displayAnswersClassifiedByRound($uid, $rid)
 {
     $answers = getAvailableAnswersForRound($rid);
 ?>
     <table class="boxed">
     <tr><th><b>Available Answers For Round <?php echo $rid; ?></b></th></tr>
-        <?php foreach($answers as $answer) { ?>
+        <?php foreach ($answers as $answer) { ?>
              <tr><td><?php echo $answer ?></td></tr>
         <?php } ?>
     </table>
@@ -47,7 +47,7 @@ function displayAnswersClassifiedByRound($uid,$rid)
     <tr><th><b>Available Answers Not For Round <?php echo $rid; ?></b></th></tr>
         <?php
         $answers = getAvailableAnswersNotForRound($rid);
-        foreach($answers as $answer) { ?>
+        foreach ($answers as $answer) { ?>
             <tr><td><?php echo $answer ?></td></tr>
         <?php } ?>
     </table>

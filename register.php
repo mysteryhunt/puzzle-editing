@@ -10,7 +10,7 @@ head();
 echo '<h2>Account Registration</h2>';
 if (isset($_SESSION['uid'])) {
     echo '<div class="msg">You are logged in. Would you like to <a href="edit-account.php">edit your account information</a>?</div>';
-} else if(isset($_POST['register'])) {
+} else if (isset($_POST['register'])) {
     $errors = register();
 
     if ($errors) {

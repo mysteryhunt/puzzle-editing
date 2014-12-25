@@ -21,7 +21,7 @@ echo "<h2>Testsolve Team Puzzle Assignments</h2>";
 echo "<table>";
 echo "<tr><th>Puzzle ID</th><th>TestSolve Team</th></tr>\n";
 $puzzles = getPuzzleTeamsList();
-foreach ($puzzles as $pid  => $testteam) {
+foreach ($puzzles as $pid => $testteam) {
     echo "<tr><td>$pid</td>\n";
     echo "<td><form method='post' action='form-submit.php'>\n";
     echo "<input type='hidden' name='pid' value='$pid'>\n";
@@ -63,9 +63,7 @@ foreach ($people as $uid => $testteam) {
         if ($tid == $teamid) { echo "SELECTED "; }
         echo ">$teamname\n";
     }
-
     echo "</select><input type='submit' value='set' name='setUserTestTeam'></form></td><tr>\n";
-
 }
 
 echo "</table>";
@@ -82,7 +80,6 @@ function getPeopleTeamsList(){
     }
     asort($teamassignments);
     return($teamassignments);
-
 }
 
 function getPuzzleTeamsList(){
@@ -92,7 +89,6 @@ function getPuzzleTeamsList(){
         $testteam = getPuzzleTestTeam($pid);
 
         $teamassignments["$pid"] = $testteam;
-
     }
     asort($teamassignments);
     return($teamassignments);

@@ -18,7 +18,7 @@ if (!isServerAdmin($uid)) {
 }
 
 if (isset($_POST['newmotd'])) {
-    $result = postMotdForm($_POST['newmotd'],$_POST['username']);
+    $result = postMotdForm($_POST['newmotd'], $_POST['username']);
     if ($result == NULL){
         echo "<div class='errormsg'>Error Posting New Message</div>";
     }

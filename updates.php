@@ -25,9 +25,10 @@ foreach ($motds as $motd) {
     $motddate = $motd[1];
     $motdmsg = $motd[2];
 
-    if($motd[3] != NULL) {
-        printf ("<b>Message from %s (%s) at</b>", getUserName($motd[3]), getUserUserName($motd[3]));
-    } printf ("<b> %s UTC:</b><br/>",$motddate);
+    if ($motd[3] != NULL) {
+        printf("<b>Message from %s (%s) at</b>", getUserName($motd[3]), getUserUserName($motd[3]));
+    }
+    printf("<b> %s UTC:</b><br/>", $motddate);
     echo $motdmsg;
     echo "<br/>";
 }
