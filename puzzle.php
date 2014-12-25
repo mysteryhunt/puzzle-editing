@@ -1096,6 +1096,7 @@ function displayPostProd($uid, $pid, $pp)
 {
     $rinfo = getRoundForPuzzle($pid);
     $urlprefix = POSTPROD_URLPREFIX;
+    $beta_urlprefix = POSTPROD_BETA_URLPREFIX;
     $roundname = $rinfo['name'];
     $title = getTitle($pid);
     /*
@@ -1112,9 +1113,9 @@ function displayPostProd($uid, $pid, $pp)
     */
     $fileList = getFileListForPuzzle($pid, 'postprod');
     $file = $fileList[0];
-    $url = $urlprefix;
-    $url .= "/" . postprodCanonRound($roundname);
-    $url .= "/beta_" . postprodCanon($title) . "/";
+    $url = $beta_urlprefix;
+    //  $url .= "/" . postprodCanonRound($roundname);
+    $url .= "puzzle/" . postprodCanon($title) . "/";
     if ($pp) {
 ?>
         <strong>Post-Production Beta Link: </strong>
@@ -1123,7 +1124,7 @@ function displayPostProd($uid, $pid, $pp)
 <?php
     }
     $url = $urlprefix;
-    $url .= "/" . postprodCanonRound($roundname);
+    // $url .= "/" . postprodCanonRound($roundname);
     $url .= "/" . postprodCanon($title) . "/";
 ?>
     <strong>Post-Production Final Link: </strong>
