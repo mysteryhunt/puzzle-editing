@@ -581,6 +581,15 @@ function getNeededEditors($pid) {
     return get_element($sql);
 }
 
+function getPriorityWord($priority) {
+    if ($priority == 1) { return "Very high"; }
+    if ($priority == 2) { return "High"; }
+    if ($priority == 3) { return "Normal"; }
+    if ($priority == 4) { return "Low"; }
+    if ($priority == 5) { return "Very low"; }
+    return $priority;
+}
+
 function getPriority($pid) {
     $sql = sprintf("SELECT priority FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);

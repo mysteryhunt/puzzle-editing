@@ -295,7 +295,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
         <?php if ($showTags) {echo "<td class='puzzidea'>" . $tags . "</td>";} ?>
         <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
         <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["runtime_info"] . "</td>";} ?>
-        <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["priority"] . "</td>";} ?>
+        <?php if ($showNotes) {echo "<td class='puzzidea'>" . getPriorityWord($puzzleInfo["priority"]) . "</td>";} ?>
 <?php
         if ($showAnswer) {
             if (getAnswersForPuzzleAsList($pid) != "") {
