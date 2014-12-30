@@ -1298,8 +1298,7 @@ function displayPuzzPriority($uid, $pid)
 {
     $priority = getPriority($pid);
     //only display approval form itself if you are an editor/approver on this puzzle
-    if ((isEditorChief($uid)) ||
-        (isApproverOnPuzzle($uid, $pid) && USING_APPROVERS)) {
+    if (canChangeStatus($uid)) {
 ?>
         <b>Testsolving Priority:</b> <br/>
         <table>

@@ -582,11 +582,11 @@ function getNeededEditors($pid) {
 }
 
 function getPriorityWord($priority) {
-    if ($priority == 1) { return "Very high"; }
-    if ($priority == 2) { return "High"; }
-    if ($priority == 3) { return "Normal"; }
-    if ($priority == 4) { return "Low"; }
-    if ($priority == 5) { return "Very low"; }
+    if ($priority == 1) { return "1 - Very high"; }
+    if ($priority == 2) { return "2 - High"; }
+    if ($priority == 3) { return "3 - Normal"; }
+    if ($priority == 4) { return "4 - Low"; }
+    if ($priority == 5) { return "5 - Very low"; }
     return $priority;
 }
 
@@ -2245,7 +2245,7 @@ function setPuzzPriority($uid, $pid, $priority)
 
     //add comment noting this approval or disapproval
 
-    $comment = sprintf("%s changed testsolving priority of puzzle %s to %s", $name, $title, $priority);
+    $comment = sprintf("%s changed testsolving priority of puzzle %s to %s", $name, $title, getPriorityWord($priority));
     addComment ($uid, $pid, $comment, TRUE);
 
 }
