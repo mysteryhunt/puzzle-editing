@@ -1118,18 +1118,9 @@ function displayPostProd($uid, $pid, $pp)
     $url .= "puzzle/" . postprodCanon($title) . "/";
     if ($pp) {
 ?>
-        <strong>Post-Production Beta Link: </strong>
-        <a href="<?php echo $url ?>">View postprod (as pushed from puzzletron)</a>
+        <strong>Final Fact Check Beta Link: </strong>
+        <a href="<?php echo $url ?>">View postprod (as pushed from puzzletron)</a>.  <--  Use this to perform final fact check!  Username/password is jarthur/random17.  If it gives a 404, push the button below (which takes a minute).
         <br>
-<?php
-    }
-    $url = $urlprefix;
-    // $url .= "/" . postprodCanonRound($roundname);
-    $url .= "/" . postprodCanon($title) . "/";
-?>
-    <strong>Post-Production Final Link: </strong>
-    <a href="<?php echo $url ?>">View postprod (version installed as final)</a>
-    <br>
 <?php
     if ($pp) {
 ?>
@@ -1137,7 +1128,16 @@ function displayPostProd($uid, $pid, $pp)
             <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
             <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
             <input type="submit" name="postprod" value="Push this puzzle to post-production">
-        </form>
+        </form><br/>
+<?php
+    }
+    $url = $urlprefix;
+    // $url .= "/" . postprodCanonRound($roundname);
+    $url .= "/" . postprodCanon($title) . "/";
+?>
+    <strong>Actually Final Link: </strong>
+    <a href="<?php echo $url ?>">View postprod (version installed as final, doesn't work yet)</a>
+    <br>
 <?php
     }
 }
