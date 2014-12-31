@@ -10,10 +10,10 @@ $uid = isLoggedIn();
 // Start HTML
 head("postprod");
 ?>
-    <h3>Puzzles in Postprod</h3>
+    <h3>Puzzles in Postprod and Later</h3>
 <?php
-$puzzles = getPuzzlesInPostprod($uid);
-displayQueue($uid, $puzzles, "notes authorsandeditors", FALSE);
+$puzzles = getPuzzlesInPostprodAndLater($uid);
+displayQueue($uid, $puzzles, "notes", FALSE);
 ?>
     <hr>
     <br>
