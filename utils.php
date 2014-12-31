@@ -126,6 +126,7 @@ function postprodAll($uid)
         }
         ob_flush(); flush();
     }
+    print "Done!\n";
     exit(1);
 }
 

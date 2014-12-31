@@ -82,7 +82,7 @@ if (isset($_SESSION['uid'])) {
     echoNav1($selnav, "editor",         "Discussion Editor",   isEditor($suid));
     echoNav1($selnav, "approver",       "Approval Editor",     (USING_APPROVERS) && (isApprover($suid) || isEditorChief($suid)));
     echoNav1($selnav, "testsolving",    "Testsolving",         true);
-    echoNav1($selnav, "factcheck",      "Fact Check",          true);
+//    echoNav1($selnav, "factcheck",      "Fact Check",          true);
     echoNav1($selnav, "ffc",            "Final Fact Check",    true);
     echoNav1($selnav, "editorlist",     "Editor List",         isEditorChief($suid) || isServerAdmin($suid));
     echoNav1($selnav, "testadmin",      "Testing Admin",       isTestingAdmin($suid));
