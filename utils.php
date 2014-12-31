@@ -3948,4 +3948,11 @@ function deleteFromMailmanList($list, $email) {
     }
     print "</p><br>\n";
 }
+
+function getBetaLink($title) {
+    return POSTPROD_BETA_URLPREFIX . "puzzle/" . postprodCanon($title) . "/";
+}
+function getFinalLink($title) {
+    return POSTPROD_URLPREFIX . "puzzle/" . postprodCanon($title) . "/";
+}
 ?>

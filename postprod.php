@@ -13,7 +13,7 @@ head("postprod");
     <h3>Puzzles in Postprod and Later</h3>
 <?php
 $puzzles = getPuzzlesInPostprodAndLater($uid);
-displayQueue($uid, $puzzles, "notes", FALSE);
+displayQueue($uid, $puzzles, "notes finallinks", FALSE);
 ?>
     <hr>
     <br>
