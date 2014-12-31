@@ -142,7 +142,8 @@ function pushToPostProd($uid, $pid)
 }
 
 function pushToPostProdHelper($uid, $pid, &$output) {
-    $rinfo = getRoundForPuzzle($pid);
+    $round_rows = getRoundDictForPuzzle($pid);
+    $rinfo = $round_rows[0];
     $answer_dict = getAnswersAndDeepForPuzzle($pid);
     $aid = $answer_dict['aid'];
     $deep = $answer_dict['deep'];
@@ -3504,6 +3505,12 @@ function getRoundForPuzzle($pid)
 {
     $sql = sprintf("SELECT rounds.* FROM rounds, answers_rounds, answers WHERE answers.pid='%s' and answers_rounds.aid = answers.aid and rounds.rid = answers_rounds.rid;", mysql_real_escape_string($pid));
     return get_rows($sql);
+}
+
+function getRoundDictForPuzzle($pid)
+{
+    $sql = sprintf("SELECT rounds.* FROM rounds, answers_rounds, answers WHERE answers.pid='%s' and answers_rounds.aid = answers.aid and rounds.rid = answers_rounds.rid;", mysql_real_escape_string($pid));
+    return get_row_dicts($sql);
 }
 
 function getNumberOfEditorsOnPuzzles($type)
