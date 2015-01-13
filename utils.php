@@ -159,6 +159,7 @@ function pushToPostProdHelper($uid, $pid, &$output) {
     $titleslug = postprodCanon($title);
     $fileList = getFileListForPuzzle($pid, 'postprod');
     $file = $fileList[0];
+    $credits = getCreditsWithDefault($pid);
     $filename = $file['filename'];
     if (empty($filename)) {
         return "Nothing in the postproduction slot of this puzzle: Nothing to push!";
@@ -174,6 +175,7 @@ function pushToPostProdHelper($uid, $pid, &$output) {
     putenv("CATTLEPROD_PUZZLE_ID=" . $pid);
     putenv("CATTLEPROD_ANSWER=" . $answer);
     putenv("CATTLEPROD_DEEP=" . $deep);
+    putenv("CATTLEPROD_CREDITS=" . $credits);
     putenv("CATTLEPROD_PUSHER=" . $username);
     #  putenv("CATTLEPROD_ASSET_PATH=/nfs/enigma/mh2013/chazelle/assets");
 
@@ -691,6 +693,15 @@ function getTitle($pid)
 {
     $sql = sprintf("SELECT title FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
+}
+
+function getCreditsWithDefault($pid)
+{
+    $credit = getCredits($pid);
+    if ($credit == NULL) {
+       $credit = getAuthorsAsList($pid);
+    }
+    return $credit;
 }
 
 function getCredits($pid)
