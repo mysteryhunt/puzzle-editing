@@ -800,7 +800,7 @@ function displayTestsolveRequests($uid, $pid)
 
 function displayCredits($uid, $pid)
 {
-    $notes = getCredits($pid);
+    $notes = htmlspecialchars(getCredits($pid));
 
 ?>
     <table class="creditsInfo">

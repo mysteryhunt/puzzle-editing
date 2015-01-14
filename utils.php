@@ -2453,7 +2453,7 @@ function changeCredits($uid, $pid, $credits)
 
     $oldCredits = getCredits($pid);
     $cleanCredits = $purifier->purify($credits);
-    $cleanCredits = htmlspecialchars($cleanCredits);
+    //$cleanCredits = htmlspecialchars($cleanCredits);
     updateCredits($uid, $pid, $oldCredits, $cleanCredits);
 
     mysql_query('COMMIT');
