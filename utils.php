@@ -561,8 +561,17 @@ function getUserNamesAsList($table, $pid)
     $sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
         $table, $table, $table, mysql_real_escape_string($pid));
     $users = get_elements($sql);
-
-    return ($users ? implode(", ", $users) : "<span class='emptylist'>(none)</span>" );
+    if (count($users) == 0) {
+      return "<span class='emptylist'>(none)</span>";
+    } else if (count($users) == 1) {
+     return $users[0];
+    } else if (count($users) == 2) {
+     return implode(" and ", $users);
+    } else {
+        $last_element = array_pop($users);
+    	array_push($users, 'and '.$last_element);
+        return implode(", ", $users);
+    }
 }
 
 function getAuthorsAsList($pid)
@@ -699,7 +708,7 @@ function getCreditsWithDefault($pid)
 {
     $credit = getCredits($pid);
     if ($credit == NULL) {
-       $credit = getAuthorsAsList($pid);
+       $credit = "by " . getAuthorsAsList($pid);
     }
     return $credit;
 }
