@@ -99,7 +99,12 @@ function postprodCanon($s)
     $s = preg_replace('/[^a-z0-9]+/', '_', $s);
     return trim($s, "_");
 }
-
+function nl2br2($s)
+{
+    // builtin nl2br inserts <br />s before newlines instead of replacing
+    // which makes line breaks in <pre> tags get doubled
+    return str_replace("\n", '<br />', $s);
+}
 function postprodCanonRound($s)
 {
     return postprodCanon($s);

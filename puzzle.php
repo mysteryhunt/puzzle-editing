@@ -197,15 +197,15 @@ foot();
 //------------------------------------------------------
 function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 {
-    $title = nl2br($puzzleInfo['title']);
+    $title = nl2br2($puzzleInfo['title']);
     if ($title == NULL)
         $title = '(untitled)';
 
-    $summary = nl2br($puzzleInfo['summary']);
+    $summary = nl2br2($puzzleInfo['summary']);
     if ($summary == NULL)
         $summary = '(no summary)';
 
-    $description = nl2br($puzzleInfo['description']);
+    $description = nl2br2($puzzleInfo['description']);
     if ($description == NULL)
         $description = '(no description)';
 
@@ -1183,7 +1183,7 @@ function displayComments($uid, $pid, $lastVisit)
         if (USING_AWS) {
             $pcomment = str_replace("=\"uploads/", "=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/", $pcomment);
         }
-        echo nl2br($pcomment);
+        echo nl2br2($pcomment);
         echo '</td>';
         echo '</tr>';
     }

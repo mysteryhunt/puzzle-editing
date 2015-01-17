@@ -289,7 +289,7 @@ function displayPrevFeedback($uid, $pid)
 
         echo '<tr class="feedback">';
         echo '<td class="feedback">' . $pf['time'] . '</td>';
-        echo '<td class="feedback">' . nl2br($cleanComment) . '</td>';
+        echo '<td class="feedback">' . nl2br2($cleanComment) . '</td>';
         echo '</tr>';
     }
 
