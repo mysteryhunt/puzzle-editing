@@ -17,13 +17,16 @@ function head($selnav = "", $title = -1) {
 $hunt = mktime(12, 17, 00, 1, HUNT_DOM, HUNT_YEAR);
 $now = time();
 $timediff = abs($hunt-$now);
-$days = floor($timediff/(60 * 60 * 24));
-$hrs = floor($timediff/(60 * 60))-(24*$days);
-$mins = floor($timediff/(60))-(24*60*$days)-(60*$hrs);
+$days = (int)($timediff/(60 * 60 * 24));
+$hrs = (int)($timediff/(60 * 60))-(24*$days);
+$mins = (int)($timediff/(60))-(24*60*$days)-(60*$hrs);
+$cdmsg = "";
 if ($now > $hunt) {
-    $days *= -1;
-    $hrs *= -1;
-    $mins *= -1;
+    $cdmsg = "after hunt started!!!";
+    $cdclass = "cunum";
+} else {
+    $cdmsg = "left until hunt.";
+    $cdclass = "cdnum";
 }
 ?>
 
@@ -50,7 +53,18 @@ if ($now > $hunt) {
     <div id="header">
         <div id="top">
             <div id="countdowndiv">
-                <span id="countdown"> <span class="cdnum"><?php echo $days ?></span> days, <span class="cdnum"><?php echo $hrs ?></span> hours and <span class="cdnum"><?php echo $mins ?></span> minutes left until hunt.</span>
+                <span id="countdown">
+                <?php
+                    if ($days !== 0) {
+                        $daypl = $days === 1 ? "" : "s";
+                        echo "<span class=\"$cdclass\">$days</span> day$daypl, ";
+                    }
+                    $hrpl =  $hrs  === 1 ? "" : "s";
+                    echo "<span class=\"$cdclass\">$hrs</span> hour$hrpl and ";
+                    $minpl = $mins === 1 ? "" : "s";
+                    echo "<span class=\"$cdclass\">$mins</span> minute$minpl $cdmsg";
+                ?>
+                </span>
             </div>
             <div id="titlediv">
                 <h1><?php echo fullTitle(); ?></h1>
@@ -232,7 +246,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
             <?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
             <?php if ($showTesters) {echo '<th class="puzzidea">Last Test Report</th>';} ?>
             <?php if (($showTesters) && (USING_TESTSOLVE_REQUESTS)){echo '<th class="puzzidea">Testsolve requests</th>';} ?>
-            <?php if ($showFinalLinks) {echo '<th class="puzzidea">Final Links</th>';} ?>	    
+            <?php if ($showFinalLinks) {echo '<th class="puzzidea">Final Links</th>';} ?>
         </tr>
     </thead>
     <tbody>
