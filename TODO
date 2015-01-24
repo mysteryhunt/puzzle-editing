@@ -2,35 +2,61 @@ Wishlist / Todo list for those touching puzzletron next:
 
 
 =Permissions and Roles=
-*Reduce strictness on authors not being able to change puzzle statuses (would be nice if authors could put their own puzzles in revision, for example, without needing an editor).
 
-*Allow editors/admins to change roles of people within web interface (rather than using phpmyadmin or poking the database directly) -- e.g. "make user foo an editor", "make user bar a fact checker"
+*Reduce strictness on authors not being able to change puzzle statuses
+ (would be nice if authors could put their own puzzles in revision,
+ for example, without needing an editor).
+
+*Allow editors/admins to change roles of people within web interface
+ (rather than using phpmyadmin or poking the database directly) --
+ e.g. "make user foo an editor", "make user bar a fact checker"
 
 
 =Postproduction drafts and content=
-*Postproduction uploads -- we really kind of just disabled this part of puzzletron, but with more time other teams can probably tune it to be more useful (e.g. allow new drafts and misc to be uplaoded even in postprod/fact check states).  Also this should get set up to automatically put your puzzles into postprod for hunt -- scripted automated formatting.  We manually postprodded all of our puzzles from puzzletron and put them into the hunt repo.
 
-*Diffs -- a button to diff between multiple versions of drafts/solutions/postprods would be neat
+*Postproduction uploads -- we really kind of just disabled this part
+ of puzzletron, but with more time other teams can probably tune it to
+ be more useful (e.g. allow new drafts and misc to be uplaoded even in
+ postprod/fact check states).  Also this should get set up to
+ automatically put your puzzles into postprod for hunt -- scripted
+ automated formatting.  We manually postprodded all of our puzzles
+ from puzzletron and put them into the hunt repo.
+
+*Diffs -- a button to diff between multiple versions of
+ drafts/solutions/postprods would be neat
 
 
 =Test Solving=
-*Testsolving page should also include array of previously submitted wrong answer during that test solve session (just like the real hunt does). But only within a testsolving group. Seems too spoilery to have it show all incorrect answers formerly submitted. Should be possible if you use the testsolving team functionality
+
+*Testsolving page should also include array of previously submitted
+ wrong answer during that test solve session (just like the real hunt
+ does). But only within a testsolving group. Seems too spoilery to
+ have it show all incorrect answers formerly submitted. Should be
+ possible if you use the testsolving team functionality
 
 
 =Puzzle Comment Feed=
-*Ability for comment-authors to edit their comments after posting (maybe only until a certain timelimit or until there is a newer comment?)
 
-*Better functionality for subscribing/unsubscribing to comment feed via email for editors, authors, etc. per puzzle.
+*Ability for comment-authors to edit their comments after posting
+ (maybe only until a certain timelimit or until there is a newer
+ comment?)
+
+*Better functionality for subscribing/unsubscribing to comment feed
+ via email for editors, authors, etc. per puzzle.
 
 *Ability to arrange comment feed from oldest-at-top OR newest-at-top
 
-*Better filtering comment feed (show only testsolve commments, show only editor/author interactions, etc.)
+*Better filtering comment feed (show only testsolve commments, show
+ only editor/author interactions, etc.)
 
-*Threaded / nested comment feed 
+*Threaded / nested comment feed
 
-*Better support for HTML in puzzle comments (including a preview button)
+*Better support for HTML in puzzle comments (including a preview
+ button)
 
-*Reply to emailed comment (if you're subscribed to them) and have your reply go in the comment field (this is kind of a tough one but would be sweet to not have to open up ptron to reply to comments)
+*Reply to emailed comment (if you're subscribed to them) and have your
+ reply go in the comment field (this is kind of a tough one but would
+ be sweet to not have to open up ptron to reply to comments)
 
 
 
