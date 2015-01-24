@@ -2,7 +2,9 @@
 
 Software for editing/testing puzzles for the [MIT Mystery Hunt](http://www.mit.edu/~puzzle/)
 
-Currently being hacked by Random Fish in preparation for the 2015 Hunt.
+Currently being hacked by Team Luck in preparation for the 2016
+Hunt. Many thanks to our predecessors Random Fish (2015) and Alice
+Shrugged (2014).
 
 ## To initialize mysql database:
 
