@@ -1,7 +1,7 @@
-Wishlist / Todo list for those touching puzzletron next:
+# Wishlist / Todo list for those touching puzzletron next:
 
 
-=Permissions and Roles=
+## Permissions and Roles
 
 *Reduce strictness on authors not being able to change puzzle statuses
  (would be nice if authors could put their own puzzles in revision,
@@ -12,7 +12,7 @@ Wishlist / Todo list for those touching puzzletron next:
  e.g. "make user foo an editor", "make user bar a fact checker"
 
 
-=Postproduction drafts and content=
+## Postproduction drafts and content
 
 *Postproduction uploads -- we really kind of just disabled this part
  of puzzletron, but with more time other teams can probably tune it to
@@ -26,7 +26,7 @@ Wishlist / Todo list for those touching puzzletron next:
  drafts/solutions/postprods would be neat
 
 
-=Test Solving=
+## Test Solving
 
 *Testsolving page should also include array of previously submitted
  wrong answer during that test solve session (just like the real hunt
@@ -35,7 +35,7 @@ Wishlist / Todo list for those touching puzzletron next:
  possible if you use the testsolving team functionality
 
 
-=Puzzle Comment Feed=
+## Puzzle Comment Feed
 
 *Ability for comment-authors to edit their comments after posting
  (maybe only until a certain timelimit or until there is a newer
