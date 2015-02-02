@@ -1,9 +1,2 @@
 [dev]
 puzzletron.vm
-
-# These are dynamic groups; the ec2 inventory script will fill them in.
-[tag_Env_staging]
-
-[staging:children]
-tag_Env_staging
-

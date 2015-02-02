@@ -33,7 +33,7 @@
     mode: 0644
   notify:
     - reload apache
-  when: ec2_tag_fqdn is defined
+  when: apache_servername is defined
 
 - name: Activate Apache servername config.
   command: >-
@@ -41,7 +41,7 @@
     creates=/etc/apache2/conf-enabled/servername.conf
   notify:
     - reload apache
-  when: ec2_tag_fqdn is defined
+  when: apache_servername is defined
 
 - name: Remove default apache site
   command: >-

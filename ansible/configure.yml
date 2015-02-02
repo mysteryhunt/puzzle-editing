@@ -11,14 +11,14 @@
   sudo: yes
   remote_user: ubuntu
   roles:
+    # upgrade_packages=false will be overridden by the
+    # Vagrantfile. But in general we don't want to upgrade Ubuntu
+    # packages every time we run Ansible. The shocking truth is that
+    # sometimes Ubuntu packages do not work out of the box, and you
+    # don't want to casually upgrade them on your live
+    # site. Horrors!
     - role: ubuntu-upgraded
       apt_cache_time: 14400
-      # upgrade_packages=false will be overridden by the
-      # Vagrantfile. But in general we don't want to upgrade Ubuntu
-      # packages every time we run Ansible. The shocking truth is that
-      # sometimes Ubuntu packages do not work out of the box, and you
-      # don't want to casually upgrade them on your live
-      # site. Horrors!
       upgrade_packages: false
       tags: [ setup ]
 
@@ -28,11 +28,19 @@
   roles:
     - role: web
       sudo: yes
+#      apache_servername: "{{ cluster_name }}.{{ cluster_dns_zone }}"
       tags: [ setup ]
 
     - role: Ansibles.mysql
       sudo: yes
       tags: [ setup ]
+
+  tasks:
+    - name: Install deployment packages.
+      sudo: yes
+      apt: pkg={{item}} state=installed
+      with_items:
+        - git
 
 - name: Install additional development utilities.
   hosts: dev
@@ -48,7 +56,6 @@
       apt: pkg={{item}} state=installed
       with_items:
         - curl
-        - git
         - tmux
       tags: [ setup ]
 
@@ -123,4 +130,40 @@
       sudo: yes
       site_name: "{{ dev_site_name }}"
       site_release_id: "{{ dev_site_name }}_{{ dev_build_version }}"
+      tags: [ build ]
+
+- name: Deploy the puzzletron site (to staging or prod).
+  hosts: staging:prod
+  remote_user: ubuntu
+  roles:
+    - role: site-db-host
+      sudo: yes
+      db_name: "{{ site_db_name }}"
+      db_user_name: "{{ site_db_username }}"
+      db_password: "{{ site_db_password }}"
+      tags: [ build ]
+
+    - role: site-released
+      site_shared_storage_dir: /home/ubuntu/puzzletron-storage
+      build_working_directory: /home/ubuntu/puzzletron-build
+      site_environment:
+        - key: EXAMPLE_ENV
+          value: "Set me"
+      #secret: site_url
+      #secret: site_docroots_directory
+      #secret: site_name
+      #secret: site_db_name
+      #secret: site_db_username
+      #secret: site_db_password
+      #secret: git_deploy_key_private
+      #secret: git_server_hostname
+      #secret: git_server_host_key
+      #secret: git_repo_url
+      #secret: ssl_cert
+      #secret: ssl_cert_key
+      tags: [ build ]
+
+    - role: site-enabled
+      sudo: yes
+      site_release_id: "{{ site_name }}_{{ build_version }}"
       tags: [ build ]

@@ -1,0 +1,4 @@
+---
+secrets_path: secret-config/puzzletron-prod.yml
+dev_mode: false
+stage_name: prod

@@ -1,3 +1,4 @@
 ---
 secrets_path: secret-config/puzzletron-staging.yml
 dev_mode: false
+stage_name: staging

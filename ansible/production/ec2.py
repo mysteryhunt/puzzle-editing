@@ -1,0 +1,1 @@
+../inventory-scripts/ec2.py

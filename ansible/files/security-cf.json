@@ -1,0 +1,129 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS network resources for a cluster.",
+
+  "Parameters" : {
+    "Cluster": {
+      "Type": "String",
+      "Description": "A short name for the cluster.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "Stage" : {
+      "Type": "String",
+      "Description": "A scope that we are launching in, like 'dev' or 'staging'. Becomes part of the domain name.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "BackupBucketName": {
+      "Type": "String",
+      "Description": "Name of the S3 bucket where the backups should be stored.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
+    }
+  },
+
+  "Mappings" : {
+  },
+
+  "Resources" : {
+    "SingleServerRole" : {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [ {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [ "ec2.amazonaws.com" ]
+            },
+            "Action": [ "sts:AssumeRole" ]
+          } ]
+        },
+        "Path": "/",
+        "Policies": [ {
+          "PolicyName": "AccessBackupBucket",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": ["s3:ListBucket"],
+                "Resource" : [{ "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "BackupBucketName" } ]]}]
+              },
+              {
+                "Effect": "Allow",
+                "Action": ["s3:GetObject", "s3:PutObject"],
+                "Resource" : [{ "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "BackupBucketName" },
+                                                   "/puzzletron-db-backup.sql.gz" ]]}]
+              },
+              {
+                "Effect": "Allow",
+                "Action": ["s3:GetObject", "s3:PutObject"],
+                "Resource" : [{ "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "BackupBucketName" },
+                                                   "/puzzletron-files-backup.tgz" ]]}]
+              }
+            ]
+          }
+        }]
+      }
+    },
+
+    "SingleInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          { "Ref": "SingleServerRole" }
+        ]
+      }
+    },
+
+    "SingleSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Group for Single servers; SSH and HTTP(S)",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "Tags": [
+          { "Key": "Cluster", "Value": { "Ref": "Cluster" }},
+          { "Key": "Stage", "Value": { "Ref": "Stage" }}
+        ]
+      }
+    }
+  },
+  
+  "Outputs" : {
+    "Region" : {
+      "Value": { "Ref" : "AWS::Region" }
+    },
+    "SingleInstanceProfile": {
+      "Value": { "Ref": "SingleInstanceProfile" }
+    },
+    "SingleSecurityGroupID": {
+      "Value": { "Fn::GetAtt": [ "SingleSecurityGroup", "GroupId" ]}
+    }
+  }
+}

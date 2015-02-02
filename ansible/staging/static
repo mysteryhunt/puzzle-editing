@@ -1,0 +1,7 @@
+# These are dynamic groups; the ec2 inventory script will fill them in.
+[tag_Stage_prod]
+
+# We go ahead and use the prod server for staging
+[staging:children]
+tag_Stage_prod
+

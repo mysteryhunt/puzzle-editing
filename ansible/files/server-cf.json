@@ -1,0 +1,158 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Application server.",
+
+  "Parameters" : {
+    "Cluster": {
+      "Type": "String",
+      "Description": "A short name for the cluster.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "Stage" : {
+      "Type": "String",
+      "Description": "Specific environment that we are launching in, like 'dev-fred' or 'staging'. Becomes part of the domain name.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "Hostname" : {
+      "Type": "String",
+      "Description": "Hostname of the server to launch.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "Class" : {
+      "Type": "String",
+      "Description": "Name of the type of server to launch.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "InstanceType" : {
+      "Type": "String",
+      "Description": "Type of instance to launch, e.g. t1.micro.",
+      "MinLength": "1",
+      "AllowedPattern": "[a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or periods"
+    },
+    "AMI" : {
+      "Type": "String",
+      "Description": "ID of the machine image to boot from.",
+      "MinLength": "12"
+    },
+    "KeyName": {
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "Description": "Name of the keypair to use"
+    },
+    "InstanceProfile": {
+      "Type": "String",
+      "Description": "ID of the instance profile to use.",
+      "MinLength": "4"
+    },
+    "SecurityGroupId": {
+      "Type": "AWS::EC2::SecurityGroup::Id",
+      "Description": "ID of the security group to use."
+    },
+    "Zone": {
+      "Type": "String",
+      "Description": "DNS domain which is managed by Route 53.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
+    },
+    "SiteUrl": {
+      "Type": "String",
+      "Description": "URL of the production site, which should be within the Zone.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
+    },
+    "StagingSiteUrl": {
+      "Type": "String",
+      "Description": "URL of the staging site, which should be within the Zone.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
+    }
+  },
+
+  "Mappings" : {
+  },
+
+  "Resources" : {
+    "Server": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "IamInstanceProfile": { "Ref": "InstanceProfile" },
+        "ImageId": { "Ref": "AMI" },
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "InstanceType": { "Ref": "InstanceType" },
+        "KeyName": { "Ref": "KeyName" },
+        "Monitoring": false,
+        "SecurityGroupIds": [
+          { "Ref": "SecurityGroupId" }
+        ],
+        "Tags": [
+          { "Key": "Name", "Value": { "Ref": "Hostname" }},
+          { "Key": "Cluster", "Value": { "Ref": "Cluster" }},
+          { "Key": "Stage", "Value": { "Ref": "Stage" }},
+          { "Key": "Class", "Value": { "Ref": "Class" }}
+        ]
+      }
+    },
+    "ServerHostnameDnsRecord": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "HostedZoneName": { "Fn::Join": [ "", [{ "Ref": "Zone" }, "."]]},
+        "Comment": "DNS name for server instance.",
+        "Name": { "Fn::Join": [ "", [
+          { "Ref": "Hostname" }, ".", { "Ref": "Stage" }, ".", { "Ref": "Zone" }, "."
+        ]]},
+        "Type": "CNAME",
+        "TTL": "300",
+        "ResourceRecords": [ { "Fn::GetAtt": [ "Server", "PublicDnsName" ] } ]
+      }
+    },
+    "SiteUrlDnsRecord": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "HostedZoneName": { "Fn::Join": [ "", [{ "Ref": "Zone" }, "."]]},
+        "Comment": "DNS name for the site.",
+        "Name": { "Ref": "SiteUrl" },
+        "Type": "CNAME",
+        "TTL": "300",
+        "ResourceRecords": [ { "Fn::GetAtt": [ "Server", "PublicDnsName" ] } ]
+      }
+    },
+    "StagingSiteUrlDnsRecord": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "HostedZoneName": { "Fn::Join": [ "", [{ "Ref": "Zone" }, "."]]},
+        "Comment": "DNS name for the site.",
+        "Name": { "Ref": "StagingSiteUrl" },
+        "Type": "CNAME",
+        "TTL": "300",
+        "ResourceRecords": [ { "Fn::GetAtt": [ "Server", "PublicDnsName" ] } ]
+      }
+    }
+  },
+  
+  "Outputs" : {
+    "Region" : {
+      "Value": { "Ref" : "AWS::Region" }
+    },
+    "AvailabilityZone": {
+      "Value": { "Fn::GetAtt": [ "Server", "AvailabilityZone" ]}
+    },
+    "PublicDnsName": {
+      "Value": { "Fn::GetAtt": [ "Server", "PublicDnsName" ]}
+    },
+    "InstanceId": {
+      "Value": { "Ref" : "Server" }
+    }
+  }
+}

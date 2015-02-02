@@ -11,7 +11,7 @@
 
 - name: Install deploy key.
   copy:
-    content: "{{ deploy_key }}"
+    content: "{{ git_deploy_key_private }}"
     dest: "/home/{{ username }}/.ssh/git-deploy-key"
     owner: "{{ username }}"
     group: "{{ username }}"
@@ -90,6 +90,7 @@
 
 - name: Copy the code to the site docroot.
   sudo: yes
+  delegate_to: "{{ inventory_hostname }}"
   synchronize: >-
     src={{ build_working_directory }}/
     dest={{ site_docroot }}

@@ -9,7 +9,7 @@
 - name: Upgrade packages
   sudo: yes
   apt:
-    upgrade: dist 
+    upgrade: dist
     update_cache: true
     cache_valid_time: "{{ apt_cache_time }}"
   when: upgrade_packages

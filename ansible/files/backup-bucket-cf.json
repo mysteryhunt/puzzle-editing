@@ -1,0 +1,62 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "A bucket to contain backups. One of the first things to create for a new cluster.",
+
+  "Parameters" : {
+    "Cluster": {
+      "Type": "String",
+      "Description": "A short name for the cluster.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "Zone" : {
+      "Type": "String",
+      "Description": "DNS zone belonging to the cluster, managed by Route 53.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
+    },
+    "Stage" : {
+      "Type": "String",
+      "Description": "The specific environment that the backups are associated with; 'dev', 'staging', etc. Becomes part of the bucket name.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    }
+  },
+
+  "Mappings" : {
+  },
+
+  "Resources" : {
+    "BackupBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": { "Fn::Join": ["", [ "backups", ".", {"Ref": "Stage"}, ".", {"Ref": "Zone"} ]]},
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        },
+        "Tags": [
+           { "Key": "Cluster", "Value": { "Ref": "Cluster" } },
+           { "Key": "Stage", "Value": { "Ref": "Stage" } },
+           { "Key": "Zone", "Value": { "Ref": "Zone" } },
+           { "Key": "Role", "Value": "backups" }
+        ]
+      }
+    }
+  },
+
+  "Outputs" : {
+    "Region" : {
+      "Value": { "Ref" : "AWS::Region" }
+    },
+    "BucketName": {
+      "Value": { "Ref": "BackupBucket" }
+    },
+    "DomainName": {
+      "Value": { "Fn::GetAtt": [ "BackupBucket", "DomainName" ]}
+    }
+  }
+}
