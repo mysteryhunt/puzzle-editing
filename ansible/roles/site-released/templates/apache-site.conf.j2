@@ -1,0 +1,55 @@
+<VirtualHost *:80>
+        ServerName {{ site_url }}
+
+{% if not dev_mode %}
+        Redirect permanent / https://{{ site_url }}/
+</VirtualHost>
+
+<VirtualHost *:443>
+        ServerName {{ site_url }}
+
+        # HSTS: Force web clients to use HTTPS.
+        Header always set Strict-Transport-Security "max-age=31536000;includeSubDomains"
+
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl.crt/{{ site_url }}.crt
+        SSLCertificateKeyFile /etc/apache2/ssl.key/{{ site_url }}.key
+        # Defend against POODLE
+        SSLProtocol all -SSLv2 -SSLv3
+{% endif %}
+
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot {{ site_docroot }}
+
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+
+        {% if site_shared_storage_dir is defined %}
+        <Directory {{ site_shared_storage_dir }}>
+                Require all granted
+        </Directory>
+        {% endif %}
+
+        <Directory {{ site_docroot }}>
+                Options FollowSymLinks
+                AllowOverride All
+                Require all granted
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/{{ site_name }}/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/{{ site_name }}/access.log combined
+
+        # Environment variables
+        {% for env in site_environment %}
+        SetEnv {{ env.key }} "{{ env.value }}"
+        {% endfor %}
+
+</VirtualHost>

@@ -1,0 +1,82 @@
+---
+- name: Add remote system to local known_hosts file (inventory hostname).
+  delegate_to: 127.0.0.1
+  lineinfile:
+    state: present
+    dest: ~/.ssh/known_hosts
+    regexp: "^{{ inventory_hostname }} ssh"
+    line: "{{ inventory_hostname }} ssh-rsa {{ ansible_ssh_host_key_rsa_public }}"
+
+# Make all Ubuntu boxes look alike by ensuring they have an 'ubuntu'
+# user with sudo privileges.
+- name: Ensure sudoer user exists.
+  sudo: yes
+  user:
+    name: "{{ sudoer_user_name }}"
+    shell: "/bin/bash"
+    comment: "Ubuntu"
+
+- name: Make sure we have SSH keys to install for the sudoer user.
+  fail:
+    msg: "You must provide the path to at least one SSH pubkey in 'sudoer_ssh_key_local_paths'."
+  when: (sudoer_ssh_key_local_paths | length) < 1
+
+- name: Set SSH keys for sudoer user.
+  sudo: yes
+  authorized_key:
+    user: "{{ sudoer_user_name }}"
+    key: "{{ lookup('file', item) }}"
+  with_items: sudoer_ssh_key_local_paths
+
+- name: Ensure that sudoers.d is in use.
+  sudo: yes
+  lineinfile:
+    state: present
+    dest: /etc/sudoers
+    regexp: "^#includedir /etc/sudoers.d"
+    line: "#includedir /etc/sudoers.d"
+    backup: yes
+
+- name: Permit sudoer user to execute sudo without a password.
+  sudo: yes
+  copy:
+    content: "%{{ sudoer_user_name }} ALL=(ALL) NOPASSWD:ALL"
+    dest: "/etc/sudoers.d/{{ sudoer_user_name }}"
+    owner: root
+    group: root
+    mode: "0440"
+
+
+# AWS-specific setup
+
+- name: Add remote system to local known_hosts file (FQDN at EC2).
+  delegate_to: 127.0.0.1
+  lineinfile:
+    state: present
+    dest: ~/.ssh/known_hosts
+    regexp: "^{{ ec2_tag_fqdn }} ssh"
+    line: "{{ ec2_tag_fqdn }} ssh-rsa {{ ansible_ssh_host_key_rsa_public }}"
+  when: ec2_tag_fqdn is defined
+
+- name: Set the hostname.
+  sudo: yes
+  hostname: name="{{ ec2_tag_Name }}"
+  when: ec2_tag_Name is defined
+
+- name: Arrange to resolve the local hostname via /etc/hosts (IPv4).
+  sudo: yes
+  lineinfile:
+    state: present
+    dest: /etc/hosts
+    regexp: "^127.0.0.1 "
+    line: "127.0.0.1  {{ ec2_tag_fqdn }} {{ ec2_tag_Name }} localhost"
+  when: (ec2_tag_Name is defined) and (ec2_tag_fqdn is defined)
+
+- name: Arrange to resolve the local hostname via /etc/hosts (IPv6).
+  sudo: yes
+  lineinfile:
+    state: present
+    dest: /etc/hosts
+    regexp: "^::1 "
+    line: "::1        {{ ec2_tag_fqdn }} {{ ec2_tag_Name }} localhost"
+  when: (ec2_tag_Name is defined) and (ec2_tag_fqdn is defined)

@@ -1,0 +1,87 @@
+---
+- name: Install Apache.
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - apache2
+
+- name: Install apache.conf.
+  template:
+    src: apache2.conf.j2
+    dest: /etc/apache2/apache2.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload apache
+
+- name: Install apache security.conf file.
+  template:
+    src: apache2-security.conf.j2
+    dest: /etc/apache2/conf-available/security.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload apache
+
+- name: Install Apache servername config.
+  template:
+    src: apache2-servername.conf.j2
+    dest: /etc/apache2/conf-available/servername.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload apache
+  when: ec2_tag_fqdn is defined
+
+- name: Activate Apache servername config.
+  command: >-
+    /usr/sbin/a2enconf servername
+    creates=/etc/apache2/conf-enabled/servername.conf
+  notify:
+    - reload apache
+  when: ec2_tag_fqdn is defined
+
+- name: Remove default apache site
+  command: >-
+    /usr/sbin/a2dissite 000-default.conf
+    removes=/etc/apache2/sites-enabled/000-default.conf
+  notify:
+    - reload apache
+
+- name: Remove default-ssl apache site
+  command: >
+    /usr/sbin/a2dissite default-ssl.conf
+    removes=/etc/apache2/sites-enabled/default-ssl.conf
+  notify:
+    - reload apache
+
+- name: Create SSL cert directories.
+  file: >-
+    path=/etc/apache2/{{ item }}
+    state=directory
+    owner=root
+    group=root
+    mode=0700
+  with_items:
+    - ssl.crt
+    - ssl.key
+
+- name: Enable modules.
+  command: >
+    /usr/sbin/a2enmod {{ item }}
+    creates=/etc/apache2/mods-enabled/{{ item }}.load
+  with_items:
+    - rewrite
+    - ssl
+    - headers
+  notify:
+    - restart apache
+
+- name: Enable PHP mcrypt extension for Apache.
+  command: >-
+    /usr/sbin/php5enmod -s apache2 mcrypt
+    creates=/etc/php5/apache2/conf.d/20-mcrypt.ini
+  notify:
+    - restart apache

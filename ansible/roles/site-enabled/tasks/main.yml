@@ -1,0 +1,14 @@
+---
+- name: Enable site.
+  file:
+    state: link
+    path: "/etc/apache2/sites-enabled/{{ site_name }}.conf"
+    src: "/etc/apache2/sites-available/{{ site_release_id }}.conf"
+  notify:
+    - reload apache
+
+- name: Explicitly reload Apache.
+  debug: msg="Reloading Apache explicitly"
+  changed_when: true
+  notify: reload apache
+  when: always_reload

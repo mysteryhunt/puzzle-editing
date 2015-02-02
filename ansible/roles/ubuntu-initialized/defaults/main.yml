@@ -1,0 +1,4 @@
+---
+group: all
+sudoer_user_name: ubuntu
+sudoer_ssh_key_local_paths: [ "~/.ssh/id_rsa.pub" ]

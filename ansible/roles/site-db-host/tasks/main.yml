@@ -1,0 +1,21 @@
+---
+- name: Create MySQL DB.
+  mysql_db:
+    name={{ db_name }}
+    collation=utf8_general_ci
+    encoding=utf8
+    state=present
+
+- name: Create MySQL user.
+  mysql_user:
+    name={{ db_user_name }}
+    password={{ db_password }}
+    priv="{{ db_name }}.*:ALL"
+    state=present
+
+- name: Restore MySQL DB.
+  mysql_db:
+    name: "{{ db_name }}"
+    state: import
+    target: "{{ db_schema_file }}"
+  when: db_schema_file is defined and db_schema_file != ''

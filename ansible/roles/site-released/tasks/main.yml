@@ -1,0 +1,201 @@
+---
+# The build phase.
+
+# Create a build working directory on the remote machine.
+#
+# Check out the code into the build working directory, clearing out
+# any old code that may be there, and otherwise prepare that directory
+# for the build.
+
+- debug: msg="Building version {{ build_version }}."
+
+- name: Install deploy key.
+  copy:
+    content: "{{ deploy_key }}"
+    dest: "/home/{{ username }}/.ssh/git-deploy-key"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0600
+  when: not dev_mode
+
+- name: Install the Git server host keys
+  lineinfile:
+    state: present
+    create: yes
+    dest: "/home/{{ username }}/.ssh/known_hosts"
+    regexp: "^{{ git_server_hostname }} ssh-rsa"
+    line: "{{ git_server_host_key }}"
+  when: not dev_mode
+
+- name: Clone the source code into the build directory.
+  git:
+    repo: "{{ git_repo_url }}"
+    key_file: "/home/{{ username }}/.ssh/git-deploy-key"
+    dest: "{{ build_working_directory }}"
+    version: "{{ build_version }}"
+    force: yes
+    update: yes
+  when: not dev_mode
+
+- name: Clean old build artifacts from the build directory.
+  command: "git clean -f -d -x"
+  args:
+    chdir: "{{ build_working_directory }}"
+  when: not dev_mode
+
+# The release phase.
+- name: Create site Unix user if necessary.
+  sudo: yes
+  user:
+    name: "{{ site_unix_username }}"
+    shell: "/bin/bash"
+    comment: "Web app owner"
+  when: not dev_mode
+
+- name: Create directory to hold docroots.
+  sudo: yes
+  file:
+    path: "{{ site_docroots_directory }}"
+    state: directory
+    owner: "{{ site_unix_username }}"
+    group: www-data
+    mode: 0750
+  when: not dev_mode
+
+- name: Create a shared storage directory and its subdirectories.
+  sudo: yes
+  file:
+    path: "{{ site_shared_storage_dir }}{{ item }}"
+    state: directory
+    owner: "{{ site_unix_username }}"
+    group: www-data
+    mode: 0770
+  with_items:
+    - ""
+    - "/uploads"
+    - "/uploads/pictures"
+    - "/uploads/pictures/thumbs"
+    - "/uploads/puzzle_files"
+    - "/logs"
+    - "/tmp"
+
+- name: Compute the release ID.
+  set_fact:
+    release_id: "{{ site_name }}_{{ build_version }}"
+
+- name: Compute the docroot if necessary.
+  set_fact:
+    site_docroot: "{{ site_docroots_directory }}/{{ release_id }}"
+  when: site_docroot is not defined
+
+- name: Copy the code to the site docroot.
+  sudo: yes
+  synchronize: >-
+    src={{ build_working_directory }}/
+    dest={{ site_docroot }}
+    rsync_opts=--exclude=uploads,--exclude=.git,--exclude=.gitignore
+  when: not dev_mode
+
+- name: Set permissions for directories beneath the docroot.
+  sudo: yes
+  shell: find {{ site_docroot }} -type d -print0 | xargs -0 chmod -c 0750
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  when: not dev_mode
+
+- name: Set permissions for files beneath the docroot.
+  sudo: yes
+  shell: find {{ site_docroot }} -type f -print0 | xargs -0 chmod -c 0640
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  when: not dev_mode
+
+- name: Set owner and group for everything in docroot.
+  sudo: yes
+  file:
+    path: "{{ site_docroot }}"
+    state: directory
+    recurse: yes
+    owner: "{{ site_unix_username }}"
+    group: www-data
+  when: not dev_mode
+
+- name: Remove the uploads dir from docroot in case it is still there.
+  sudo: yes
+  file:
+    state: absent
+    path: "{{ site_docroot }}/uploads"
+
+- name: Link docroot to its uploads dir.
+  sudo: yes
+  file:
+    state: link
+    path: "{{ site_docroot }}/uploads"
+    src: "{{ site_shared_storage_dir }}/uploads"
+
+- name: Install site PHP config file.
+  sudo: yes
+  template:
+    src="config.php.j2"
+    dest="{{ site_docroot }}/config.php"
+    owner="{{ site_unix_username }}"
+    group=www-data
+    mode=0440
+
+- name: Install site PHP secrets file.
+  sudo: yes
+  template:
+    src="secret.php.j2"
+    dest="{{ site_docroot }}/secret.php"
+    owner="{{ site_unix_username }}"
+    group=www-data
+    mode=0440
+
+- name: Adjust config file permissions in dev
+  sudo: yes
+  file:
+    state: file
+    path: "{{ site_docroot }}/{{ item }}"
+    mode: 0444
+  with_items:
+    - config.php
+    - secret.php
+  when: dev_mode
+
+- name: Install site SSL cert.
+  sudo: yes
+  copy: >-
+    content="{{ ssl_cert }}"
+    dest=/etc/apache2/ssl.crt/{{ site_url }}.crt
+    owner=root
+    group=root
+    mode=0400
+  when: ssl_cert is defined
+
+- name: Install site SSL cert key.
+  sudo: yes
+  copy: >-
+    content="{{ ssl_cert_key }}"
+    dest=/etc/apache2/ssl.key/{{ site_url }}.key
+    owner=root
+    group=root
+    mode=0400
+  when: ssl_cert_key is defined
+
+- name: Install site Apache config.
+  sudo: yes
+  template:
+    src="apache-site.conf.j2"
+    dest="/etc/apache2/sites-available/{{ release_id }}.conf"
+    owner=root
+    group=root
+    mode=0600
+
+- name: Create site log directories.
+  sudo: yes
+  file:
+    path=/var/log/apache2/{{ site_name }}
+    state=directory
+    owner=root
+    group=adm
+    mode=0750

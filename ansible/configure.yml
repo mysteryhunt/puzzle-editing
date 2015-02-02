@@ -1,0 +1,126 @@
+---
+- name: Load secret config.
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Load secret config.
+      include_vars: "{{ secrets_path }}"
+      tags: [ setup, build ]
+
+- hosts: all
+  sudo: yes
+  remote_user: ubuntu
+  roles:
+    - role: ubuntu-upgraded
+      apt_cache_time: 14400
+      # upgrade_packages=false will be overridden by the
+      # Vagrantfile. But in general we don't want to upgrade Ubuntu
+      # packages every time we run Ansible. The shocking truth is that
+      # sometimes Ubuntu packages do not work out of the box, and you
+      # don't want to casually upgrade them on your live
+      # site. Horrors!
+      upgrade_packages: false
+      tags: [ setup ]
+
+- name: Install the LAMP stack.
+  hosts: all
+  remote_user: ubuntu
+  roles:
+    - role: web
+      sudo: yes
+      tags: [ setup ]
+
+    - role: Ansibles.mysql
+      sudo: yes
+      tags: [ setup ]
+
+- name: Install additional development utilities.
+  hosts: dev
+  remote_user: ubuntu
+  vars:
+    mysql_admin_user: root
+    #secret: mysql_root_password
+    mysql_admin_password: "{{ mysql_root_password }}"
+
+  tasks:
+    - name: Install useful development packages.
+      sudo: yes
+      apt: pkg={{item}} state=installed
+      with_items:
+        - curl
+        - git
+        - tmux
+      tags: [ setup ]
+
+    - name: Install composer.
+      sudo: yes
+      copy:
+        src=files/composer.phar
+        dest=/usr/local/bin/composer
+        owner=ubuntu
+        group=ubuntu
+        mode=0555
+
+    - name: Use a MySQL conf file to give the ubuntu user root access to MySQL.
+      template: >-
+        src="templates/my.cnf.j2"
+        dest="/home/ubuntu/.my.cnf"
+        owner=ubuntu
+        group=ubuntu
+        mode=0600
+      tags: [ setup ]
+
+    - name: Transfer the development schema file to the host.
+      sudo: yes
+      copy: >-
+        src=../schema.sql
+        dest=/root/db-restore.sql
+        owner=root
+        group=root
+        mode=0400
+      tags: [ build ]
+
+- name: Deploy the puzzletron site (in development mode).
+  hosts: dev
+  remote_user: ubuntu
+  vars:
+    dev_site_url: puzzletron.vm
+    dev_site_name: puzzletron_dev
+    # We don't use Git to build the dev codebase, so we can use just
+    # about any string to stand in for the build_version.
+    dev_build_version: wip
+    dev_site_docroot: "/vagrant"
+  roles:
+    - role: site-db-host
+      sudo: yes
+      db_name: "{{ site_db_name }}"
+      db_user_name: "{{ site_db_username }}"
+      db_password: "{{ site_db_password }}"
+      db_schema_file: "/root/db-restore.sql"
+      tags: [ build ]
+
+    - role: site-released
+      dev_mode: true
+      site_name: "{{ dev_site_name }}"
+      build_version: "{{ dev_build_version }}"
+
+      # in dev mode, we set site_docroot to the working directory and
+      # leave site_docroots_directory unset. We will run the code
+      # directly from the working directory, so we don't need to do a Git
+      # checkout.
+      site_docroot: "{{ dev_site_docroot }}"
+      site_url: "{{ dev_site_url }}"
+      site_unix_username: ubuntu
+      site_shared_storage_dir: /home/ubuntu/puzzletron-storage
+      build_working_directory: /home/ubuntu/puzzletron-build
+
+      site_environment:
+        - key: EXAMPLE_ENV
+          value: "Set me"
+      tags: [ build ]
+
+    - role: site-enabled
+      sudo: yes
+      site_name: "{{ dev_site_name }}"
+      site_release_id: "{{ dev_site_name }}_{{ dev_build_version }}"
+      tags: [ build ]
