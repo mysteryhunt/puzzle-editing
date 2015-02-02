@@ -7,3 +7,5 @@ config-prac.php
 uploads/*
 mmblanche/*
 puzzletron-keytab
+vendor/autoload.php
+vendor/composer/autoload_*.php

@@ -23,9 +23,6 @@ Shrugged (2014).
 
 * Copy `config.php.EXAMPLE` to `config.php` and edit appropriately.
 
-* Make sure HTML Purifier is installed and referenced appropriately in
-  `config.php`
-
 * `DB_NAME` is the name of the database you created above
 
 * `URL` is the URL what links referring back to this puzzletron

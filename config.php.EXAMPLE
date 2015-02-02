@@ -1,5 +1,5 @@
 <?php // vim:set ts=4 sw=4 sts=4 et:
-require_once "/var/www/docroot/htmlpurifier/library/HTMLPurifier.auto.php";
+require __DIR__ . "/vendor/autoload.php";
 
 # Used for sessions.  Default location is bad because all PHP
 # scripts running on the same server will clean up sessions
