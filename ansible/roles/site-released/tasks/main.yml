@@ -43,6 +43,11 @@
     chdir: "{{ build_working_directory }}"
   when: not dev_mode
 
+- name: Run Composer.
+  command: >
+    /usr/local/bin/composer install
+    chdir={{ build_working_directory }}
+
 # The release phase.
 - name: Create site Unix user if necessary.
   sudo: yes

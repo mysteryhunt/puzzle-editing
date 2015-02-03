@@ -42,6 +42,15 @@
       with_items:
         - git
 
+    - name: Install composer.
+      sudo: yes
+      copy:
+        src=files/composer.phar
+        dest=/usr/local/bin/composer
+        owner=ubuntu
+        group=ubuntu
+        mode=0555
+
 - name: Install additional development utilities.
   hosts: dev
   remote_user: ubuntu
@@ -58,15 +67,6 @@
         - curl
         - tmux
       tags: [ setup ]
-
-    - name: Install composer.
-      sudo: yes
-      copy:
-        src=files/composer.phar
-        dest=/usr/local/bin/composer
-        owner=ubuntu
-        group=ubuntu
-        mode=0555
 
     - name: Use a MySQL conf file to give the ubuntu user root access to MySQL.
       template: >-
