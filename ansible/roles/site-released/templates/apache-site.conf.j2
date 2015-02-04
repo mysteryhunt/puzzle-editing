@@ -1,6 +1,5 @@
 <VirtualHost *:80>
         ServerName {{ site_url }}
-
 {% if not dev_mode %}
         Redirect permanent / https://{{ site_url }}/
 </VirtualHost>
@@ -27,16 +26,24 @@
                 AllowOverride None
         </Directory>
 
-        {% if site_shared_storage_dir is defined %}
+ {% if site_shared_storage_dir is defined %}
         <Directory {{ site_shared_storage_dir }}>
-                Require all granted
+                AuthType basic
+                AuthName "{{ site_htpasswd_authname }}"
+                AuthUserFile /etc/apache2/htpasswd
+                AuthBasicProvider file
+                Require valid-user
         </Directory>
         {% endif %}
 
         <Directory {{ site_docroot }}>
                 Options FollowSymLinks
                 AllowOverride All
-                Require all granted
+                AuthType basic
+                AuthName "{{ site_htpasswd_authname }}"
+                AuthUserFile /etc/apache2/htpasswd
+                AuthBasicProvider file
+                Require valid-user
         </Directory>
 
         ErrorLog ${APACHE_LOG_DIR}/{{ site_name }}/error.log

@@ -197,6 +197,16 @@
     group=root
     mode=0600
 
+- name: Install Apache htpasswd file.
+  sudo: yes
+  template:
+    src: htpasswd.j2
+    dest: /etc/apache2/sites-available/{{ site_name }}_htpasswd
+    owner: root
+    group: root
+    mode: 0644
+  when: site_htpasswd_passwords is defined
+
 - name: Create site log directories.
   sudo: yes
   file:
