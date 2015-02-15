@@ -186,7 +186,7 @@ function printPerson($p)
         $sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
             mysql_real_escape_string($id), mysql_real_escape_string($user_key_id));
         $res = get_rows($sql);
-        if ($res[0]['value'] != "") {
+        if (count($res) > 0 && $res[0]['value'] != "") {
 ?>
             <span class="profilesect"><?php echo "<b>$longname</b>: " . $res[0]['value']; ?></span>
 <?php
