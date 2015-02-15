@@ -164,9 +164,6 @@ function register()
 
     if ($errors) return $errors;
 
-    if ($picture['name'] != '') $pic = pictureHandling($uid, $picture);
-    $pic = $purifier->purify($pic);
-
     mysql_query('START TRANSACTION');
 
     if (TRUST_REMOTE_USER) {
@@ -188,6 +185,11 @@ function register()
     }
 
     $uid = mysql_insert_id();
+
+    $pic = '';
+    if ($picture['name'] != '') {
+        $pic = $purifier->purify(pictureHandling($uid, $picture));
+    }
 
     $failed = FALSE;
 
