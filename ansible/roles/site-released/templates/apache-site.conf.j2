@@ -28,22 +28,30 @@
 
  {% if site_shared_storage_dir is defined %}
         <Directory {{ site_shared_storage_dir }}>
+        {% if site_htpasswd_authname is defined %}
                 AuthType basic
                 AuthName "{{ site_htpasswd_authname }}"
                 AuthUserFile /etc/apache2/htpasswd
                 AuthBasicProvider file
                 Require valid-user
-        </Directory>
+        {% else %}
+                Require all granted
         {% endif %}
-
+        </Directory>
+{% endif %}
         <Directory {{ site_docroot }}>
                 Options FollowSymLinks
                 AllowOverride All
+        {% if site_htpasswd_authname is defined %}
                 AuthType basic
                 AuthName "{{ site_htpasswd_authname }}"
                 AuthUserFile /etc/apache2/htpasswd
                 AuthBasicProvider file
                 Require valid-user
+        {% else %}
+                Require all granted
+        {% endif %}
+
         </Directory>
 
         ErrorLog ${APACHE_LOG_DIR}/{{ site_name }}/error.log

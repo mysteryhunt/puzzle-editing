@@ -108,6 +108,7 @@
 
     - role: site-released
       dev_mode: true
+      sudo: yes
       site_name: "{{ dev_site_name }}"
       build_version: "{{ dev_build_version }}"
 
@@ -119,7 +120,7 @@
       site_url: "{{ dev_site_url }}"
       site_unix_username: ubuntu
       site_shared_storage_dir: /home/ubuntu/puzzletron-storage
-      build_working_directory: /home/ubuntu/puzzletron-build
+      build_working_directory: "{{ dev_site_docroot }}"
 
       site_environment:
         - key: EXAMPLE_ENV
