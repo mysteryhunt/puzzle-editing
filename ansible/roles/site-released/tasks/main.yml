@@ -81,6 +81,7 @@
     - "/uploads/pictures"
     - "/uploads/pictures/thumbs"
     - "/uploads/puzzle_files"
+    - "/purifier-cache"
     - "/logs"
     - "/tmp"
 

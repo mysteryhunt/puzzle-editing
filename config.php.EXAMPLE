@@ -19,6 +19,7 @@ session_start();
 define("SELF", "$_SERVER[PHP_SELF]");
 define("PICPATH", "uploads/pictures/"); // Path for user pictures
 define("DB_NAME", "puzzletron");
+define("HTMLPURIFIER_CACHE_PATH", "uploads/purifier-cache");
 
 //server mode
 define("DEVMODE", FALSE);

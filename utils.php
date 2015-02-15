@@ -7,6 +7,13 @@ if (USING_AWS) {
 }
 use Aws\S3\S3Client;
 
+// Return an HTMLPurifier object ready for use.
+function getHtmlPurifier() {
+    $config = HTMLPurifier_Config::createDefault();
+    $config->set('Cache.SerializerPath', HTMLPURIFIER_CACHE_PATH);
+    return new HTMLPurifier($config);
+}
+
 // Check that the user is logged in.
 // If so, update the session (to provent timing out) and return the uid;
 // If not, redirect to login page.  Preserve POST data if redirecting.
@@ -768,7 +775,7 @@ function changeTitleSummaryDescription($uid, $pid, $title, $summary, $descriptio
     $oldSummary = $puzzleInfo["summary"];
     $oldDescription = $puzzleInfo["description"];
 
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     mysql_query('START TRANSACTION');
 
     // If title has changed, update it
@@ -1096,7 +1103,7 @@ function canComment($uid, $pid) {
 
 function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE, $important = FALSE)
 {
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     $textComment = strip_tags($comment);
     $cleanComment = $purifier->purify($comment);
 
@@ -2463,7 +2470,7 @@ function changeCredits($uid, $pid, $credits)
     if (!canViewPuzzle($uid, $pid))
         utilsError("You do not have permission to modify this puzzle.");
 
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     mysql_query('START TRANSACTION');
 
     $oldCredits = getCredits($pid);
@@ -2479,7 +2486,7 @@ function changeNotes($uid, $pid, $notes)
     if (!canViewPuzzle($uid, $pid))
         utilsError("You do not have permission to modify this puzzle.");
 
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     mysql_query('START TRANSACTION');
 
     $oldNotes = getNotes($pid);
@@ -2495,7 +2502,7 @@ function changeEditorNotes($uid, $pid, $notes)
     if (!canViewPuzzle($uid, $pid))
         utilsError("You do not have permission to modify this puzzle.");
 
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     mysql_query('START TRANSACTION');
 
     $oldNotes = getEditorNotes($pid);
@@ -2511,7 +2518,7 @@ function changeRuntime($uid, $pid, $runtime)
     if (!canViewPuzzle($uid, $pid))
         utilsError("You do not have permission to modify this puzzle.");
 
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     mysql_query('START TRANSACTION');
 
     $oldRuntime = getRuntime($pid);
@@ -2527,7 +2534,7 @@ function changeWikiPage($uid, $pid, $wikiPage)
     if (!canViewPuzzle($uid, $pid))
         utilsError("You do not have permission to modify this puzzle.");
 
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     mysql_query('START TRANSACTION');
 
     $oldWikiPage = getWikiPage($pid);

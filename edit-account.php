@@ -122,7 +122,7 @@ function editAccount($uid)
     } else {
         $pic = getPic($uid);
     }
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     $fullname = $purifier->purify($_POST['fullname']);
     $pic = $purifier->purify($pic);
     $email_level = $purifier->purify($_POST['email_pref']);

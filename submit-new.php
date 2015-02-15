@@ -21,7 +21,7 @@ if (isset($_POST) && isset($_POST['newIdea'])) {
         $coauthors = array();
     }
 
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     $cleanTitle = htmlspecialchars($title); // I don't think we need or want HTML in titles... do we?
     $cleanSummary = $purifier->purify($summary);
     $cleanDescription = $purifier->purify($description);

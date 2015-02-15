@@ -152,7 +152,7 @@ function register()
         else if ($pass1 !== $pass2) $errors['pass2'] = "Passwords do not match";
         else if (strlen($pass1) < 6) $errors['pass1'] = "Password must be at least 6 characters";
     }
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     $username = $purifier->purify($username);
     $fullname = $purifier->purify($fullname);
     $email = $purifier->purify($email);

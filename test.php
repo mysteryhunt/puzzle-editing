@@ -284,7 +284,7 @@ function displayPrevFeedback($uid, $pid)
             $done = 'No, I\'ve solved it.';
 
         $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
-        $purifier = new HTMLPurifier();
+        $purifier = getHtmlPurifier();
         $cleanComment = $purifier->purify($feedback);
 
         echo '<tr class="feedback">';

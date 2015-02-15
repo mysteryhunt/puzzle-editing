@@ -19,6 +19,7 @@ session_start();
 define("SELF", "$_SERVER[PHP_SELF]");
 define("PICPATH", "{{ site_shared_storage_dir }}/uploads/pictures/"); // Path for user pictures
 define("DB_NAME", "{{ site_db_name }}");
+define("HTMLPURIFIER_CACHE_PATH", "{{ site_shared_storage_dir }}/purifier-cache");
 
 //server mode
 define("DEVMODE", TRUE);
