@@ -35,4 +35,3 @@ if (isset($_GET['token'])) {
 }
 // End HTML
 foot();
-?>

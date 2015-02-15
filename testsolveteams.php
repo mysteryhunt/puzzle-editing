@@ -93,4 +93,3 @@ function getPuzzleTeamsList(){
     asort($teamassignments);
     return($teamassignments);
 }
-?>

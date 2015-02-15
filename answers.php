@@ -129,4 +129,3 @@ function submitNewRound($roundname, $roundanswer)
     printf("<div class='okmsg'>Added new Round: %s with meta answer: %s</div>\n", htmlspecialchars($roundname), htmlspecialchars($roundanswer));
     return TRUE;
 }
-?>

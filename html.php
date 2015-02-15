@@ -576,4 +576,3 @@ function displayPuzzleStats($uid)
     </tr></table>
 <?php
 }
-?>

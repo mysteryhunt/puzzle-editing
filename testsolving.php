@@ -118,4 +118,3 @@ foot();
 
 if (isset($_SESSION['testError']))
     unset($_SESSION['testError']);
-?>

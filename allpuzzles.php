@@ -100,4 +100,3 @@ displayQueue($uid, $puzzles, "notes answer summary editornotes tags authorsanded
 
 // End HTML
 foot();
-?>

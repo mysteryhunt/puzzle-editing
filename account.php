@@ -78,4 +78,3 @@ printPerson(getPerson($uid));
 <?php
 // End HTML
 foot();
-?>

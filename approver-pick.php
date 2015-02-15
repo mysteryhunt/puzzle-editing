@@ -47,4 +47,3 @@ if (ALLOW_EDITOR_PICK) {
 echo '<br>(Hiding dead puzzles)<br>';
 // End HTML
 foot();
-?>

@@ -295,4 +295,3 @@ function displayPrevFeedback($uid, $pid)
 
     echo '</table>';
 }
-?>

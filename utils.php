@@ -4011,4 +4011,3 @@ function getBetaLink($title) {
 function getFinalLink($title) {
     return POSTPROD_URLPREFIX . "puzzle/" . postprodCanon($title) . "/";
 }
-?>

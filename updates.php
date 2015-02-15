@@ -37,4 +37,3 @@ foreach ($motds as $motd) {
 
 <?        // End HTML
 foot();
-?>

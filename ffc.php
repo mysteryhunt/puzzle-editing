@@ -23,5 +23,3 @@ displayQueue($uid, $puzzles, "notes summary editornotes finallinks", FALSE, arra
 
 // End HTML
 foot();
-?>
-

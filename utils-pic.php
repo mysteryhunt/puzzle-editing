@@ -112,4 +112,3 @@ function makeThumb($uploaded, $thumbName)
     imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newW, $newH, $width, $height);
     imagejpeg($thumb, $thumbName);
 }
-?>

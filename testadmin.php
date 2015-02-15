@@ -164,4 +164,3 @@ function displayTestingSummary()
     }
     echo "</table>\n\n";
 }
-?>

@@ -26,4 +26,3 @@ displayQueue($uid, $puzzles, "notes finallinks", FALSE);
 <?php
 // End the HTML
 foot();
-?>

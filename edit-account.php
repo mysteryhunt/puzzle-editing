@@ -173,4 +173,3 @@ function editAccount($uid)
         return TRUE;
     }
 }
-?>

@@ -579,4 +579,3 @@ echo '">the Server Administrators</a> for help.</div>';
 
 foot();
 
-?>

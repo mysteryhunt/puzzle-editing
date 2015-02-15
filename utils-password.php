@@ -60,4 +60,3 @@ function adminResetPasswordByUsername($username, $adminUid) {
     resetPassword($row, $adminUid);
     return TRUE;
 }
-?>

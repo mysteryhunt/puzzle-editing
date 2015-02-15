@@ -171,4 +171,3 @@ if ($authors != NULL)
     </form>
 <?php
 }
-?>

@@ -165,4 +165,3 @@ function db_unexpected($query)
 {
     db_fail_message($query, "The number of rows resulting from querying the database was unexpected. Please try again.");
 }
-?>

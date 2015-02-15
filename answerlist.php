@@ -51,4 +51,5 @@ function displayAnswersClassifiedByRound($uid, $rid)
             <tr><td><?php echo $answer ?></td></tr>
         <?php } ?>
     </table>
-<?php } ?>
+<?php
+}

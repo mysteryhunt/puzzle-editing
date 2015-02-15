@@ -42,5 +42,3 @@ echo '<br>(Hiding dead puzzles)<br>';
 
 // End HTML
 foot();
-
-?>

@@ -127,4 +127,3 @@ foreach ($mailing_lists as $list => $description) {
 <?php
 // End HTML
 foot();
-?>

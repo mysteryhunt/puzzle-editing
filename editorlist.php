@@ -59,4 +59,3 @@ print_rows(getAuthorStats());
 echo '</table><br><br>';
 
 foot();
-?>

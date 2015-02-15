@@ -64,4 +64,3 @@ displayQueue($uid, $puzzles, "notes", FALSE);
 
 // End HTML
 foot();
-?>

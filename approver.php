@@ -46,4 +46,3 @@ displayQueue($uid, $puzzles, "notes answer summary editornotes authorsandeditors
 echo  '<br>(Hiding dead puzzles)<br>';
 // End HTML
 foot();
-?>

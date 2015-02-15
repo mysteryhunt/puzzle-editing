@@ -53,4 +53,3 @@ function postMotdForm($newmotd, $username)
 }
 // End HTML
 foot();
-?>

@@ -228,4 +228,3 @@ function register()
         return array();
     }
 }
-?>

@@ -35,4 +35,3 @@ if (isset($_POST['username'])) {
 <?php
 }
 foot();
-?>

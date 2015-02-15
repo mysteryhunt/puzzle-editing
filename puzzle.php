@@ -1324,4 +1324,3 @@ function displayPuzzPriority($uid, $pid)
 <?php
     }
 }
-?>

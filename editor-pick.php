@@ -51,4 +51,3 @@ echo '<br/>';
 
 // End HTML
 foot();
-?>
