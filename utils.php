@@ -2,6 +2,7 @@
 require_once "config.php";
 require_once "db-func.php";
 if (USING_AWS) {
+    // TODO: vendor this dependency
     require 'aws.phar';
 }
 use Aws\S3\S3Client;
@@ -2612,6 +2613,7 @@ function uploadFiles($uid, $pid, $type, $file) {
     }
 
     if (USING_AWS) {
+        // TODO: unify with the similar call in utils-pic.php
         $client = S3Client::factory(array(
             'key'    => AWS_ACCESS_KEY,
             'secret' => AWS_SECRET_KEY));
@@ -2622,6 +2624,8 @@ function uploadFiles($uid, $pid, $type, $file) {
         if (move_uploaded_file($file['tmp_name'], $target_path)) {
             if (USING_AWS) {
                 $key = $target_path;
+                // TODO: Nobody is reading this result; the site proceeds to
+                // link to the bucket on the assumption that this succeeded.
                 $result = $client->putObject(array(
                     'Bucket' => AWS_BUCKET,
                     'Key'    => $key,
@@ -2660,6 +2664,8 @@ function uploadFiles($uid, $pid, $type, $file) {
         if (move_uploaded_file($file['tmp_name'], $target_path)) {
             if (USING_AWS) {
                 $key = $target_path;
+                // TODO: Nobody is reading this result; the site proceeds to
+                // link to the bucket on the assumption that this succeeded.
                 $result = $client->putObject(array(
                     'Bucket' => AWS_BUCKET,
                     'Key'    => $key,

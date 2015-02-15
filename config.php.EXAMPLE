@@ -47,6 +47,14 @@ define("USING_TESTSOLVE_TEAMS", FALSE);
 define("USING_ROUND_CAPTAINS", FALSE);
 define("USING_APPROVERS", FALSE);
 define("USING_CREDITS", FALSE);
+
+// USING_AWS affects:
+// html.php line 151: link to author thumbnails from the thumbs bucket in S3
+// puzzle.php line 979: link to filelists in S3
+// puzzle.php line 1188: YOLO substitution of S3 bucket URL for upload URL in comment bodies?
+// test.php line 123: link to drafts from s3 bucket
+// utils-pic.php: move uploaded pics and thumbs into S3
+// utils.php: copies uploaded file attachments (like drafts) to S3
 define("USING_AWS", FALSE);
 
 define("ENABLE_WRITING_WIKI", FALSE);

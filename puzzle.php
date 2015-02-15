@@ -1179,6 +1179,7 @@ function displayComments($uid, $pid, $lastVisit)
         echo "<br />$timestamp<br />$type <small>(Comment #$id)</small>";
         echo "<td class='$type" . "Comment'>";
 
+// TODO: Is this really the best we can do? Markdown, anyone?
         $pcomment = preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2">\\2</a>', ($comment['comment']));
         if (USING_AWS) {
             $pcomment = str_replace("=\"uploads/", "=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/", $pcomment);

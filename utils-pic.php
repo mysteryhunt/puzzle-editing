@@ -1,6 +1,7 @@
 <?php // vim:set ts=4 sw=4 sts=4 et:
 require_once "config.php";
 if (USING_AWS) {
+    // TODO: vendor this dependency
     require 'aws.phar';
 }
 use Aws\S3\S3Client;
@@ -42,6 +43,8 @@ function pictureHandling($id, $picture)
         return "";
     } else if (USING_AWS) {
         $key = $upfile;
+        // TODO: Nobody is reading this result; the site proceeds to
+        // link to the bucket on the assumption that this succeeded.
         $result = $client->putObject(array(
             'Bucket' => AWS_BUCKET,
             'Key'    => $key,
@@ -53,6 +56,8 @@ function pictureHandling($id, $picture)
 
     if (USING_AWS) {
         $key = $thumb;
+        // TODO: Nobody is reading this result; the site proceeds to
+        // link to the bucket on the assumption that this succeeded.
         $result = $client->putObject(array(
             'Bucket' => AWS_BUCKET,
             'Key'    => $key,
