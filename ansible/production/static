@@ -1,8 +1,9 @@
 [localhost]
 localhost   ansible_connection=local
 
-# These are dynamic groups; the ec2 inventory script will fill them in.
-[tag_Stage_prod]
-
 [prod:children]
 tag_Stage_prod
+
+# This is a dynamic group; the ec2 inventory script will fill it in.
+[tag_Stage_prod]
+

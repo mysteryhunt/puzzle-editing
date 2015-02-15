@@ -1,7 +1,12 @@
-# These are dynamic groups; the ec2 inventory script will fill them in.
-[tag_Stage_prod]
+[localhost]
+localhost   ansible_connection=local
 
-# We go ahead and use the prod server for staging
+# We don't want to spring for separate staging servers, so go ahead
+# and use servers that are tagged "prod" for staging.
 [staging:children]
 tag_Stage_prod
+
+# This is a dynamic group; the ec2 inventory script will fill it in.
+[tag_Stage_prod]
+
 
