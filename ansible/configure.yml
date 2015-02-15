@@ -133,6 +133,13 @@
       site_release_id: "{{ dev_site_name }}_{{ dev_build_version }}"
       tags: [ build ]
 
+  tasks:
+    - name: Clear old session files.
+      shell: >-
+        rm sess_*
+        chdir=/home/ubuntu/puzzletron-storage/tmp
+      tags: [ build ]
+
 - name: Deploy the puzzletron site (to staging or prod).
   hosts: staging:prod
   remote_user: ubuntu
