@@ -14,6 +14,23 @@ function getHtmlPurifier() {
     return new HTMLPurifier($config);
 }
 
+// If the session contains a flag reporting an error adding a puzzle to an
+// editing queue, return the HTML describing that error, then clear the
+// session flag.
+//
+// (It's like a single-purpose Rails 'flash'!)
+function addEditFailureHtml() {
+    $html = '';
+    if (isset($_SESSION['failedToAddEdit'])) {
+        $html = "<div class='errormsg'>\n";
+        $html .= "Failed to add puzzle to your editing queue<br/>\n";
+        $html .= "Perhaps you are an author, are testsolving it, or are already editing it?\n";
+        $html .= "</div>\n";
+        unset($_SESSION['failedToAddEdit']);
+    }
+    return $html;
+}
+
 // Check that the user is logged in.
 // If so, update the session (to provent timing out) and return the uid;
 // If not, redirect to login page.  Preserve POST data if redirecting.
