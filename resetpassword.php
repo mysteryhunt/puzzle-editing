@@ -7,9 +7,8 @@ require_once "utils-password.php";
 // Start HTML
 head("resetpassword");
 
-?>
-        <h2>Reset Password</h2>
-<?
+echo "<h2>Reset Password</h2>";
+
 if (isset($_GET['token'])) {
     $success = resetPasswordByToken($_GET['token']);
     if ($success) {
@@ -17,7 +16,7 @@ if (isset($_GET['token'])) {
     } else {
         echo "<div class='errormsg'>Invalid or expired token</div>";
     }
-} else if (isset($_POST['email'])) {
+} elseif (isset($_POST['email'])) {
     $success = addAndSendToken($_POST['email']);
     if ($success) {
         echo "<div class='okmsg'>Please check your email for instructions on how to reset your password (allow a few minutes for the cronjob delay)</div>";
@@ -25,13 +24,9 @@ if (isset($_GET['token'])) {
         echo "<div class='errormsg'>No user with the given email was found!</div>";
     }
 } else {
-?>
-
-    <form method="post" action="<?php echo SELF; ?>">
-        Email Address <input type="text" name="email" value=""/>
-    </form>
-
-<?php
+    echo '<form method="post" action="' . SELF . '">';
+    echo 'Email Address <input type="text" name="email" value=""/>';
+    echo "</form>";
 }
 // End HTML
 foot();
