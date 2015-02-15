@@ -93,9 +93,13 @@ foreach ($result as $r) {
     $sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
         mysql_real_escape_string($uid), mysql_real_escape_string($user_key_id));
     $res = get_rows($sql);
-    $lastvalue = $res[0]['value'];
-    if (isset($_POST[$shortname]))
+    $lastvalue = '';
+    if (count($res) > 0) {
+        $lastvalue = $res[0]['value'];
+    }
+    if (isset($_POST[$shortname])) {
         $lastvalue = $_POST[$shortname];
+    }
 ?>
         <tr>
             <td><?php echo $longname; ?></td>
