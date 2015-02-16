@@ -8,10 +8,15 @@ function echoNav($isselected, $href, $linktext, $condition) {
         echo "<li class='nav'><a class='$navclass' href='$href'>$linktext</a></li>\n";
     }
 }
-function echoNav1($selnav, $name, $linktext, $condition) { echoNav($selnav == $name, $name . ".php", $linktext, $condition); }
+
+function echoNav1($selnav, $name, $linktext, $condition) {
+    echoNav($selnav == $name, $name . ".php", $linktext, $condition);
+}
+
 function fullTitle() {
     return 'MH2015 puzzletron authoring server (' . (DEVMODE ? 'test/dev' : (PRACMODE ? 'practice' : 'actual mystery hunt-writing')) . ' instance)';
 }
+
 function head($selnav = "", $title = -1) {
     if ($title == -1) {$title = fullTitle();}
 $hunt = mktime(12, 17, 00, 1, HUNT_DOM, HUNT_YEAR);
@@ -114,8 +119,7 @@ if (isset($_SESSION['uid'])) {
 <?php
 }
 
-function foot()
-{
+function foot() {
 ?>
     </div>
     <div id="footer">
@@ -134,8 +138,7 @@ function foot()
 <?php
 }
 
-function printPerson($p)
-{
+function printPerson($p) {
     $id = $p['uid'];
     $uname = $p['username'];
     $picture = $p['picture'];
@@ -154,17 +157,18 @@ function printPerson($p)
             $pic = "<img src=\"".$picsrc."\" />";
         } else {
             $picsrc = "uploads/pictures/thumbs/$id.jpg";
-            if (file_exists($picsrc))
+            if (file_exists($picsrc)) {
                 $pic = "<img src=\"".$picsrc."\" />";
+            }
         }
     }
 
     $jobNames = getUserJobsAsList($id);
     if (canSeeAllPuzzles($id)) {
         $profclass = "seeallprofilebox";
-    } else if (isApprover($id)) {
+    } elseif (isApprover($id)) {
         $profclass = "approverprofilebox";
-    } else if ($jobNames) {
+    } elseif ($jobNames) {
         $profclass = "specprofilebox";
     } else {
         $profclass = "profilebox";
@@ -199,8 +203,7 @@ function printPerson($p)
 <?php
 }
 
-function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLinkArgs = "", $hidedeadpuzzles = TRUE)
-{
+function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLinkArgs = "", $hidedeadpuzzles = TRUE) {
     $fields = explode(" ", $fields);
     $showNotes = in_array("notes", $fields);
     $showAnswer = in_array("answer", $fields);
@@ -245,7 +248,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
             <?php if ($showNumTesters) {echo '<th class="puzzidea"># Testers</th>';} ?>
             <?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
             <?php if ($showTesters) {echo '<th class="puzzidea">Last Test Report</th>';} ?>
-            <?php if (($showTesters) && (USING_TESTSOLVE_REQUESTS)){echo '<th class="puzzidea">Testsolve requests</th>';} ?>
+            <?php if (($showTesters) && (USING_TESTSOLVE_REQUESTS)) {echo '<th class="puzzidea">Testsolve requests</th>';} ?>
             <?php if ($showFinalLinks) {echo '<th class="puzzidea">Final Links</th>';} ?>
         </tr>
     </thead>
@@ -276,31 +279,33 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
                 continue;
             }
         }
-        else if ($hidedeadpuzzles && $puzzleInfo["pstatus"] == $deadstatusid) {
+        elseif ($hidedeadpuzzles && $puzzleInfo["pstatus"] == $deadstatusid) {
             continue;
         }
 
         $title = $puzzleInfo["title"];
-        if ($title == NULL)
+        if ($title == NULL) {
             $title = '(untitled)';
-
+        }
         $codename = getCodename($pid);
         $lastComment = getLastCommentDate($pid);
         $lastCommenter = getLastCommenter($pid);
         $lastVisit = getLastVisit($uid, $pid);
         $flagged = in_array($pid, $flaggedPuzzles);
 
-        if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test)
+        if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test) {
             echo '<tr class="puzz-new">';
-        else if ($flagged)
+        } elseif ($flagged) {
             echo '<tr class="puzz-flag">';
-        else
+        } else {
             echo '<tr class="puzz">';
+        }
 
-        if ($test)
+        if ($test) {
             echo "<td class='puzzidea'><a href='test.php?pid=$pid$addLinkArgs'>$pid</a></td>";
-        else
+        } else {
             echo "<td class='puzzidea'><a href='puzzle.php?pid=$pid$addLinkArgs'>$pid</a></td>";
+        }
 ?>
         <?php if (USING_CODENAMES) {echo '<td class="puzzidea">' . $codename . '</th>';} ?>
         <td class='puzzidea'><?php echo $title; ?></td>
@@ -316,8 +321,9 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
         if ($showAnswer) {
             if (getAnswersForPuzzleAsList($pid) != "") {
                 echo "<td class='puzzideasecure'>";
-            } else
+            } else {
                 echo "<td class='puzzidea'>";
+            }
             echo getAnswersForPuzzleAsList($pid) . "</td>";
         } ?>
         <?php if (!$test) {echo "<td class='puzzidea'>$lastCommenter</td>";} ?>
@@ -347,8 +353,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
 
 // Make groups of checkboxes
 // Takes an associative array and the name of the form element
-function makeOptionElements($toDisplay, $name, $highlightKey = NULL)
-{
+function makeOptionElements($toDisplay, $name, $highlightKey = NULL) {
     if (!$toDisplay) {
         echo '<em>(none)</em>';
         return;
@@ -364,13 +369,13 @@ function makeOptionElements($toDisplay, $name, $highlightKey = NULL)
     $i = 1;
     echo '<table>';
     foreach ($toDisplay as $key => $value) {
-        if ($key == NULL)
+        if ($key == NULL) {
             continue;
-
+        }
         // Start a new row, if necessary
-        if (($i % $numCol) == 1)
+        if (($i % $numCol) == 1) {
             echo '<tr>';
-
+        }
         // Add answer information
         if ($key == $highlightKey) {
             echo "<td class='highlightkey'>";
@@ -381,20 +386,20 @@ function makeOptionElements($toDisplay, $name, $highlightKey = NULL)
         echo '</td>';
 
         // End row, if number of columns reached
-        if (($i % $numCol) == 0)
+        if (($i % $numCol) == 0) {
             echo '</tr>';
-
+        }
         $i++;
     }
 
     // Close last row, if necessary
-    if (($i % $numCol) != 1)
+    if (($i % $numCol) != 1) {
         echo '</tr>';
+    }
     echo '</table>';
 }
 
-function displayPuzzleStats($uid)
-{
+function displayPuzzleStats($uid) {
     $max_rows = 6;
 
     $totalNumberOfPuzzles = countLivePuzzles();
@@ -409,9 +414,9 @@ function displayPuzzleStats($uid)
     $editor = $userNumbers['editor'];
 
     $tester = $userNumbers['currentTester'];
-    if ($userNumbers['doneTester'] > 0)
+    if ($userNumbers['doneTester'] > 0) {
         $tester .= ' (+' . $userNumbers['doneTester'] . ' done)';
-
+    }
 ?>
     <table><tr>
         <td class="puzz-stats">
@@ -525,10 +530,10 @@ function displayPuzzleStats($uid)
         for ($col = 0; $col < ($pstatusCol / 2); $col++) {
             $n = $row + ($col * $max_rows);
 
-            if ($col==0)
+            if ($col==0) {
                 echo '
                 <tr>';
-
+            }
             if ($n >= count($puzzleStatuses)) {
                 echo '
                     <td></td>';

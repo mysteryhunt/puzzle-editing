@@ -28,15 +28,17 @@ if (isset($_POST['cancelTSD'])) {
 if (isset($_POST['changeAnswers'])) {
     $pid = $_POST['pid'];
 
-    if (isset($_POST['addAns']))
+    if (isset($_POST['addAns'])) {
         $add = $_POST['addAns'];
-    else
+    } else {
         $add = NULL;
+    }
 
-    if (isset($_POST['removeAns']))
+    if (isset($_POST['removeAns'])) {
         $remove = $_POST['removeAns'];
-    else
+    } else {
         $remove = NULL;
+    }
 
     changeAnswers($uid, $pid, $add, $remove);
 
@@ -47,15 +49,17 @@ if (isset($_POST['changeAnswers'])) {
 if (isset($_POST['changeFactcheckers'])) {
     $pid = $_POST['pid'];
 
-    if (isset($_POST['addFactchecker']))
+    if (isset($_POST['addFactchecker'])) {
         $add = $_POST['addFactchecker'];
-    else
+    } else {
         $add = NULL;
+    }
 
-    if (isset($_POST['removeFactchecker']))
+    if (isset($_POST['removeFactchecker'])) {
         $remove = $_POST['removeFactchecker'];
-    else
+    } else {
         $remove = NULL;
+    }
 
     changeFactcheckers($uid, $pid, $add, $remove);
 
@@ -69,16 +73,16 @@ if (isset($_POST['changeAuthors'])) {
     if (isset($_POST['addAuth'])) {
         $add = $_POST['addAuth'];
         subscribe($uid, $pid);
-    }
-    else
+    } else {
         $add = NULL;
+    }
 
     if (isset($_POST['removeAuth'])) {
         $remove = $_POST['removeAuth'];
         unsubscribe($uid, $pid);
-    }
-    else
+    } else {
         $remove = NULL;
+    }
 
     changeAuthors($uid, $pid, $add, $remove);
 
@@ -89,19 +93,20 @@ if (isset($_POST['changeAuthors'])) {
 if (isset($_POST['changeSpoiled'])) {
     $pid = $_POST['pid'];
 
-    if (isset($_POST['removeSpoiledUser']))
+    if (isset($_POST['removeSpoiledUser'])) {
         $removeUser = $_POST['removeSpoiledUser'];
-    else
+    } else {
         $removeUser = NULL;
+    }
 
-    if (isset($_POST['addSpoiledUser']))
+    if (isset($_POST['addSpoiledUser'])) {
         $addUser = $_POST['addSpoiledUser'];
-    else
+    } else {
         $addUser = NULL;
+    }
 
     changeSpoiled($uid, $pid, $removeUser, $addUser);
-    if ($removeUser[0] == $uid)
-    {
+    if ($removeUser[0] == $uid) {
         head();
         echo "<div class='okmsg'>Removed you as spoiled. Not redirecting to avoid re-spoiling you.</div>\n";
         exit(0);
@@ -127,19 +132,17 @@ if (isset($_POST['changeEditors'])) {
         if (isAutoSubEditor($uid)) {
             subscribe($uid, $pid);
         }
-    }
-    else
+    } else {
         $add = NULL;
-
+    }
     if (isset($_POST['removeEditor'])) {
         $remove = $_POST['removeEditor'];
         if (isAutoSubEditor($uid)) {
             unsubscribe($uid, $pid);
         }
-    }
-    else
+    } else {
         $remove = NULL;
-
+    }
     changeEditors($uid, $pid, $add, $remove);
 
     header("Location: " . URL . "/puzzle.php?pid=$pid");
@@ -154,19 +157,17 @@ if (isset($_POST['changeApprovers'])) {
         if (isAutoSubEditor($uid)) {
             subscribe($uid, $pid);
         }
-    }
-    else
+    } else {
         $add = NULL;
-
+    }
     if (isset($_POST['removeApprover'])) {
         $remove = $_POST['removeApprover'];
         if (isAutoSubEditor($uid)) {
             unsubscribe($uid, $pid);
         }
-    }
-    else
+    } else {
         $remove = NULL;
-
+    }
     changeApprovers($uid, $pid, $add, $remove);
 
     header("Location: " . URL . "/puzzle.php?pid=$pid");
@@ -178,16 +179,14 @@ if (isset($_POST['changeTags'])) {
 
     if (isset($_POST['addTag'])) {
         $add = $_POST['addTag'];
-    }
-    else
+    } else {
         $add = NULL;
-
+    }
     if (isset($_POST['removeTag'])) {
         $remove = $_POST['removeTag'];
-    }
-    else
+    } else {
         $remove = NULL;
-
+    }
     changeTags($uid, $pid, $add, $remove);
 
     header("Location: " . URL . "/puzzle.php?pid=$pid");
@@ -197,15 +196,17 @@ if (isset($_POST['changeTags'])) {
 if (isset($_POST['changeRoundCaptain'])) {
     $pid = $_POST['pid'];
 
-    if (isset($_POST['addRoundCaptain']))
+    if (isset($_POST['addRoundCaptain'])) {
         $add = $_POST['addRoundCaptain'];
-    else
+    } else {
         $add = NULL;
+    }
 
-    if (isset($_POST['removeRoundCaptain']))
+    if (isset($_POST['removeRoundCaptain'])) {
         $remove = $_POST['removeRoundCaptain'];
-    else
+    } else {
         $remove = NULL;
+    }
 
     changeRoundCaptains($uid, $pid, $add, $remove);
 
@@ -349,10 +350,11 @@ if (isset($_POST['emailUnsub'])) {
 if (isset($_POST['getTest'])) {
 
     $pid = getPuzzleToTest($uid);
-    if ($pid)
+    if ($pid) {
         addPuzzleToTestQueue($uid, $pid);
-    else
+    } else {
         $_SESSION['failedToAdd'] = TRUE;
+    }
 
     header("Location: " . URL . "/testsolving.php");
     exit(0);
@@ -377,9 +379,9 @@ if (isset($_POST['FactcheckPuzzle'])) {
 if (isset($_POST['TestAdminPuzzle'])) {
     $pid = $_POST['pid'];
 
-    if (!addToTestAdminQueue($uid, $pid))
+    if (!addToTestAdminQueue($uid, $pid)) {
         $_SESSION['failedToAdd'] = TRUE;
-
+    }
     header("Location: " . URL . "/testadmin.php");
     exit(0);
 }
@@ -387,8 +389,9 @@ if (isset($_POST['TestAdminPuzzle'])) {
 if (isset($_POST['getTestId'])) {
     $pid = $_POST['pid'];
 
-    if (!validPuzzleId($pid))
+    if (!validPuzzleId($pid)) {
         utilsError("Invalid puzzle ID.");
+    }
 
     if (isTestingAdmin($uid)) {
         header("Location: " . URL . "/test.php?pid=" . $pid);
@@ -398,11 +401,12 @@ if (isset($_POST['getTestId'])) {
     if (canTestPuzzle($uid, $pid, TRUE) && !isTesterOnPuzzle($uid, $pid)) {
         addPuzzleToTestQueue($uid, $pid);
         header("Location: " . URL . "/test.php?pid=" . $pid);
-    } else if (isTesterOnPuzzle($uid, $pid)) {
+    } elseif (isTesterOnPuzzle($uid, $pid)) {
         header("Location: " . URL . "/test.php?pid=" . $pid);
     } else {
-        if (!isset($_SESSION['testError']))
+        if (!isset($_SESSION['testError'])) {
             $_SESSION['testError'] = "Could not add Puzzle $pid to your queue";
+        }
         header("Location: " . URL . "/testsolving.php");
     }
     exit(0);
@@ -416,8 +420,7 @@ if (isset($_POST['getPuzz'])) {
         if (isAutoSubEditor($uid)) {
             subscribe($uid, $pid);
         }
-    }
-    else {
+    } else {
         $_SESSION['failedToAdd'] = TRUE;
         $_SESSION['failedToAddEdit'] = TRUE;
     }
@@ -463,11 +466,11 @@ if (isset($_POST['feedback'])) {
 if (isset($_POST['getTestAdminPuzz'])) {
 
     $p = getPuzzleForTestAdminQueue($uid);
-    if ($p != FALSE)
+    if ($p != FALSE) {
         addToTestAdminQueue($uid, $p);
-    else
+    } else {
         $_SESSION['failedToAdd'] = TRUE;
-
+    }
     header("Location: " . URL . "/testadmin.php");
     exit(0);
 }
@@ -522,11 +525,11 @@ if (isset($_POST['setflag'])) {
     $pid = $_POST['pid'];
     $flag = $_POST['flag'];
 
-    if ($flag)
+    if ($flag) {
         setFlag($uid, $pid, 1);
-    else
+    } else {
         setFlag($uid, $pid, 0);
-
+    }
     header("Location: " . URL . "/puzzle.php?pid=$pid");
     exit(0);
 }

@@ -73,8 +73,7 @@ displayTestingSummary();
 foot();
 
 //------------------------------------------------------------------------
-function displayTestQueue($uid)
-{
+function displayTestQueue($uid) {
     $puzzles = getInTestAdminQueue($uid);
 
     $puzzles = sortByLastCommentDate($puzzles);
@@ -86,8 +85,7 @@ function displayTestQueue($uid)
     }
 }
 
-function displayTestingSummary()
-{
+function displayTestingSummary() {
     $sql = sprintf("SELECT uid, pid from test_queue");
     $result = get_rows($sql);
 
@@ -106,10 +104,11 @@ function displayTestingSummary()
         $uid = $r['uid'];
         $pid = $r['pid'];
 
-        if (isset($currqueue[$uid]))
+        if (isset($currqueue[$uid])) {
             $currqueue[$uid] .= "$pid ";
-        else
+        } else {
             $currqueue[$uid] = "$pid ";
+        }
         $currclass = ".a$uid-$pid";
         echo ".testingtable $currclass, .testingtable $currclass a {color: #000000; }\n";
     }
@@ -156,8 +155,9 @@ function displayTestingSummary()
             $r = mysql_fetch_assoc($result);
         }
     }
-    if (!$arr) echo "<div class='emptylist'>No comments</div>";
-
+    if (!$arr) {
+        echo "<div class='emptylist'>No comments</div>";
+    }
     echo "<table class=\"testingtable\">\n";
     foreach ($arr as $key => $value) {
         echo $value . "\n";

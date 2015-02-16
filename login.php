@@ -17,13 +17,13 @@ if (isset($_SESSION['uid'])) {
         echo 'Would you like to <a href="logout.php">log out</a>?</h3><br>';
     }
     echo '<a href="index.php" class="goto">Go to puzzletron main/welcome page.</a>';
-} else if (TRUST_REMOTE_USER) {   //we are trusting apache remote_user header so use that
+} elseif (TRUST_REMOTE_USER) {   //we are trusting apache remote_user header so use that
     login($_SERVER['HTTP_REMOTE_USER'], "nopass");
     // If login was successful, user was redirected to index.php
     head();
     echo "<div class='errormsg'>User not yet registered</div>";
     loginForm();
-} else if (isset($_POST['username'])) {  //try to login with username/password if this is login form
+} elseif (isset($_POST['username'])) {  //try to login with username/password if this is login form
     login($_POST['username'], $_POST['pass']);
 
     // If login was successful, user was redirected to index.php
@@ -39,8 +39,7 @@ if (isset($_SESSION['uid'])) {
 foot();
 
 //------------------------------------------------------------------------
-function loginForm()
-{
+function loginForm() {
 ?>
     <strong>You need to <a href="register.php">register for puzzletron</a> before you can use it.</strong>
 
@@ -70,9 +69,8 @@ function loginForm()
 //------------------------------------------------------------------------
 // Try to log in user
 // Redirects to main page if successful
-function login($username, $pass)
-{
-    if (!TRUST_REMOTE_USER){
+function login($username, $pass) {
+    if (!TRUST_REMOTE_USER) {
         $sql = sprintf("SELECT uid FROM user_info WHERE
             username='%s'
             AND password=AES_ENCRYPT('%s', '%s%s')",

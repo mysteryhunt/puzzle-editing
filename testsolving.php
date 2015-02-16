@@ -37,8 +37,7 @@ if (isset($_SESSION['feedback'])) {
 <?php
 
 $availPuzzles = getAvailablePuzzlesToTestForUser($uid);
-if ($availPuzzles != NULL)
-{
+if ($availPuzzles != NULL) {
     // Sort descending, by MINUS priority, then reverse.
     // Trust me on this.
     //
@@ -47,8 +46,7 @@ if ($availPuzzles != NULL)
     // accomplish that.  "Mostly" because PHP's asort is not
     // stable, so this method of using a secondary sort key doesn't
     // quite work.)
-    foreach ($availPuzzles as $pid)
-    {
+    foreach ($availPuzzles as $pid) {
         $sort[$pid] = -getPuzzleTestPriority($pid);
     }
     asort($sort);
@@ -116,5 +114,6 @@ displayQueue($uid, $inactivePuzzles, "", TRUE);
 // End HTML
 foot();
 
-if (isset($_SESSION['testError']))
+if (isset($_SESSION['testError'])) {
     unset($_SESSION['testError']);
+}

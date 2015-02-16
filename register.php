@@ -10,7 +10,7 @@ head();
 echo '<h2>Account Registration</h2>';
 if (isset($_SESSION['uid'])) {
     echo '<div class="msg">You are logged in. Would you like to <a href="edit-account.php">edit your account information</a>?</div>';
-} else if (isset($_POST['register'])) {
+} elseif (isset($_POST['register'])) {
     $errors = register();
 
     if ($errors) {
@@ -31,8 +31,7 @@ if (isset($_SESSION['uid'])) {
 // End HTML
 foot();
 
-function registerForm()
-{
+function registerForm() {
     $username = isset($_POST['username']) ? $_POST['username'] : "";
     $fullname = isset($_POST['fullname']) ? $_POST['fullname'] : "";
     $email = isset($_POST['email']) ? $_POST['email'] : "";
@@ -45,24 +44,24 @@ function registerForm()
         if (f.fullname.value == "") {
             alert("You must enter a first name.");
             return false;
-        } else if (f.email.value == "") {
+        } elseif (f.email.value == "") {
             alert("You must enter an email address.");
             return false;
-        } else if (f.username.value == "") {
+        } elseif (f.username.value == "") {
             alert("You must enter a username.");
             return false;
-        } else if (<?php echo TRUST_REMOTE_USER ? "true" : "false"; ?>) {
+        } elseif (<?php echo TRUST_REMOTE_USER ? "true" : "false"; ?>) {
             return true;
-        } else if (f.pass1.value == "") {
+        } elseif (f.pass1.value == "") {
             alert("You must enter a password.");
             return false;
-        } else if (f.pass2.value == "") {
+        } elseif (f.pass2.value == "") {
             alert("You must re-enter a password.");
             return false;
-        } else if (f.pass1.value != f.pass2.value) {
+        } elseif (f.pass1.value != f.pass2.value) {
             alert("Passwords do not match.");
             return false;
-        } else if (f.pass1.value.length < 6) {
+        } elseif (f.pass1.value.length < 6) {
             alert("Password must be at least 6 characters.");
             return false;
         }
@@ -132,8 +131,7 @@ $lastvalue = isset($_POST[$shortname]) ? $_POST[$shortname] : "";
 <?php
 }
 
-function register()
-{
+function register() {
     $errors = array();
     $data = $_POST;
     $picture = $_FILES['picture'];
@@ -143,14 +141,26 @@ function register()
     $pass1 = isset($data['pass1']) ? $data['pass1'] : "";
     $pass2 = isset($data['pass2']) ? $data['pass2'] : "";
 
-    if ($email === "") $errors['email'] = "Email may not be empty";
-    if ($username === "") $errors['username'] = "Username may not be empty";
-    if ($fullname === "") $errors['fullname'] = "Full name may not be empty";
+    if ($email === "") {
+        $errors['email'] = "Email may not be empty";
+    }
+    if ($username === "") {
+        $errors['username'] = "Username may not be empty";
+    }
+    if ($fullname === "") {
+        $errors['fullname'] = "Full name may not be empty";
+    }
     if (!TRUST_REMOTE_USER) {
-        if ($pass1 === "") $errors['pass1'] = "Passwords may not be empty";
-        if ($pass2 === "") $errors['pass2'] = "Passwords may not be empty";
-        else if ($pass1 !== $pass2) $errors['pass2'] = "Passwords do not match";
-        else if (strlen($pass1) < 6) $errors['pass1'] = "Password must be at least 6 characters";
+        if ($pass1 === "") {
+            $errors['pass1'] = "Passwords may not be empty";
+        }
+        if ($pass2 === "") {
+            $errors['pass2'] = "Passwords may not be empty";
+        } elseif ($pass1 !== $pass2) {
+            $errors['pass2'] = "Passwords do not match";
+        } elseif (strlen($pass1) < 6) {
+            $errors['pass1'] = "Password must be at least 6 characters";
+        }
     }
     $purifier = getHtmlPurifier();
     $username = $purifier->purify($username);
@@ -158,12 +168,17 @@ function register()
     $email = $purifier->purify($email);
 
     $sql = sprintf("SELECT * FROM user_info WHERE username='%s'", mysql_real_escape_string($username));
-    if (has_result($sql)) $errors['username'] = "Username already taken";
+    if (has_result($sql)) {
+        $errors['username'] = "Username already taken";
+    }
     $sql = sprintf("SELECT * FROM user_info WHERE email='%s'", mysql_real_escape_string($email));
-    if (has_result($sql)) $errors['email'] = "There is already an account using that email";
+    if (has_result($sql)) {
+        $errors['email'] = "There is already an account using that email";
+    }
 
-    if ($errors) return $errors;
-
+    if ($errors) {
+        return $errors;
+    }
     mysql_query('START TRANSACTION');
 
     if (TRUST_REMOTE_USER) {
@@ -195,12 +210,14 @@ function register()
 
     $sql = sprintf("UPDATE user_info SET picture='%s' WHERE uid='%s'", mysql_real_escape_string($pic), mysql_real_escape_string($uid));
     $result = mysql_query($sql);
-    if ($result === FALSE) $failed = TRUE;
-
+    if ($result === FALSE) {
+        $failed = TRUE;
+    }
     $sql = sprintf("DELETE from user_info_values WHERE person_id = '%s'", mysql_real_escape_string($uid));
     $result = mysql_query($sql);
-    if ($result === FALSE) $failed = TRUE;
-
+    if ($result === FALSE) {
+        $failed = TRUE;
+    }
     $sql = sprintf("SELECT id, shortname, longname FROM user_info_key");
     $result = get_rows($sql);
 
@@ -216,7 +233,9 @@ function register()
                 mysql_real_escape_string($user_key_id),
                 mysql_real_escape_string($value));
             $res = mysql_query($sql);
-            if ($res === FALSE) $failed = TRUE;
+            if ($res === FALSE) {
+                $failed = TRUE;
+            }
         }
     }
 

@@ -21,8 +21,7 @@ foot();
 
 //------------------------------------------------------------------------
 
-function displayAnswers($uid)
-{
+function displayAnswers($uid) {
     $answers = getAvailableAnswers();
 ?>
     <table class="boxed">
@@ -33,8 +32,8 @@ function displayAnswers($uid)
     </table>
 <?php
 }
-function displayAnswersClassifiedByRound($uid, $rid)
-{
+
+function displayAnswersClassifiedByRound($uid, $rid) {
     $answers = getAvailableAnswersForRound($rid);
 ?>
     <table class="boxed">

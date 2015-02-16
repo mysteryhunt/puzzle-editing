@@ -4,7 +4,9 @@ require_once "utils.php";
 require_once "html.php";
 
 $wasLoggedIn = isset($_SESSION['uid']);
-if ($wasLoggedIn) { logout(); }
+if ($wasLoggedIn) {
+    logout();
+}
 
 // Start the HTML
 head();
@@ -21,8 +23,7 @@ echo '<a href="login.php" class="goto">Log In</a>';
 foot();
 
 //------------------------------------------------------------------------
-function logout()
-{
+function logout() {
     session_unset();
     session_destroy();
 }

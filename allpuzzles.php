@@ -51,7 +51,9 @@ displayPuzzleStats($uid);
         <option value='-'>-</option>
         <?php
             $editors = getAllEditors();
-            if (USING_APPROVERS) { $editors = getAllApprovalEditors(); }
+            if (USING_APPROVERS) {
+                $editors = getAllApprovalEditors();
+            }
             asort($editors);
             foreach ($editors as $uid => $fullname) {
                 $slct = selected('approver', $uid);

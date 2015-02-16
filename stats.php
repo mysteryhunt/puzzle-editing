@@ -10,59 +10,48 @@ $uid = isLoggedIn();
 // Start HTML
 head("", "Testsolving Statistics");
 
-function computeComments()
-{
+function computeComments() {
     $a = array();
 
     $comments = getTestCommentsAll();
-    if (!$comments)
+    if (!$comments) {
         return;
-
-    foreach ($comments as $comment)
-    {
+    }
+    foreach ($comments as $comment) {
         $id = $comment['id'];
         $pid = $comment['pid'];
         $timestamp = $comment['timestamp'];
         $type = $comment['name'];
         $user = $comment['uid'];
 
-        if ($user == 0)
+        if ($user == 0) {
             $name = 'Server';
-        else
+        } else {
             $name = getUserName($user);
-
-        if (!(isset($a[$name])))
-        {
+        }
+        if (!(isset($a[$name]))) {
             $a[$name] = array ('name' => $name, 'total' => 0, 'correct' => 0, 'incorrect' => 0, 'cordif' => 0, 'responses' => 0, 'words' => 0);
         }
 
         $ct = $comment['comment'];
 
-        if ($ct == 'Added testsolver')
-        {
+        if ($ct == 'Added testsolver') {
             $a[$name]['total'] += 1;
-        }
-        elseif (strpos($ct, 'Correct answer attempt') === 0)
-        {
+        } elseif (strpos($ct, 'Correct answer attempt') === 0) {
             $a[$name]['correct'] += 1;
-        }
-        elseif (strpos($ct, 'Incorrect answer attempt') === 0)
-        {
+        } elseif (strpos($ct, 'Incorrect answer attempt') === 0) {
             $a[$name]['incorrect'] += 1;
-        }
-        else   # feedback response
-        {
+        } else {  # feedback response
             $a[$name]['responses'] += 1;
 
             $offset = 0;
-            if (strpos($ct, 'What was the breakthrough') !== FALSE)
+            if (strpos($ct, 'What was the breakthrough') !== FALSE) {
                 $offset = 164;
-            else
+            } else {
                 $offset = 92;
-
+            }
             $a[$name]['words'] += str_word_count($ct) - $offset;
         }
-
     }
 
     echo '
@@ -91,8 +80,7 @@ $(document).ready(function() {
                   </tr>
                   </thead>
                   <tbody>';
-   foreach ($a as $person)
-   {
+   foreach ($a as $person) {
        echo '<tr class="puzz">';
        echo '<td class="puzzidea">' . $person['name'] . '</td>';
        echo '<td class="puzzidea">' . $person['total'] . '</td>';
@@ -121,8 +109,7 @@ $(document).ready(function() {
    echo '</tbody></table>';
 }
 
-function getTestCommentsAll()
-{
+function getTestCommentsAll() {
     $sql = sprintf("SELECT comments.id, comments.uid, comments.comment, comments.type,
         comments.timestamp, comments.pid, comment_type.name FROM
         comments LEFT JOIN comment_type ON comments.type=comment_type.id

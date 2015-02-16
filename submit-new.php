@@ -81,8 +81,7 @@ if (isset($_POST) && isset($_POST['newIdea'])) {
 foot();
 //------------------------------------------------------------------------
 
-function newIdeaForm($uid, $summary = '', $description = '')
-{
+function newIdeaForm($uid, $summary = '', $description = '') {
 ?>
     <h2>Puzzle Idea Submission</h2>
 
@@ -162,8 +161,9 @@ function newIdeaForm($uid, $summary = '', $description = '')
         <p style='padding-top:1em;'>Select coauthors:</p>
 <?php
 $authors = getAvailableAuthorsForPuzzle(FALSE);
-if ($authors != NULL)
+if ($authors != NULL) {
     makeOptionElements($authors, 'coauthor');
+}
 ?>
         <p style='padding-top:1em;'>
         <input type="submit" name="newIdea" value="Submit Idea" class="okSubmit" />

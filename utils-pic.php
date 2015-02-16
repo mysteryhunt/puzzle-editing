@@ -6,10 +6,10 @@ if (USING_AWS) {
 }
 use Aws\S3\S3Client;
 
-function pictureHandling($id, $picture)
-{
-    if ($picture == NULL) return ""; // No file uploaded
-
+function pictureHandling($id, $picture) {
+    if ($picture == NULL) {
+        return ""; // No file uploaded
+    }
     //echo 'valid picture <br />';
     if ($picture['size'] == 0) {
         echo "Problem: uploaded file is zero length";
@@ -41,7 +41,7 @@ function pictureHandling($id, $picture)
     if (!move_uploaded_file($picture['tmp_name'], $upfile)) {
         echo "Problem: Could not move picture into pictures directory";
         return "";
-    } else if (USING_AWS) {
+    } elseif (USING_AWS) {
         $key = $upfile;
         // TODO: Nobody is reading this result; the site proceeds to
         // link to the bucket on the assumption that this succeeded.
@@ -68,18 +68,15 @@ function pictureHandling($id, $picture)
     return $upfile;
 }
 
-function picName($id, $name)
-{
+function picName($id, $name) {
     return PICPATH . $id . "--" . $name;
 }
 
-function thumbName($id)
-{
+function thumbName($id) {
     return PICPATH . "thumbs/$id.jpg";
 }
 
-function makeThumb($uploaded, $thumbName)
-{
+function makeThumb($uploaded, $thumbName) {
     $maxW = 120;
     $maxH = 120;
 
@@ -100,9 +97,9 @@ function makeThumb($uploaded, $thumbName)
 
     if ($type == IMAGETYPE_JPEG) {
         $source = imagecreatefromjpeg($uploaded);
-    } else if ($type == IMAGETYPE_GIF) {
+    } elseif ($type == IMAGETYPE_GIF) {
         $source = imagecreatefromgif ($uploaded);
-    } else if ($type == IMAGETYPE_PNG) {
+    } elseif ($type == IMAGETYPE_PNG) {
         $source = imagecreatefrompng($uploaded);
     } else {
         echo "Unrecognized file type.";

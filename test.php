@@ -34,9 +34,9 @@ if (!isTestingAdmin($uid)) {
 }
 
 $title = getTitle($pid);
-if ($title == NULL)
+if ($title == NULL) {
     $title = '(untitled)';
-
+}
 echo "<h2>Puzzle $pid &mdash; $title</h2>";
 echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
     need it!</b><br><br> When you are done, PLEASE leave feedback indicating
@@ -80,8 +80,7 @@ foot();
 
 //------------------------------------------------------------------------
 
-function maybeDisplayWarning($uid, $pid)
-{
+function maybeDisplayWarning($uid, $pid) {
     if (isTesterOnPuzzle($uid, $pid)) {
         return;
     }
@@ -94,8 +93,7 @@ function maybeDisplayWarning($uid, $pid)
 <?php
 }
 
-function displayWikiPage($pid)
-{
+function displayWikiPage($pid) {
     echo '<div>';
     $page = getWikiPage($pid);
     if ($page == NULL) {
@@ -106,8 +104,7 @@ function displayWikiPage($pid)
     echo '</div>';
 }
 
-function displayDraft($pid)
-{
+function displayDraft($pid) {
     echo '<div>';
     $draft = getMostRecentDraftForPuzzle($pid);
 
@@ -115,14 +112,14 @@ function displayDraft($pid)
         echo '<span class="testempty">No Draft</span>';
     } else {
         $finfo = pathinfo($draft['filename']);
-        if (isset($finfo['extension']))
+        if (isset($finfo['extension'])) {
             $ext = $finfo['extension'];
-        else
+        } else {
             $ext = 'folder';
-
+        }
         if (strpos($draft['filename'], 'http') !== false || !USING_AWS) {
             $link = $draft['filename'];
-        } else if (strpos($draft['filename'], '_dir', strlen($draft['filename']) - 4) !== false) {
+        } elseif (strpos($draft['filename'], '_dir', strlen($draft['filename']) - 4) !== false) {
             $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $draft['filename'];
         } else {
             $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $draft['filename'];
@@ -138,8 +135,7 @@ function displayDraft($pid)
     echo '</div>';
 }
 
-function checkAnsForm($uid, $pid)
-{
+function checkAnsForm($uid, $pid) {
 ?>
     <form method="post" action="form-submit.php">
         Check an answer:
@@ -152,16 +148,15 @@ function checkAnsForm($uid, $pid)
 <?php
 }
 
-function displayPrevAns($uid, $pid)
-{
+function displayPrevAns($uid, $pid) {
     $answers = getAnswerAttempts($uid, $pid);
-    if (!$answers)
+    if (!$answers) {
         return;
-
+    }
     $correct = getCorrectSolves($uid, $pid);
-    if ($correct)
+    if ($correct) {
         echo "<h3>Correct Answers: $correct</h3>";
-
+    }
     echo '<h3>Attempted Answers:</h3>';
     echo '<ul>';
 
@@ -171,8 +166,7 @@ function displayPrevAns($uid, $pid)
     echo '</ul>';
 }
 
-function displayFeedbackForm($uid, $pid)
-{
+function displayFeedbackForm($uid, $pid) {
 ?>
         <h3>Feedback Form</h3>
 <?php
@@ -258,30 +252,30 @@ function displayFeedbackForm($uid, $pid)
 <?php
 }
 
-function displayPrevFeedback($uid, $pid)
-{
+function displayPrevFeedback($uid, $pid) {
     $prevFeedback = getPreviousFeedback($uid, $pid);
-    if (!$prevFeedback)
+    if (!$prevFeedback) {
         return;
-
+    }
     echo '<h3>Previous Feedback</h3>';
     echo '<table>';
 
     foreach ($prevFeedback as $pf) {
-        if ($pf['done'] == 0)
+        if ($pf['done'] == 0) {
             $done = 'Yes';
-        else if ($pf['done'] == 1)
+        } elseif ($pf['done'] == 1) {
             $done = 'No';
-        else if ($pf['done'] == 2)
+        } elseif ($pf['done'] == 2) {
             $done = 'No, this isn\'t a puzzle type I like.';
-        else if ($pf['done'] == 3)
+        } elseif ($pf['done'] == 3) {
             $done = 'No, I\'m not sure what to do and don\'t feel like working on it anymore.';
-        else if ($pf['done'] == 4)
+        } elseif ($pf['done'] == 4) {
             $done = 'No, I think I know what to do but it isn\'t fun/I\'m not making progress.';
-        else if ($pf['done'] == 5)
+        } elseif ($pf['done'] == 5) {
             $done = 'No, I was already spoiled on this puzzle';
-        else if ($pf['done'] == 6)
+        } elseif ($pf['done'] == 6) {
             $done = 'No, I\'ve solved it.';
+        }
 
         $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
         $purifier = getHtmlPurifier();
