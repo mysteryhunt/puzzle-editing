@@ -59,7 +59,6 @@ define("USING_CREDITS", FALSE);
 // utils.php: copies uploaded file attachments (like drafts) to S3
 define("USING_AWS", FALSE);
 
-define("ENABLE_WRITING_WIKI", FALSE);
 define("ANON_TESTERS", FALSE);
 define("USING_CODENAMES", TRUE);
 
