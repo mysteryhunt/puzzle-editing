@@ -18,24 +18,44 @@ session_start();
 
 //stuff you probably don't need to change
 define("SELF", "$_SERVER[PHP_SELF]");
+// The PICPATH needs some fixing; it currently serves as:
+//  - part of the path for local picture files
+//  - part of the URL for picture downloads
+//  - part of the object name and URL for Amazon S3 uploads of pictures
 define("PICPATH", "uploads/pictures/"); // Path for user pictures
+// Which database to use.
 define("DB_NAME", "puzzletron");
+// An Apache-writable directory where HTMLPurifier can stash its cache.
 define("HTMLPURIFIER_CACHE_PATH", "uploads/purifier-cache");
 
 //server mode
+// These two settings do nothing but change the site title display and the subject
+// lines of outgoing emails.
 define("DEVMODE", FALSE);
 define("PRACMODE", FALSE);
 
 //urls and email addresses for your team
+// Who emails come from
 define("PTRON_FROM_EMAIL", "no-reply@blahblahblah.org");
+// Top-level URL of this site as deployed; used in all kinds of links and redirects.
 define("URL", "https://blahblahblah.org/editing");
+// Top-level URL of the postproduction site, used to generate links to puzzles in postprod.
 define("POSTPROD_URLPREFIX", "https://xxxmysteryhunt.com/");
+// An alternative postprod URL. There's some duct-tape hackery in
+// puzzle.php which decides which gets used.
+define("POSTPROD_BETA_URLPREFIX", "https://xxxmysteryhunt.com/");
+// This appears in one link on the site admin page.
 define("PHPMYADMIN_URL", "https://scripts.mit.edu/~sql/phpMyAdmin/");
+// Error pages and the like ask the unhappy user to email this address:
 define("HELP_EMAIL", "systems-help@blahblahblah.org");
+// This appears as the target of the Wiki link in the navbar.
 define("WIKI_URL", "https://blahblahblah.org/wiki");
+// This appears at the bottom of the homepage.
 define("BUGTRACK_URL", "https://github.com/mysteryhunt/puzzle-editing/issues");
 
 //puzzletron options
+// The TRUST_REMOTE_USER option might be broken and should not be trusted.
+// Its odds of going away are high.
 define("TRUST_REMOTE_USER", FALSE); // Use internal puzzletron authentication
                                     // This is if you're behind an SSO system / apache proxy that does auth
 define("ALLOW_TESTSOLVE_PICK", TRUE); // Display list of puzzles for testsolvers to pick from
@@ -60,20 +80,22 @@ define("USING_CREDITS", FALSE);
 define("USING_AWS", FALSE);
 
 define("ANON_TESTERS", FALSE);
+// This feature does not appear to be working at the moment; codenames are never written?
 define("USING_CODENAMES", TRUE);
 
+// MIT-specific features
 define("MAILING_LISTS", TRUE);
 define("GET_KEYTAB", "kinit -k -t KEYTAB_FILE PRINCIPAL");
 define("MMBLANCHE_CMD", "athrun consult mmblanche");
 define("MMBLANCHE_PASSWORDS", "PASSWORD_DIR");
 define("EDITOR_MAILING_LIST", "EDITOR_LIST");
-
 $mailing_lists = array(
     "LIST" => "DESCRIPTION",
 );
 
-//when is hunt
+//date of the next hunt - used to run the countdown on the home page
 define("HUNT_YEAR",2014);
+// here, DOM = "Day of Month" - that month is January, of course
 define("HUNT_DOM",17);
 date_default_timezone_set('America/New_York');
-?>
+
