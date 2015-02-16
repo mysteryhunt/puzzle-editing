@@ -1,11 +1,12 @@
 <?php // vim:set ts=4 sw=4 sts=4 et:
 require __DIR__ . "/vendor/autoload.php";
 
-# Used for sessions.  Default location is bad because all PHP
+# Used for sessions. Default location is bad because all PHP
 # scripts running on the same server will clean up sessions
 # with the default session lifetimes, rather than the one
-# specified below.  Also used for KRB5CCNAME when managing
-# moira lists.
+# specified below.
+#
+# Also used for KRB5CCNAME when managing moira lists.
 define("TMPDIR", "/mit/puzzle/web_scripts_tmp/2015puzzletron");
 
 ini_set('default_charset', 'UTF-8');
