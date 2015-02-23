@@ -12,3 +12,10 @@
   changed_when: true
   notify: reload apache
   when: always_reload
+
+- name: Setup the site cron job.
+  cron:
+    user: "{{ site_unix_username }}"
+    name: "{{ site_name }} outgoing email"
+    state: present
+    job: "/usr/bin/php {{ site_cronjob_path }}"

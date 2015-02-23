@@ -131,6 +131,8 @@
       sudo: yes
       site_name: "{{ dev_site_name }}"
       site_release_id: "{{ dev_site_name }}_{{ dev_build_version }}"
+      site_unix_username: ubuntu
+      site_cronjob_path: "/vagrant/email_cronjob.php"
       tags: [ build ]
 
   tasks:
@@ -160,6 +162,7 @@
       #secret: site_url
       #secret: site_docroots_directory
       #secret: site_name
+      #secret: site_unix_username
       #secret: site_db_name
       #secret: site_db_username
       #secret: site_db_password
@@ -174,4 +177,5 @@
     - role: site-enabled
       sudo: yes
       site_release_id: "{{ site_name }}_{{ build_version }}"
+      site_cronjob_path: "{{ site_docroots_directory }}/{{ site_name }}_{{ build_version }}/email_cronjob.php"
       tags: [ build ]

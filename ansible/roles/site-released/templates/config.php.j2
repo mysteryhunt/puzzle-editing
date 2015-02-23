@@ -26,7 +26,7 @@ define("DEVMODE", TRUE);
 define("PRACMODE", TRUE);
 
 //urls and email addresses for your team
-define("PTRON_FROM_EMAIL", "no-reply@blahblahblah.org");
+define("PTRON_FROM_EMAIL", "{{ site_from_email }}");
 {% if dev_mode %}
 define("URL", "http://{{ site_url }}");
 {% else %}
@@ -34,10 +34,14 @@ define("URL", "https://{{ site_url }}");
 {% endif %}
 define("POSTPROD_URLPREFIX", "https://xxxmysteryhunt.com/");
 define("PHPMYADMIN_URL", "https://scripts.mit.edu/~sql/phpMyAdmin/");
-define("HELP_EMAIL", "systems-help@blahblahblah.org");
+define("HELP_EMAIL", "{{ site_help_email }}");
 # replace with actual wiki url?
 define("WIKI_URL", "{{ site_wiki_url }}");
 define("BUGTRACK_URL", "https://github.com/mysteryhunt/puzzle-editing/issues");
+
+// Define these to use Mailgun for outgoing email.
+define('MAILGUN_API_URL', "{{ site_mailgun_url }}");
+define('MAILGUN_API_KEY', "{{ site_mailgun_api_key }}");
 
 //puzzletron options
 define("TRUST_REMOTE_USER", FALSE); // Use internal puzzletron authentication

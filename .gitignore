@@ -10,4 +10,5 @@ puzzletron-keytab
 .vagrant
 vendor/autoload.php
 vendor/composer/autoload_*.php
-
+vendor/.git
+vendor/ezyang/htmlpurifier/.git

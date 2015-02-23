@@ -1194,17 +1194,23 @@ function sendAllEmail($isReal) {
         }
 
         if ($isReal) {
-            mail($address, $subject, $msg, $headers);
+            if ((!empty(MAILGUN_API_URL) && (!empty(MAILGUN_API_KEY)))) {
+                // Send mail using the Mailgun API.
+                $mg = new Mailgun\Mailgun(MAILGUN_API_KEY);
+                $mg->sendMessage(MAILGUN_API_URL, array(
+                    'from' => PTRON_FROM_EMAIL,
+                    'to' => $address,
+                    'subject' => $subject,
+                    'text' => $msg,
+                ));
+            } else {
+                // Send mail using PHP's default mail function.
+                mail($address, $subject, $msg, $headers);
+            }
         } else {
             echo "Address=$address\n\nSubject=$subject\n\nMessage=$msg\n\nHeaders=$headers\n\n\n";
         }
     }
-}
-function realSendAllEmail() {
-    sendAllEmail(TRUE);
-}
-function fakeSendAllEmail() {
-    sendAllEmail(FALSE);
 }
 
 // Get a list of users who are not authors or editors on a puzzle

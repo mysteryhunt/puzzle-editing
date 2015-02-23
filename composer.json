@@ -1,5 +1,6 @@
 {
   "require": {
-    "ezyang/htmlpurifier": "dev-master"
+    "ezyang/htmlpurifier": "dev-master",
+    "mailgun/mailgun-php": "~1.7.2"
   }
 }

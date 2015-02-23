@@ -53,6 +53,10 @@ define("WIKI_URL", "https://blahblahblah.org/wiki");
 // This appears at the bottom of the homepage.
 define("BUGTRACK_URL", "https://github.com/mysteryhunt/puzzle-editing/issues");
 
+// Define these to use Mailgun for outgoing email.
+define('MAILGUN_API_URL', "");
+define('MAILGUN_API_KEY', "");
+
 //puzzletron options
 // The TRUST_REMOTE_USER option might be broken and should not be trusted.
 // Its odds of going away are high.
