@@ -126,9 +126,10 @@ function foot() {
         <hr />
         <p>
         This is the website for the hunt writing team.
-        For technical assistance, please contact the <a href="mailto:<?php echo HELP_EMAIL; ?>">Server Administrators</a>.
-        The original authors of this software are Kate Baker and Metaphysical Plant.
-        This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.
+
+        For technical assistance, please contact the <a href="mailto:<?php echo HELP_EMAIL; ?>">Server Administrators</a>.<br/>
+
+        This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.<br/>
         The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
     </div>
 </div>
