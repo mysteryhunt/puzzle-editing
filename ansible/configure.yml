@@ -138,7 +138,7 @@
   tasks:
     - name: Clear old session files.
       shell: >-
-        rm sess_*
+        rm -f sess_*
         chdir=/home/ubuntu/puzzletron-storage/tmp
       tags: [ build ]
 
