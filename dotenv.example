@@ -1,0 +1,133 @@
+# IF you are trying to run this code on a LAMP-stack-equipped machine,
+# copy this file to .env (with the dot!) and then edit it to change
+# your settings.
+#
+# NOTE: Any edits you make to this file, or to an .env file which you
+# copied from this, won't appear in production. The deployment scripts
+# know nothing about this file. You need to edit the
+# ansible/secrets.yml file, and/or the template at
+# ansible/roles/site-deployed/templates/dotenv.j2.
+#
+# NOTE: If you are running Vagrant, ignore this file completely. Edit
+# the Vagrant-generated .env file, or the Ansible files mentioned in
+# the previous paragraph, instead.
+
+
+### Temporary directories; all must be Apache-writable.
+
+PTRON_TMPDIR="tmp"
+
+# Used for sessions. Default location is bad because all PHP
+# scripts running on the same server will clean up sessions
+# with the default session lifetimes, rather than the one
+# specified below.
+#
+# Also used for KRB5CCNAME when managing moira lists.
+PTRON_SESSION_CACHE_DIR="tmp"
+
+# Path for cached HTMLPurifier data
+PTRON_HTMLPURIFIER_CACHE_PATH="tmp/purifier-cache"
+
+
+### Paths for local file storage
+
+# Path for user pictures; must be Apache-writable
+#
+# The PTRON_PICPATH needs some fixing; it currently serves as:
+#  - part of the path for local picture files
+#  - part of the URL for picture downloads
+#  - part of the object name and URL for Amazon S3 uploads of pictures
+PTRON_PICPATH="uploads/pictures/"
+
+# MySQL database connection information
+PTRON_DB_NAME="puzzletron"
+PTRON_DB_USER="puzzletron"
+PTRON_DB_PASSWORD="changeMeToARandomString"
+PTRON_DB_SERVER="localhost"
+
+# AWS connection information
+PTRON_AWS_ACCESS_KEY_ID="someAWSAssignedRandomString"
+PTRON_AWS_SECRET_ACCESS_KEY="someMuchLongerAWSAssignedRandomString"
+PTRON_AWS_BUCKET="aBucketNameToStoreYourPuzzletronFiles"
+
+
+### urls and email addresses for your team
+
+# Who emails come from
+PTRON_FROM_EMAIL="no-reply@example.org"
+# Top-level URL of this site as deployed; used in all kinds of links and redirects.
+PTRON_URL="https://example.org"
+# Top-level URL of the postproduction site, used to generate links to puzzles in postprod.
+PTRON_POSTPROD_URLPREFIX="https://xxxmysteryhunt.com/"
+# An alternative postprod URL. There's some duct-tape hackery in
+# puzzle.php which decides which gets used.
+PTRON_POSTPROD_BETA_URLPREFIX="https://xxxmysteryhunt.com/"
+# This appears in one link on the site admin page.
+PTRON_PHPMYADMIN_URL="https://scripts.mit.edu/~sql/phpMyAdmin/"
+# Error pages and the like ask the unhappy user to email this address:
+PTRON_HELP_EMAIL="systems-help@example.org"
+# This appears as the target of the Wiki link in the navbar.
+PTRON_WIKI_URL="https://sites.google.com/site/blahblahblah"
+# This appears at the bottom of the homepage.
+PTRON_BUGTRACK_URL="https://github.com/mysteryhunt/puzzle-editing/issues"
+
+# Define these to use Mailgun for outgoing email.
+PTRON_MAILGUN_API_URL="https://api.mailgun.net/v2/your.mail.domain.here.example.com"
+PTRON_MAILGUN_API_KEY="key-3141592etcetc"
+
+# Use internal puzzletron authentication.
+# This is if you're behind an SSO system / apache proxy that does auth.
+#
+# PTRON_TRUST_REMOTE_USER disables the internal puzzletron user database
+#  and trusts the apache `REMOTE_USER` variable (only do this if you
+#  have apache auth set up and a separate authentication database)
+#  (warning: Random Fish doesn't have this turned on and doesn't know
+#  if our changes have broken Puzzletron if it does get turned on)
+#
+# (The odds of this broken feature going away are high.)
+PTRON_TRUST_REMOTE_USER="FALSE"
+
+# Used in conjunction with ALLOW_EDITOR_PICK.
+PTRON_MIN_EDITORS="2"
+# Used in conjunction with ALLOW_EDITOR_PICK and USING_APPROVERS
+PTRON_MIN_APPROVERS="2"
+
+# date of the next hunt - used to run the countdown on the home page
+PTRON_HUNT_YEAR="2016"
+# DOM = "Day of Month" - that month is January, of course
+PTRON_HUNT_DOM="15"
+
+
+### Feature flags
+
+# These two settings do nothing but change the site title display and the subject
+# lines of outgoing emails.
+PTRON_DEVMODE="TRUE"
+PTRON_PRACMODE="TRUE"
+# Display list of puzzles for testsolvers to pick from
+PTRON_ALLOW_TESTSOLVE_PICK="TRUE"
+# Display list of puzzles for editors to pick from
+PTRON_ALLOW_EDITOR_PICK="TRUE"
+PTRON_USING_TESTSOLVE_REQUESTS="FALSE"
+PTRON_USING_TESTSOLVE_TEAMS="FALSE"
+PTRON_USING_ROUND_CAPTAINS="FALSE"
+PTRON_USING_APPROVERS="FALSE"
+PTRON_USING_CREDITS="FALSE"
+# USING_AWS affects:
+# html.php line 151: link to author thumbnails from the thumbs bucket in S3
+# puzzle.php line 979: link to filelists in S3
+# puzzle.php line 1188: YOLO substitution of S3 bucket URL for upload URL in comment bodies?
+# test.php line 123: link to drafts from s3 bucket
+# utils-pic.php: move uploaded pics and thumbs into S3
+# utils.php: copies uploaded file attachments (like drafts) to S3
+PTRON_USING_AWS="FALSE"
+PTRON_ANON_TESTERS="FALSE"
+# This feature does not appear to be working at the moment; codenames are never written?
+PTRON_USING_CODENAMES="FALSE"
+
+### MIT-specific mailing list features; not tested for at least a year.
+PTRON_MAILING_LISTS="FALSE"
+PTRON_GET_KEYTAB="kinit -k -t KEYTAB_FILE PRINCIPAL"
+PTRON_MMBLANCHE_CMD="athrun consult mmblanche"
+PTRON_MMBLANCHE_PASSWORDS="PASSWORD_DIR"
+PTRON_EDITOR_MAILING_LIST="EDITOR_LIST"

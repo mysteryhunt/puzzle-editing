@@ -1,7 +1,6 @@
 <?php // vim:set ts=4 sw=4 sts=4 et:
 require_once "html.php";
 require_once "config.php";
-require_once "secret.php";
 
 // Connect to database
 if (($db = mysql_connect(DB_SERVER, DB_USER, DB_PASS)) == FALSE) {

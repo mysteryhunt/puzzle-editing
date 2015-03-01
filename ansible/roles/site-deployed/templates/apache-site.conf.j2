@@ -63,8 +63,10 @@
         CustomLog ${APACHE_LOG_DIR}/{{ site.name }}/access.log combined
 
         # Environment variables
+        {% if not write_dotenv_file %}
         {% for env in site.environment %}
         SetEnv {{ env.key }} "{{ env.value }}"
         {% endfor %}
+        {% endif %}
 
 </VirtualHost>

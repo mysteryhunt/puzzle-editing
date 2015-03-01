@@ -1,9 +1,4 @@
 *~
-/secret.php
-/config.php
-/config-prod.php
-/config-dev.php
-/config-prac.php
 /uploads/*
 /mmblanche/*
 puzzletron-keytab
@@ -12,3 +7,4 @@ vendor/autoload.php
 vendor/composer/autoload_*.php
 vendor/.git
 vendor/ezyang/htmlpurifier/.git
+/.env

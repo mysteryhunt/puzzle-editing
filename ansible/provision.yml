@@ -8,9 +8,7 @@
   gather_facts: false
   tasks:
     - name: Load secrets.
-      include_vars: "{{ item }}"
-      with_fileglob:
-        - "secrets/*.yml"
+      include_vars: "secrets.yml"
 
     - name: Convert the domain to a legal stack name by substituting for dots.
       delegate_to: localhost

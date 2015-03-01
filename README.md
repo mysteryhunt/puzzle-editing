@@ -1,44 +1,98 @@
-# puzzletron
+# Puzzletron
 
 Software for editing/testing puzzles for the
 [MIT Mystery Hunt](http://www.mit.edu/~puzzle/)
 
 Currently being hacked by Team Luck in preparation for the 2016
-Hunt. Many thanks to our predecessors Random Fish (2015) and Alice
-Shrugged (2014).
+Hunt. Many thanks to our predecessors Random Fish (2015), Alice
+Shrugged (2014), and the long line of programmers who came before
+them.
 
-## To initialize mysql database:
+# Developing Puzzletron
 
-* Log into your mysql database server with full administrative
-  priviliges.
-* Create a puzzletron user
-* Create a puzzletron database
-* Grant the puzzletron user access to that database
+You've got a couple of options.
 
-        mysql -u <mysqlusername> -s <servername> -p <databasename> < schema.sql
+## Virtual Machine (recommended for Macs and Linux)
 
-  (enter password for the puzzletron DB user when prompted)
+This project is configured to set itself up in a virtual machine on
+your computer. I've tested this on the Mac. Alas, the setup code uses
+Ansible which does not work on Windows right now.
 
-## Setup configuration:
+- If you have not done so already, use `ssh-keygen` to create your
+personal SSH key and store it at `~/.ssh/id_rsa.pub` -- or, if you
+store it elsewhere, edit the Vagrantfile to point to it.
 
-* Copy `config.php.EXAMPLE` to `config.php` and edit appropriately.
+- Install [Virtualbox](https://www.virtualbox.org).
 
-* `DB_NAME` is the name of the database you created above
+- Install [Vagrant](http://www.vagrantup.com).
 
-* `URL` is the URL what links referring back to this puzzletron
-  instance should be
+- Install
+  [Ansible](http://docs.ansible.com/intro_installation.html#installing-the-control-machine). e.g. on
+  the Mac with Homebrew: `brew update`, `brew install ansible`.
 
-* `TRUST_REMOTE_USER` disables the internal puzzletron user database
-  and trusts the apache `REMOTE_USER` variable (only do this if you
-  have apache auth set up and a separate authentication database)
-  (warning: Random Fish doesn't have this turned on and doesn't know
-  if our changes have broken Puzzletron if it does get turned on)
+- Copy `ansible/secrets.yml.example` to `ansible/secrets.yml`. Then,
+if you like, edit the configuration settings in there. Read
+`ansible/README-secrets.md` for more instructions.
 
-* `DEVMODE` --- is the server in Development/Test mode?
+- From the directory with the Vagrantfile, run `vagrant up`.
 
-* `PRACMODE` --- is the server in Practice / pre-hunt-writing mode?
+- Use `vagrant ssh` to connect to the box, or add this line to your `/etc/hosts`:
 
-* Copy `secret.php.EXAMPLE` to `secret.php` and edit appropriately
+```
+192.168.33.31  puzzletron.vm
+```
+
+...and try `ssh ubuntu@puzzletron.vm`.
+
+### Mail
+
+The Vagrant box doesn't include a mail server because they're a pain,
+and because transactional email services are free at small
+volumes. Set up a Mailgun account and point Puzzletron at it using the
+`MAILGUN` configuration settings in `ansible/secrets.yml`.
+
+
+## On your local machine using a LAMP stack
+
+If you're willing to contemplate running PHP, MySQL, and Apache on
+your local machine you can use this code directly. You can use
+projects like MAMP to help set up your computer with these things.
+
+- Initialize the MySQL database:
+
+    - Log into your mysql database server with full administrative
+      priviliges.
+    - Create a puzzletron user
+    - Create a puzzletron database
+    - Grant the puzzletron user access to that database
+
+          mysql -u <mysqlusername> -s <servername> -p <databasename> < schema.sql
+
+      (enter password for the puzzletron DB user when prompted)
+
+- Copy `dotenv.example` to `.env` and edit
+  appropriately. `PTRON_DB_NAME`, `PTRON_DB_USER`, and
+  `PTRON_DB_PASSWORD` are the name, user, and password of the database
+  you created above. `PTRON_URL` is the URL that will appear in links
+  which point back at your app.
+
+### File Permissions:
+
+Make sure that both the `uploads` directory (and everything underneath
+it) and the `tmp` directory (and everything underneath it) are
+writable and searchable by your web server.
+
+
+### To get email notifications working:
+
+In order for puzzletron to actually send its email queue (comments on
+puzzles, etc.) there needs to be a cron job that runs
+`email_cronjob.php` script with your php interpreter at some regular
+frequency. The Vagrant box and the deployment scripts set this up
+automatically, but you might have to set it up by hand.
+
+
+# How does Puzzletron work?
 
 ## Customize database stuff:
 
@@ -47,17 +101,6 @@ Shrugged (2014).
 * `pstatus` table contains list of possible puzzle statuses and what
   can happen at each status
 
-## To get email notifications working:
 
-In order for puzzletron to actually send its email queue (comments on
-puzzles, etc.)  there needs to be a cron job that runs
-`email_cronjob.php` script with your php interpreter at some regular
-frequency.
-
-## File Permissions:
-
-Make sure the uploads directory (and everything underneath it) is
-writable and searchable by your web server
-
-Last person to touch this code (2014 mystery hunt) if you need help:
-benoc@alum.mit.edu
+The last person to touch this code (2016 mystery hunt) if you need
+help: mike@mechanicalfish.net

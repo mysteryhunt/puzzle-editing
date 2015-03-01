@@ -141,23 +141,15 @@
     path: "{{ docroot }}/uploads"
     src: "{{ shared_storage_dir }}/uploads"
 
-- name: Install site PHP config file.
+- name: Install dotenv file in the docroot.
   sudo: yes
   template:
-    src="config.php.j2"
-    dest="{{ docroot }}/config.php"
+    src="dotenv.j2"
+    dest="{{ docroot }}/.env"
     owner="{{ unix_username }}"
     group=www-data
-    mode=0440
-
-- name: Install site PHP secrets file.
-  sudo: yes
-  template:
-    src="secret.php.j2"
-    dest="{{ docroot }}/secret.php"
-    owner="{{ unix_username }}"
-    group=www-data
-    mode=0440
+    mode=0644
+  when: write_dotenv_file
 
 - name: Install site SSL cert.
   sudo: yes

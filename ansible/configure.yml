@@ -5,9 +5,7 @@
   gather_facts: false
   tasks:
     - name: Load secrets.
-      include_vars: "{{ item }}"
-      with_fileglob:
-        - "secrets/*.yml"
+      include_vars: "secrets.yml"
       tags: [ setup, localdev, staging, prod ]
 
 - hosts: single:localdev
@@ -95,23 +93,10 @@
     - role: site-deployed
       site: "{{ apps[app_name] }}"
       build_username: vagrant
+      write_dotenv_file: true
       tags: [ localdev ]
 
   tasks:
-    # This is a compromise - Vagrant shared directory ownership is
-    # tricky, and chown usually does not work, so just make the
-    # configs world-readable inside Vagrant.
-    - name: Adjust config file permissions in dev
-      sudo: yes
-      file:
-        state: file
-        path: "{{ apps[app_name].docroot }}/{{ item }}"
-        mode: 0444
-      with_items:
-        - config.php
-        - secret.php
-      tags: [ localdev ]
-
     - name: Check to see if DB has been seeded.
       stat:
         path: "{{ seeded_file_path }}"
@@ -151,6 +136,7 @@
     - role: site-deployed
       site: "{{ apps[app_name] }}"
       dns_zone: "{{ servers[server_group].domain }}"
+      when: apps[app_name] is defined
       tags: [ staging ]
 
 - name: Deploy the production version of the app.
@@ -162,4 +148,5 @@
     - role: site-deployed
       site: "{{ apps[app_name] }}"
       dns_zone: "{{ servers[server_group].domain }}"
+      when: apps[app_name] is defined
       tags: [ prod ]
