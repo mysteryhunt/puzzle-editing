@@ -1,9 +1,10 @@
 ---
 - name: Enable site.
+  sudo: yes
   file:
     state: link
-    path: "/etc/apache2/sites-enabled/{{ site_name }}.conf"
-    src: "/etc/apache2/sites-available/{{ site_release_id }}.conf"
+    path: "/etc/apache2/sites-enabled/{{ site.name }}.conf"
+    src: "/etc/apache2/sites-available/{{ release_id }}.conf"
   notify:
     - reload apache
 
@@ -14,8 +15,9 @@
   when: always_reload
 
 - name: Setup the site cron job.
+  sudo: yes
   cron:
-    user: "{{ site_unix_username }}"
-    name: "{{ site_name }} outgoing email"
+    user: "{{ unix_username }}"
+    name: "{{ site.cronjob_name }}"
     state: present
-    job: "/usr/bin/php {{ site_cronjob_path }}"
+    job: "/usr/bin/php {{ docroot }}/{{ site.cronjob_path }}"

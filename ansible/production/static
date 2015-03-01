@@ -1,9 +1,0 @@
-[localhost]
-localhost   ansible_connection=local
-
-[prod:children]
-tag_Stage_prod
-
-# This is a dynamic group; the ec2 inventory script will fill it in.
-[tag_Stage_prod]
-

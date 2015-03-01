@@ -1,37 +1,37 @@
 <VirtualHost *:80>
-        ServerName {{ site_url }}
-{% if not dev_mode %}
-        Redirect permanent / https://{{ site_url }}/
+        ServerName {{ site.url }}
+{% if site.https_only %}
+        Redirect permanent / https://{{ site.url }}/
 </VirtualHost>
 
 <VirtualHost *:443>
-        ServerName {{ site_url }}
+        ServerName {{ site.url }}
 
         # HSTS: Force web clients to use HTTPS.
         Header always set Strict-Transport-Security "max-age=31536000;includeSubDomains"
 
         SSLEngine on
-        SSLCertificateFile /etc/apache2/ssl.crt/{{ site_url }}.crt
-        SSLCertificateKeyFile /etc/apache2/ssl.key/{{ site_url }}.key
+        SSLCertificateFile /etc/apache2/ssl.crt/{{ site.url }}.crt
+        SSLCertificateKeyFile /etc/apache2/ssl.key/{{ site.url }}.key
         # Defend against POODLE
         SSLProtocol all -SSLv2 -SSLv3
 {% endif %}
 
         ServerAdmin webmaster@localhost
 
-        DocumentRoot {{ site_docroot }}
+        DocumentRoot {{ docroot }}
 
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
         </Directory>
 
- {% if site_shared_storage_dir is defined %}
-        <Directory {{ site_shared_storage_dir }}>
-        {% if site_htpasswd_authname is defined %}
+ {% if site.shared_storage_dir is defined %}
+        <Directory {{ site.shared_storage_dir }}>
+        {% if site.htpasswd_authname is defined %}
                 AuthType basic
-                AuthName "{{ site_htpasswd_authname }}"
-                AuthUserFile /etc/apache2/htpasswd
+                AuthName "{{ site.htpasswd_authname }}"
+                AuthUserFile /etc/apache2/sites-available/{{ site.name }}_htpasswd
                 AuthBasicProvider file
                 Require valid-user
         {% else %}
@@ -39,13 +39,13 @@
         {% endif %}
         </Directory>
 {% endif %}
-        <Directory {{ site_docroot }}>
+        <Directory {{ docroot }}>
                 Options FollowSymLinks
                 AllowOverride All
-        {% if site_htpasswd_authname is defined %}
+        {% if site.htpasswd_authname is defined %}
                 AuthType basic
-                AuthName "{{ site_htpasswd_authname }}"
-                AuthUserFile /etc/apache2/htpasswd
+                AuthName "{{ site.htpasswd_authname }}"
+                AuthUserFile /etc/apache2/sites-available/{{ site.name }}_htpasswd
                 AuthBasicProvider file
                 Require valid-user
         {% else %}
@@ -54,16 +54,16 @@
 
         </Directory>
 
-        ErrorLog ${APACHE_LOG_DIR}/{{ site_name }}/error.log
+        ErrorLog ${APACHE_LOG_DIR}/{{ site.name }}/error.log
 
         # Possible values include: debug, info, notice, warn, error, crit,
         # alert, emerg.
         LogLevel warn
 
-        CustomLog ${APACHE_LOG_DIR}/{{ site_name }}/access.log combined
+        CustomLog ${APACHE_LOG_DIR}/{{ site.name }}/access.log combined
 
         # Environment variables
-        {% for env in site_environment %}
+        {% for env in site.environment %}
         SetEnv {{ env.key }} "{{ env.value }}"
         {% endfor %}
 

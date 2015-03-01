@@ -1,3 +1,0 @@
----
-secrets_path: secret-config/puzzletron-dev.yml
-dev_mode: true

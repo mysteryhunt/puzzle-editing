@@ -1,19 +1,19 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "Application server.",
+  "Description" : "A single server in a server group.",
 
   "Parameters" : {
-    "Cluster": {
+    "Domain" : {
       "Type": "String",
-      "Description": "A short name for the cluster.",
+      "Description": "DNS zone which this group lives in, managed by Route 53.",
       "MinLength": "1",
-      "AllowedPattern": "[-a-z0-9]+",
-      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
     },
-    "Stage" : {
+    "Group" : {
       "Type": "String",
-      "Description": "Specific environment that we are launching in, like 'dev-fred' or 'staging'. Becomes part of the domain name.",
+      "Description": "A group of servers that the bucket is associated with; becomes part of the bucket name.",
       "MinLength": "1",
       "AllowedPattern": "[-a-z0-9]+",
       "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
@@ -56,27 +56,6 @@
     "SecurityGroupId": {
       "Type": "AWS::EC2::SecurityGroup::Id",
       "Description": "ID of the security group to use."
-    },
-    "Zone": {
-      "Type": "String",
-      "Description": "DNS domain which is managed by Route 53.",
-      "MinLength": "1",
-      "AllowedPattern": "[-a-z0-9.]+",
-      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
-    },
-    "SiteUrl": {
-      "Type": "String",
-      "Description": "URL of the production site, which should be within the Zone.",
-      "MinLength": "1",
-      "AllowedPattern": "[-a-z0-9.]+",
-      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
-    },
-    "StagingSiteUrl": {
-      "Type": "String",
-      "Description": "URL of the staging site, which should be within the Zone.",
-      "MinLength": "1",
-      "AllowedPattern": "[-a-z0-9.]+",
-      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
     }
   },
 
@@ -98,42 +77,20 @@
         ],
         "Tags": [
           { "Key": "Name", "Value": { "Ref": "Hostname" }},
-          { "Key": "Cluster", "Value": { "Ref": "Cluster" }},
-          { "Key": "Stage", "Value": { "Ref": "Stage" }},
-          { "Key": "Class", "Value": { "Ref": "Class" }}
+          { "Key": "Class", "Value": { "Ref": "Class" }},
+          { "Key": "Group", "Value": { "Ref": "Group" }},
+          { "Key": "Domain", "Value": { "Ref": "Domain" } }
         ]
       }
     },
     "ServerHostnameDnsRecord": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
-        "HostedZoneName": { "Fn::Join": [ "", [{ "Ref": "Zone" }, "."]]},
+        "HostedZoneName": { "Fn::Join": [ "", [{ "Ref": "Domain" }, "."]]},
         "Comment": "DNS name for server instance.",
         "Name": { "Fn::Join": [ "", [
-          { "Ref": "Hostname" }, ".", { "Ref": "Stage" }, ".", { "Ref": "Zone" }, "."
+          { "Ref": "Hostname" }, ".", { "Ref": "Group" }, ".", { "Ref": "Domain" }, "."
         ]]},
-        "Type": "CNAME",
-        "TTL": "300",
-        "ResourceRecords": [ { "Fn::GetAtt": [ "Server", "PublicDnsName" ] } ]
-      }
-    },
-    "SiteUrlDnsRecord": {
-      "Type": "AWS::Route53::RecordSet",
-      "Properties": {
-        "HostedZoneName": { "Fn::Join": [ "", [{ "Ref": "Zone" }, "."]]},
-        "Comment": "DNS name for the site.",
-        "Name": { "Ref": "SiteUrl" },
-        "Type": "CNAME",
-        "TTL": "300",
-        "ResourceRecords": [ { "Fn::GetAtt": [ "Server", "PublicDnsName" ] } ]
-      }
-    },
-    "StagingSiteUrlDnsRecord": {
-      "Type": "AWS::Route53::RecordSet",
-      "Properties": {
-        "HostedZoneName": { "Fn::Join": [ "", [{ "Ref": "Zone" }, "."]]},
-        "Comment": "DNS name for the site.",
-        "Name": { "Ref": "StagingSiteUrl" },
         "Type": "CNAME",
         "TTL": "300",
         "ResourceRecords": [ { "Fn::GetAtt": [ "Server", "PublicDnsName" ] } ]

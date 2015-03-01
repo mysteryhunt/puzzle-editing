@@ -60,19 +60,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     # Use Ansible to install stuff on our VM.
-    # We do this in two stages: stage one sets up the `ubuntu` user, edits
-    # your local known_hosts file, and does other useful preliminaries.
-    # For this purpose, host_key_checking is off.
+    #
+    # We do this in two stages. Stage one sets up the `ubuntu` user to make
+    # the vagrant environment match AWS.
     app.vm.provision "ansible" do |ansible|
       ansible.playbook = "ansible/initialize-vagrant.yml"
-      ansible.host_key_checking = false
       ansible.extra_vars = { sudoer_ssh_key_local_paths: [ "~/.ssh/id_rsa.pub" ] }
     end
     # Stage two does all the real work.
     app.vm.provision "ansible" do |ansible|
       ansible.playbook = "ansible/configure.yml"
-      ansible.inventory_path = 'ansible/development'
-      ansible.extra_vars = { upgrade_packages: "true", deploy_name: "dev" }
+      ansible.groups = { "localdev" => [ "puzzletron.vm" ] }
+      ansible.extra_vars = { upgrade_packages: "true", server_group: "localdev" }
     end
   end
 end

@@ -1,19 +1,19 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "AWS network resources for a cluster.",
+  "Description" : "AWS network resources for a server group.",
 
   "Parameters" : {
-    "Cluster": {
+    "Domain" : {
       "Type": "String",
-      "Description": "A short name for the cluster.",
+      "Description": "DNS zone which this group lives in, managed by Route 53.",
       "MinLength": "1",
-      "AllowedPattern": "[-a-z0-9]+",
-      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
     },
-    "Stage" : {
+    "ServerGroup" : {
       "Type": "String",
-      "Description": "A scope that we are launching in, like 'dev' or 'staging'. Becomes part of the domain name.",
+      "Description": "A group of servers that the bucket is associated with; becomes part of the bucket name.",
       "MinLength": "1",
       "AllowedPattern": "[-a-z0-9]+",
       "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
@@ -108,8 +108,8 @@
           }
         ],
         "Tags": [
-          { "Key": "Cluster", "Value": { "Ref": "Cluster" }},
-          { "Key": "Stage", "Value": { "Ref": "Stage" }}
+          { "Key": "Domain", "Value": { "Ref": "Domain" }},
+          { "Key": "Group", "Value": { "Ref": "ServerGroup" }}
         ]
       }
     }

@@ -1,16 +1,21 @@
 ---
-- name: Load secret config.
+# Configuration at the server level, independent of the individual apps.
+- name: Load secrets.
   hosts: all
   gather_facts: false
   tasks:
-    - name: Load secret config.
-      include_vars: "{{ secrets_path }}"
-      tags: [ setup, build ]
+    - name: Load secrets.
+      include_vars: "{{ item }}"
+      with_fileglob:
+        - "secrets/*.yml"
+      tags: [ setup, localdev, staging, prod ]
 
-- hosts: all
-  sudo: yes
+- hosts: single:localdev
   remote_user: ubuntu
   roles:
+    - role: ubuntu-initialized
+      tags: [ setup ]
+
     # upgrade_packages=false will be overridden by the
     # Vagrantfile. But in general we don't want to upgrade Ubuntu
     # packages every time we run Ansible. The shocking truth is that
@@ -18,29 +23,32 @@
     # don't want to casually upgrade them on your live
     # site. Horrors!
     - role: ubuntu-upgraded
+      sudo: yes
       apt_cache_time: 14400
       upgrade_packages: false
       tags: [ setup ]
 
 - name: Install the LAMP stack.
-  hosts: all
+  hosts: single:localdev
   remote_user: ubuntu
   roles:
     - role: web
       sudo: yes
-#      apache_servername: "{{ cluster_name }}.{{ cluster_dns_zone }}"
+#      apache_servername: "{{ hostname }}.{{ servers[server_group].domain }}"
       tags: [ setup ]
 
     - role: Ansibles.mysql
       sudo: yes
+      mysql_root_password: "{{ servers[server_group].mysql_root_password }}"
       tags: [ setup ]
 
   tasks:
     - name: Install deployment packages.
       sudo: yes
-      apt: pkg={{item}} state=installed
+      apt: pkg={{ item }} state=installed
       with_items:
         - git
+      tags: [ setup ]
 
     - name: Install composer.
       sudo: yes
@@ -50,14 +58,14 @@
         owner=ubuntu
         group=ubuntu
         mode=0555
+      tags: [ setup ]
 
 - name: Install additional development utilities.
-  hosts: dev
+  hosts: localdev
   remote_user: ubuntu
   vars:
     mysql_admin_user: root
-    #secret: mysql_root_password
-    mysql_admin_password: "{{ mysql_root_password }}"
+    mysql_admin_password: "{{ servers[server_group].mysql_root_password }}"
 
   tasks:
     - name: Install useful development packages.
@@ -77,105 +85,81 @@
         mode=0600
       tags: [ setup ]
 
-    - name: Transfer the development schema file to the host.
-      sudo: yes
-      copy: >-
-        src=../schema.sql
-        dest=/root/db-restore.sql
-        owner=root
-        group=root
-        mode=0400
-      tags: [ build ]
-
-- name: Deploy the puzzletron site (in development mode).
-  hosts: dev
+- name: Deploy the localdev version of the app.
+  hosts: localdev
   remote_user: ubuntu
   vars:
-    dev_site_url: puzzletron.vm
-    dev_site_name: puzzletron_dev
-    # We don't use Git to build the dev codebase, so we can use just
-    # about any string to stand in for the build_version.
-    dev_build_version: wip
-    dev_site_docroot: "/vagrant"
+    app_name: puzzletron-localdev
+    seeded_file_path: "/home/ubuntu/{{ app_name }}-SEEDED"
   roles:
-    - role: site-db-host
-      sudo: yes
-      db_name: "{{ site_db_name }}"
-      db_user_name: "{{ site_db_username }}"
-      db_password: "{{ site_db_password }}"
-      db_schema_file: "/root/db-restore.sql"
-      tags: [ build ]
-
-    - role: site-released
-      dev_mode: true
-      sudo: yes
-      site_name: "{{ dev_site_name }}"
-      build_version: "{{ dev_build_version }}"
-
-      # in dev mode, we set site_docroot to the working directory and
-      # leave site_docroots_directory unset. We will run the code
-      # directly from the working directory, so we don't need to do a Git
-      # checkout.
-      site_docroot: "{{ dev_site_docroot }}"
-      site_url: "{{ dev_site_url }}"
-      site_unix_username: ubuntu
-      site_shared_storage_dir: /home/ubuntu/puzzletron-storage
-      build_working_directory: "{{ dev_site_docroot }}"
-
-      site_environment:
-        - key: EXAMPLE_ENV
-          value: "Set me"
-      tags: [ build ]
-
-    - role: site-enabled
-      sudo: yes
-      site_name: "{{ dev_site_name }}"
-      site_release_id: "{{ dev_site_name }}_{{ dev_build_version }}"
-      site_unix_username: ubuntu
-      site_cronjob_path: "/vagrant/email_cronjob.php"
-      tags: [ build ]
+    - role: site-deployed
+      site: "{{ apps[app_name] }}"
+      build_username: vagrant
+      tags: [ localdev ]
 
   tasks:
+    # This is a compromise - Vagrant shared directory ownership is
+    # tricky, and chown usually does not work, so just make the
+    # configs world-readable inside Vagrant.
+    - name: Adjust config file permissions in dev
+      sudo: yes
+      file:
+        state: file
+        path: "{{ apps[app_name].docroot }}/{{ item }}"
+        mode: 0444
+      with_items:
+        - config.php
+        - secret.php
+      tags: [ localdev ]
+
+    - name: Check to see if DB has been seeded.
+      stat:
+        path: "{{ seeded_file_path }}"
+      register: seeded_file
+      tags: [ localdev ]
+
+    - name: Restore MySQL DB.
+      sudo: yes
+      mysql_db:
+        name: "{{ apps[app_name].db_name }}"
+        state: import
+        target: "{{ apps[app_name].docroot }}/schema.sql"
+      when: seeded_file.stat.exists == False
+      tags: [ localdev ]
+
     - name: Clear old session files.
+      sudo: yes
       shell: >-
         rm -f sess_*
-        chdir=/home/ubuntu/puzzletron-storage/tmp
-      tags: [ build ]
+        chdir={{ apps[app_name].shared_storage_dir }}/tmp
+      when: seeded_file.stat.exists == False
+      tags: [ localdev ]
 
-- name: Deploy the puzzletron site (to staging or prod).
-  hosts: staging:prod
+    - name: Create a file to mark that we seeded the DB
+      file: >-
+        path="{{ seeded_file_path }}"
+        state=touch
+      when: seeded_file.stat.exists == False
+      tags: [ localdev ]
+
+- name: Deploy the staging version of the app.
+  hosts: single:&prod
   remote_user: ubuntu
+  vars:
+    app_name: puzzletron-stg
   roles:
-    - role: site-db-host
-      sudo: yes
-      db_name: "{{ site_db_name }}"
-      db_user_name: "{{ site_db_username }}"
-      db_password: "{{ site_db_password }}"
-      tags: [ build ]
+    - role: site-deployed
+      site: "{{ apps[app_name] }}"
+      dns_zone: "{{ servers[server_group].domain }}"
+      tags: [ staging ]
 
-    - role: site-released
-      site_shared_storage_dir: /home/ubuntu/puzzletron-storage
-      build_working_directory: /home/ubuntu/puzzletron-build
-      site_environment:
-        - key: EXAMPLE_ENV
-          value: "Set me"
-      #secret: site_url
-      #secret: site_docroots_directory
-      #secret: site_name
-      #secret: site_unix_username
-      #secret: site_db_name
-      #secret: site_db_username
-      #secret: site_db_password
-      #secret: git_deploy_key_private
-      #secret: git_server_hostname
-      #secret: git_server_host_key
-      #secret: git_repo_url
-      #secret: ssl_cert
-      #secret: ssl_cert_key
-      tags: [ build ]
-
-    - role: site-enabled
-      sudo: yes
-      site_release_id: "{{ site_name }}_{{ build_version }}"
-      site_cronjob_path: "{{ site_docroots_directory }}/{{ site_name }}_{{ build_version }}/email_cronjob.php"
-      tags: [ build ]
+- name: Deploy the production version of the app.
+  hosts: single:&prod
+  remote_user: ubuntu
+  vars:
+    app_name: puzzletron
+  roles:
+    - role: site-deployed
+      site: "{{ apps[app_name] }}"
+      dns_zone: "{{ servers[server_group].domain }}"
+      tags: [ prod ]
