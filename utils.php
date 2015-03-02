@@ -318,7 +318,7 @@ function isEditorOnPuzzle($uid, $pid) {
     return isRelatedBy("editor_links", $uid, $pid);
 }
 function isApproverOnPuzzle($uid, $pid) {
-    return isRelatedBy("approver_links", $uid, $pid);
+    return isRelatedBy("approval_editor_links", $uid, $pid);
 }
 function isTesterOnPuzzle($uid, $pid) {
     return isRelatedBy("tester_links", $uid, $pid);
@@ -419,7 +419,7 @@ function getEditorsForPuzzle($pid) {
 }
 
 function getApproversForPuzzle($pid) {
-    return getUsersForPuzzle("approver_links", $pid);
+    return getUsersForPuzzle("approval_editor_links", $pid);
 }
 
 function validTag($id) {
@@ -594,7 +594,7 @@ function getEditorStatus($pid) {
 }
 
 function getApproversAsList($pid) {
-    return getUserNamesAsList("approver_links", $pid);
+    return getUserNamesAsList("approval_editor_links", $pid);
 }
 
 function getTestingAdminsForPuzzleAsList($pid) {
@@ -1973,7 +1973,7 @@ function addApprovers($uid, $pid, $add) {
         }
 
         // Add approver to puzzle
-        $sql = sprintf("INSERT INTO approver_links (uid, pid) VALUES ('%s', '%s')",
+        $sql = sprintf("INSERT INTO approval_editor_links (uid, pid) VALUES ('%s', '%s')",
             mysql_real_escape_string($approver), mysql_real_escape_string($pid));
         query_db($sql);
 
@@ -2021,7 +2021,7 @@ function removeApprovers($uid, $pid, $remove) {
             utilsError(getUserName($approver) . " is not an approval editor on puzzle $pid");
         }
         // Remove approver from puzzle
-        $sql = sprintf("DELETE FROM approver_links WHERE uid='%s' AND pid='%s'",
+        $sql = sprintf("DELETE FROM approval_editor_links WHERE uid='%s' AND pid='%s'",
             mysql_real_escape_string($approver), mysql_real_escape_string($pid));
         query_db($sql);
 
@@ -2218,7 +2218,7 @@ function getRoleStats($links_table, $comment_types) {
 }
 
 function getApprovalEditorStats() {
-    return getRoleStats('approver_links', '9,5,10,11');
+    return getRoleStats('approval_editor_links', '9,5,10,11');
 }
 
 function getDiscussionEditorStats() {
@@ -2718,12 +2718,12 @@ function getNumEditors($pid) {
 }
 
 function getNumApprovers($pid) {
-    $sql = sprintf("SELECT puzzles.id, COUNT(approver_links.uid) FROM puzzles
-        LEFT JOIN approver_links ON puzzles.id=approver_links.pid
+    $sql = sprintf("SELECT puzzles.id, COUNT(approval_editor_links.uid) FROM puzzles
+        LEFT JOIN approval_editor_links ON puzzles.id=approval_editor_links.pid
         WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
     $result = get_row($sql);
 
-    return $result['COUNT(approver_links.uid)'];
+    return $result['COUNT(approval_editor_links.uid)'];
 
 }
 
@@ -2756,7 +2756,7 @@ function getPuzzlesInEditorQueue($uid) {
 }
 
 function getPuzzlesInApproverQueue($uid) {
-    $sql = sprintf("SELECT pid FROM approver_links WHERE uid='%s'",
+    $sql = sprintf("SELECT pid FROM approval_editor_links WHERE uid='%s'",
         mysql_real_escape_string($uid));
     $puzzles = get_elements($sql);
 
@@ -3128,7 +3128,7 @@ function getPuzzlesNeedingSpecialEditors() {
 function getPuzzlesNeedingApprovers($uid) {
     $sql = "SELECT y.pid as puzzle from
         ((SELECT count(*) as num_editors, pid, count(if (uid = $uid,1,NULL)) as am_i_an_ed_already
-            FROM  approver_links
+            FROM  approval_editor_links
             GROUP by pid) as x
         RIGHT JOIN
         (SELECT  count(if (uid =$uid,1,NULL)) as am_i_an_author, pid
@@ -3379,7 +3379,7 @@ function getNumberOfEditorsOnPuzzles($type) {
     if ($type == "discuss") {
         $queue = "editor_links";
     } else {
-        $queue = "approver_links";
+        $queue = "approval_editor_links";
     }
 
     $deadstatusid = getDeadStatusId();
@@ -3419,7 +3419,7 @@ function countAvailablePuzzlesForEditor($uid) {
     $sql = sprintf("SELECT COUNT(*) FROM puzzles WHERE puzzles.pstatus != $deadpuzzleid AND %s AND %s AND %s AND %s",
         sqlUserNotRelatedClause('author_links',        $uid),
         sqlUserNotRelatedClause('editor_links',   $uid),
-        sqlUserNotRelatedClause('approver_links', $uid),
+        sqlUserNotRelatedClause('approval_editor_links', $uid),
         sqlUserNotRelatedClause('tester_links',     $uid));
     return get_element($sql);
 }
@@ -3427,7 +3427,7 @@ function countAvailablePuzzlesForEditor($uid) {
 function getNumberOfPuzzlesForUser($uid) {
     $numbers['author']        = countPuzzlesForUser('author_links',        $uid);
     $numbers['editor']        = countPuzzlesForUser('editor_links',   $uid);
-    $numbers['approver']      = countPuzzlesForUser('approver_links', $uid);
+    $numbers['approver']      = countPuzzlesForUser('approval_editor_links', $uid);
     $numbers['spoiled']       = countPuzzlesForUser('spoiled_user_links',        $uid);
     $numbers['currentTester'] = countPuzzlesForUser('tester_links',     $uid);
     $numbers['doneTester']    = countPuzzlesForUser('former_tester_links',    $uid);

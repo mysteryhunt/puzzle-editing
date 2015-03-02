@@ -896,8 +896,8 @@ UNLOCK TABLES;
 
 -- Dump completed on 2013-11-04  3:42:30
 
-DROP TABLE IF EXISTS `approver_links`;
-CREATE TABLE `approver_links` (
+DROP TABLE IF EXISTS `approval_editor_links`;
+CREATE TABLE `approval_editor_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
