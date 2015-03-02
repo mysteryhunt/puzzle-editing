@@ -869,13 +869,13 @@ function getAvailableAnswers() {
 }
 
 function getAvailableAnswersForRound($rid) {
-    $answers = get_elements(sprintf("SELECT answer FROM answers_rounds JOIN answers ON answers.aid=answers_rounds.aid WHERE answers_rounds.rid='%s'", mysql_real_escape_string($rid)));
+    $answers = get_elements(sprintf("SELECT answer FROM answer_round JOIN answers ON answers.aid=answer_round.aid WHERE answer_round.rid='%s'", mysql_real_escape_string($rid)));
     natcasesort($answers);
     return $answers;
 }
 
 function getAvailableAnswersNotForRound($rid) {
-    $answers = get_elements(sprintf("SELECT answer FROM answers_rounds JOIN answers ON answers.aid=answers_rounds.aid WHERE answers_rounds.rid!='%s'", mysql_real_escape_string($rid)));
+    $answers = get_elements(sprintf("SELECT answer FROM answer_round JOIN answers ON answers.aid=answer_round.aid WHERE answer_round.rid!='%s'", mysql_real_escape_string($rid)));
     natcasesort($answers);
     return $answers;
 }
@@ -1059,7 +1059,7 @@ function createAnswer($answer, $round) {
     $result = query_db($sql);
     $resultrow = mysql_fetch_row($result);
     $aid = $resultrow[0];
-    $sql = sprintf("INSERT INTO answers_rounds (aid, rid) VALUES ('%s', '%s')", $aid, $round);
+    $sql = sprintf("INSERT INTO answer_round (aid, rid) VALUES ('%s', '%s')", $aid, $round);
     $result = query_db($sql);
     return ($result);
 }
@@ -3358,17 +3358,17 @@ function getRounds() {
 }
 
 function getAnswersForRound($rid) {
-    $sql = sprintf("SELECT * FROM answers_rounds JOIN answers ON answers.aid=answers_rounds.aid WHERE answers_rounds.rid='%s'", mysql_real_escape_string($rid));
+    $sql = sprintf("SELECT * FROM answer_round JOIN answers ON answers.aid=answer_round.aid WHERE answer_round.rid='%s'", mysql_real_escape_string($rid));
     return get_rows($sql);
 }
 
 function getRoundForPuzzle($pid) {
-    $sql = sprintf("SELECT rounds.* FROM rounds, answers_rounds, answers WHERE answers.pid='%s' and answers_rounds.aid = answers.aid and rounds.rid = answers_rounds.rid;", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT rounds.* FROM rounds, answer_round, answers WHERE answers.pid='%s' and answer_round.aid = answers.aid and rounds.rid = answer_round.rid;", mysql_real_escape_string($pid));
     return get_rows($sql);
 }
 
 function getRoundDictForPuzzle($pid) {
-    $sql = sprintf("SELECT rounds.* FROM rounds, answers_rounds, answers WHERE answers.pid='%s' and answers_rounds.aid = answers.aid and rounds.rid = answers_rounds.rid;", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT rounds.* FROM rounds, answer_round, answers WHERE answers.pid='%s' and answer_round.aid = answers.aid and rounds.rid = answer_round.rid;", mysql_real_escape_string($pid));
     return get_row_dicts($sql);
 }
 
@@ -3522,7 +3522,7 @@ function getPuzzleRound($pid) {
     if (!$aid) {
         return ("");
     }
-    $sql = sprintf("SELECT rounds.name FROM rounds, answers_rounds WHERE rounds.rid=answers_rounds.rid AND answers_rounds.aid=%d", $aid);
+    $sql = sprintf("SELECT rounds.name FROM rounds, answer_round WHERE rounds.rid=answer_round.rid AND answer_round.aid=%d", $aid);
     $roundname=get_element($sql);
 
     return($roundname);

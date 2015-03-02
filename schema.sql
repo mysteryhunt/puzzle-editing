@@ -64,13 +64,13 @@ LOCK TABLES `answers` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `answers_rounds`
+-- Table structure for table `answer_round`
 --
 
-DROP TABLE IF EXISTS `answers_rounds`;
+DROP TABLE IF EXISTS `answer_round`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `answers_rounds` (
+CREATE TABLE `answer_round` (
   `aid` int(11) NOT NULL COMMENT 'Answer ID',
   `rid` int(11) NOT NULL COMMENT 'Round ID',
   PRIMARY KEY (`aid`,`rid`)
@@ -78,12 +78,12 @@ CREATE TABLE `answers_rounds` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `answers_rounds`
+-- Dumping data for table `answer_round`
 --
 
-LOCK TABLES `answers_rounds` WRITE;
-/*!40000 ALTER TABLE `answers_rounds` DISABLE KEYS */;
-/*!40000 ALTER TABLE `answers_rounds` ENABLE KEYS */;
+LOCK TABLES `answer_round` WRITE;
+/*!40000 ALTER TABLE `answer_round` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answer_round` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
