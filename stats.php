@@ -111,9 +111,9 @@ $(document).ready(function() {
 
 function getTestCommentsAll() {
     $sql = sprintf("SELECT comments.id, comments.uid, comments.comment, comments.type,
-        comments.timestamp, comments.pid, comment_type.name FROM
-        comments LEFT JOIN comment_type ON comments.type=comment_type.id
-        WHERE comment_type.name='Testsolver' ORDER BY comments.id ASC");
+        comments.timestamp, comments.pid, comment_types.name FROM
+        comments LEFT JOIN comment_types ON comments.type=comment_types.id
+        WHERE comment_types.name='Testsolver' ORDER BY comments.id ASC");
     return get_rows($sql);
 }
 

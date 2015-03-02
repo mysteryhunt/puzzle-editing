@@ -1037,7 +1037,7 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE, $im
         }
         setFlag($uid, $pid, 0);
     }
-    $sql = sprintf("SELECT id FROM comment_type WHERE name='%s'", mysql_real_escape_string($typeName));
+    $sql = sprintf("SELECT id FROM comment_types WHERE name='%s'", mysql_real_escape_string($typeName));
     $type = get_element($sql);
 
     $sql = sprintf("INSERT INTO comments (uid, comment, type, pid) VALUES ('%s', '%s', '%s', '%s')",
@@ -2187,7 +2187,7 @@ function getAllAuthors() {
     return get_assoc_array("select users.uid, fullname from users, authors where users.uid = authors.uid group by uid", "uid", "fullname");
 }
 
-function getRoleStats($queue_table, $comment_type) {
+function getRoleStats($queue_table, $comment_types) {
     $sql = sprintf("
         SELECT fullname, puzzle_count, comment_count, recent_comment_count
         FROM
@@ -2209,7 +2209,7 @@ function getRoleStats($queue_table, $comment_type) {
             USING (uid)
         WHERE puzzle_count > 0
         ORDER BY puzzle_count DESC, comment_count DESC
-        ", $queue_table, $comment_type, $comment_type);
+        ", $queue_table, $comment_types, $comment_types);
     echo "<!-- $sql -->";
     return get_row_dicts($sql);
 }
@@ -2570,8 +2570,8 @@ function uploadFiles($uid, $pid, $type, $file) {
 
 function getComments($pid) {
     $sql = sprintf("SELECT comments.id, comments.uid, comments.comment, comments.type,
-        comments.timestamp, comments.pid, comment_type.name FROM
-        comments LEFT JOIN comment_type ON comments.type=comment_type.id
+        comments.timestamp, comments.pid, comment_types.name FROM
+        comments LEFT JOIN comment_types ON comments.type=comment_types.id
         WHERE comments.pid='%s' ORDER BY comments.id ASC",
         mysql_real_escape_string($pid));
     return get_rows($sql);
@@ -2579,9 +2579,9 @@ function getComments($pid) {
 
 function getTestFeedComments() {
     $sql = "SELECT comments.id, comments.uid, comments.comment, comments.type,
-        comments.timestamp, comments.pid, comment_type.name FROM
-        comments LEFT JOIN comment_type ON comments.type=comment_type.id
-        WHERE (comments.comment LIKE '%In Testing%' OR comments.comment LIKE '%answer attempt%') AND (comment_type.name = 'Testsolver' OR comment_type.name = 'Server') ORDER BY comments.timestamp DESC LIMIT 50";
+        comments.timestamp, comments.pid, comment_types.name FROM
+        comments LEFT JOIN comment_types ON comments.type=comment_types.id
+        WHERE (comments.comment LIKE '%In Testing%' OR comments.comment LIKE '%answer attempt%') AND (comment_types.name = 'Testsolver' OR comment_types.name = 'Server') ORDER BY comments.timestamp DESC LIMIT 50";
     return get_rows($sql);
 }
 

@@ -110,13 +110,13 @@ LOCK TABLES `authors` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `comment_type`
+-- Table structure for table `comment_types`
 --
 
-DROP TABLE IF EXISTS `comment_type`;
+DROP TABLE IF EXISTS `comment_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `comment_type` (
+CREATE TABLE `comment_types` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
@@ -125,13 +125,13 @@ CREATE TABLE `comment_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comment_type`
+-- Dumping data for table `comment_types`
 --
 
-LOCK TABLES `comment_type` WRITE;
-/*!40000 ALTER TABLE `comment_type` DISABLE KEYS */;
-INSERT INTO `comment_type` VALUES (3,'Author'),(4,'Discuss Editor'),(7,'Lurker'),(1,'Server'),(6,'TestingAdmin'),(2,'Testsolver'),(8,'Unknown'),(5,'EIC'),(9,'Approver'),(10,'Cohesion'),(11,'Director'),(12,'Factchecker');
-/*!40000 ALTER TABLE `comment_type` ENABLE KEYS */;
+LOCK TABLES `comment_types` WRITE;
+/*!40000 ALTER TABLE `comment_types` DISABLE KEYS */;
+INSERT INTO `comment_types` VALUES (3,'Author'),(4,'Discuss Editor'),(7,'Lurker'),(1,'Server'),(6,'TestingAdmin'),(2,'Testsolver'),(8,'Unknown'),(5,'EIC'),(9,'Approver'),(10,'Cohesion'),(11,'Director'),(12,'Factchecker');
+/*!40000 ALTER TABLE `comment_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
