@@ -164,12 +164,12 @@ function printPerson($p) {
         }
     }
 
-    $jobNames = getUserJobsAsList($id);
+    $roleNames = getUserRolesAsList($id);
     if (canSeeAllPuzzles($id)) {
         $profclass = "seeallprofilebox";
     } elseif (isApprover($id)) {
         $profclass = "approverprofilebox";
-    } elseif ($jobNames) {
+    } elseif ($roleNames) {
         $profclass = "specprofilebox";
     } else {
         $profclass = "profilebox";
@@ -179,7 +179,7 @@ function printPerson($p) {
         <div class="profileimg"><?php echo $pic ?></div>
         <div class="profiletxt">
             <span class="profilename"><?php echo "$fullname"; ?> (<?php echo "$uname"; ?>)</span>
-            <span class="profiletitle"><?php echo $jobNames; ?></span>
+            <span class="profiletitle"><?php echo $roleNames; ?></span>
             <span class="profilecontact"><a href="mailto:<?php echo $email ?>"><?php echo $email ?></a></span>
 <?php
     $sql = "SELECT * FROM user_info_keys";

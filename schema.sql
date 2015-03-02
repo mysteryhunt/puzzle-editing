@@ -282,26 +282,26 @@ LOCK TABLES `factcheck_queue` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `jobs`
+-- Table structure for table `user_role`
 --
 
-DROP TABLE IF EXISTS `jobs`;
+DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jobs` (
+CREATE TABLE `user_role` (
   `uid` int(11) NOT NULL,
-  `jid` int(11) NOT NULL,
-  PRIMARY KEY (`uid`,`jid`)
+  `role_id` int(11) NOT NULL,
+  PRIMARY KEY (`uid`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `jobs`
+-- Dumping data for table `user_role`
 --
 
-LOCK TABLES `jobs` WRITE;
-/*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
+LOCK TABLES `user_role` WRITE;
+/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -379,14 +379,14 @@ LOCK TABLES `motd` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `priv`
+-- Table structure for table `roles`
 --
 
-DROP TABLE IF EXISTS `priv`;
+DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `priv` (
-  `jid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `seeAllPuzzles` tinyint(1) NOT NULL,
   `addToEditingQueue` tinyint(1) NOT NULL,
@@ -399,19 +399,19 @@ CREATE TABLE `priv` (
   `autoSubEditor` tinyint(1) NOT NULL,
   `addToRoundCaptainQueue` tinyint(1) NOT NULL,
   `isApprover` tinyint(1) NOT NULL,
-  PRIMARY KEY (`jid`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `priv`
+-- Dumping data for table `roles`
 --
 
-LOCK TABLES `priv` WRITE;
-/*!40000 ALTER TABLE `priv` DISABLE KEYS */;
-INSERT INTO `priv` VALUES (2,'Puzzle Herder',1,0,0,0,0,0,1,0,0,0,0),(3,'Director',1,1,1,1,1,0,1,1,1,1,1),(4,'Discussion Editor',0,1,0,0,0,0,1,1,1,0,0),(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0,0,0),(7,'Producer',1,0,0,0,0,0,1,0,0,1,0),(8,'Server Admin',1,0,1,0,1,0,1,1,0,0,0),(9,'Editor in Chief',1,1,0,1,1,0,1,1,1,1,1),(10,'Server Maintainer',0,0,1,0,0,0,1,0,0,0,0),(13,'Testing Admin',0,0,0,0,1,0,1,0,0,0,0),(14,'Approval Editor',0,1,0,0,0,0,1,1,1,0,1),(15,'Cohesion Editor',1,1,0,1,0,0,1,1,1,0,1);
-/*!40000 ALTER TABLE `priv` ENABLE KEYS */;
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (2,'Puzzle Herder',1,0,0,0,0,0,1,0,0,0,0),(3,'Director',1,1,1,1,1,0,1,1,1,1,1),(4,'Discussion Editor',0,1,0,0,0,0,1,1,1,0,0),(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0,0,0),(7,'Producer',1,0,0,0,0,0,1,0,0,1,0),(8,'Server Admin',1,0,1,0,1,0,1,1,0,0,0),(9,'Editor in Chief',1,1,0,1,1,0,1,1,1,1,1),(10,'Server Maintainer',0,0,1,0,0,0,1,0,0,0,0),(13,'Testing Admin',0,0,0,0,1,0,1,0,0,0,0),(14,'Approval Editor',0,1,0,0,0,0,1,1,1,0,1),(15,'Cohesion Editor',1,1,0,1,0,0,1,1,1,0,1);
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

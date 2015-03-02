@@ -225,58 +225,58 @@ function getCodename($pid) {
 }
 
 function isEditor($uid) {
-    //return hasPriv($uid, 'addToEditingQueue');
+    //return hasPermission($uid, 'addToEditingQueue');
     return TRUE;
 }
 
 function isApprover($uid) {
-    return hasPriv($uid, 'isApprover');
+    return hasPermission($uid, 'isApprover');
 }
 
 function isAutoSubEditor($uid) {
-    return hasPriv($uid, 'autoSubEditor');
+    return hasPermission($uid, 'autoSubEditor');
 }
 
 function isRoundCaptain($uid) {
-    return hasPriv($uid, 'addToRoundCaptainQueue');
+    return hasPermission($uid, 'addToRoundCaptainQueue');
 }
 
 function isTestingAdmin($uid) {
-    return hasPriv($uid, 'seeTesters');
+    return hasPermission($uid, 'seeTesters');
 }
 
 function isLurker($uid) {
-    //return hasPriv($uid, 'isLurker');
+    //return hasPermission($uid, 'isLurker');
     return TRUE;
 }
 
 function isFactChecker($uid) {
-    //return hasPriv($uid, 'factcheck');
+    //return hasPermission($uid, 'factcheck');
     return TRUE;
 }
 
 function isBlind($uid) {
-    return hasPriv($uid, 'isBlind');
+    return hasPermission($uid, 'isBlind');
 }
 
 function isServerAdmin($uid) {
-    return hasPriv($uid, 'changeServer');
+    return hasPermission($uid, 'changeServer');
 }
 
 function isDirector($uid) {
-    return isPriv($uid, 3);
+    return isRole($uid, 3);
 }
 
 function isEditorChief($uid) {
-    return isPriv($uid, 9);
+    return isRole($uid, 9);
 }
 
 function isCohesion($uid) {
-    return isPriv($uid, 15);
+    return isRole($uid, 15);
 }
 
 function canChangeStatus($uid) {
-    return hasPriv($uid, 'changeStatus');
+    return hasPermission($uid, 'changeStatus');
 }
 
 function canRequestTestsolve($uid, $pid) {
@@ -287,16 +287,16 @@ function canRequestTestsolve($uid, $pid) {
     // editors / chief producers / etc.
 }
 
-function hasPriv($uid, $priv) {
-    $sql = sprintf("SELECT 1 FROM jobs LEFT JOIN priv ON jobs.jid = priv.jid
+function hasPermission($uid, $permission) {
+    $sql = sprintf("SELECT 1 FROM user_role LEFT JOIN roles ON user_role.role_id = roles.id
         WHERE uid='%s' AND %s='1'",
-        mysql_real_escape_string($uid), mysql_real_escape_string($priv));
+        mysql_real_escape_string($uid), mysql_real_escape_string($permission));
     return has_result($sql);
 }
 
-function isPriv($uid, $jid) {
-    $sql = sprintf("SELECT 1 FROM jobs WHERE uid='%s' AND jid='%d'",
-        mysql_real_escape_string($uid), mysql_real_escape_string($jid));
+function isRole($uid, $role_id) {
+    $sql = sprintf("SELECT 1 FROM user_role WHERE uid='%s' AND role_id='%d'",
+        mysql_real_escape_string($uid), mysql_real_escape_string($role_id));
     return has_result($sql);
 }
 
@@ -519,7 +519,7 @@ function getTestAdminsToNotify($pid) {
         $table, $table, $table, mysql_real_escape_string($pid));
     $testadmins_for_puzzle = get_elements($sql);
 
-    $sql = "select users.uid from users, jobs where users.uid=jobs.uid and (jobs.jid=6 or jobs.jid=13);";
+    $sql = "select users.uid from users, user_role where users.uid=user_role.uid and (user_role.role_id=6 or user_role.role_id=13);";
     $all_testadmins = get_elements($sql);
 
     // If a puzzle has testadmins, they will be auto-subscribed to
@@ -634,8 +634,8 @@ function getUserNamesAndEmailsAsList($users) {
     return $list;
 }
 
-function getUserJobsAsList($uid) {
-    $sql = sprintf("SELECT priv.name FROM jobs, priv WHERE jobs.uid='%s' AND jobs.jid=priv.jid",
+function getUserRolesAsList($uid) {
+    $sql = sprintf("SELECT roles.name FROM user_role, roles WHERE user_role.uid='%s' AND user_role.role_id=roles.id",
         mysql_real_escape_string($uid));
     $result = get_elements($sql);
 
@@ -2059,11 +2059,11 @@ function canChangeEditorsNeeded($uid, $pid) {
 }
 
 function canChangeAnswers($uid) {
-    return hasPriv($uid, 'canEditAll');
+    return hasPermission($uid, 'canEditAll');
 }
 
 function canSeeAllPuzzles($uid) {
-    return hasPriv($uid, 'seeAllPuzzles');
+    return hasPermission($uid, 'seeAllPuzzles');
 }
 
 function canSeeTesters($uid, $pid) {
@@ -2176,11 +2176,11 @@ function setPuzzPriority($uid, $pid, $priority) {
 }
 
 function getAllEditors() {
-    return get_assoc_array("select users.uid, fullname from users, jobs, priv where users.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 group by uid", "uid", "fullname");
+    return get_assoc_array("select users.uid, fullname from users, user_role, roles where users.uid = user_role.uid and user_role.role_id = roles.id and roles.addToEditingQueue = 1 group by uid", "uid", "fullname");
 }
 
 function getAllApprovalEditors() {
-    return get_assoc_array("select users.uid, fullname from users, jobs, priv where users.uid = jobs.uid and jobs.jid = priv.jid and priv.isApprover = 1 group by uid", "uid", "fullname");
+    return get_assoc_array("select users.uid, fullname from users, user_role, roles where users.uid = user_role.uid and user_role.role_id = roles.id and roles.isApprover = 1 group by uid", "uid", "fullname");
 }
 
 function getAllAuthors() {
@@ -3506,7 +3506,7 @@ function canAcceptDrafts($pid) {
 }
 
 function grantFactcheckPowers($uid) {
-    $sql = sprintf("INSERT INTO jobs (uid, jid) VALUES (%d, (select jid from priv where name = 'Fact Checker'))", $uid);
+    $sql = sprintf("INSERT INTO user_role (uid, role_id) VALUES (%d, (select id from roles where name = 'Fact Checker'))", $uid);
     query_db($sql);
 }
 
