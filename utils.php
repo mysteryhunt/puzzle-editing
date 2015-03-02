@@ -312,7 +312,7 @@ function isAuthorOnPuzzle($uid, $pid) {
     return isRelatedBy("author_links", $uid, $pid);
 }
 function isRoundCaptainOnPuzzle($uid, $pid) {
-    return isRelatedBy("round_captain_queue", $uid, $pid);
+    return isRelatedBy("round_captain_links", $uid, $pid);
 }
 function isEditorOnPuzzle($uid, $pid) {
     return isRelatedBy("editor_links", $uid, $pid);
@@ -411,7 +411,7 @@ function getAuthorsForPuzzle($pid) {
 }
 
 function getRoundCaptainsForPuzzle($pid) {
-    return getUsersForPuzzle("round_captain_queue", $pid);
+    return getUsersForPuzzle("round_captain_links", $pid);
 }
 
 function getEditorsForPuzzle($pid) {
@@ -554,7 +554,7 @@ function getAuthorsAsList($pid) {
 }
 
 function getRoundCaptainsAsList($pid) {
-    return getUserNamesAsList("round_captain_queue", $pid);
+    return getUserNamesAsList("round_captain_links", $pid);
 }
 
 function getEditorsAsList($pid) {
@@ -1724,7 +1724,7 @@ function addRoundCaptains($uid, $pid, $add) {
         }
 
         // Add round captain to puzzle
-        $sql = sprintf("INSERT INTO round_captain_queue (uid, pid) VALUES ('%s', '%s')",
+        $sql = sprintf("INSERT INTO round_captain_links (uid, pid) VALUES ('%s', '%s')",
             mysql_real_escape_string($roundcaptain), mysql_real_escape_string($pid));
         query_db($sql);
 
@@ -1769,7 +1769,7 @@ function removeRoundCaptains($uid, $pid, $remove) {
             utilsError(getUserName($roundcaptain) . " is not a round captain on puzzle $pid");
         }
         // Remove round captain from puzzle
-        $sql = sprintf("DELETE FROM round_captain_queue WHERE uid='%s' AND pid='%s'",
+        $sql = sprintf("DELETE FROM round_captain_links WHERE uid='%s' AND pid='%s'",
             mysql_real_escape_string($roundcaptain), mysql_real_escape_string($pid));
         query_db($sql);
 
@@ -2764,7 +2764,7 @@ function getPuzzlesInApproverQueue($uid) {
 }
 
 function getPuzzlesInRoundCaptainQueue($uid) {
-    $sql = sprintf("SELECT pid FROM round_captain_queue WHERE uid='%s'",
+    $sql = sprintf("SELECT pid FROM round_captain_links WHERE uid='%s'",
         mysql_real_escape_string($uid));
     $puzzles = get_elements($sql);
 

@@ -902,8 +902,8 @@ CREATE TABLE `approver_links` (
   `pid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 
-DROP TABLE IF EXISTS `round_captain_queue`;
-CREATE TABLE `round_captain_queue` (
+DROP TABLE IF EXISTS `round_captain_links`;
+CREATE TABLE `round_captain_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
