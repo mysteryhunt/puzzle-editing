@@ -330,14 +330,14 @@ function isFormerTesterOnPuzzle($uid, $pid) {
     return isRelatedBy("former_tester_links", $uid, $pid);
 }
 function isSpoiledOnPuzzle($uid, $pid) {
-    return isRelatedBy("spoiled", $uid, $pid);
+    return isRelatedBy("spoiled_user_links", $uid, $pid);
 }
 function isTestingAdminOnPuzzle($uid, $pid) {
     return isRelatedBy("testAdminQueue", $uid, $pid);
 }
 
 function setFlag($uid, $pid, $value) {
-    $sql = sprintf("INSERT INTO user_puzzle_settings (pid, uid, flag) VALUES ('%s', '%s', '%s')
+    $sql = sprintf("INSERT INTO flagger_links (pid, uid, flag) VALUES ('%s', '%s', '%s')
         ON DUPLICATE KEY UPDATE flag='%s'", mysql_real_escape_string($pid),
             mysql_real_escape_string($uid),
             mysql_real_escape_string($value),
@@ -346,13 +346,13 @@ function setFlag($uid, $pid, $value) {
 }
 
 function getFlag($uid, $pid) {
-    $sql = sprintf("SELECT flag FROM user_puzzle_settings WHERE pid='%s' AND uid='%s'",
+    $sql = sprintf("SELECT flag FROM flagger_links WHERE pid='%s' AND uid='%s'",
         mysql_real_escape_string($pid), mysql_real_escape_string($uid));
     return get_element_null($sql);
 }
 
 function getFlaggedPuzzles($uid) {
-    $sql = sprintf("SELECT pid FROM user_puzzle_settings WHERE uid='%s' AND flag",
+    $sql = sprintf("SELECT pid FROM flagger_links WHERE uid='%s' AND flag",
         mysql_real_escape_string($uid));
     return get_elements($sql);
 }
@@ -361,8 +361,8 @@ function updateLastVisit($uid, $pid) {
     // Get previous visit time
     $lastVisit = getLastVisit($uid, $pid);
 
-    // Store this visit in last_visit table
-    $sql = sprintf("INSERT INTO last_visit (pid, uid, date) VALUES ('%s', '%s', NOW())
+    // Store this visit in visitor_links table
+    $sql = sprintf("INSERT INTO visitor_links (pid, uid, date) VALUES ('%s', '%s', NOW())
         ON DUPLICATE KEY UPDATE date=NOW()", mysql_real_escape_string($pid),
             mysql_real_escape_string($uid));
     query_db($sql);
@@ -371,7 +371,7 @@ function updateLastVisit($uid, $pid) {
 }
 
 function getLastVisit($uid, $pid) {
-    $sql = sprintf("SELECT date FROM last_visit WHERE pid='%s' AND uid='%s'",
+    $sql = sprintf("SELECT date FROM visitor_links WHERE pid='%s' AND uid='%s'",
         mysql_real_escape_string($pid), mysql_real_escape_string($uid));
     return get_element_null($sql);
 }
@@ -509,7 +509,7 @@ function changeTags($uid, $pid, $add, $remove) {
 }
 
 function getSpoiledUsersForPuzzle($pid) {
-    return getUsersForPuzzle("spoiled", $pid);
+    return getUsersForPuzzle("spoiled_user_links", $pid);
 }
 
 function getFactcheckersForPuzzle($pid) {
@@ -606,7 +606,7 @@ function getCurrentTestersAsList($pid) {
 }
 
 function getSpoiledAsList($pid) {
-    return getUserNamesAsList("spoiled", $pid);
+    return getUserNamesAsList("spoiled_user_links", $pid);
 }
 
 function getFactcheckersAsList($pid) {
@@ -1342,7 +1342,7 @@ function removeSpoiledUser($uid, $pid, $removeUser) {
         if (!isSpoiledOnPuzzle($user, $pid)) {
             utilsError(getUserName($user) . " is not spoiled on puzzle $pid.");
         }
-        $sql = sprintf("DELETE FROM spoiled WHERE uid='%s' AND pid='%s'",
+        $sql = sprintf("DELETE FROM spoiled_user_links WHERE uid='%s' AND pid='%s'",
             mysql_real_escape_string($user), mysql_real_escape_string($pid));
         query_db($sql);
 
@@ -1437,7 +1437,7 @@ function addSpoiledUser($uid, $pid, $addUser) {
             utilsError(getUserName($user) . " is not spoilable on puzzle $pid.");
         }
 
-        $sql = sprintf("INSERT INTO spoiled (pid, uid) VALUE ('%s', '%s')",
+        $sql = sprintf("INSERT INTO spoiled_user_links (pid, uid) VALUE ('%s', '%s')",
             mysql_real_escape_string($pid), mysql_real_escape_string($user));
         query_db($sql);
 
@@ -1463,7 +1463,7 @@ function addSpoiledUser($uid, $pid, $addUser) {
 
 function addSpoiledUserQuietly($uid, $pid) {
     if (!isSpoiledOnPuzzle($uid, $pid)) {
-        $sql = sprintf("INSERT INTO spoiled (pid, uid) VALUE ('%s', '%s')",
+        $sql = sprintf("INSERT INTO spoiled_user_links (pid, uid) VALUE ('%s', '%s')",
             mysql_real_escape_string($pid), mysql_real_escape_string($uid));
         query_db($sql);
     }
@@ -2126,25 +2126,25 @@ function getTestsolveRequestsForPuzzle($pid) {
 }
 
 function getPuzzApprovals($pid) {
-    $sql = sprintf("SELECT fullname, approve from users, puzzle_approve where pid='%s' AND puzzle_approve.uid = users.uid", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT fullname, approve from users, approver_links where pid='%s' AND approver_links.uid = users.uid", mysql_real_escape_string($pid));
     return get_assoc_array($sql, "fullname", "approve");
 }
 
 function countPuzzApprovals($pid) {
-    $sql = sprintf("SELECT count(*) from puzzle_approve where pid='%s' AND approve='1'",
+    $sql = sprintf("SELECT count(*) from approver_links where pid='%s' AND approve='1'",
         mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
 function flushPuzzApprovals($pid) {
     //this function should get called after any puzzle state-change
-    $sql = sprintf("DELETE from puzzle_approve WHERE pid = %s", mysql_real_escape_string($pid));
+    $sql = sprintf("DELETE from approver_links WHERE pid = %s", mysql_real_escape_string($pid));
     $result = query_db($sql);
     return $result;
 }
 
 function setPuzzApprove($uid, $pid, $approve) {
-    $sql = sprintf("INSERT INTO puzzle_approve (uid, pid, approve) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE approve = %s",
+    $sql = sprintf("INSERT INTO approver_links (uid, pid, approve) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE approve = %s",
         mysql_real_escape_string($uid), mysql_real_escape_string($pid),
         mysql_real_escape_string($approve), mysql_real_escape_string($approve));;
 
@@ -2686,7 +2686,7 @@ function getPuzzlesForFactchecker($uid) {
 }
 
 function getSpoiledPuzzles($uid) {
-    $sql = sprintf("SELECT pid FROM spoiled WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT pid FROM spoiled_user_links WHERE uid='%s'", mysql_real_escape_string($uid));
     $puzzles = get_elements($sql);
 
     return sortByLastCommentDate($puzzles);
@@ -3162,7 +3162,7 @@ function sqlUserNotRelatedClause($table, $uid) {
 
 function getAvailablePuzzlesToFFCForUser($uid) {
     $sql = sprintf("SELECT puzzles.id FROM puzzles INNER JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1' AND NOT EXISTS (SELECT 1 FROM factchecker_links WHERE factchecker_links.pid=puzzles.id) AND %s AND %s AND %s",
-        sqlUserNotRelatedClause('spoiled', $uid),
+        sqlUserNotRelatedClause('spoiled_user_links', $uid),
         sqlUserNotRelatedClause('test_queue', $uid),
         sqlUserNotRelatedClause('former_tester_links', $uid));
     $puzzles = get_elements($sql);
@@ -3428,7 +3428,7 @@ function getNumberOfPuzzlesForUser($uid) {
     $numbers['author']        = countPuzzlesForUser('author_links',        $uid);
     $numbers['editor']        = countPuzzlesForUser('editor_links',   $uid);
     $numbers['approver']      = countPuzzlesForUser('approver_queue', $uid);
-    $numbers['spoiled']       = countPuzzlesForUser('spoiled',        $uid);
+    $numbers['spoiled']       = countPuzzlesForUser('spoiled_user_links',        $uid);
     $numbers['currentTester'] = countPuzzlesForUser('test_queue',     $uid);
     $numbers['doneTester']    = countPuzzlesForUser('former_tester_links',    $uid);
     $numbers['available']     = hasEditorPermission($uid) ? countAvailablePuzzlesForEditor($uid) : 0;
@@ -3637,7 +3637,7 @@ function setPuzzleTestTeam($pid, $tid) {
 }
 
 function markUnseen($uid, $pid) {
-    $sql = sprintf("INSERT INTO last_visit (pid, uid, date) VALUES ('%s', '%s', 'NULL')
+    $sql = sprintf("INSERT INTO visitor_links (pid, uid, date) VALUES ('%s', '%s', 'NULL')
         ON DUPLICATE KEY UPDATE date='NULL'", mysql_real_escape_string($pid),
             mysql_real_escape_string($uid));
     query_db($sql);

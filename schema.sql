@@ -305,13 +305,13 @@ LOCK TABLES `user_role` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `last_visit`
+-- Table structure for table `visitor_links`
 --
 
-DROP TABLE IF EXISTS `last_visit`;
+DROP TABLE IF EXISTS `visitor_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `last_visit` (
+CREATE TABLE `visitor_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `date` datetime NOT NULL,
@@ -320,22 +320,22 @@ CREATE TABLE `last_visit` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `last_visit`
+-- Dumping data for table `visitor_links`
 --
 
-LOCK TABLES `last_visit` WRITE;
-/*!40000 ALTER TABLE `last_visit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `last_visit` ENABLE KEYS */;
+LOCK TABLES `visitor_links` WRITE;
+/*!40000 ALTER TABLE `visitor_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `visitor_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_puzzle_settings`
+-- Table structure for table `flagger_links`
 --
 
-DROP TABLE IF EXISTS `user_puzzle_settings`;
+DROP TABLE IF EXISTS `flagger_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_puzzle_settings` (
+CREATE TABLE `flagger_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `flag` tinyint(1) NOT NULL DEFAULT 0,
@@ -344,12 +344,12 @@ CREATE TABLE `user_puzzle_settings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_puzzle_settings`
+-- Dumping data for table `flagger_links`
 --
 
-LOCK TABLES `user_puzzle_settings` WRITE;
-/*!40000 ALTER TABLE `user_puzzle_settings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_puzzle_settings` ENABLE KEYS */;
+LOCK TABLES `flagger_links` WRITE;
+/*!40000 ALTER TABLE `flagger_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `flagger_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -448,13 +448,13 @@ INSERT INTO `pstatus` VALUES (1,'Initial Idea',1,0,1,1,0,0,0,0),(2,'In Testing',
 UNLOCK TABLES;
 
 --
--- Table structure for table `puzzle_approve`
+-- Table structure for table `approver_links`
 --
 
-DROP TABLE IF EXISTS `puzzle_approve`;
+DROP TABLE IF EXISTS `approver_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `puzzle_approve` (
+CREATE TABLE `approver_links` (
   `pid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
   `approve` smallint(6) NOT NULL,
@@ -463,12 +463,12 @@ CREATE TABLE `puzzle_approve` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `puzzle_approve`
+-- Dumping data for table `approver_links`
 --
 
-LOCK TABLES `puzzle_approve` WRITE;
-/*!40000 ALTER TABLE `puzzle_approve` DISABLE KEYS */;
-/*!40000 ALTER TABLE `puzzle_approve` ENABLE KEYS */;
+LOCK TABLES `approver_links` WRITE;
+/*!40000 ALTER TABLE `approver_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `approver_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -556,13 +556,13 @@ LOCK TABLES `rounds` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `spoiled`
+-- Table structure for table `spoiled_user_links`
 --
 
-DROP TABLE IF EXISTS `spoiled`;
+DROP TABLE IF EXISTS `spoiled_user_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `spoiled` (
+CREATE TABLE `spoiled_user_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`pid`,`uid`)
@@ -570,12 +570,12 @@ CREATE TABLE `spoiled` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `spoiled`
+-- Dumping data for table `spoiled_user_links`
 --
 
-LOCK TABLES `spoiled` WRITE;
-/*!40000 ALTER TABLE `spoiled` DISABLE KEYS */;
-/*!40000 ALTER TABLE `spoiled` ENABLE KEYS */;
+LOCK TABLES `spoiled_user_links` WRITE;
+/*!40000 ALTER TABLE `spoiled_user_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `spoiled_user_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
