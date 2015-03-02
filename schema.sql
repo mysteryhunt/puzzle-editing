@@ -602,13 +602,13 @@ LOCK TABLES `test_admin_links` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `test_call`
+-- Table structure for table `test_oncalls`
 --
 
-DROP TABLE IF EXISTS `test_call`;
+DROP TABLE IF EXISTS `test_oncalls`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `test_call` (
+CREATE TABLE `test_oncalls` (
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   `on_call` int(11) NOT NULL COMMENT 'User ID of Editor on Call',
   `put_by` int(11) NOT NULL COMMENT 'User ID who Put Editor on Call',
@@ -617,12 +617,12 @@ CREATE TABLE `test_call` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `test_call`
+-- Dumping data for table `test_oncalls`
 --
 
-LOCK TABLES `test_call` WRITE;
-/*!40000 ALTER TABLE `test_call` DISABLE KEYS */;
-/*!40000 ALTER TABLE `test_call` ENABLE KEYS */;
+LOCK TABLES `test_oncalls` WRITE;
+/*!40000 ALTER TABLE `test_oncalls` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_oncalls` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
