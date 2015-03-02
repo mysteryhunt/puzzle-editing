@@ -87,13 +87,13 @@ LOCK TABLES `answer_round` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `authors`
+-- Table structure for table `author_links`
 --
 
-DROP TABLE IF EXISTS `authors`;
+DROP TABLE IF EXISTS `author_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `authors` (
+CREATE TABLE `author_links` (
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   `uid` int(11) NOT NULL COMMENT 'Author User ID',
   PRIMARY KEY (`pid`,`uid`)
@@ -101,12 +101,12 @@ CREATE TABLE `authors` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `authors`
+-- Dumping data for table `author_links`
 --
 
-LOCK TABLES `authors` WRITE;
-/*!40000 ALTER TABLE `authors` DISABLE KEYS */;
-/*!40000 ALTER TABLE `authors` ENABLE KEYS */;
+LOCK TABLES `author_links` WRITE;
+/*!40000 ALTER TABLE `author_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `author_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

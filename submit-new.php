@@ -48,14 +48,14 @@ if (isset($_POST) && isset($_POST['newIdea'])) {
         mysql_real_escape_string($cleanSummary), mysql_real_escape_string($cleanDescription));
     $id = get_element($sql);
 
-    $sql = sprintf("INSERT INTO authors (pid, uid) VALUES ('%s', '%s')",
+    $sql = sprintf("INSERT INTO author_links (pid, uid) VALUES ('%s', '%s')",
         mysql_real_escape_string($id),
         mysql_real_escape_string($uid));
     query_db($sql);
 
     foreach ($coauthors as $author) {
         if ($author != $uid) {
-            $sql = sprintf("INSERT INTO authors (pid, uid) VALUES ('%s', '%s')",
+            $sql = sprintf("INSERT INTO author_links (pid, uid) VALUES ('%s', '%s')",
                 mysql_real_escape_string($id),
                 mysql_real_escape_string($author));
             query_db($sql);
