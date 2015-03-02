@@ -315,7 +315,7 @@ function isRoundCaptainOnPuzzle($uid, $pid) {
     return isRelatedBy("round_captain_queue", $uid, $pid);
 }
 function isEditorOnPuzzle($uid, $pid) {
-    return isRelatedBy("editor_queue", $uid, $pid);
+    return isRelatedBy("editor_links", $uid, $pid);
 }
 function isApproverOnPuzzle($uid, $pid) {
     return isRelatedBy("approver_queue", $uid, $pid);
@@ -415,7 +415,7 @@ function getRoundCaptainsForPuzzle($pid) {
 }
 
 function getEditorsForPuzzle($pid) {
-    return getUsersForPuzzle("editor_queue", $pid);
+    return getUsersForPuzzle("editor_links", $pid);
 }
 
 function getApproversForPuzzle($pid) {
@@ -558,7 +558,7 @@ function getRoundCaptainsAsList($pid) {
 }
 
 function getEditorsAsList($pid) {
-    return getUserNamesAsList("editor_queue", $pid);
+    return getUserNamesAsList("editor_links", $pid);
 }
 
 function getNeededEditors($pid) {
@@ -581,7 +581,7 @@ function getPriority($pid) {
 }
 
 function getEditorStatus($pid) {
-    $sql = sprintf("SELECT users.fullname FROM users INNER JOIN editor_queue ON users.uid=editor_queue.uid WHERE editor_queue.pid='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT users.fullname FROM users INNER JOIN editor_links ON users.uid=editor_links.uid WHERE editor_links.pid='%s'", mysql_real_escape_string($pid));
     $eds = get_elements($sql);
     $need = getNeededEditors($pid); // warning: total needed, not additional
     $edc = count($eds);
@@ -1151,7 +1151,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $i
 
 // Get uids of all users subscribed to receive email comments about this puzzle
 function getSubbed($pid) {
-    $sql = sprintf("SELECT uid FROM email_sub WHERE pid='%s'",
+    $sql = sprintf("SELECT uid FROM subscriber_links WHERE pid='%s'",
         mysql_real_escape_string($pid));
     return get_elements($sql);
 }
@@ -1822,7 +1822,7 @@ function addEditors($uid, $pid, $add) {
         }
 
         // Add editor to puzzle
-        $sql = sprintf("INSERT INTO editor_queue (uid, pid) VALUES ('%s', '%s')",
+        $sql = sprintf("INSERT INTO editor_links (uid, pid) VALUES ('%s', '%s')",
             mysql_real_escape_string($editor), mysql_real_escape_string($pid));
         query_db($sql);
 
@@ -1879,7 +1879,7 @@ function removeEditorKill($uid, $pid, $editor) {
 
     $comment = 'Removed ';
     // Remove editor from puzzle
-    $sql = sprintf("DELETE FROM editor_queue WHERE uid='%s' AND pid='%s'",
+    $sql = sprintf("DELETE FROM editor_links WHERE uid='%s' AND pid='%s'",
         mysql_real_escape_string($editor), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -1921,7 +1921,7 @@ function removeEditors($uid, $pid, $remove) {
             utilsError(getUserName($editor) . " is not a discussion editor on puzzle $pid");
         }
         // Remove editor from puzzle
-        $sql = sprintf("DELETE FROM editor_queue WHERE uid='%s' AND pid='%s'",
+        $sql = sprintf("DELETE FROM editor_links WHERE uid='%s' AND pid='%s'",
             mysql_real_escape_string($editor), mysql_real_escape_string($pid));
         query_db($sql);
 
@@ -2222,7 +2222,7 @@ function getApprovalEditorStats() {
 }
 
 function getDiscussionEditorStats() {
-    return getRoleStats('editor_queue', '4');
+    return getRoleStats('editor_links', '4');
 }
 
 function getAuthorStats() {
@@ -2589,19 +2589,19 @@ function getTestFeedComments() {
 }
 
 function isSubbedOnPuzzle($uid, $pid) {
-    $sql = sprintf("SELECT 1 FROM email_sub WHERE uid='%s' AND pid='%s'",
+    $sql = sprintf("SELECT 1 FROM subscriber_links WHERE uid='%s' AND pid='%s'",
         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
     return has_result($sql);
 }
 
 function subscribe($uid, $pid) {
-    $sql = sprintf("REPLACE INTO email_sub (uid, pid) VALUES ('%s', '%s')",
+    $sql = sprintf("REPLACE INTO subscriber_links (uid, pid) VALUES ('%s', '%s')",
         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
     query_db($sql);
 }
 
 function unsubscribe($uid, $pid) {
-    $sql = sprintf("DELETE FROM email_sub WHERE uid='%s' AND pid='%s'",
+    $sql = sprintf("DELETE FROM subscriber_links WHERE uid='%s' AND pid='%s'",
         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
     query_db($sql);
 }
@@ -2708,12 +2708,12 @@ function getLastTestReportDate($pid) {
 }
 
 function getNumEditors($pid) {
-    $sql = sprintf("SELECT puzzles.id, COUNT(editor_queue.uid) FROM puzzles
-        LEFT JOIN editor_queue ON puzzles.id=editor_queue.pid
+    $sql = sprintf("SELECT puzzles.id, COUNT(editor_links.uid) FROM puzzles
+        LEFT JOIN editor_links ON puzzles.id=editor_links.pid
         WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
     $result = get_row($sql);
 
-    return $result['COUNT(editor_queue.uid)'];
+    return $result['COUNT(editor_links.uid)'];
 
 }
 
@@ -2748,7 +2748,7 @@ function getPuzzlesInPostprodAndLater() {
 }
 
 function getPuzzlesInEditorQueue($uid) {
-    $sql = sprintf("SELECT pid FROM editor_queue WHERE uid='%s'",
+    $sql = sprintf("SELECT pid FROM editor_links WHERE uid='%s'",
         mysql_real_escape_string($uid));
     $puzzles = get_elements($sql);
 
@@ -2883,7 +2883,7 @@ function getNewPuzzleForEditor($uid) {
 
 function addPuzzleToEditorQueue($uid, $pid) {
     mysql_query('START TRANSACTION');
-    $sql = sprintf("INSERT INTO editor_queue (uid, pid) VALUES ('%s', '%s')",
+    $sql = sprintf("INSERT INTO editor_links (uid, pid) VALUES ('%s', '%s')",
         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -3112,14 +3112,14 @@ function isPuzzleInPostprod($pid) {
 }
 
 function getPuzzlesNeedingEditors() {
-    $sql = "SELECT puzzle from (SELECT count(editor_queue.uid) num_editors, puzzles.id puzzle, puzzles.needed_editors need FROM puzzles LEFT JOIN editor_queue ON puzzles.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < need";
+    $sql = "SELECT puzzle from (SELECT count(editor_links.uid) num_editors, puzzles.id puzzle, puzzles.needed_editors need FROM puzzles LEFT JOIN editor_links ON puzzles.id=editor_links.pid GROUP by puzzle) puzzle_count where num_editors < need";
     $puzzles = get_elements($sql);
 
     return sortByNumEditors($puzzles);
 }
 
 function getPuzzlesNeedingSpecialEditors() {
-    $sql = "SELECT puzzle from (SELECT count(editor_queue.uid) num_editors, puzzles.id puzzle, puzzles.needed_editors need FROM puzzles LEFT JOIN editor_queue ON puzzles.id=editor_queue.pid WHERE notes != '' AND notes NOT LIKE '%Draft by %' GROUP by puzzle) puzzle_count where num_editors < need";
+    $sql = "SELECT puzzle from (SELECT count(editor_links.uid) num_editors, puzzles.id puzzle, puzzles.needed_editors need FROM puzzles LEFT JOIN editor_links ON puzzles.id=editor_links.pid WHERE notes != '' AND notes NOT LIKE '%Draft by %' GROUP by puzzle) puzzle_count where num_editors < need";
     $puzzles = get_elements($sql);
 
     return sortByNumEditors($puzzles);
@@ -3377,7 +3377,7 @@ function getRoundDictForPuzzle($pid) {
 
 function getNumberOfEditorsOnPuzzles($type) {
     if ($type == "discuss") {
-        $queue = "editor_queue";
+        $queue = "editor_links";
     } else {
         $queue = "approver_queue";
     }
@@ -3418,7 +3418,7 @@ function countAvailablePuzzlesForEditor($uid) {
     $deadpuzzleid = getDeadStatusId();
     $sql = sprintf("SELECT COUNT(*) FROM puzzles WHERE puzzles.pstatus != $deadpuzzleid AND %s AND %s AND %s AND %s",
         sqlUserNotRelatedClause('author_links',        $uid),
-        sqlUserNotRelatedClause('editor_queue',   $uid),
+        sqlUserNotRelatedClause('editor_links',   $uid),
         sqlUserNotRelatedClause('approver_queue', $uid),
         sqlUserNotRelatedClause('test_queue',     $uid));
     return get_element($sql);
@@ -3426,7 +3426,7 @@ function countAvailablePuzzlesForEditor($uid) {
 
 function getNumberOfPuzzlesForUser($uid) {
     $numbers['author']        = countPuzzlesForUser('author_links',        $uid);
-    $numbers['editor']        = countPuzzlesForUser('editor_queue',   $uid);
+    $numbers['editor']        = countPuzzlesForUser('editor_links',   $uid);
     $numbers['approver']      = countPuzzlesForUser('approver_queue', $uid);
     $numbers['spoiled']       = countPuzzlesForUser('spoiled',        $uid);
     $numbers['currentTester'] = countPuzzlesForUser('test_queue',     $uid);

@@ -187,13 +187,13 @@ LOCK TABLES `former_tester_links` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `editor_queue`
+-- Table structure for table `editor_links`
 --
 
-DROP TABLE IF EXISTS `editor_queue`;
+DROP TABLE IF EXISTS `editor_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `editor_queue` (
+CREATE TABLE `editor_links` (
   `uid` int(11) NOT NULL COMMENT 'User ID of Editor',
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   PRIMARY KEY (`pid`,`uid`)
@@ -201,12 +201,12 @@ CREATE TABLE `editor_queue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `editor_queue`
+-- Dumping data for table `editor_links`
 --
 
-LOCK TABLES `editor_queue` WRITE;
-/*!40000 ALTER TABLE `editor_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `editor_queue` ENABLE KEYS */;
+LOCK TABLES `editor_links` WRITE;
+/*!40000 ALTER TABLE `editor_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `editor_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -235,13 +235,13 @@ LOCK TABLES `email_outbox` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `email_sub`
+-- Table structure for table `subscriber_links`
 --
 
-DROP TABLE IF EXISTS `email_sub`;
+DROP TABLE IF EXISTS `subscriber_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `email_sub` (
+CREATE TABLE `subscriber_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`pid`)
@@ -249,12 +249,12 @@ CREATE TABLE `email_sub` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `email_sub`
+-- Dumping data for table `subscriber_links`
 --
 
-LOCK TABLES `email_sub` WRITE;
-/*!40000 ALTER TABLE `email_sub` DISABLE KEYS */;
-/*!40000 ALTER TABLE `email_sub` ENABLE KEYS */;
+LOCK TABLES `subscriber_links` WRITE;
+/*!40000 ALTER TABLE `subscriber_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `subscriber_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
