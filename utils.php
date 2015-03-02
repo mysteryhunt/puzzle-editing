@@ -324,7 +324,7 @@ function isTesterOnPuzzle($uid, $pid) {
     return isRelatedBy("test_queue", $uid, $pid);
 }
 function isFactcheckerOnPuzzle($uid, $pid) {
-    return isRelatedBy("factcheck_queue", $uid, $pid);
+    return isRelatedBy("factchecker_links", $uid, $pid);
 }
 function isFormerTesterOnPuzzle($uid, $pid) {
     return isRelatedBy("former_tester_links", $uid, $pid);
@@ -513,7 +513,7 @@ function getSpoiledUsersForPuzzle($pid) {
 }
 
 function getFactcheckersForPuzzle($pid) {
-    return getUsersForPuzzle("factcheck_queue", $pid);
+    return getUsersForPuzzle("factchecker_links", $pid);
 }
 
 function getTestAdminsToNotify($pid) {
@@ -610,7 +610,7 @@ function getSpoiledAsList($pid) {
 }
 
 function getFactcheckersAsList($pid) {
-    return getUserNamesAsList("factcheck_queue", $pid);
+    return getUserNamesAsList("factchecker_links", $pid);
 }
 
 function getFinishedTestersAsList($pid) {
@@ -1548,7 +1548,7 @@ function addFactcheckers($uid, $pid, $add) {
         }
 
         // Add factchecker to puzzle
-        $sql = sprintf("INSERT INTO factcheck_queue (pid, uid) VALUE ('%s', '%s')",
+        $sql = sprintf("INSERT INTO factchecker_links (pid, uid) VALUE ('%s', '%s')",
             mysql_real_escape_string($pid), mysql_real_escape_string($fc));
         query_db($sql);
 
@@ -1593,7 +1593,7 @@ function removeFactcheckers($uid, $pid, $remove) {
             utilsError(getUserName($fc) . " is not a factchecker on to puzzle $pid");
         }
         // Remove factchecker from puzzle
-        $sql = sprintf("DELETE FROM factcheck_queue WHERE uid='%s' AND pid='%s'",
+        $sql = sprintf("DELETE FROM factchecker_links WHERE uid='%s' AND pid='%s'",
             mysql_real_escape_string($fc), mysql_real_escape_string($pid));
         query_db($sql);
 
@@ -2679,7 +2679,7 @@ function getPuzzlesForAuthor($uid) {
 }
 
 function getPuzzlesForFactchecker($uid) {
-    $sql = sprintf("SELECT pid FROM factcheck_queue WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT pid FROM factchecker_links WHERE uid='%s'", mysql_real_escape_string($uid));
     $puzzles = get_elements($sql);
 
     return sortByLastCommentDate($puzzles);
@@ -3143,14 +3143,14 @@ function getPuzzlesNeedingApprovers($uid) {
 }
 
 function getUnclaimedPuzzlesInFactChecking() {
-    $sql = "SELECT puzzles.id FROM pstatus, puzzles LEFT JOIN factcheck_queue ON puzzles.id=factcheck_queue.pid WHERE puzzles.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.uid IS NULL";
+    $sql = "SELECT puzzles.id FROM pstatus, puzzles LEFT JOIN factchecker_links ON puzzles.id=factchecker_links.pid WHERE puzzles.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factchecker_links.uid IS NULL";
     $puzzles = get_elements($sql);
 
     return sortByLastCommentDate($puzzles);
 }
 
 function getClaimedPuzzlesInFactChecking() {
-    $sql = "SELECT puzzles.id FROM puzzles, pstatus, factcheck_queue WHERE puzzles.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.pid=puzzles.id";
+    $sql = "SELECT puzzles.id FROM puzzles, pstatus, factchecker_links WHERE puzzles.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factchecker_links.pid=puzzles.id";
     $puzzles = get_elements($sql);
 
     return sortByLastCommentDate($puzzles);
@@ -3161,7 +3161,7 @@ function sqlUserNotRelatedClause($table, $uid) {
 }
 
 function getAvailablePuzzlesToFFCForUser($uid) {
-    $sql = sprintf("SELECT puzzles.id FROM puzzles INNER JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1' AND NOT EXISTS (SELECT 1 FROM factcheck_queue WHERE factcheck_queue.pid=puzzles.id) AND %s AND %s AND %s",
+    $sql = sprintf("SELECT puzzles.id FROM puzzles INNER JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1' AND NOT EXISTS (SELECT 1 FROM factchecker_links WHERE factchecker_links.pid=puzzles.id) AND %s AND %s AND %s",
         sqlUserNotRelatedClause('spoiled', $uid),
         sqlUserNotRelatedClause('test_queue', $uid),
         sqlUserNotRelatedClause('former_tester_links', $uid));
@@ -3478,7 +3478,7 @@ function addToFactcheckQueue($uid, $pid) {
         return FALSE;
     }
 
-    $sql = sprintf("INSERT INTO factcheck_queue (uid, pid) VALUES ('%s', '%s')",
+    $sql = sprintf("INSERT INTO factchecker_links (uid, pid) VALUES ('%s', '%s')",
         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
     query_db($sql);
     // Subscribe factcheckers to comments on their puzzles

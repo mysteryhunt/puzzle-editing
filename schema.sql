@@ -258,13 +258,13 @@ LOCK TABLES `subscriber_links` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `factcheck_queue`
+-- Table structure for table `factchecker_links`
 --
 
-DROP TABLE IF EXISTS `factcheck_queue`;
+DROP TABLE IF EXISTS `factchecker_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `factcheck_queue` (
+CREATE TABLE `factchecker_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   KEY `uid` (`uid`),
@@ -273,12 +273,12 @@ CREATE TABLE `factcheck_queue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `factcheck_queue`
+-- Dumping data for table `factchecker_links`
 --
 
-LOCK TABLES `factcheck_queue` WRITE;
-/*!40000 ALTER TABLE `factcheck_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `factcheck_queue` ENABLE KEYS */;
+LOCK TABLES `factchecker_links` WRITE;
+/*!40000 ALTER TABLE `factchecker_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `factchecker_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
