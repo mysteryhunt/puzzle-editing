@@ -66,8 +66,9 @@ projects like MAMP to help set up your computer with these things.
     - Create a puzzletron database
     - Grant the puzzletron user access to that database
 
+```
           mysql -u <mysqlusername> -s <servername> -p <databasename> < schema.sql
-
+```
       (enter password for the puzzletron DB user when prompted)
 
 - Copy `dotenv.example` to `.env` and edit
