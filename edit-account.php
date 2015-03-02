@@ -84,7 +84,7 @@ $data = getPerson($uid);
         </tr>
 <?php
 // Start by getting the list of rows of user_info_keys into arrays.
-$sql = "SELECT id, shortname, longname FROM user_info_key";
+$sql = "SELECT id, shortname, longname FROM user_info_keys";
 $result = get_rows($sql);
 foreach ($result as $r) {
     $shortname = $r['shortname'];
@@ -149,7 +149,7 @@ function editAccount($uid) {
         $failed = 1;
     }
 
-    $sql = sprintf("SELECT id, shortname, longname FROM user_info_key");
+    $sql = sprintf("SELECT id, shortname, longname FROM user_info_keys");
     $result = get_rows($sql);
     if (!$result) {
         $failed = 1;

@@ -812,13 +812,13 @@ LOCK TABLES `users` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_info_key`
+-- Table structure for table `user_info_keys`
 --
 
-DROP TABLE IF EXISTS `user_info_key`;
+DROP TABLE IF EXISTS `user_info_keys`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_info_key` (
+CREATE TABLE `user_info_keys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shortname` varchar(255) NOT NULL,
   `longname` varchar(255) NOT NULL,
@@ -827,13 +827,13 @@ CREATE TABLE `user_info_key` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_info_key`
+-- Dumping data for table `user_info_keys`
 --
 
-LOCK TABLES `user_info_key` WRITE;
-/*!40000 ALTER TABLE `user_info_key` DISABLE KEYS */;
-INSERT INTO `user_info_key` VALUES (3,'location','Location'),(4,'phone','Phone Number'),(6,'expertise','What are your areas of interest and/or expertise?'),(7,'favorite','What are your favorite puzzle types?');
-/*!40000 ALTER TABLE `user_info_key` ENABLE KEYS */;
+LOCK TABLES `user_info_keys` WRITE;
+/*!40000 ALTER TABLE `user_info_keys` DISABLE KEYS */;
+INSERT INTO `user_info_keys` VALUES (3,'location','Location'),(4,'phone','Phone Number'),(6,'expertise','What are your areas of interest and/or expertise?'),(7,'favorite','What are your favorite puzzle types?');
+/*!40000 ALTER TABLE `user_info_keys` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

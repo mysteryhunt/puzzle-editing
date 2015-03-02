@@ -182,7 +182,7 @@ function printPerson($p) {
             <span class="profiletitle"><?php echo $jobNames; ?></span>
             <span class="profilecontact"><a href="mailto:<?php echo $email ?>"><?php echo $email ?></a></span>
 <?php
-    $sql = "SELECT * FROM user_info_key";
+    $sql = "SELECT * FROM user_info_keys";
     $result = get_rows($sql);
     foreach ($result as $r) {
         $shortname = $r['shortname'];
