@@ -423,32 +423,32 @@ function getApproversForPuzzle($pid) {
 }
 
 function validTag($id) {
-    $sql = sprintf("SELECT 1 FROM tag_names WHERE id='%s'", mysql_real_escape_string($id));
+    $sql = sprintf("SELECT 1 FROM tags WHERE id='%s'", mysql_real_escape_string($id));
     return has_result($sql);
 }
 
 function getTagsAsList($pid) {
     // This is only called from the below functions, where $table is a hardcoded string
-    $sql = sprintf("SELECT tag_names.name FROM tag_names INNER JOIN puzzle_tags ON tag_names.id=puzzle_tags.tid WHERE puzzle_tags.pid='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT tags.name FROM tags INNER JOIN puzzle_tag ON tags.id=puzzle_tag.tid WHERE puzzle_tag.pid='%s'", mysql_real_escape_string($pid));
     $tags = get_elements($sql);
 
     return ($tags ? implode(", ", $tags) : "<span class='emptylist'>(none)</span>" );
 }
 
 function getTagsForPuzzle($pid) {
-    $sql = sprintf("SELECT tag_names.id, tag_names.name FROM tag_names INNER JOIN puzzle_tags ON tag_names.id=puzzle_tags.tid WHERE puzzle_tags.pid='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT tags.id, tags.name FROM tags INNER JOIN puzzle_tag ON tags.id=puzzle_tag.tid WHERE puzzle_tag.pid='%s'", mysql_real_escape_string($pid));
     return get_assoc_array($sql, "id", "name");
 }
 
 function isTagOnPuzzle($tid, $pid) {
-    $sql = sprintf("SELECT 1 FROM puzzle_tags WHERE pid='%s' AND tid='%s'",
+    $sql = sprintf("SELECT 1 FROM puzzle_tag WHERE pid='%s' AND tid='%s'",
         mysql_real_escape_string($pid), mysql_real_escape_string($tid));
     return has_result($sql);
 }
 
 function getAvailableTagsForPuzzle($pid) {
     // Get all tags
-    $sql = 'SELECT id, name FROM tag_names';
+    $sql = 'SELECT id, name FROM tags';
     $all_tags = get_assoc_array($sql, "id", "name");
 
     $tags = array();
@@ -461,7 +461,7 @@ function getAvailableTagsForPuzzle($pid) {
 }
 
 function getAllTags() {
-    $sql = 'SELECT id, name FROM tag_names';
+    $sql = 'SELECT id, name FROM tags';
     return get_assoc_array($sql, "id", "name");
 }
 
@@ -477,7 +477,7 @@ function addTags($uid, $pid, $add) {
             utilsError('Tag is not available.');
         }
 
-        $sql = sprintf("INSERT INTO puzzle_tags (pid, tid) VALUES ('%s', '%s')",
+        $sql = sprintf("INSERT INTO puzzle_tag (pid, tid) VALUES ('%s', '%s')",
             mysql_real_escape_string($pid), mysql_real_escape_string($tag));
         query_db($sql);
     }
@@ -495,7 +495,7 @@ function removeTags($uid, $pid, $remove) {
             utilsError('Tag is not available.');
         }
 
-        $sql = sprintf("DELETE FROM puzzle_tags WHERE pid='%s' AND tid='%s'",
+        $sql = sprintf("DELETE FROM puzzle_tag WHERE pid='%s' AND tid='%s'",
             mysql_real_escape_string($pid), mysql_real_escape_string($tag));
         query_db($sql);
     }
