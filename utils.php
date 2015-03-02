@@ -3590,7 +3590,7 @@ function displayTestingFeed() {
 }
 
 function getUserSolveTeam($uid) {
-    $sql = sprintf('SELECT testsolve_team.name FROM testsolve_team, user_testsolve_team WHERE user_testsolve_team.uid=%s AND user_testsolve_team.tid = testsolve_team.tid',
+    $sql = sprintf('SELECT testsolve_teams.name FROM testsolve_teams, user_testsolve_team WHERE user_testsolve_team.uid=%s AND user_testsolve_team.tid = testsolve_teams.tid',
         mysql_real_escape_string($uid));
     return(get_element_null($sql));
 }
@@ -3601,12 +3601,12 @@ function getUserTestTeamID($uid) {
 }
 
 function getTestTeams() {
-    $sql = "SELECT * FROM testsolve_team";
+    $sql = "SELECT * FROM testsolve_teams";
     return(get_rows($sql));
 }
 
 function getTestTeamName($tid) {
-    $sql = sprintf('SELECT name FROM testsolve_team WHERE tid=%s', mysql_real_escape_string($tid));
+    $sql = sprintf('SELECT name FROM testsolve_teams WHERE tid=%s', mysql_real_escape_string($tid));
     return(get_element_null($sql));
 }
 
@@ -3620,18 +3620,18 @@ function getTestTeamPuzzles($tid) {
     $sql = sprintf("SELECT pstatus.id FROM pstatus WHERE pstatus.inTesting = '1'");
     $testingstatusid = get_element($sql);
 
-    $sql = sprintf('SELECT pid FROM testsolve_team_queue, puzzles WHERE tid=%s AND puzzles.id = testsolve_team_queue.pid AND puzzles.pstatus = %s',
+    $sql = sprintf('SELECT pid FROM puzzle_testsolve_team, puzzles WHERE tid=%s AND puzzles.id = puzzle_testsolve_team.pid AND puzzles.pstatus = %s',
         mysql_real_escape_string($tid), mysql_real_escape_string($testingstatusid));
     return(get_elements($sql));
 }
 
 function getPuzzleTestTeam($pid) {
-    $sql = sprintf('SELECT tid FROM testsolve_team_queue WHERE pid=%s', mysql_real_escape_string($pid));
+    $sql = sprintf('SELECT tid FROM puzzle_testsolve_team WHERE pid=%s', mysql_real_escape_string($pid));
     return(get_element_null($sql));
 }
 
 function setPuzzleTestTeam($pid, $tid) {
-    $sql = sprintf('INSERT INTO testsolve_team_queue (pid, tid) VALUES(%s, %s) ON DUPLICATE KEY UPDATE tid=%s',
+    $sql = sprintf('INSERT INTO puzzle_testsolve_team (pid, tid) VALUES(%s, %s) ON DUPLICATE KEY UPDATE tid=%s',
                    mysql_real_escape_string($pid), mysql_real_escape_string($tid), mysql_real_escape_string($tid));
     query_db($sql);
 }

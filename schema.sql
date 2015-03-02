@@ -707,13 +707,13 @@ LOCK TABLES `testsolve_requests` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `testsolve_team`
+-- Table structure for table `testsolve_teams`
 --
 
-DROP TABLE IF EXISTS `testsolve_team`;
+DROP TABLE IF EXISTS `testsolve_teams`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `testsolve_team` (
+CREATE TABLE `testsolve_teams` (
   `tid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`tid`)
@@ -721,22 +721,22 @@ CREATE TABLE `testsolve_team` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `testsolve_team`
+-- Dumping data for table `testsolve_teams`
 --
 
-LOCK TABLES `testsolve_team` WRITE;
-/*!40000 ALTER TABLE `testsolve_team` DISABLE KEYS */;
-/*!40000 ALTER TABLE `testsolve_team` ENABLE KEYS */;
+LOCK TABLES `testsolve_teams` WRITE;
+/*!40000 ALTER TABLE `testsolve_teams` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testsolve_teams` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `testsolve_team_queue`
+-- Table structure for table `puzzle_testsolve_team`
 --
 
-DROP TABLE IF EXISTS `testsolve_team_queue`;
+DROP TABLE IF EXISTS `puzzle_testsolve_team`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `testsolve_team_queue` (
+CREATE TABLE `puzzle_testsolve_team` (
   `tid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`pid`),
@@ -745,12 +745,12 @@ CREATE TABLE `testsolve_team_queue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `testsolve_team_queue`
+-- Dumping data for table `puzzle_testsolve_team`
 --
 
-LOCK TABLES `testsolve_team_queue` WRITE;
-/*!40000 ALTER TABLE `testsolve_team_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `testsolve_team_queue` ENABLE KEYS */;
+LOCK TABLES `puzzle_testsolve_team` WRITE;
+/*!40000 ALTER TABLE `puzzle_testsolve_team` DISABLE KEYS */;
+/*!40000 ALTER TABLE `puzzle_testsolve_team` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
