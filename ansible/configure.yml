@@ -32,6 +32,8 @@
   roles:
     - role: web
       sudo: yes
+      post_max_size: 20M
+      upload_max_filesize: 20M
 #      apache_servername: "{{ hostname }}.{{ servers[server_group].domain }}"
       tags: [ setup ]
 
