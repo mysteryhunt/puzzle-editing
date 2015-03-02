@@ -2190,7 +2190,7 @@ function getAllAuthors() {
     return get_assoc_array("select users.uid, fullname from users, author_links where users.uid = author_links.uid group by uid", "uid", "fullname");
 }
 
-function getRoleStats($queue_table, $comment_types) {
+function getRoleStats($links_table, $comment_types) {
     $sql = sprintf("
         SELECT fullname, puzzle_count, comment_count, recent_comment_count
         FROM
@@ -2212,7 +2212,7 @@ function getRoleStats($queue_table, $comment_types) {
             USING (uid)
         WHERE puzzle_count > 0
         ORDER BY puzzle_count DESC, comment_count DESC
-        ", $queue_table, $comment_types, $comment_types);
+        ", $links_table, $comment_types, $comment_types);
     echo "<!-- $sql -->";
     return get_row_dicts($sql);
 }
