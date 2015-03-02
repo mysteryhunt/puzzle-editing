@@ -321,7 +321,7 @@ function isApproverOnPuzzle($uid, $pid) {
     return isRelatedBy("approver_queue", $uid, $pid);
 }
 function isTesterOnPuzzle($uid, $pid) {
-    return isRelatedBy("test_queue", $uid, $pid);
+    return isRelatedBy("tester_links", $uid, $pid);
 }
 function isFactcheckerOnPuzzle($uid, $pid) {
     return isRelatedBy("factchecker_links", $uid, $pid);
@@ -602,7 +602,7 @@ function getTestingAdminsForPuzzleAsList($pid) {
 }
 
 function getCurrentTestersAsList($pid) {
-    return getUserNamesAsList("test_queue", $pid);
+    return getUserNamesAsList("tester_links", $pid);
 }
 
 function getSpoiledAsList($pid) {
@@ -1289,7 +1289,7 @@ function getCurrentTestersAsEmailList($pid) {
 }
 
 function getCurrentTestersForPuzzle($pid) {
-    $sql = sprintf("SELECT uid FROM test_queue WHERE pid='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT uid FROM tester_links WHERE pid='%s'", mysql_real_escape_string($pid));
     $result = get_elements($sql);
 
     $testers = array();
@@ -2287,7 +2287,7 @@ function changePuzzleStatus($uid, $pid, $status) {
     if ($inTesting_before == "1" && $inTesting_after == "0") {
         //              echo "<br>inTesting changed from yes to no<br>";
         // For every user that was testing this puzzle, mark the puzzle as doneTesting
-        $sql = sprintf("SELECT uid FROM test_queue WHERE pid = '%s'", mysql_real_escape_string($pid));
+        $sql = sprintf("SELECT uid FROM tester_links WHERE pid = '%s'", mysql_real_escape_string($pid));
         query_db($sql);
         $users = get_elements($sql);
         foreach ($users as $user) {
@@ -2728,12 +2728,12 @@ function getNumApprovers($pid) {
 }
 
 function getNumTesters($pid) {
-    $sql = sprintf("SELECT puzzles.id, COUNT(test_queue.uid) FROM puzzles
-        LEFT JOIN test_queue ON puzzles.id=test_queue.pid
+    $sql = sprintf("SELECT puzzles.id, COUNT(tester_links.uid) FROM puzzles
+        LEFT JOIN tester_links ON puzzles.id=tester_links.pid
         WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
     $result = get_row($sql);
 
-    return $result['COUNT(test_queue.uid)'];
+    return $result['COUNT(tester_links.uid)'];
 
 }
 
@@ -2772,7 +2772,7 @@ function getPuzzlesInRoundCaptainQueue($uid) {
 }
 
 function getPuzzlesInTestQueue($uid) {
-    $sql = sprintf("SELECT pid FROM test_queue WHERE uid='%s'",
+    $sql = sprintf("SELECT pid FROM tester_links WHERE uid='%s'",
         mysql_real_escape_string($uid));
     $puzzles = get_elements($sql);
 
@@ -2781,7 +2781,7 @@ function getPuzzlesInTestQueue($uid) {
 
 // This is not actually used currently. -- gwillen
 function getPuzzlesNeedingTesters() {
-    $sql = "SELECT puzzles.id FROM puzzles LEFT JOIN test_queue ON test_queue.pid
+    $sql = "SELECT puzzles.id FROM puzzles LEFT JOIN tester_links ON tester_links.pid
         = puzzles.id WHERE pstatus = 4 AND uid IS NULL";
     $puzzles = get_elements($sql);
 
@@ -2911,7 +2911,7 @@ function addPuzzleToTestQueue($uid, $pid) {
     }
 
     mysql_query('START TRANSACTION');
-    $sql = sprintf("INSERT INTO test_queue (uid, pid) VALUES ('%s', '%s')",
+    $sql = sprintf("INSERT INTO tester_links (uid, pid) VALUES ('%s', '%s')",
         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -3163,7 +3163,7 @@ function sqlUserNotRelatedClause($table, $uid) {
 function getAvailablePuzzlesToFFCForUser($uid) {
     $sql = sprintf("SELECT puzzles.id FROM puzzles INNER JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1' AND NOT EXISTS (SELECT 1 FROM factchecker_links WHERE factchecker_links.pid=puzzles.id) AND %s AND %s AND %s",
         sqlUserNotRelatedClause('spoiled_user_links', $uid),
-        sqlUserNotRelatedClause('test_queue', $uid),
+        sqlUserNotRelatedClause('tester_links', $uid),
         sqlUserNotRelatedClause('former_tester_links', $uid));
     $puzzles = get_elements($sql);
 
@@ -3304,7 +3304,7 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
 }
 
 function setFormerTesterForPuzzle($uid, $pid) {
-    $sql = sprintf("DELETE FROM test_queue WHERE pid='%s' AND uid='%s'",
+    $sql = sprintf("DELETE FROM tester_links WHERE pid='%s' AND uid='%s'",
         mysql_real_escape_string($pid), mysql_real_escape_string($uid));
     query_db($sql);
 
@@ -3420,7 +3420,7 @@ function countAvailablePuzzlesForEditor($uid) {
         sqlUserNotRelatedClause('author_links',        $uid),
         sqlUserNotRelatedClause('editor_links',   $uid),
         sqlUserNotRelatedClause('approver_queue', $uid),
-        sqlUserNotRelatedClause('test_queue',     $uid));
+        sqlUserNotRelatedClause('tester_links',     $uid));
     return get_element($sql);
 }
 
@@ -3429,7 +3429,7 @@ function getNumberOfPuzzlesForUser($uid) {
     $numbers['editor']        = countPuzzlesForUser('editor_links',   $uid);
     $numbers['approver']      = countPuzzlesForUser('approver_queue', $uid);
     $numbers['spoiled']       = countPuzzlesForUser('spoiled_user_links',        $uid);
-    $numbers['currentTester'] = countPuzzlesForUser('test_queue',     $uid);
+    $numbers['currentTester'] = countPuzzlesForUser('tester_links',     $uid);
     $numbers['doneTester']    = countPuzzlesForUser('former_tester_links',    $uid);
     $numbers['available']     = hasEditorPermission($uid) ? countAvailablePuzzlesForEditor($uid) : 0;
     return $numbers;
@@ -3514,7 +3514,7 @@ function grantFactcheckPowers($uid) {
 }
 
 function computeTestsolverScores() {
-    $in_testing = get_elements("SELECT uid, pid FROM test_queue");
+    $in_testing = get_elements("SELECT uid, pid FROM tester_links");
     $done_testing = get_elements("SELECT uid, pid FROM former_tester_links");
     // what?
 }

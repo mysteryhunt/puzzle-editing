@@ -86,7 +86,7 @@ function displayTestQueue($uid) {
 }
 
 function displayTestingSummary() {
-    $sql = sprintf("SELECT uid, pid from test_queue");
+    $sql = sprintf("SELECT uid, pid from tester_links");
     $result = get_rows($sql);
 
     if (!$result) {

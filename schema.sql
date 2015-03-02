@@ -626,13 +626,13 @@ LOCK TABLES `test_call` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `test_queue`
+-- Table structure for table `tester_links`
 --
 
-DROP TABLE IF EXISTS `test_queue`;
+DROP TABLE IF EXISTS `tester_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `test_queue` (
+CREATE TABLE `tester_links` (
   `uid` int(11) NOT NULL COMMENT 'User ID of Tester',
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   PRIMARY KEY (`uid`,`pid`)
@@ -640,12 +640,12 @@ CREATE TABLE `test_queue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `test_queue`
+-- Dumping data for table `tester_links`
 --
 
-LOCK TABLES `test_queue` WRITE;
-/*!40000 ALTER TABLE `test_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `test_queue` ENABLE KEYS */;
+LOCK TABLES `tester_links` WRITE;
+/*!40000 ALTER TABLE `tester_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tester_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
