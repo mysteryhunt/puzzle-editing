@@ -57,7 +57,7 @@ $testPuzzles = getPuzzlesNeedTestAdmin();
 // Should we show "testers" identities? No,
 // but we've gotten lazy about using the testadmin system, which means
 // I need to see testers for puzzles that have no testadmin.
-displayQueue($uid, $puzzles, "notes summary testers", FALSE);
+displayQueue($uid, $testPuzzles, "notes summary testers", FALSE);
 
 echo "<h2>Testing Feed</h2>";
 echo "<table>";
