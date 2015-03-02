@@ -21,7 +21,7 @@ $pid = $_GET['pid'];
 head("", "Puzzle $pid: Testsolving");
 
 // Check permissions
-if (!isTestingAdmin($uid)) {
+if (!hasTestAdminPermission($uid)) {
     if (!isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid)) {
         if (!canTestPuzzle($uid, $pid)) {
             echo "You do not have permission to test this puzzle.";

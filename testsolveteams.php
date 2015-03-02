@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("testsolveteams");
 
 // Check for permissions
-if (!isTestingAdmin($uid)) {
+if (!hasTestAdminPermission($uid)) {
     echo "<div class='errormsg'>Sorry, you're not a testing admin.</div>";
     foot();
     exit(1);

@@ -10,8 +10,8 @@ $uid = isLoggedIn();
 // Start HTML
 head("allpuzzles", "All Puzzles");
 echo '<style type="text/css">.puzzideasummary {background-color: #000000;}</style>';
-// Check for lurker permissions
-if (!canSeeAllPuzzles($uid) && !isApprover($uid)) {
+
+if (!canSeeAllPuzzles($uid) && !hasApproverPermission($uid)) {
     echo "<div class='errormsg'>You do not have permissions for this page.</div>";
     foot();
     exit(1);

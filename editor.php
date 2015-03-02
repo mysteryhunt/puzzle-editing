@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("editor", "Discussion Editor Overview");
 
 // Check for editor permissions
-if (!isEditor($uid)) {
+if (!hasEditorPermission($uid)) {
     echo "<div class='errormsg'>You do not have permission for this page.</div>";
     foot();
     exit(1);

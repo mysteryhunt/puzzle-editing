@@ -129,7 +129,7 @@ if (isset($_POST['changeEditors'])) {
 
     if (isset($_POST['addEditor'])) {
         $add = $_POST['addEditor'];
-        if (isAutoSubEditor($uid)) {
+        if (hasEditorAutosubscribe($uid)) {
             subscribe($uid, $pid);
         }
     } else {
@@ -137,7 +137,7 @@ if (isset($_POST['changeEditors'])) {
     }
     if (isset($_POST['removeEditor'])) {
         $remove = $_POST['removeEditor'];
-        if (isAutoSubEditor($uid)) {
+        if (hasEditorAutosubscribe($uid)) {
             unsubscribe($uid, $pid);
         }
     } else {
@@ -154,7 +154,7 @@ if (isset($_POST['changeApprovers'])) {
 
     if (isset($_POST['addApprover'])) {
         $add = $_POST['addApprover'];
-        if (isAutoSubEditor($uid)) {
+        if (hasEditorAutosubscribe($uid)) {
             subscribe($uid, $pid);
         }
     } else {
@@ -162,7 +162,7 @@ if (isset($_POST['changeApprovers'])) {
     }
     if (isset($_POST['removeApprover'])) {
         $remove = $_POST['removeApprover'];
-        if (isAutoSubEditor($uid)) {
+        if (hasEditorAutosubscribe($uid)) {
             unsubscribe($uid, $pid);
         }
     } else {
@@ -214,12 +214,12 @@ if (isset($_POST['changeRoundCaptain'])) {
     exit(0);
 }
 
-if (isset($_POST['changeStatus'])) {
+if (isset($_POST['changePuzzleStatus'])) {
     $pid = $_POST['pid'];
 
     $status = $_POST['status'];
 
-    changeStatus($uid, $pid, $status);
+    changePuzzleStatus($uid, $pid, $status);
 
     header("Location: " . URL . "/puzzle.php?pid=$pid");
     exit(0);
@@ -393,7 +393,7 @@ if (isset($_POST['getTestId'])) {
         utilsError("Invalid puzzle ID.");
     }
 
-    if (isTestingAdmin($uid)) {
+    if (hasTestAdminPermission($uid)) {
         header("Location: " . URL . "/test.php?pid=" . $pid);
         exit(0);
     }
@@ -417,7 +417,7 @@ if (isset($_POST['getPuzz'])) {
 
     if ($pid && isEditorAvailable($uid, $pid)) {
         addPuzzleToEditorQueue($uid, $pid);
-        if (isAutoSubEditor($uid)) {
+        if (hasEditorAutosubscribe($uid)) {
             subscribe($uid, $pid);
         }
     } else {
@@ -515,7 +515,7 @@ if (isset($_POST['setPuzzPriority'])) {
 if (isset($_POST['killPuzzle'])) {
     $pid = $_POST['pid'];
 
-    changeStatus($uid, $pid, getDeadStatusId());
+    changePuzzleStatus($uid, $pid, getDeadStatusId());
 
     header("Location: "  . URL . "/puzzle.php?pid=$pid");
     exit(0);

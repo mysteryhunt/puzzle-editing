@@ -17,7 +17,7 @@ if (!USING_APPROVERS) {
 }
 
 // Check for editor permissions
-if (!isApprover($uid) && !isEditorChief($uid)) {
+if (!hasApproverPermission($uid) && !isEditorChief($uid)) {
     echo "<div class='errormsg'>You do not have permission for this page.</div>";
     foot();
     exit(1);

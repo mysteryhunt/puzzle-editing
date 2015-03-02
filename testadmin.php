@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("testadmin", "Test Admin");
 
 // Check for permissions
-if (!isTestingAdmin($uid)) {
+if (!hasTestAdminPermission($uid)) {
     echo "<div class='errormsg'>Sorry, you're not a testing admin.</div>";
     foot();
     exit(1);
@@ -35,7 +35,7 @@ echo "There are currently <strong>$inTesting puzzles</strong> in testing<br/>";
 echo "<strong>$numNeedAdmin puzzles</strong> need a testing admin</strong>";
 echo "<br /><br />";
 
-if (isTestingAdmin($uid)) {
+if (hasTestAdminPermission($uid)) {
 
     if (getPuzzleForTestAdminQueue($uid) == FALSE) {
         echo '<div class="emptylist">No Puzzles To Add</div><br/>';

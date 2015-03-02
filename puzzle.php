@@ -50,7 +50,7 @@ if (isAnyAuthorBlind($pid)) {
 }
 
 // Hide puzzle info from testing admins, to prevent spoilage
-$hidePuzzleInfo = ((isServerAdmin($uid) || isTestingAdmin($uid)) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid));
+$hidePuzzleInfo = ((hasServerAdminPermission($uid) || hasTestAdminPermission($uid)) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid));
 
 // If Testing Admin, hide answer, summary, and description
 if ($hidePuzzleInfo) {
@@ -509,7 +509,7 @@ function displayApprovers($uid, $pid) {
     <tr>
         <td class='peopleInfo'>
             <strong>Approval Editors:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;
-    <?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+    <?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || hasServerAdminPermission($uid)) { ?><a href="#" class="changeLink">[Change]</a>
         </td>
     </tr>
     <tr>
@@ -601,7 +601,7 @@ function displayTags($uid, $pid) {
     <tr>
         <td class='peopleInfo'>
             <strong>Tags:</strong> <?php echo getTagsAsList($pid); ?>&nbsp;&nbsp;
-    <?php if (isCohesion($uid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+    <?php if (isCohesion($uid) || isEditorChief($uid) || hasServerAdminPermission($uid)) { ?><a href="#" class="changeLink">[Change]</a>
         </td>
     </tr>
     <tr>
@@ -703,7 +703,7 @@ function displayStatus($uid, $pid) {
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="changeStatus" value="Change Status" />
+                            <input type="submit" name="changePuzzleStatus" value="Change Status" />
                         </td>
                     </tr>
                 </form>

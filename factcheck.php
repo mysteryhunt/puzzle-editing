@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("factcheck", "Fact Checking Overview");
 
 // Check for permissions
-if (!isFactChecker($uid)) {
+if (!hasFactCheckerPermission($uid)) {
 ?>
     <h3>Not a factchecker</h3>
     <p>You are not currently a factchecker. (If you are a blind testsolver, please do

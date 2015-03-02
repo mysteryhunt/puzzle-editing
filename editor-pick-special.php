@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("editor-pick-special", "Discussion Editor (find puzzles needing help)");
 
 // Check for editor permissions
-if (!isEditor($uid)) {
+if (!hasEditorPermission($uid)) {
     echo "<div class='errormsg'>You do not have permission for this page.</div>";
     foot();
     exit(1);

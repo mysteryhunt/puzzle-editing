@@ -224,43 +224,46 @@ function getCodename($pid) {
     return getTitle($pid);
 }
 
-function isEditor($uid) {
-    //return hasPermission($uid, 'addToEditingQueue');
+// Does user have permission to add themselves as a Discussion Editor?
+function hasEditorPermission($uid) {
+    //return hasPermission($uid, 'becomeEditor');
     return TRUE;
 }
 
-function isApprover($uid) {
-    return hasPermission($uid, 'isApprover');
+// Does user have permission to add themselves as an Approval Editor?
+function hasApproverPermission($uid) {
+    return hasPermission($uid, 'becomeApprover');
 }
 
-function isAutoSubEditor($uid) {
-    return hasPermission($uid, 'autoSubEditor');
+// Will user be auto-subscribed to emails for puzzles they edit?
+function hasEditorAutosubscribe($uid) {
+    return hasPermission($uid, 'autoSubWhenEditing');
 }
 
-function isRoundCaptain($uid) {
-    return hasPermission($uid, 'addToRoundCaptainQueue');
+function hasRoundCaptainPermission($uid) {
+    return hasPermission($uid, 'becomeRoundCaptain');
 }
 
-function isTestingAdmin($uid) {
-    return hasPermission($uid, 'seeTesters');
+function hasTestAdminPermission($uid) {
+    return hasPermission($uid, 'beTestAdmin');
 }
 
-function isLurker($uid) {
-    //return hasPermission($uid, 'isLurker');
+function hasLurkerPermission($uid) {
+    //return hasPermission($uid, 'beLurker');
     return TRUE;
 }
 
-function isFactChecker($uid) {
+function hasFactCheckerPermission($uid) {
     //return hasPermission($uid, 'factcheck');
     return TRUE;
 }
 
 function isBlind($uid) {
-    return hasPermission($uid, 'isBlind');
+    return hasPermission($uid, 'beBlind');
 }
 
-function isServerAdmin($uid) {
-    return hasPermission($uid, 'changeServer');
+function hasServerAdminPermission($uid) {
+    return hasPermission($uid, 'administerServer');
 }
 
 function isDirector($uid) {
@@ -276,7 +279,7 @@ function isCohesion($uid) {
 }
 
 function canChangeStatus($uid) {
-    return hasPermission($uid, 'changeStatus');
+    return hasPermission($uid, 'changePuzzleStatus');
 }
 
 function canRequestTestsolve($uid, $pid) {
@@ -1467,11 +1470,11 @@ function addSpoiledUserQuietly($uid, $pid) {
 }
 
 function isRoundCaptainAvailable($uid, $pid) {
-    return (isRoundCaptain($uid) && !isRoundCaptainOnPuzzle($uid, $pid));
+    return (hasRoundCaptainPermission($uid) && !isRoundCaptainOnPuzzle($uid, $pid));
 }
 
 function isEditorAvailable($uid, $pid) {
-    return (isEditor($uid) &&
+    return (hasEditorPermission($uid) &&
         !isAuthorOnPuzzle($uid, $pid) &&
         !isEditorOnPuzzle($uid, $pid) &&
         !isApproverOnPuzzle($uid, $pid) &&
@@ -1479,7 +1482,7 @@ function isEditorAvailable($uid, $pid) {
 }
 
 function isApproverAvailable($uid, $pid) {
-    return (isApprover($uid) &&
+    return (hasApproverPermission($uid) &&
         !isAuthorOnPuzzle($uid, $pid) &&
         !isEditorOnPuzzle($uid, $pid) &&
         !isApproverOnPuzzle($uid, $pid) &&
@@ -1838,7 +1841,7 @@ function addEditors($uid, $pid, $add) {
         sendEmail($editor, $subject, $message, $link);
 
         // Subscribe editors to comments on their puzzles
-        if (isAutoSubEditor($editor)) {
+        if (hasEditorAutosubscribe($editor)) {
             subscribe($editor, $pid);
         }
 
@@ -1989,7 +1992,7 @@ function addApprovers($uid, $pid, $add) {
         sendEmail($approver, $subject, $message, $link);
 
         // Subscribe approvers to comments on their puzzles
-        if (isAutoSubEditor($approver)) {
+        if (hasEditorAutosubscribe($approver)) {
             subscribe($approver, $pid);
         }
     }
@@ -2045,11 +2048,11 @@ function removeApprovers($uid, $pid, $remove) {
 }
 
 function canFactCheckPuzzle($uid, $pid) {
-    return isPuzzleInFactChecking($pid) && isFactChecker($uid);
+    return isPuzzleInFactChecking($pid) && hasFactCheckerPermission($uid);
 }
 
 function canViewPuzzle($uid, $pid) {
-    return isLurker($uid) || isPuzzleInFinalFactChecking($pid) ||
+    return hasLurkerPermission($uid) || isPuzzleInFinalFactChecking($pid) ||
         isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) ||
         isTestingAdminOnPuzzle($uid, $pid) || canFactCheckPuzzle($uid, $pid) ||
         isSpoiledOnPuzzle($uid, $pid) || isPuzzleInPostprod($pid);
@@ -2059,7 +2062,7 @@ function canChangeEditorsNeeded($uid, $pid) {
 }
 
 function canChangeAnswers($uid) {
-    return hasPermission($uid, 'canEditAll');
+    return hasPermission($uid, 'changeAnswers');
 }
 
 function canSeeAllPuzzles($uid) {
@@ -2176,11 +2179,11 @@ function setPuzzPriority($uid, $pid, $priority) {
 }
 
 function getAllEditors() {
-    return get_assoc_array("select users.uid, fullname from users, user_role, roles where users.uid = user_role.uid and user_role.role_id = roles.id and roles.addToEditingQueue = 1 group by uid", "uid", "fullname");
+    return get_assoc_array("select users.uid, fullname from users, user_role, roles where users.uid = user_role.uid and user_role.role_id = roles.id and roles.becomeEditor = 1 group by uid", "uid", "fullname");
 }
 
 function getAllApprovalEditors() {
-    return get_assoc_array("select users.uid, fullname from users, user_role, roles where users.uid = user_role.uid and user_role.role_id = roles.id and roles.isApprover = 1 group by uid", "uid", "fullname");
+    return get_assoc_array("select users.uid, fullname from users, user_role, roles where users.uid = user_role.uid and user_role.role_id = roles.id and roles.becomeApprover = 1 group by uid", "uid", "fullname");
 }
 
 function getAllAuthors() {
@@ -2239,7 +2242,7 @@ function getStatusForPuzzle($pid) {
     return get_element($sql);
 }
 
-function changeStatus($uid, $pid, $status) {
+function changePuzzleStatus($uid, $pid, $status) {
     //make permission exception if we're killing -- for kill puzzle button
     if (!(canViewPuzzle($uid, $pid) && ((canChangeStatus($uid))||($status == getDeadStatusId())))) {
         utilsError("You do not have permission to modify the status of this puzzle.");
@@ -2889,7 +2892,7 @@ function addPuzzleToEditorQueue($uid, $pid) {
     mysql_query('COMMIT');
 
     // Subscribe editors to comments on the puzzles they edit
-    if (isAutoSubEditor($uid)) {
+    if (hasEditorAutosubscribe($uid)) {
         subscribe($uid, $pid);
     }
 }
@@ -3428,7 +3431,7 @@ function getNumberOfPuzzlesForUser($uid) {
     $numbers['spoiled']       = countPuzzlesForUser('spoiled',        $uid);
     $numbers['currentTester'] = countPuzzlesForUser('test_queue',     $uid);
     $numbers['doneTester']    = countPuzzlesForUser('doneTesting',    $uid);
-    $numbers['available']     = isEditor($uid) ? countAvailablePuzzlesForEditor($uid) : 0;
+    $numbers['available']     = hasEditorPermission($uid) ? countAvailablePuzzlesForEditor($uid) : 0;
     return $numbers;
 }
 

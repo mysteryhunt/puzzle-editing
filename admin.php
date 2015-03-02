@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("admin");
 
 // Check for admin bits
-if (!isServerAdmin($uid)) {
+if (!hasServerAdminPermission($uid)) {
     echo "<div class='errormsg'>You do not have permissions for this page.</div>";
     foot();
     exit(1);
