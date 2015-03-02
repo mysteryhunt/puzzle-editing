@@ -472,13 +472,13 @@ LOCK TABLES `puzzle_approve` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `puzzle_idea`
+-- Table structure for table `puzzles`
 --
 
-DROP TABLE IF EXISTS `puzzle_idea`;
+DROP TABLE IF EXISTS `puzzles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `puzzle_idea` (
+CREATE TABLE `puzzles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `summary` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -498,12 +498,12 @@ CREATE TABLE `puzzle_idea` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `puzzle_idea`
+-- Dumping data for table `puzzles`
 --
 
-LOCK TABLES `puzzle_idea` WRITE;
-/*!40000 ALTER TABLE `puzzle_idea` DISABLE KEYS */;
-/*!40000 ALTER TABLE `puzzle_idea` ENABLE KEYS */;
+LOCK TABLES `puzzles` WRITE;
+/*!40000 ALTER TABLE `puzzles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `puzzles` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

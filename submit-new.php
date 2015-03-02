@@ -37,14 +37,14 @@ if (isset($_POST) && isset($_POST['newIdea'])) {
 
     mysql_query('START TRANSACTION');
 
-    $sql = sprintf("INSERT INTO puzzle_idea (title, summary, description, needed_editors) VALUES ('%s', '%s', '%s', '%s')",
+    $sql = sprintf("INSERT INTO puzzles (title, summary, description, needed_editors) VALUES ('%s', '%s', '%s', '%s')",
         mysql_real_escape_string($cleanTitle),
         mysql_real_escape_string($cleanSummary),
         mysql_real_escape_string($cleanDescription),
         mysql_real_escape_string(MIN_EDITORS));
     query_db($sql);
 
-    $sql = sprintf("SELECT id FROM puzzle_idea WHERE summary='%s' AND description='%s'",
+    $sql = sprintf("SELECT id FROM puzzles WHERE summary='%s' AND description='%s'",
         mysql_real_escape_string($cleanSummary), mysql_real_escape_string($cleanDescription));
     $id = get_element($sql);
 

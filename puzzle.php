@@ -57,7 +57,7 @@ if ($hidePuzzleInfo) {
     echo '<style type="text/css">.hideFromTest {display: none;}</style>';
 }
 
-// Get all information about the puzzle (from puzzle_idea table)
+// Get all information about the puzzle (from puzzles table)
 $puzzleInfo = getPuzzleInfo($pid);
 
 // Edit the summary and description?

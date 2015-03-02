@@ -57,7 +57,7 @@ function validUserId($uid) {
 }
 
 function validPuzzleId($uid) {
-    $sql = sprintf("SELECT 1 FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT 1 FROM puzzles WHERE id='%s'", mysql_real_escape_string($uid));
     return has_result($sql);
 }
 
@@ -101,7 +101,7 @@ function isValidPuzzleURL() {
 
     $pid = $_GET['pid'];
 
-    $sql = sprintf("SELECT 1 FROM puzzle_idea WHERE id='%s'",
+    $sql = sprintf("SELECT 1 FROM puzzles WHERE id='%s'",
         mysql_real_escape_string($pid));
     if (!has_result($sql)) {
         echo "<div class='errormsg'>Puzzle ID not valid. Please try again.</div>";
@@ -559,7 +559,7 @@ function getEditorsAsList($pid) {
 }
 
 function getNeededEditors($pid) {
-    $sql = sprintf("SELECT needed_editors FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT needed_editors FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
@@ -573,7 +573,7 @@ function getPriorityWord($priority) {
 }
 
 function getPriority($pid) {
-    $sql = sprintf("SELECT priority FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT priority FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
@@ -659,12 +659,12 @@ function isAnyAuthorBlind($pid) {
 }
 
 function getPuzzleInfo($pid) {
-    $sql = sprintf("SELECT * FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT * FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_row($sql);
 }
 
 function getTitle($pid) {
-    $sql = sprintf("SELECT title FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT title FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
@@ -677,22 +677,22 @@ function getCreditsWithDefault($pid) {
 }
 
 function getCredits($pid) {
-    $sql = sprintf("SELECT credits FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT credits FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
 function getNotes($pid) {
-    $sql = sprintf("SELECT notes FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT notes FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
 function getEditorNotes($pid) {
-    $sql = sprintf("SELECT editor_notes FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT editor_notes FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
 function getRuntime($pid) {
-    $sql = sprintf("SELECT runtime_info FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT runtime_info FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
@@ -744,7 +744,7 @@ function changeTitleSummaryDescription($uid, $pid, $title, $summary, $descriptio
 }
 
 function updateTitle($uid = 0, $pid, $oldTitle, $cleanTitle) {
-    $sql = sprintf("UPDATE puzzle_idea SET title='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET title='%s' WHERE id='%s'",
         mysql_real_escape_string($cleanTitle), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -754,7 +754,7 @@ function updateTitle($uid = 0, $pid, $oldTitle, $cleanTitle) {
 }
 
 function updateSummary($uid = 0, $pid, $oldSummary, $cleanSummary) {
-    $sql = sprintf("UPDATE puzzle_idea SET summary='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET summary='%s' WHERE id='%s'",
         mysql_real_escape_string($cleanSummary), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -764,7 +764,7 @@ function updateSummary($uid = 0, $pid, $oldSummary, $cleanSummary) {
 }
 
 function updateDescription($uid = 0, $pid, $oldDescription, $cleanDescription) {
-    $sql = sprintf("UPDATE puzzle_idea SET description='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET description='%s' WHERE id='%s'",
         mysql_real_escape_string($cleanDescription), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -778,7 +778,7 @@ function updateDescription($uid = 0, $pid, $oldDescription, $cleanDescription) {
 }
 
 function updateCredits($uid = 0, $pid, $oldCredits, $cleanCredits) {
-    $sql = sprintf("UPDATE puzzle_idea SET credits='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET credits='%s' WHERE id='%s'",
         mysql_real_escape_string($cleanCredits), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -788,7 +788,7 @@ function updateCredits($uid = 0, $pid, $oldCredits, $cleanCredits) {
 }
 
 function updateNotes($uid = 0, $pid, $oldNotes, $cleanNotes) {
-    $sql = sprintf("UPDATE puzzle_idea SET notes='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET notes='%s' WHERE id='%s'",
         mysql_real_escape_string($cleanNotes), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -798,7 +798,7 @@ function updateNotes($uid = 0, $pid, $oldNotes, $cleanNotes) {
 }
 
 function updateEditorNotes($uid = 0, $pid, $oldNotes, $cleanNotes) {
-    $sql = sprintf("UPDATE puzzle_idea SET editor_notes='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET editor_notes='%s' WHERE id='%s'",
         mysql_real_escape_string($cleanNotes), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -808,7 +808,7 @@ function updateEditorNotes($uid = 0, $pid, $oldNotes, $cleanNotes) {
 }
 
 function updateRuntime($uid = 0, $pid, $oldRuntime, $cleanRuntime) {
-    $sql = sprintf("UPDATE puzzle_idea SET runtime_info='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET runtime_info='%s' WHERE id='%s'",
         mysql_real_escape_string($cleanRuntime), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -818,7 +818,7 @@ function updateRuntime($uid = 0, $pid, $oldRuntime, $cleanRuntime) {
 }
 
 function updateWikiPage($uid = 0, $pid, $oldWikiPage, $cleanWikiPage) {
-    $sql = sprintf("UPDATE puzzle_idea SET wikipage ='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET wikipage ='%s' WHERE id='%s'",
         mysql_real_escape_string($cleanWikiPage), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -1948,7 +1948,7 @@ function changeNeededEditors($uid, $pid, $need) {
     if (!canChangeEditorsNeeded($uid, $pid)) {
         utilsError("You do not have permission to change the number of needed editors.");
     }
-    $sql = sprintf("UPDATE puzzle_idea SET needed_editors='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET needed_editors='%s' WHERE id='%s'",
         mysql_real_escape_string($need), mysql_real_escape_string($pid));
     query_db($sql);
 }
@@ -2110,8 +2110,8 @@ function canTestPuzzle($uid, $pid, $display = FALSE) {
 }
 
 function getStatusNameForPuzzle($pid) {
-    $sql = sprintf("SELECT pstatus.name FROM pstatus, puzzle_idea
-        WHERE puzzle_idea.id='%s' AND puzzle_idea.pstatus=pstatus.id",
+    $sql = sprintf("SELECT pstatus.name FROM pstatus, puzzles
+        WHERE puzzles.id='%s' AND puzzles.pstatus=pstatus.id",
         mysql_real_escape_string($pid));
     return get_element($sql);
 }
@@ -2161,7 +2161,7 @@ function setPuzzApprove($uid, $pid, $approve) {
 }
 
 function setPuzzPriority($uid, $pid, $priority) {
-    $sql = sprintf("UPDATE puzzle_idea SET priority='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET priority='%s' WHERE id='%s'",
         mysql_real_escape_string($priority), mysql_real_escape_string($pid));
 
     $result = query_db($sql);
@@ -2231,11 +2231,11 @@ function getPuzzleStatuses() {
 }
 
 function getPuzzleStatusCounts() {
-    return get_assoc_array("SELECT pstatus, COUNT(*) AS pcount FROM puzzle_idea GROUP BY pstatus", "pstatus", "pcount");
+    return get_assoc_array("SELECT pstatus, COUNT(*) AS pcount FROM puzzles GROUP BY pstatus", "pstatus", "pcount");
 }
 
 function getStatusForPuzzle($pid) {
-    $sql = sprintf("SELECT pstatus FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT pstatus FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     return get_element($sql);
 }
 
@@ -2244,8 +2244,8 @@ function changeStatus($uid, $pid, $status) {
     if (!(canViewPuzzle($uid, $pid) && ((canChangeStatus($uid))||($status == getDeadStatusId())))) {
         utilsError("You do not have permission to modify the status of this puzzle.");
     }
-    $sql = sprintf("SELECT pstatus.inTesting FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus =
-        pstatus.id WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT pstatus.inTesting FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus =
+        pstatus.id WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
     query_db($sql);
 
     $inTesting_before = get_element($sql);
@@ -2260,7 +2260,7 @@ function changeStatus($uid, $pid, $status) {
         return;
     }
 
-    $sql = sprintf("UPDATE puzzle_idea SET pstatus='%s' WHERE id='%s'",
+    $sql = sprintf("UPDATE puzzles SET pstatus='%s' WHERE id='%s'",
         mysql_real_escape_string($status), mysql_real_escape_string($pid));
     query_db($sql);
 
@@ -2274,8 +2274,8 @@ function changeStatus($uid, $pid, $status) {
     }
     mysql_query('COMMIT');
 
-    $sql = sprintf("SELECT pstatus.inTesting FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus =
-        pstatus.id WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT pstatus.inTesting FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus =
+        pstatus.id WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
     query_db($sql);
     $inTesting_after = get_element($sql);
 
@@ -2705,9 +2705,9 @@ function getLastTestReportDate($pid) {
 }
 
 function getNumEditors($pid) {
-    $sql = sprintf("SELECT puzzle_idea.id, COUNT(editor_queue.uid) FROM puzzle_idea
-        LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid
-        WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT puzzles.id, COUNT(editor_queue.uid) FROM puzzles
+        LEFT JOIN editor_queue ON puzzles.id=editor_queue.pid
+        WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
     $result = get_row($sql);
 
     return $result['COUNT(editor_queue.uid)'];
@@ -2715,9 +2715,9 @@ function getNumEditors($pid) {
 }
 
 function getNumApprovers($pid) {
-    $sql = sprintf("SELECT puzzle_idea.id, COUNT(approver_queue.uid) FROM puzzle_idea
-        LEFT JOIN approver_queue ON puzzle_idea.id=approver_queue.pid
-        WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT puzzles.id, COUNT(approver_queue.uid) FROM puzzles
+        LEFT JOIN approver_queue ON puzzles.id=approver_queue.pid
+        WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
     $result = get_row($sql);
 
     return $result['COUNT(approver_queue.uid)'];
@@ -2725,9 +2725,9 @@ function getNumApprovers($pid) {
 }
 
 function getNumTesters($pid) {
-    $sql = sprintf("SELECT puzzle_idea.id, COUNT(test_queue.uid) FROM puzzle_idea
-        LEFT JOIN test_queue ON puzzle_idea.id=test_queue.pid
-        WHERE puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT puzzles.id, COUNT(test_queue.uid) FROM puzzles
+        LEFT JOIN test_queue ON puzzles.id=test_queue.pid
+        WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
     $result = get_row($sql);
 
     return $result['COUNT(test_queue.uid)'];
@@ -2735,12 +2735,12 @@ function getNumTesters($pid) {
 }
 
 function getPuzzlesInPostprod() {
-    $puzzles = get_elements("select puzzle_idea.id from puzzle_idea, pstatus where puzzle_idea.pstatus=pstatus.id and pstatus.name like '%Post-Production%'");
+    $puzzles = get_elements("select puzzles.id from puzzles, pstatus where puzzles.pstatus=pstatus.id and pstatus.name like '%Post-Production%'");
     return sortByLastCommentDate($puzzles);
 }
 
 function getPuzzlesInPostprodAndLater() {
-    $puzzles = get_elements("select puzzle_idea.id from puzzle_idea, pstatus where puzzle_idea.pstatus=pstatus.id and pstatus.postprod='1'");
+    $puzzles = get_elements("select puzzles.id from puzzles, pstatus where puzzles.pstatus=pstatus.id and pstatus.postprod='1'");
     return sortByLastCommentDate($puzzles);
 }
 
@@ -2778,8 +2778,8 @@ function getPuzzlesInTestQueue($uid) {
 
 // This is not actually used currently. -- gwillen
 function getPuzzlesNeedingTesters() {
-    $sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN test_queue ON test_queue.pid
-        = puzzle_idea.id WHERE pstatus = 4 AND uid IS NULL";
+    $sql = "SELECT puzzles.id FROM puzzles LEFT JOIN test_queue ON test_queue.pid
+        = puzzles.id WHERE pstatus = 4 AND uid IS NULL";
     $puzzles = get_elements($sql);
 
     return $puzzles;
@@ -2865,7 +2865,7 @@ function sortByNumApprovers($puzzles) {
 }
 
 function getNewPuzzleForEditor($uid) {
-    $sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.addToEditorQueue='1'";
+    $sql = "SELECT puzzles.id FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE pstatus.addToEditorQueue='1'";
     $puzzles = get_elements($sql);
     $puzzles = sortByNumEditors($puzzles);
 
@@ -3023,32 +3023,32 @@ function getAvailablePuzzlesToTestForUser($uid) {
 }
 
 function isInTargetedTestsolving($pid) {
-    $sql = sprintf("SELECT pstatus FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT pstatus FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
     $status = get_element($sql);
 
     return ($status == 4 || $status == 12 || $status == 18);
 }
 
 function isPuzzleInAddToTestAdminQueue($pid) {
-    $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
-        WHERE puzzle_idea.id='%s' AND pstatus.addToTestAdminQueue='1'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT 1 FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus = pstatus.id
+        WHERE puzzles.id='%s' AND pstatus.addToTestAdminQueue='1'", mysql_real_escape_string($pid));
     return has_result($sql);
 }
 
 function isPuzzleInTesting($pid) {
-    $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
-        WHERE puzzle_idea.id='%s' AND pstatus.inTesting='1'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT 1 FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus = pstatus.id
+        WHERE puzzles.id='%s' AND pstatus.inTesting='1'", mysql_real_escape_string($pid));
     return has_result($sql);
 }
 
 function getPuzzlesInTesting() {
-    $sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
-        WHERE pstatus.inTesting = '1' ORDER BY puzzle_idea.priority";
+    $sql = "SELECT puzzles.id FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus = pstatus.id
+        WHERE pstatus.inTesting = '1' ORDER BY puzzles.priority";
     return get_elements($sql);
 }
 
 function getWikiPage($pid) {
-    $sql = sprintf("SELECT wikipage FROM puzzle_idea WHERE id='%s'",
+    $sql = sprintf("SELECT wikipage FROM puzzles WHERE id='%s'",
         mysql_real_escape_string($pid));
     return get_element_null($sql);
 }
@@ -3075,48 +3075,48 @@ function getMostRecentDraftNameForPuzzle($pid) {
 }
 
 function getAllPuzzles() {
-    $sql = "SELECT id FROM puzzle_idea";
+    $sql = "SELECT id FROM puzzles";
     $puzzles = get_elements($sql);
     return sortByLastCommentDate($puzzles);
 }
 function getAllLivePuzzles() {
     $deadpuzzleid = getDeadStatusId();
-    $sql = sprintf("SELECT id FROM puzzle_idea where pstatus != %d", $deadpuzzleid);
+    $sql = sprintf("SELECT id FROM puzzles where pstatus != %d", $deadpuzzleid);
     $puzzles = get_elements($sql);
     return sortByLastCommentDate($puzzles);
 }
 function countLivePuzzles() {
-    $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea WHERE pstatus != %d", getDeadStatusId());
+    $sql = sprintf("SELECT COUNT(*) FROM puzzles WHERE pstatus != %d", getDeadStatusId());
     return get_element($sql);
 }
 
 function isPuzzleInFactChecking($pid) {
-    $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
-        WHERE puzzle_idea.id='%s' AND pstatus.needsFactcheck='1'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT 1 FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus = pstatus.id
+        WHERE puzzles.id='%s' AND pstatus.needsFactcheck='1'", mysql_real_escape_string($pid));
     return has_result($sql);
 }
 
 function isPuzzleInFinalFactChecking($pid) {
-    $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
-        WHERE puzzle_idea.id='%s' AND pstatus.finalFactcheck='1'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT 1 FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus = pstatus.id
+        WHERE puzzles.id='%s' AND pstatus.finalFactcheck='1'", mysql_real_escape_string($pid));
     return has_result($sql);
 }
 
 function isPuzzleInPostprod($pid) {
-    $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
-        WHERE puzzle_idea.id='%s' AND pstatus.postprod='1'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT 1 FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus = pstatus.id
+        WHERE puzzles.id='%s' AND pstatus.postprod='1'", mysql_real_escape_string($pid));
     return has_result($sql);
 }
 
 function getPuzzlesNeedingEditors() {
-    $sql = "SELECT puzzle from (SELECT count(editor_queue.uid) num_editors, puzzle_idea.id puzzle, puzzle_idea.needed_editors need FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < need";
+    $sql = "SELECT puzzle from (SELECT count(editor_queue.uid) num_editors, puzzles.id puzzle, puzzles.needed_editors need FROM puzzles LEFT JOIN editor_queue ON puzzles.id=editor_queue.pid GROUP by puzzle) puzzle_count where num_editors < need";
     $puzzles = get_elements($sql);
 
     return sortByNumEditors($puzzles);
 }
 
 function getPuzzlesNeedingSpecialEditors() {
-    $sql = "SELECT puzzle from (SELECT count(editor_queue.uid) num_editors, puzzle_idea.id puzzle, puzzle_idea.needed_editors need FROM puzzle_idea LEFT JOIN editor_queue ON puzzle_idea.id=editor_queue.pid WHERE notes != '' AND notes NOT LIKE '%Draft by %' GROUP by puzzle) puzzle_count where num_editors < need";
+    $sql = "SELECT puzzle from (SELECT count(editor_queue.uid) num_editors, puzzles.id puzzle, puzzles.needed_editors need FROM puzzles LEFT JOIN editor_queue ON puzzles.id=editor_queue.pid WHERE notes != '' AND notes NOT LIKE '%Draft by %' GROUP by puzzle) puzzle_count where num_editors < need";
     $puzzles = get_elements($sql);
 
     return sortByNumEditors($puzzles);
@@ -3140,25 +3140,25 @@ function getPuzzlesNeedingApprovers($uid) {
 }
 
 function getUnclaimedPuzzlesInFactChecking() {
-    $sql = "SELECT puzzle_idea.id FROM pstatus, puzzle_idea LEFT JOIN factcheck_queue ON puzzle_idea.id=factcheck_queue.pid WHERE puzzle_idea.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.uid IS NULL";
+    $sql = "SELECT puzzles.id FROM pstatus, puzzles LEFT JOIN factcheck_queue ON puzzles.id=factcheck_queue.pid WHERE puzzles.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.uid IS NULL";
     $puzzles = get_elements($sql);
 
     return sortByLastCommentDate($puzzles);
 }
 
 function getClaimedPuzzlesInFactChecking() {
-    $sql = "SELECT puzzle_idea.id FROM puzzle_idea, pstatus, factcheck_queue WHERE puzzle_idea.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.pid=puzzle_idea.id";
+    $sql = "SELECT puzzles.id FROM puzzles, pstatus, factcheck_queue WHERE puzzles.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.pid=puzzles.id";
     $puzzles = get_elements($sql);
 
     return sortByLastCommentDate($puzzles);
 }
 
 function sqlUserNotRelatedClause($table, $uid) {
-    return sprintf("NOT EXISTS (SELECT 1 FROM $table WHERE $table.uid='%s' AND $table.pid=puzzle_idea.id)", mysql_real_escape_string($uid));
+    return sprintf("NOT EXISTS (SELECT 1 FROM $table WHERE $table.uid='%s' AND $table.pid=puzzles.id)", mysql_real_escape_string($uid));
 }
 
 function getAvailablePuzzlesToFFCForUser($uid) {
-    $sql = sprintf("SELECT puzzle_idea.id FROM puzzle_idea INNER JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1' AND NOT EXISTS (SELECT 1 FROM factcheck_queue WHERE factcheck_queue.pid=puzzle_idea.id) AND %s AND %s AND %s",
+    $sql = sprintf("SELECT puzzles.id FROM puzzles INNER JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1' AND NOT EXISTS (SELECT 1 FROM factcheck_queue WHERE factcheck_queue.pid=puzzles.id) AND %s AND %s AND %s",
         sqlUserNotRelatedClause('spoiled', $uid),
         sqlUserNotRelatedClause('test_queue', $uid),
         sqlUserNotRelatedClause('doneTesting', $uid));
@@ -3380,8 +3380,8 @@ function getNumberOfEditorsOnPuzzles($type) {
     }
 
     $deadstatusid = getDeadStatusId();
-    $sql = sprintf('SELECT COUNT('.$queue.'.uid) FROM puzzle_idea
-        LEFT JOIN '.$queue.' ON puzzle_idea.id='.$queue.'.pid WHERE puzzle_idea.pstatus != %d
+    $sql = sprintf('SELECT COUNT('.$queue.'.uid) FROM puzzles
+        LEFT JOIN '.$queue.' ON puzzles.id='.$queue.'.pid WHERE puzzles.pstatus != %d
         GROUP BY id', $deadstatusid);
     $numbers = get_elements($sql);
 
@@ -3406,14 +3406,14 @@ function getNumberOfEditorsOnPuzzles($type) {
 function countPuzzlesForUser($table, $uid) {
     // like getUsersForPuzzle, this is only called from the below functions, where $table is a hardcoded string
     $deadpuzzleid = getDeadStatusId();
-    $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea INNER JOIN $table ON puzzle_idea.id=$table.pid WHERE puzzle_idea.pstatus != $deadpuzzleid AND $table.uid='%s'",
+    $sql = sprintf("SELECT COUNT(*) FROM puzzles INNER JOIN $table ON puzzles.id=$table.pid WHERE puzzles.pstatus != $deadpuzzleid AND $table.uid='%s'",
         mysql_real_escape_string($uid));
     return get_element($sql);
 }
 
 function countAvailablePuzzlesForEditor($uid) {
     $deadpuzzleid = getDeadStatusId();
-    $sql = sprintf("SELECT COUNT(*) FROM puzzle_idea WHERE puzzle_idea.pstatus != $deadpuzzleid AND %s AND %s AND %s AND %s",
+    $sql = sprintf("SELECT COUNT(*) FROM puzzles WHERE puzzles.pstatus != $deadpuzzleid AND %s AND %s AND %s AND %s",
         sqlUserNotRelatedClause('authors',        $uid),
         sqlUserNotRelatedClause('editor_queue',   $uid),
         sqlUserNotRelatedClause('approver_queue', $uid),
@@ -3444,8 +3444,8 @@ function getPic($uid) {
 }
 
 function getPuzzlesNeedTestAdmin() {
-    $sql = "SELECT puzzle_idea.id FROM (puzzle_idea LEFT JOIN testAdminQueue ON puzzle_idea.id=testAdminQueue.pid)
-        JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE testAdminQueue.uid IS NULL AND pstatus.addToTestAdminQueue=1";
+    $sql = "SELECT puzzles.id FROM (puzzles LEFT JOIN testAdminQueue ON puzzles.id=testAdminQueue.pid)
+        JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE testAdminQueue.uid IS NULL AND pstatus.addToTestAdminQueue=1";
     return get_elements($sql);
 }
 
@@ -3500,8 +3500,8 @@ function getInTestAdminQueue($uid) {
 }
 
 function canAcceptDrafts($pid) {
-    $sql = sprintf("SELECT 1 FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
-        WHERE pstatus.acceptDrafts = '1' AND puzzle_idea.id='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT 1 FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus = pstatus.id
+        WHERE pstatus.acceptDrafts = '1' AND puzzles.id='%s'", mysql_real_escape_string($pid));
     return has_result($sql);
 }
 
@@ -3617,7 +3617,7 @@ function getTestTeamPuzzles($tid) {
     $sql = sprintf("SELECT pstatus.id FROM pstatus WHERE pstatus.inTesting = '1'");
     $testingstatusid = get_element($sql);
 
-    $sql = sprintf('SELECT pid FROM testsolve_team_queue, puzzle_idea WHERE tid=%s AND puzzle_idea.id = testsolve_team_queue.pid AND puzzle_idea.pstatus = %s',
+    $sql = sprintf('SELECT pid FROM testsolve_team_queue, puzzles WHERE tid=%s AND puzzles.id = testsolve_team_queue.pid AND puzzles.pstatus = %s',
         mysql_real_escape_string($tid), mysql_real_escape_string($testingstatusid));
     return(get_elements($sql));
 }
