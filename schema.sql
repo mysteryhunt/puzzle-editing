@@ -353,13 +353,13 @@ LOCK TABLES `flagger_links` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `motd`
+-- Table structure for table `motds`
 --
 
-DROP TABLE IF EXISTS `motd`;
+DROP TABLE IF EXISTS `motds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `motd` (
+CREATE TABLE `motds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `message` text NOT NULL,
@@ -370,12 +370,12 @@ CREATE TABLE `motd` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `motd`
+-- Dumping data for table `motds`
 --
 
-LOCK TABLES `motd` WRITE;
-/*!40000 ALTER TABLE `motd` DISABLE KEYS */;
-/*!40000 ALTER TABLE `motd` ENABLE KEYS */;
+LOCK TABLES `motds` WRITE;
+/*!40000 ALTER TABLE `motds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `motds` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

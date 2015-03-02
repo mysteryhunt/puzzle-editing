@@ -700,12 +700,12 @@ function getRuntime($pid) {
 }
 
 function getCurMotd() {
-    $sql = sprintf("SELECT * FROM motd ORDER BY time DESC LIMIT 1");
+    $sql = sprintf("SELECT * FROM motds ORDER BY time DESC LIMIT 1");
     return get_row_null($sql);
 }
 
 function getAllMotd() {
-    $sql = sprintf("SELECT * FROM motd ORDER BY time DESC");
+    $sql = sprintf("SELECT * FROM motds ORDER BY time DESC");
     return get_rows($sql);
 }
 
@@ -1075,7 +1075,7 @@ function createRound($round, $roundanswer) {
 }
 
 function addNewMotd($message) {
-    $sql = sprintf("INSERT INTO motd (message, uid) VALUES ('%s', '%s')",
+    $sql = sprintf("INSERT INTO motds (message, uid) VALUES ('%s', '%s')",
         mysql_real_escape_string($message), $_SESSION['uid']);
     $result = query_db($sql);
     return ($result);
