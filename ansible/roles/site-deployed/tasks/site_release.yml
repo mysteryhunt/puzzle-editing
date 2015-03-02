@@ -141,6 +141,17 @@
     path: "{{ docroot }}/uploads"
     src: "{{ shared_storage_dir }}/uploads"
 
+# The phpdotenv library requires a .env file in the docroot,
+# even if that file is empty and unused.
+- name: Touch dotenv file in the docroot.
+  sudo: yes
+  file: >-
+    state=touch
+    path="{{ docroot }}/.env"
+    owner="{{ unix_username }}"
+    group=www-data
+    mode=0644
+
 - name: Install dotenv file in the docroot.
   sudo: yes
   template:
