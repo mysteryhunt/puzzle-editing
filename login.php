@@ -71,7 +71,7 @@ function loginForm() {
 // Redirects to main page if successful
 function login($username, $pass) {
     if (!TRUST_REMOTE_USER) {
-        $sql = sprintf("SELECT uid FROM user_info WHERE
+        $sql = sprintf("SELECT uid FROM users WHERE
             username='%s'
             AND password=AES_ENCRYPT('%s', '%s%s')",
                 mysql_real_escape_string($username),
@@ -79,7 +79,7 @@ function login($username, $pass) {
                 mysql_real_escape_string($username),
                 mysql_real_escape_string($pass));
     } else {
-        $sql = sprintf("SELECT uid FROM user_info WHERE
+        $sql = sprintf("SELECT uid FROM users WHERE
             username='%s'",
             mysql_real_escape_string($username));
     }

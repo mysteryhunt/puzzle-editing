@@ -114,9 +114,9 @@ function displayTestingSummary() {
     }
     echo "</style>\n";
 
-    $sql = sprintf("SELECT user_info.uid, user_info.username, comments.id, type, timestamp, pid FROM comments
-        LEFT JOIN user_info on comments.uid = user_info.uid WHERE comments.type = 5
-        ORDER BY user_info.username, comments.pid");
+    $sql = sprintf("SELECT users.uid, users.username, comments.id, type, timestamp, pid FROM comments
+        LEFT JOIN users on comments.uid = users.uid WHERE comments.type = 5
+        ORDER BY users.username, comments.pid");
     $result = query_db($sql);
     $r = mysql_fetch_assoc($result);
 

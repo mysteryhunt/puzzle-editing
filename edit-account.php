@@ -135,7 +135,7 @@ function editAccount($uid) {
     mysql_query('START TRANSACTION');
     $failed = 0;
 
-    $sql = sprintf("UPDATE user_info SET fullname='%s', picture='%s', email_level='%s' WHERE uid='%s'",
+    $sql = sprintf("UPDATE users SET fullname='%s', picture='%s', email_level='%s' WHERE uid='%s'",
         mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string(($email_level)), mysql_real_escape_string($uid));
 
     $result = mysql_query($sql);

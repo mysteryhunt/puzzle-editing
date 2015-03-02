@@ -167,11 +167,11 @@ function register() {
     $fullname = $purifier->purify($fullname);
     $email = $purifier->purify($email);
 
-    $sql = sprintf("SELECT * FROM user_info WHERE username='%s'", mysql_real_escape_string($username));
+    $sql = sprintf("SELECT * FROM users WHERE username='%s'", mysql_real_escape_string($username));
     if (has_result($sql)) {
         $errors['username'] = "Username already taken";
     }
-    $sql = sprintf("SELECT * FROM user_info WHERE email='%s'", mysql_real_escape_string($email));
+    $sql = sprintf("SELECT * FROM users WHERE email='%s'", mysql_real_escape_string($email));
     if (has_result($sql)) {
         $errors['email'] = "There is already an account using that email";
     }
@@ -182,11 +182,11 @@ function register() {
     mysql_query('START TRANSACTION');
 
     if (TRUST_REMOTE_USER) {
-        $sql = sprintf("INSERT INTO user_info (username, fullname, email) VALUES ('%s', '%s', '%s')",
+        $sql = sprintf("INSERT INTO users (username, fullname, email) VALUES ('%s', '%s', '%s')",
             mysql_real_escape_string($username), mysql_real_escape_string($fullname), mysql_real_escape_string($email)
         );
     } else {
-        $sql = sprintf("INSERT INTO user_info (username, password, fullname, email) VALUES ('%s', AES_ENCRYPT('%s', '%s%s'), '%s', '%s')",
+        $sql = sprintf("INSERT INTO users (username, password, fullname, email) VALUES ('%s', AES_ENCRYPT('%s', '%s%s'), '%s', '%s')",
             mysql_real_escape_string($username), mysql_real_escape_string($pass1),
             mysql_real_escape_string($username), mysql_real_escape_string($pass1),
             mysql_real_escape_string($fullname), mysql_real_escape_string($email)
@@ -208,7 +208,7 @@ function register() {
 
     $failed = FALSE;
 
-    $sql = sprintf("UPDATE user_info SET picture='%s' WHERE uid='%s'", mysql_real_escape_string($pic), mysql_real_escape_string($uid));
+    $sql = sprintf("UPDATE users SET picture='%s' WHERE uid='%s'", mysql_real_escape_string($pic), mysql_real_escape_string($uid));
     $result = mysql_query($sql);
     if ($result === FALSE) {
         $failed = TRUE;

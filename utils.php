@@ -52,7 +52,7 @@ function isLoggedIn() {
 }
 
 function validUserId($uid) {
-    $sql = sprintf("SELECT 1 FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT 1 FROM users WHERE uid='%s'", mysql_real_escape_string($uid));
     return has_result($sql);
 }
 
@@ -374,23 +374,23 @@ function getLastVisit($uid, $pid) {
 }
 
 function getUserUsername($uid) {
-    $sql = sprintf("SELECT username FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT username FROM users WHERE uid='%s'", mysql_real_escape_string($uid));
     return get_element($sql);
 }
 
 function getUserName($uid) {
-    $sql = sprintf("SELECT fullname FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT fullname FROM users WHERE uid='%s'", mysql_real_escape_string($uid));
     return get_element($sql);
 }
 
 function getEmail($uid) {
-    $sql = sprintf("SELECT email FROM user_info WHERE uid='%s'",
+    $sql = sprintf("SELECT email FROM users WHERE uid='%s'",
         mysql_real_escape_string($uid));
     return get_element($sql);
 }
 
 function getEmailLevel($uid) {
-    $sql = sprintf("SELECT email_level FROM user_info WHERE uid='%s'",
+    $sql = sprintf("SELECT email_level FROM users WHERE uid='%s'",
         mysql_real_escape_string($uid));
     return get_element($sql);
 }
@@ -398,7 +398,7 @@ function getEmailLevel($uid) {
 // Get associative array of users' uid and name
 function getUsersForPuzzle($table, $pid) {
     // This is only called from the below functions, where $table is a hardcoded string
-    $sql = sprintf("SELECT user_info.uid, user_info.fullname FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
+    $sql = sprintf("SELECT users.uid, users.fullname FROM users INNER JOIN %s ON users.uid=%s.uid WHERE %s.pid='%s'",
         $table, $table, $table, mysql_real_escape_string($pid));
     return get_assoc_array($sql, "uid", "fullname");
 }
@@ -515,11 +515,11 @@ function getFactcheckersForPuzzle($pid) {
 
 function getTestAdminsToNotify($pid) {
     $table = 'testAdminQueue';
-    $sql = sprintf("SELECT user_info.uid FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
+    $sql = sprintf("SELECT users.uid FROM users INNER JOIN %s ON users.uid=%s.uid WHERE %s.pid='%s'",
         $table, $table, $table, mysql_real_escape_string($pid));
     $testadmins_for_puzzle = get_elements($sql);
 
-    $sql = "select user_info.uid from user_info, jobs where user_info.uid=jobs.uid and (jobs.jid=6 or jobs.jid=13);";
+    $sql = "select users.uid from users, jobs where users.uid=jobs.uid and (jobs.jid=6 or jobs.jid=13);";
     $all_testadmins = get_elements($sql);
 
     // If a puzzle has testadmins, they will be auto-subscribed to
@@ -530,7 +530,7 @@ function getTestAdminsToNotify($pid) {
 // Get comma-separated list of users' names
 function getUserNamesAsList($table, $pid) {
     // This is only called from the below functions, where $table is a hardcoded string
-    $sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
+    $sql = sprintf("SELECT users.fullname FROM users INNER JOIN %s ON users.uid=%s.uid WHERE %s.pid='%s'",
         $table, $table, $table, mysql_real_escape_string($pid));
     $users = get_elements($sql);
     if (count($users) == 0) {
@@ -578,7 +578,7 @@ function getPriority($pid) {
 }
 
 function getEditorStatus($pid) {
-    $sql = sprintf("SELECT user_info.fullname FROM user_info INNER JOIN editor_queue ON user_info.uid=editor_queue.uid WHERE editor_queue.pid='%s'", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT users.fullname FROM users INNER JOIN editor_queue ON users.uid=editor_queue.uid WHERE editor_queue.pid='%s'", mysql_real_escape_string($pid));
     $eds = get_elements($sql);
     $need = getNeededEditors($pid); // warning: total needed, not additional
     $edc = count($eds);
@@ -1217,7 +1217,7 @@ function sendAllEmail($isReal) {
 // Return an assoc array of [uid] => [name]
 function getAvailableAuthorsForPuzzle($pid) {
     // Get all users
-    $sql = 'SELECT uid FROM user_info';
+    $sql = 'SELECT uid FROM users';
     $users = get_elements($sql);
 
     $authors = array();
@@ -1234,7 +1234,7 @@ function getAvailableAuthorsForPuzzle($pid) {
 
 function getAvailableFactcheckersForPuzzle($pid) {
     // Get all users
-    $sql = 'SELECT uid FROM user_info';
+    $sql = 'SELECT uid FROM users';
     $users = get_elements($sql);
 
     $fcs = array();
@@ -1251,7 +1251,7 @@ function getAvailableFactcheckersForPuzzle($pid) {
 
 function getAvailableSpoiledUsersForPuzzle($pid) {
     // Get all users
-    $sql = 'SELECT uid FROM user_info';
+    $sql = 'SELECT uid FROM users';
     $users = get_elements($sql);
 
     $spoiled = array();
@@ -1299,7 +1299,7 @@ function getCurrentTestersForPuzzle($pid) {
 
 function getAvailableTestersForPuzzle($pid) {
     // Get all users
-    $sql = 'SELECT uid FROM user_info';
+    $sql = 'SELECT uid FROM users';
     $users = get_elements($sql);
 
     $testers = array();
@@ -1366,7 +1366,7 @@ function removeSpoiledUser($uid, $pid, $removeUser) {
 // Return assoc of [uid] => [name]
 function getAvailableEditorsForPuzzle($pid) {
     // Get all users
-    $sql = 'SELECT uid FROM user_info';
+    $sql = 'SELECT uid FROM users';
     $users = get_elements($sql);
 
     $editors = array();
@@ -1385,7 +1385,7 @@ function getAvailableEditorsForPuzzle($pid) {
 // Return assoc of [uid] => [name]
 function getAvailableApproversForPuzzle($pid) {
     // Get all users
-    $sql = 'SELECT uid FROM user_info';
+    $sql = 'SELECT uid FROM users';
     $users = get_elements($sql);
 
     $approvers = array();
@@ -1402,7 +1402,7 @@ function getAvailableApproversForPuzzle($pid) {
 
 function getAvailableRoundCaptainsForPuzzle($pid) {
     // Get all users
-    $sql = 'SELECT uid FROM user_info';
+    $sql = 'SELECT uid FROM users';
     $users = get_elements($sql);
 
     $capts = array();
@@ -2123,7 +2123,7 @@ function getTestsolveRequestsForPuzzle($pid) {
 }
 
 function getPuzzApprovals($pid) {
-    $sql = sprintf("SELECT fullname, approve from user_info, puzzle_approve where pid='%s' AND puzzle_approve.uid = user_info.uid", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT fullname, approve from users, puzzle_approve where pid='%s' AND puzzle_approve.uid = users.uid", mysql_real_escape_string($pid));
     return get_assoc_array($sql, "fullname", "approve");
 }
 
@@ -2176,22 +2176,22 @@ function setPuzzPriority($uid, $pid, $priority) {
 }
 
 function getAllEditors() {
-    return get_assoc_array("select user_info.uid, fullname from user_info, jobs, priv where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 group by uid", "uid", "fullname");
+    return get_assoc_array("select users.uid, fullname from users, jobs, priv where users.uid = jobs.uid and jobs.jid = priv.jid and priv.addToEditingQueue = 1 group by uid", "uid", "fullname");
 }
 
 function getAllApprovalEditors() {
-    return get_assoc_array("select user_info.uid, fullname from user_info, jobs, priv where user_info.uid = jobs.uid and jobs.jid = priv.jid and priv.isApprover = 1 group by uid", "uid", "fullname");
+    return get_assoc_array("select users.uid, fullname from users, jobs, priv where users.uid = jobs.uid and jobs.jid = priv.jid and priv.isApprover = 1 group by uid", "uid", "fullname");
 }
 
 function getAllAuthors() {
-    return get_assoc_array("select user_info.uid, fullname from user_info, authors where user_info.uid = authors.uid group by uid", "uid", "fullname");
+    return get_assoc_array("select users.uid, fullname from users, authors where users.uid = authors.uid group by uid", "uid", "fullname");
 }
 
 function getRoleStats($queue_table, $comment_type) {
     $sql = sprintf("
         SELECT fullname, puzzle_count, comment_count, recent_comment_count
         FROM
-            user_info
+            users
             LEFT JOIN
                 (SELECT uid, COUNT(pid) as puzzle_count
                 FROM %s GROUP BY uid) AS t1
@@ -2604,22 +2604,22 @@ function unsubscribe($uid, $pid) {
 }
 
 function getPeople() {
-    $sql = 'SELECT * FROM user_info ORDER BY fullname';
+    $sql = 'SELECT * FROM users ORDER BY fullname';
     return get_rows($sql);
 }
 
 function getPerson($uid) {
-    $sql = sprintf("SELECT * FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT * FROM users WHERE uid='%s'", mysql_real_escape_string($uid));
     return get_row($sql);
 }
 
 function getPersonNull($uid) {
-    $sql = sprintf("SELECT * FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT * FROM users WHERE uid='%s'", mysql_real_escape_string($uid));
     return get_row_null($sql);
 }
 
 function change_password($uid, $oldpass, $pass1, $pass2) {
-    $sql = sprintf("SELECT username FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT username FROM users WHERE uid='%s'", mysql_real_escape_string($uid));
     $username = get_element($sql);
 
     if ($username == NULL) {
@@ -2634,7 +2634,7 @@ function change_password($uid, $oldpass, $pass1, $pass2) {
 }
 
 function checkPassword($username, $password) {
-    $sql = sprintf("SELECT uid FROM user_info WHERE
+    $sql = sprintf("SELECT uid FROM users WHERE
         username='%s' AND
         password=AES_ENCRYPT('%s', '%s%s')",
             mysql_real_escape_string($username),
@@ -2654,7 +2654,7 @@ function newPass($uid, $username, $pass1, $pass2) {
     if (strlen($pass1) < 6) {
         return 'short';
     }
-    $sql = sprintf("UPDATE user_info SET password=AES_ENCRYPT('%s', '%s%s')
+    $sql = sprintf("UPDATE users SET password=AES_ENCRYPT('%s', '%s%s')
         WHERE uid='%s'",
         mysql_real_escape_string($pass1),
         mysql_real_escape_string($username),
@@ -2690,7 +2690,7 @@ function getSpoiledPuzzles($uid) {
 }
 
 function getLastCommenter($pid) {
-    $sql = sprintf("SELECT fullname FROM user_info, comments WHERE pid='%s' and user_info.uid=comments.uid order by timestamp desc limit 1", mysql_real_escape_string($pid));
+    $sql = sprintf("SELECT fullname FROM users, comments WHERE pid='%s' and users.uid=comments.uid order by timestamp desc limit 1", mysql_real_escape_string($pid));
     return get_element_null($sql);
 }
 
@@ -3439,7 +3439,7 @@ function alreadyRegistered($uid) {
 }
 
 function getPic($uid) {
-    $sql = sprintf("SELECT picture FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT picture FROM users WHERE uid='%s'", mysql_real_escape_string($uid));
     return get_element($sql);
 }
 
