@@ -579,13 +579,13 @@ LOCK TABLES `spoiled_user_links` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `testAdminQueue`
+-- Table structure for table `test_admin_links`
 --
 
-DROP TABLE IF EXISTS `testAdminQueue`;
+DROP TABLE IF EXISTS `test_admin_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `testAdminQueue` (
+CREATE TABLE `test_admin_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`pid`)
@@ -593,12 +593,12 @@ CREATE TABLE `testAdminQueue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `testAdminQueue`
+-- Dumping data for table `test_admin_links`
 --
 
-LOCK TABLES `testAdminQueue` WRITE;
-/*!40000 ALTER TABLE `testAdminQueue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `testAdminQueue` ENABLE KEYS */;
+LOCK TABLES `test_admin_links` WRITE;
+/*!40000 ALTER TABLE `test_admin_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_admin_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

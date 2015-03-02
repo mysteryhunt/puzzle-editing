@@ -333,7 +333,7 @@ function isSpoiledOnPuzzle($uid, $pid) {
     return isRelatedBy("spoiled_user_links", $uid, $pid);
 }
 function isTestingAdminOnPuzzle($uid, $pid) {
-    return isRelatedBy("testAdminQueue", $uid, $pid);
+    return isRelatedBy("test_admin_links", $uid, $pid);
 }
 
 function setFlag($uid, $pid, $value) {
@@ -517,7 +517,7 @@ function getFactcheckersForPuzzle($pid) {
 }
 
 function getTestAdminsToNotify($pid) {
-    $table = 'testAdminQueue';
+    $table = 'test_admin_links';
     $sql = sprintf("SELECT users.uid FROM users INNER JOIN %s ON users.uid=%s.uid WHERE %s.pid='%s'",
         $table, $table, $table, mysql_real_escape_string($pid));
     $testadmins_for_puzzle = get_elements($sql);
@@ -598,7 +598,7 @@ function getApproversAsList($pid) {
 }
 
 function getTestingAdminsForPuzzleAsList($pid) {
-    return getUserNamesAsList("testAdminQueue", $pid);
+    return getUserNamesAsList("test_admin_links", $pid);
 }
 
 function getCurrentTestersAsList($pid) {
@@ -3447,8 +3447,8 @@ function getPic($uid) {
 }
 
 function getPuzzlesNeedTestAdmin() {
-    $sql = "SELECT puzzles.id FROM (puzzles LEFT JOIN testAdminQueue ON puzzles.id=testAdminQueue.pid)
-        JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE testAdminQueue.uid IS NULL AND pstatus.addToTestAdminQueue=1";
+    $sql = "SELECT puzzles.id FROM (puzzles LEFT JOIN test_admin_links ON puzzles.id=test_admin_links.pid)
+        JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE test_admin_links.uid IS NULL AND pstatus.addToTestAdminQueue=1";
     return get_elements($sql);
 }
 
@@ -3490,7 +3490,7 @@ function addToTestAdminQueue($uid, $pid) {
         return FALSE;
     }
 
-    $sql = sprintf("INSERT INTO testAdminQueue (uid, pid) VALUES ('%s', '%s')",
+    $sql = sprintf("INSERT INTO test_admin_links (uid, pid) VALUES ('%s', '%s')",
         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
     query_db($sql);
     // Subscribe testadmins to comments on their puzzles
@@ -3498,7 +3498,7 @@ function addToTestAdminQueue($uid, $pid) {
 }
 
 function getInTestAdminQueue($uid) {
-    $sql = sprintf("SELECT pid FROM testAdminQueue WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT pid FROM test_admin_links WHERE uid='%s'", mysql_real_escape_string($uid));
     return get_elements($sql);
 }
 
