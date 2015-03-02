@@ -79,9 +79,10 @@ projects like MAMP to help set up your computer with these things.
 
 ### File Permissions:
 
-Make sure that both the `uploads` directory (and everything underneath
-it) and the `tmp` directory (and everything underneath it) are
-writable and searchable by your web server.
+Make sure that the `uploads` directory exists in this directory (you
+may need to create it), and that it (and everything underneath it) and
+the `tmp` directory (and everything underneath it) are writable and
+searchable by your web server.
 
 
 ### To get email notifications working:
