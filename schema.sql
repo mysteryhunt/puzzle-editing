@@ -163,13 +163,13 @@ LOCK TABLES `comments` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `doneTesting`
+-- Table structure for table `former_tester_links`
 --
 
-DROP TABLE IF EXISTS `doneTesting`;
+DROP TABLE IF EXISTS `former_tester_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `doneTesting` (
+CREATE TABLE `former_tester_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -178,12 +178,12 @@ CREATE TABLE `doneTesting` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `doneTesting`
+-- Dumping data for table `former_tester_links`
 --
 
-LOCK TABLES `doneTesting` WRITE;
-/*!40000 ALTER TABLE `doneTesting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doneTesting` ENABLE KEYS */;
+LOCK TABLES `former_tester_links` WRITE;
+/*!40000 ALTER TABLE `former_tester_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `former_tester_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

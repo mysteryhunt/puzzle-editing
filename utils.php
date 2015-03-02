@@ -327,7 +327,7 @@ function isFactcheckerOnPuzzle($uid, $pid) {
     return isRelatedBy("factcheck_queue", $uid, $pid);
 }
 function isFormerTesterOnPuzzle($uid, $pid) {
-    return isRelatedBy("doneTesting", $uid, $pid);
+    return isRelatedBy("former_tester_links", $uid, $pid);
 }
 function isSpoiledOnPuzzle($uid, $pid) {
     return isRelatedBy("spoiled", $uid, $pid);
@@ -614,7 +614,7 @@ function getFactcheckersAsList($pid) {
 }
 
 function getFinishedTestersAsList($pid) {
-    return getUserNamesAsList("doneTesting", $pid);
+    return getUserNamesAsList("former_tester_links", $pid);
 }
 
 // Get comma-separated list of users' names, with email addresses
@@ -2292,7 +2292,7 @@ function changePuzzleStatus($uid, $pid, $status) {
         $users = get_elements($sql);
         foreach ($users as $user) {
             // echo "<br>Setting puzzle $pid done for user $user<br>";
-            doneTestingPuzzle($user, $pid);
+            setFormerTesterForPuzzle($user, $pid);
         }
         // Now, reset the number-of-testers count for the puzzle.
         resetPuzzleTesterCount($pid);
@@ -2819,7 +2819,7 @@ function getInactiveTestPuzzlesForUser($uid) {
 }
 
 function getDoneTestingPuzzlesForUser($uid) {
-    $sql = sprintf("SELECT pid FROM doneTesting WHERE uid='%s'", mysql_real_escape_string($uid));
+    $sql = sprintf("SELECT pid FROM former_tester_links WHERE uid='%s'", mysql_real_escape_string($uid));
     $result = get_elements($sql);
     return $result;
 }
@@ -3164,7 +3164,7 @@ function getAvailablePuzzlesToFFCForUser($uid) {
     $sql = sprintf("SELECT puzzles.id FROM puzzles INNER JOIN pstatus ON puzzles.pstatus=pstatus.id WHERE pstatus.finalFactcheck='1' AND NOT EXISTS (SELECT 1 FROM factcheck_queue WHERE factcheck_queue.pid=puzzles.id) AND %s AND %s AND %s",
         sqlUserNotRelatedClause('spoiled', $uid),
         sqlUserNotRelatedClause('test_queue', $uid),
-        sqlUserNotRelatedClause('doneTesting', $uid));
+        sqlUserNotRelatedClause('former_tester_links', $uid));
     $puzzles = get_elements($sql);
 
     return sortByLastCommentDate($puzzles);
@@ -3257,27 +3257,27 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
         $donetext = 'Yes';
         $done = 0;
     } elseif (strcmp($done, 'no') == 0) {
-        doneTestingPuzzle($uid, $pid);
+        setFormerTesterForPuzzle($uid, $pid);
         $donetext = 'No';
         $done = 1;
     } elseif (strcmp($done, 'notype') == 0) {
-        doneTestingPuzzle($uid, $pid);
+        setFormerTesterForPuzzle($uid, $pid);
         $donetext = 'No, this isn\'t a puzzle type I like.';
         $done = 2;
     } elseif (strcmp($done, 'nostuck') == 0) {
-        doneTestingPuzzle($uid, $pid);
+        setFormerTesterForPuzzle($uid, $pid);
         $donetext = 'No, I\'m not sure what to do and don\'t feel like working on it anymore.';
         $done = 3;
     } elseif (strcmp($done, 'nofun') == 0) {
-        doneTestingPuzzle($uid, $pid);
+        setFormerTesterForPuzzle($uid, $pid);
         $donetext = 'No, I think I know what to do but it isn\'t fun/I\'m not making progress.';
         $done = 4;
     } elseif (strcmp($done, 'nospoiled') == 0) {
-        doneTestingPuzzle($uid, $pid);
+        setFormerTesterForPuzzle($uid, $pid);
         $donetext = 'No, I was already spoiled on this puzzle';
         $done = 5;
     } elseif (strcmp($done, 'nodone') == 0) {
-        doneTestingPuzzle($uid, $pid);
+        setFormerTesterForPuzzle($uid, $pid);
         $donetext = 'No, I\'ve solved it.';
         $done = 6;
     }
@@ -3303,12 +3303,12 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
     mysql_query('COMMIT');
 }
 
-function doneTestingPuzzle($uid, $pid) {
+function setFormerTesterForPuzzle($uid, $pid) {
     $sql = sprintf("DELETE FROM test_queue WHERE pid='%s' AND uid='%s'",
         mysql_real_escape_string($pid), mysql_real_escape_string($uid));
     query_db($sql);
 
-    $sql = sprintf("INSERT INTO doneTesting (uid, pid) VALUES ('%s', '%s')
+    $sql = sprintf("INSERT INTO former_tester_links (uid, pid) VALUES ('%s', '%s')
         ON DUPLICATE KEY UPDATE time=NOW()",
             mysql_real_escape_string($uid), mysql_real_escape_string($pid));
     query_db($sql);
@@ -3430,7 +3430,7 @@ function getNumberOfPuzzlesForUser($uid) {
     $numbers['approver']      = countPuzzlesForUser('approver_queue', $uid);
     $numbers['spoiled']       = countPuzzlesForUser('spoiled',        $uid);
     $numbers['currentTester'] = countPuzzlesForUser('test_queue',     $uid);
-    $numbers['doneTester']    = countPuzzlesForUser('doneTesting',    $uid);
+    $numbers['doneTester']    = countPuzzlesForUser('former_tester_links',    $uid);
     $numbers['available']     = hasEditorPermission($uid) ? countAvailablePuzzlesForEditor($uid) : 0;
     return $numbers;
 }
@@ -3515,7 +3515,7 @@ function grantFactcheckPowers($uid) {
 
 function computeTestsolverScores() {
     $in_testing = get_elements("SELECT uid, pid FROM test_queue");
-    $done_testing = get_elements("SELECT uid, pid FROM doneTesting");
+    $done_testing = get_elements("SELECT uid, pid FROM former_tester_links");
     // what?
 }
 
