@@ -637,6 +637,15 @@ function getUserNamesAndEmailsAsList($users) {
     return $list;
 }
 
+function getRoles() {
+    return get_row_dicts("SELECT roles.* FROM roles");
+}
+
+function getAllUsersAndRoles() {
+    $sql = sprintf("SELECT u.uid, u.username, u.fullname, ur.role_id FROM users u LEFT JOIN user_role ur ON u.uid = ur.uid");
+    return get_row_dicts($sql);
+}
+
 function getUserRolesAsList($uid) {
     $sql = sprintf("SELECT roles.name FROM user_role, roles WHERE user_role.uid='%s' AND user_role.role_id=roles.id",
         mysql_real_escape_string($uid));
