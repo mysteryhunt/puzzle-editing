@@ -1,6 +1,13 @@
 <?php // vim:set ts=4 sw=4 sts=4 et:
 require __DIR__ . "/vendor/autoload.php";
-Dotenv::load(__DIR__);
+
+$env_dir = getenv('ENVDIR');
+$env_file = getenv('ENVFILE');
+if (!empty($env_dir) && !empty($env_file)) {
+    Dotenv::load($env_dir, $env_file);
+} else {
+    Dotenv::load(__DIR__);
+}
 
 # Require that various configuration settings be provided in the application
 # environment.
