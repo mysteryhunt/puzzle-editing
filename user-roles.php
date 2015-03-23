@@ -23,7 +23,7 @@ if (isset($_POST['changeroles'])) {
     }
 }
 
-echo themeUserRoleForm();
+print themeUserRoleForm();
 foot();
 
 
@@ -86,7 +86,7 @@ function themeUserRoleForm() {
         $html .= "<th>{$r['name']}</th>\n";
         $role_lookup[$r['id']] = $r['name'];
     }
-    $html .= "<\tr>\n";
+    $html .= "</tr>\n";
 
     $users_roles = getAllUsersAndNonAdminRoles();
     $user_role_map = array();
