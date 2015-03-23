@@ -29,7 +29,7 @@ foot();
 
 function postNewUserRoles($post) {
     // get existing user-role mapping
-    $users_roles = getAllUsersAndRoles();
+    $users_roles = getAllUsersAndNonAdminRoles();
     $user_role_map = array();
     foreach ($users_roles as $ur) {
         $user_role_map[$ur['uid']][$ur['role_id']] = true;
@@ -79,7 +79,7 @@ function themeUserRoleForm() {
     $html .= '<input type="hidden" name="changeroles" value="true"/>' . "\n";
     $html .= '<table class="user-roles">' . "\n";
 
-    $roles = getRoles();
+    $roles = getNonAdminRoles();
     $role_lookup = array();
     $html .= "<tr>\n<th>User</th>\n";
     foreach ($roles as $r) {
@@ -88,7 +88,7 @@ function themeUserRoleForm() {
     }
     $html .= "<\tr>\n";
 
-    $users_roles = getAllUsersAndRoles();
+    $users_roles = getAllUsersAndNonAdminRoles();
     $user_role_map = array();
     $user_name_map = array();
     foreach ($users_roles as $ur) {

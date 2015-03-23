@@ -637,12 +637,12 @@ function getUserNamesAndEmailsAsList($users) {
     return $list;
 }
 
-function getRoles() {
-    return get_row_dicts("SELECT roles.* FROM roles");
+function getNonAdminRoles() {
+    return get_row_dicts("SELECT roles.* FROM roles WHERE roles.administerServer = 0 OR roles.administerServer is null");
 }
 
-function getAllUsersAndRoles() {
-    $sql = sprintf("SELECT u.uid, u.username, u.fullname, ur.role_id FROM users u LEFT JOIN user_role ur ON u.uid = ur.uid");
+function getAllUsersAndNonAdminRoles() {
+    $sql = sprintf("SELECT u.uid, u.username, u.fullname, ur.role_id FROM users u LEFT JOIN user_role ur ON u.uid = ur.uid LEFT JOIN roles ON ur.role_id = roles.id WHERE roles.administerServer = 0 OR roles.administerServer is null");
     return get_row_dicts($sql);
 }
 
