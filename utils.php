@@ -226,8 +226,7 @@ function getCodename($pid) {
 
 // Does user have permission to add themselves as a Discussion Editor?
 function hasEditorPermission($uid) {
-    //return hasPermission($uid, 'becomeEditor');
-    return TRUE;
+    return hasPermission($uid, 'becomeEditor');
 }
 
 // Does user have permission to add themselves as an Approval Editor?
@@ -254,7 +253,9 @@ function hasLurkerPermission($uid) {
 }
 
 function hasFactCheckerPermission($uid) {
-    //return hasPermission($uid, 'factcheck');
+    // NOTE this permission no longer exists in the roles table; it seems to
+    //be vestigial.
+    // return hasPermission($uid, 'factcheck');
     return TRUE;
 }
 
