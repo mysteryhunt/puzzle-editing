@@ -642,7 +642,15 @@ function getNonAdminRoles() {
 }
 
 function getAllUsersAndNonAdminRoles() {
-    $sql = sprintf("SELECT u.uid, u.username, u.fullname, ur.role_id FROM users u LEFT JOIN user_role ur ON u.uid = ur.uid LEFT JOIN roles ON ur.role_id = roles.id WHERE roles.administerServer = 0 OR roles.administerServer is null");
+    $sql = sprintf(
+        "SELECT u.uid, u.username, u.fullname, r.role_id " .
+        "FROM users u " .
+        "LEFT JOIN " .
+        "(SELECT ur.uid, ur.role_id " .
+        "FROM user_role ur ".
+        "LEFT JOIN roles ON ur.role_id = roles.id ".
+        "WHERE roles.administerServer = 0 OR roles.administerServer is null) r " .
+        "ON u.uid = r.uid");
     return get_row_dicts($sql);
 }
 
