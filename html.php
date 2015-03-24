@@ -108,7 +108,7 @@ if (isset($_SESSION['uid'])) {
     echoNav1($selnav, "testsolveteams", "TS Team Assignments", (USING_TESTSOLVE_TEAMS) && hasTestAdminPermission($suid));
     echoNav1($selnav, "answers",        "Answers",             canChangeAnswers($suid));
     echoNav1($selnav, "allpuzzles",     "All Puzzles",         canSeeAllPuzzles($suid));
-    echoNav1($selnav, "editor-pick-special",     "Puzzles Needing Help",         true);
+    echoNav1($selnav, "editor-pick-special",     "Puzzles Needing Help",         hasEditorPermission($uid));
 }
 ?>
             </ul>
