@@ -102,13 +102,13 @@ if (isset($_SESSION['uid'])) {
     echoNav1($selnav, "approver",       "Approval Editor",     (USING_APPROVERS) && (hasApproverPermission($suid) || isEditorChief($suid)));
     echoNav1($selnav, "testsolving",    "Testsolving",         true);
 //    echoNav1($selnav, "factcheck",      "Fact Check",          true);
-    echoNav1($selnav, "ffc",            "Final Fact Check",    true);
+    echoNav1($selnav, "ffc",            "Final Fact Check",    hasFactCheckerPermission($suid));
     echoNav1($selnav, "editorlist",     "Editor List",         isEditorChief($suid) || hasServerAdminPermission($suid));
     echoNav1($selnav, "testadmin",      "Testing Admin",       hasTestAdminPermission($suid));
     echoNav1($selnav, "testsolveteams", "TS Team Assignments", (USING_TESTSOLVE_TEAMS) && hasTestAdminPermission($suid));
     echoNav1($selnav, "answers",        "Answers",             canChangeAnswers($suid));
     echoNav1($selnav, "allpuzzles",     "All Puzzles",         canSeeAllPuzzles($suid));
-    echoNav1($selnav, "editor-pick-special",     "Puzzles Needing Help",         hasEditorPermission($uid));
+    echoNav1($selnav, "editor-pick-special",     "Puzzles Needing Help",         hasEditorPermission($suid));
 }
 ?>
             </ul>

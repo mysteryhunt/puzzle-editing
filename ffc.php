@@ -10,6 +10,12 @@ $uid = isLoggedIn();
 // Start HTML
 head("ffc", "Final Fact Check");
 
+if (!hasFactCheckerPermission($uid)) {
+    print themeNotAFactChecker();
+    foot();
+    exit(1);
+}
+
 echo "<h2>(Final) Factchecking</h2>";
 $puzzles = getPuzzlesForFactchecker($uid);
 displayQueue($uid, $puzzles, "notes summary editornotes finallinks", FALSE);
@@ -23,3 +29,9 @@ displayQueue($uid, $puzzles, "notes summary editornotes finallinks", FALSE, arra
 
 // End HTML
 foot();
+
+function themeNotAFactChecker() {
+    $html = "<h3>Not a factchecker</h3>\n";
+    $html .= "<p>You are not currently a factchecker.</p>\n";
+    return $html;
+}

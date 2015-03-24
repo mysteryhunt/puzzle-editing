@@ -256,7 +256,7 @@ function hasFactCheckerPermission($uid) {
     // NOTE this permission no longer exists in the roles table; it seems to
     //be vestigial.
     // return hasPermission($uid, 'factcheck');
-    return TRUE;
+    return FALSE;
 }
 
 function isBlind($uid) {
