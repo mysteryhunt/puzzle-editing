@@ -545,11 +545,12 @@ if (isset($_POST['markunseen'])) {
 
 if (isset($_POST['setUserTestTeam'])) {
     $tid = $_POST['tid'];
+    $user_uid = $_POST['uid'];
 
     //echo "tid=$tid";
     //echo "<br>uid=$uid";
 
-    setUserTestTeam($uid, $tid);
+    setUserTestTeam($user_uid, $tid);
 
     header("Location: "  . URL . "/testsolveteams.php");
     exit(0);
