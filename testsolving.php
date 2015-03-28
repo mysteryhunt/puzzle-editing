@@ -70,11 +70,14 @@ if (USING_TESTSOLVE_TEAMS == 'TRUE') {
     } else {
         $myteamname = getTestTeamName($myteam);
         echo "<h2>Listing available puzzles to testsolve for team $myteamname </h2>";
+        echo "<strong class=\"impt\">IMPORTANT:</strong> <b>Clicking a puzzle below will
+        mark you as a testsolver. Please click judiciously and file a testsolving report!</b>
+        <br>";
         $teampuzzles = getTestTeamPuzzles($myteam);
         if (!$teampuzzles) {
             echo "This testsolving team has no puzzles assigned at this time.";
         } else {
-            displayQueue($uid, $teampuzzles, "notes summary", TRUE);
+            displayQueue($uid, $teampuzzles, "notes summary numtesters", TRUE);
         }
     }
 } ?>
