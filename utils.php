@@ -643,15 +643,15 @@ function getNonAdminRoles() {
 }
 
 function getAllUsersAndNonAdminRoles() {
-    $sql = sprintf(
-        "SELECT u.uid, u.username, u.fullname, r.role_id " .
+    $sql = sprintf("SELECT u.uid, u.username, u.fullname, r.role_id " .
         "FROM users u " .
         "LEFT JOIN " .
         "(SELECT ur.uid, ur.role_id " .
         "FROM user_role ur ".
         "LEFT JOIN roles ON ur.role_id = roles.id ".
         "WHERE roles.administerServer = 0 OR roles.administerServer is null) r " .
-        "ON u.uid = r.uid");
+        "ON u.uid = r.uid " .
+        "ORDER BY u.username");
     return get_row_dicts($sql);
 }
 
