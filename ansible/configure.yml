@@ -105,12 +105,21 @@
       register: seeded_file
       tags: [ localdev ]
 
-    - name: Restore MySQL DB.
+    - name: Initialize the development DB schema.
       sudo: yes
       mysql_db:
         name: "{{ apps[app_name].db_name }}"
         state: import
         target: "{{ apps[app_name].docroot }}/schema.sql"
+      when: seeded_file.stat.exists == False
+      tags: [ localdev ]
+
+    - name: Seed the development DB.
+      sudo: yes
+      mysql_db:
+        name: "{{ apps[app_name].db_name }}"
+        state: import
+        target: "{{ apps[app_name].docroot }}/seed.sql"
       when: seeded_file.stat.exists == False
       tags: [ localdev ]
 
