@@ -20,12 +20,13 @@ if (isset($_SESSION['feedback'])) {
 }
 ?>
 
+<?php if (ALLOW_TESTSOLVE_PICK): ?>
     <form action="form-submit.php" method="post">
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
         Enter Puzzle ID to testsolve: <input type="text" name="pid" />
         <input type="submit" name="getTestId" value="Go" />
     </form>
-
+<?php endif ?>
     <br/><h3><a href="stats.php">Testsolver stats</a></h3>
 
     <br />
