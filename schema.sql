@@ -807,7 +807,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL DEFAULT '',
   `picture` varchar(255) DEFAULT NULL,
-  `email_level` tinyint(1) DEFAULT '2',
+  `email_level` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`uid`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)

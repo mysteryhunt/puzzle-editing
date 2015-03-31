@@ -136,3 +136,5 @@ $mailing_lists = array(
 
 date_default_timezone_set('America/New_York');
 
+// How chatty should our email alerts be by default.
+define("DEFAULT_USER_EMAIL_LEVEL", 1);

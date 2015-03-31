@@ -186,10 +186,11 @@ function register() {
             mysql_real_escape_string($username), mysql_real_escape_string($fullname), mysql_real_escape_string($email)
         );
     } else {
-        $sql = sprintf("INSERT INTO users (username, password, fullname, email) VALUES ('%s', AES_ENCRYPT('%s', '%s%s'), '%s', '%s')",
-            mysql_real_escape_string($username), mysql_real_escape_string($pass1),
-            mysql_real_escape_string($username), mysql_real_escape_string($pass1),
-            mysql_real_escape_string($fullname), mysql_real_escape_string($email)
+        $sql = sprintf("INSERT INTO users (username, password, fullname, email, email_level) VALUES ('%s', AES_ENCRYPT('%s', '%s%s'), '%s', '%s', %s)",
+                       mysql_real_escape_string($username), mysql_real_escape_string($pass1),
+                       mysql_real_escape_string($username), mysql_real_escape_string($pass1),
+                       mysql_real_escape_string($fullname), mysql_real_escape_string($email),
+                       mysql_real_escape_string(DEFAULT_USER_EMAIL_LEVEL)
         );
     }
 
