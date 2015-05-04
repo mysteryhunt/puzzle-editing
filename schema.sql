@@ -130,7 +130,7 @@ CREATE TABLE `comment_types` (
 
 LOCK TABLES `comment_types` WRITE;
 /*!40000 ALTER TABLE `comment_types` DISABLE KEYS */;
-INSERT INTO `comment_types` VALUES (3,'Author'),(4,'Discuss Editor'),(7,'Lurker'),(1,'Server'),(6,'TestingAdmin'),(2,'Testsolver'),(8,'Unknown'),(5,'EIC'),(9,'Approver'),(10,'Cohesion'),(11,'Director'),(12,'Factchecker');
+INSERT INTO `comment_types` VALUES (3,'Author'),(4,'Discuss Editor'),(7,'Lurker'),(1,'Server'),(6,'TestingAdmin'),(2,'Testsolver'),(8,'Unknown'),(5,'EIC'),(9,'Approver'),(10,'Cohesion'),(11,'Director'),(12,'Factchecker'),(13, 'Round Captain');
 /*!40000 ALTER TABLE `comment_types` ENABLE KEYS */;
 UNLOCK TABLES;
 

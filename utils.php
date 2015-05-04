@@ -1026,6 +1026,8 @@ function getCommentTypeName($uid, $pid) {
         return "Cohesion";
     } elseif (isEditorChief($uid)) {
         return "EIC";
+    } elseif (isRoundCaptainOnPuzzle($uid, $pid)) {
+        return "Round Captain";
     } elseif (isTesterOnPuzzle($uid, $pid)) {
         return "Testsolver";
     } elseif (isDirector($uid)) {
