@@ -48,6 +48,7 @@ Dotenv::required(array(
     'PTRON_USING_AWS',
     'PTRON_ANON_TESTERS',
     'PTRON_USING_CODENAMES',
+    'PTRON_UNZIP_ZIP_UPLOADS',
     'PTRON_MAILING_LISTS',
     'PTRON_GET_KEYTAB',
     'PTRON_MMBLANCHE_CMD',
@@ -125,6 +126,7 @@ define("USING_CREDITS", _parseBooleanEnv('PTRON_USING_CREDITS'));
 define("USING_AWS", _parseBooleanEnv('PTRON_USING_AWS'));
 define("ANON_TESTERS", _parseBooleanEnv('PTRON_ANON_TESTERS'));
 define("USING_CODENAMES", _parseBooleanEnv('PTRON_USING_CODENAMES'));
+define("UNZIP_ZIP_UPLOADS", _parseBooleanEnv('PTRON_UNZIP_ZIP_UPLOADS'));
 
 // MIT-specific mailing list features
 define("MAILING_LISTS", _parseBooleanEnv('PTRON_MAILING_LISTS'));

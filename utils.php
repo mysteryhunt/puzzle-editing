@@ -2515,7 +2515,7 @@ function uploadFiles($uid, $pid, $type, $file) {
             'secret'   => AWS_SECRET_KEY));
     }
 
-    if ($extension == "zip") {
+    if ($extension == "zip" and UNZIP_ZIP_UPLOADS) {
         $filetype = "dir";
         if (move_uploaded_file($file['tmp_name'], $target_path)) {
             if (USING_AWS) {

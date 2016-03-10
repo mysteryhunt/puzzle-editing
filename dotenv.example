@@ -124,6 +124,9 @@ PTRON_USING_AWS="FALSE"
 PTRON_ANON_TESTERS="FALSE"
 # This feature does not appear to be working at the moment; codenames are never written?
 PTRON_USING_CODENAMES="FALSE"
+# If enabled, uploaded zip files will be unzipped on the server, allowing users to access
+# individual files within those zip files without having to download the entire zip file.
+PTRON_UNZIP_ZIP_UPLOADS="TRUE"
 
 ### MIT-specific mailing list features; not tested for at least a year.
 PTRON_MAILING_LISTS="FALSE"
