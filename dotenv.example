@@ -93,9 +93,9 @@ PTRON_MIN_EDITORS="2"
 PTRON_MIN_APPROVERS="2"
 
 # date of the next hunt - used to run the countdown on the home page
-PTRON_HUNT_YEAR="2016"
+PTRON_HUNT_YEAR="2017"
 # DOM = "Day of Month" - that month is January, of course
-PTRON_HUNT_DOM="15"
+PTRON_HUNT_DOM="13"
 
 
 ### Feature flags
