@@ -120,9 +120,9 @@ function displayDraft($pid) {
         if (strpos($draft['filename'], 'http') !== false || !USING_AWS) {
             $link = $draft['filename'];
         } elseif (strpos($draft['filename'], '_dir', strlen($draft['filename']) - 4) !== false) {
-            $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $draft['filename'];
+            $link = AWS_ENDPOINT . AWS_BUCKET . '/list.html?prefix=' . $draft['filename'];
         } else {
-            $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $draft['filename'];
+            $link = AWS_ENDPOINT . AWS_BUCKET . '/' . $draft['filename'];
         }
 ?>
         <span class="testdata">

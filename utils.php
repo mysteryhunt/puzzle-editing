@@ -2510,8 +2510,9 @@ function uploadFiles($uid, $pid, $type, $file) {
     if (USING_AWS) {
         // TODO: unify with the similar call in utils-pic.php
         $client = S3Client::factory(array(
-            'key'    => AWS_ACCESS_KEY,
-            'secret' => AWS_SECRET_KEY));
+            'endpoint' => AWS_ENDPOINT,
+            'key'      => AWS_ACCESS_KEY,
+            'secret'   => AWS_SECRET_KEY));
     }
 
     if ($extension == "zip") {
@@ -2545,7 +2546,7 @@ function uploadFiles($uid, $pid, $type, $file) {
             query_db($sql);
 
             if (USING_AWS) {
-                addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/list.html?prefix=$new_path\">$type</a> has been uploaded.", TRUE);
+                addComment($uid, $pid, "A new <a href=\"" . AWS_ENDPOINT . AWS_BUCKET . "/list.html?prefix=$new_path\">$type</a> has been uploaded.", TRUE);
             } else {
                 addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.", TRUE);
             }
@@ -2574,7 +2575,7 @@ function uploadFiles($uid, $pid, $type, $file) {
             query_db($sql);
 
             if (USING_AWS) {
-                addComment($uid, $pid, "A new <a href=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/$target_path\">$type</a> has been uploaded.", TRUE);
+                addComment($uid, $pid, "A new <a href=\"" . AWS_ENDPOINT . AWS_BUCKET . "/$target_path\">$type</a> has been uploaded.", TRUE);
             } else {
                 addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.", TRUE);
             }

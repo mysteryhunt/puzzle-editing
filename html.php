@@ -154,7 +154,7 @@ function printPerson($p) {
     $pic = "<img src=\"nophoto.gif\" />";
     if ($picture != "") {
         if (USING_AWS) {
-            $picsrc = "https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/pictures/thumbs/$id.jpg";
+            $picsrc = AWS_ENDPOINT . AWS_BUCKET . "/uploads/pictures/thumbs/$id.jpg";
             $pic = "<img src=\"".$picsrc."\" />";
         } else {
             $picsrc = "uploads/pictures/thumbs/$id.jpg";

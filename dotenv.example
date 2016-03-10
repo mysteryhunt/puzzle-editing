@@ -49,7 +49,7 @@ PTRON_DB_SERVER="localhost"
 PTRON_AWS_ACCESS_KEY_ID="someAWSAssignedRandomString"
 PTRON_AWS_SECRET_ACCESS_KEY="someMuchLongerAWSAssignedRandomString"
 PTRON_AWS_BUCKET="aBucketNameToStoreYourPuzzletronFiles"
-
+PTRON_AWS_ENDPOINT="https://s3.amazonaws.com/"
 
 ### urls and email addresses for your team
 

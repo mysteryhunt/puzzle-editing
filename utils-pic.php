@@ -31,8 +31,9 @@ function pictureHandling($id, $picture) {
 
     if (USING_AWS) {
         $client = S3Client::factory(array(
-            'key'    => AWS_ACCESS_KEY,
-            'secret' => AWS_SECRET_KEY));
+            'endpoint' => AWS_ENDPOINT,
+            'key'      => AWS_ACCESS_KEY,
+            'secret'   => AWS_SECRET_KEY));
     }
 
     if (!move_uploaded_file($picture['tmp_name'], $upfile)) {
