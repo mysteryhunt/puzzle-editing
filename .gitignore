@@ -6,3 +6,4 @@ puzzletron-keytab
 vendor
 /.env
 composer.lock
+/tmp/sess_*
