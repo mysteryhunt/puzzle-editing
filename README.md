@@ -3,10 +3,10 @@
 Software for editing/testing puzzles for the
 [MIT Mystery Hunt](http://www.mit.edu/~puzzle/)
 
-Currently being hacked by Team Luck in preparation for the 2016
-Hunt. Many thanks to our predecessors Random Fish (2015), Alice
-Shrugged (2014), and the long line of programmers who came before
-them.
+Currently being hacked by Setec Astronomy in preparation for the 2017
+Hunt. Many thanks to our predecessors Team Luck (2016), Random Fish
+(2015), Alice Shrugged (2014), and the long line of programmers who
+came before them.
 
 # Developing Puzzletron
 
@@ -104,5 +104,8 @@ automatically, but you might have to set it up by hand.
   can happen at each status
 
 
-The last person to touch this code (2016 mystery hunt) if you need
-help: mike@mechanicalfish.net
+The last people to touch this code if you need help:
+
+* matthew.gruskin@gmail.com (2017)
+
+* mike@mechanicalfish.net (2016)
