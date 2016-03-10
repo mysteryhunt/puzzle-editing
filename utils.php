@@ -2534,7 +2534,8 @@ function uploadFiles($uid, $pid, $type, $file) {
             $res = exec("/usr/bin/unzip $target_path -d $new_path");
 
             if (USING_AWS) {
-                $result = $client->uploadDirectory($new_path, AWS_BUCKET, $new_path);
+                $result = $client->uploadDirectory($new_path, AWS_BUCKET, $new_path, array(
+                    'params' => array('ACL' => 'public-read')));
             }
             $sql = sprintf("INSERT INTO uploaded_files (filename, pid, uid, cid, type) VALUES ('%s', '%s', '%s', '%s', '%s')",
                 mysql_real_escape_string($new_path), mysql_real_escape_string($pid),
@@ -2546,7 +2547,7 @@ function uploadFiles($uid, $pid, $type, $file) {
             query_db($sql);
 
             if (USING_AWS) {
-                addComment($uid, $pid, "A new <a href=\"" . AWS_ENDPOINT . AWS_BUCKET . "/list.html?prefix=$new_path\">$type</a> has been uploaded.", TRUE);
+                addComment($uid, $pid, "A new <a href=\"" . AWS_ENDPOINT . AWS_BUCKET . "/$new_path/index.html\">$type</a> has been uploaded.", TRUE);
             } else {
                 addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.", TRUE);
             }

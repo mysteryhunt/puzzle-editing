@@ -943,7 +943,7 @@ function displayFileList ($uid, $pid, $type) {
         if (strpos($file['filename'], 'http') !== false || !USING_AWS) {
             $link = $file['filename'];
         } elseif (strpos($file['filename'], '_dir', strlen($file['filename']) - 4) !== false) {
-            $link = AWS_ENDPOINT . AWS_BUCKET . '/list.html?prefix=' . $file['filename'];
+            $link = AWS_ENDPOINT . AWS_BUCKET . '/' . $file['filename'] . '/index.html';
         } else {
             $link = AWS_ENDPOINT . AWS_BUCKET . '/' . $file['filename'];
         }
