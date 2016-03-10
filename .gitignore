@@ -5,3 +5,4 @@ puzzletron-keytab
 .vagrant
 vendor
 /.env
+composer.lock
