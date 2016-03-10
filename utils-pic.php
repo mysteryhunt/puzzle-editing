@@ -1,9 +1,6 @@
 <?php // vim:set ts=4 sw=4 sts=4 et:
 require_once "config.php";
-if (USING_AWS) {
-    // TODO: vendor this dependency
-    require 'aws.phar';
-}
+
 use Aws\S3\S3Client;
 
 function pictureHandling($id, $picture) {
