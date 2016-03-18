@@ -85,14 +85,6 @@ function newIdeaForm($uid, $summary = '', $description = '') {
 ?>
     <h2>Puzzle Idea Submission</h2>
 
-    <p>So that we can later publish the hunt as a book or a
-    website, we need to obtain rights to all puzzles that the team
-    writes.  When so released, they will probably be licensed under
-    a copyleft license. Authors will generally retain creative
-    control over their puzzles.</p>
-
-    <p>By submitting any puzzle-related content to Puzzletron (the “Content”), you agree to grant Nathan Fung a perpetual, irrevocable, non-exclusive, worldwide license to publish, modify, adapt, or relicense the Content in any form.</p>
-
     <form method="post" action="submit-new.php">
         <p> Puzzle Title (NO SPOILERS):</p>
         <input type='text' name='title' maxlength='255' class="longin" />
