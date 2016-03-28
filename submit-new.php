@@ -44,8 +44,7 @@ if (isset($_POST) && isset($_POST['newIdea'])) {
         mysql_real_escape_string(MIN_EDITORS));
     query_db($sql);
 
-    $sql = sprintf("SELECT id FROM puzzles WHERE summary='%s' AND description='%s'",
-        mysql_real_escape_string($cleanSummary), mysql_real_escape_string($cleanDescription));
+    $sql = "SELECT LAST_INSERT_ID()";
     $id = get_element($sql);
 
     $sql = sprintf("INSERT INTO author_links (pid, uid) VALUES ('%s', '%s')",
