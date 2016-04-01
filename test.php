@@ -227,7 +227,7 @@ function displayFeedbackForm($uid, $pid) {
             <textarea style="width:50em; height: 5em;" name="breakthrough"></textarea>
         </p>
         <p>
-            Rate the overall fun of this puzzle. <SELECT NAME="fun">
+            Rate the overall fun of this puzzle (where 1 is the least fun, and 5 is the most fun): <SELECT NAME="fun">
                 <OPTION VALUE="0" SELECTED>-</OPTION>
                 <OPTION>1</OPTION>
                 <OPTION>2</OPTION>
@@ -237,7 +237,7 @@ function displayFeedbackForm($uid, $pid) {
             </SELECT>
         </p>
         <p>
-            Rate the overall difficulty of this puzzle. <SELECT NAME="difficulty">
+            Rate the overall difficulty of this puzzle (where 1 is the easiest, and 5 is the most difficult): <SELECT NAME="difficulty">
                 <OPTION VALUE="0" SELECTED>-</OPTION>
                 <OPTION>1</OPTION>
                 <OPTION>2</OPTION>
