@@ -127,6 +127,9 @@ PTRON_USING_CODENAMES="FALSE"
 # If enabled, uploaded zip files will be unzipped on the server, allowing users to access
 # individual files within those zip files without having to download the entire zip file.
 PTRON_UNZIP_ZIP_UPLOADS="TRUE"
+# If enabled, then a different limit for the maximum number of testers
+# can be configured for each puzzle.
+PTRON_USING_PER_PUZZLE_TESTER_LIMITS="FALSE"
 
 ### MIT-specific mailing list features; not tested for at least a year.
 PTRON_MAILING_LISTS="FALSE"

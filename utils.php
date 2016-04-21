@@ -1973,6 +1973,15 @@ function changeNeededEditors($uid, $pid, $need) {
     query_db($sql);
 }
 
+function changeTesterLimit($uid, $pid, $tester_limit) {
+    if (!canChangeTesterLimit($uid, $pid)) {
+        utilsError("You do not have permission to change the tester limit.");
+    }
+    $sql = sprintf("UPDATE puzzles SET tester_limit='%s' WHERE id='%s'",
+        mysql_real_escape_string($tester_limit), mysql_real_escape_string($pid));
+    query_db($sql);
+}
+
 function addApprovers($uid, $pid, $add) {
     if (!$add) {
         return;
@@ -2076,6 +2085,11 @@ function canViewPuzzle($uid, $pid) {
 }
 function canChangeEditorsNeeded($uid, $pid) {
     return isEditorChief($uid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid);
+}
+
+function canChangeTesterLimit($uid, $pid) {
+    return isEditorChief($uid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) ||
+        isTestingAdminOnPuzzle($uid, $pid);
 }
 
 function canChangeAnswers($uid) {
@@ -2981,8 +2995,26 @@ function getPuzzleToTest($uid) {
     return key($sort);
 }
 
+function getTesterLimit($pid) {
+    $tester_limit = 99;
+
+    if (USING_PER_PUZZLE_TESTER_LIMIT) {
+        $sql = sprintf("SELECT tester_limit FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
+        $tester_limit_elements = get_elements($sql);
+        if (!$tester_limit_elements) {
+            // This shouldn't happen, because we should get a default value from the database schema.
+            // But set a default value here just in case.
+            $tester_limit = 3;
+        } else {
+            $tester_limit = (int)$tester_limit_elements[0];
+        }
+    }
+
+    return $tester_limit;
+}
+
 function canUseMoreTesters($pid) {
-    $testers_limit = 99;
+    $tester_limit = getTesterLimit($pid);
 
     $sql = sprintf("SELECT tester_count FROM puzzle_tester_count WHERE pid='%s'", mysql_real_escape_string($pid));
     $tester_count = get_elements($sql);
@@ -2992,7 +3024,7 @@ function canUseMoreTesters($pid) {
         return 1;
     }
 
-    if ((int)$tester_count[0] >= $testers_limit) {
+    if ((int)$tester_count[0] >= $tester_limit) {
         // We already have enough testers on this puzzle.
         return NULL;
     }

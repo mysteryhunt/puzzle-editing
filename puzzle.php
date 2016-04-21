@@ -309,6 +309,7 @@ function displayPeople($uid, $pid) {
         <?php displayFactcheckers($uid, $pid); ?>
         <?php displayTags($uid, $pid); ?>
         <?php if (canSeeTesters($uid, $pid)) {displayTesters($uid, $pid);} ?>
+        <?php if (USING_PER_PUZZLE_TESTER_LIMITS) {displayTesterLimit($uid, $pid);} ?>
         <?php displayTestingAdmin($uid, $pid); ?>
     </table>
 <?php
@@ -658,6 +659,29 @@ function displayTesters($uid, $pid) {
     <tr>
         <td class='peopleInfo'>
             <strong>Number of testers during this testsolving cycle:</strong> <?php echo getCurrentPuzzleTesterCount($pid); ?>
+        </td>
+    </tr>
+<?php
+}
+
+function displayTesterLimit($uid, $pid) {
+?>
+    <tr>
+        <td class='peopleInfo'>
+            <strong>Tester Limit:</strong> <?php echo getTesterLimit($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php if (canChangeTesterLimit($uid, $pid)) { ?>
+            <div>
+            <form method="post" action="form-submit.php">
+                <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                Change maximum number of testers: <input type="text" name="tester_limit" value="<?php echo getTesterLimit($pid); ?>" class="shortin" /> <input type="submit" name="changeTesterLimit" value="Go" />
+            </form>
+            </div>
+            <?php } ?>
         </td>
     </tr>
 <?php

@@ -214,6 +214,14 @@ if (isset($_POST['changeRoundCaptain'])) {
     exit(0);
 }
 
+if (isset($_POST['changeTesterLimit'])) {
+    $pid = $_POST['pid'];
+    $tester_limit = $_POST['tester_limit'];
+    changeTesterLimit($uid, $pid, $tester_limit);
+    header("Location: " . URL . "/puzzle.php?pid=$pid");
+    exit(0);
+}
+
 if (isset($_POST['changePuzzleStatus'])) {
     $pid = $_POST['pid'];
 
