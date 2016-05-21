@@ -668,7 +668,10 @@ function displayTesterLimit($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
-            <strong>Tester Limit:</strong> <?php echo getTesterLimit($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
+            <strong>Tester Limit:</strong> <?php echo getTesterLimit($pid); ?>&nbsp;
+            <?php if (canChangeTesterLimit($uid, $pid)) { ?>
+            <a href="#" class="changeLink">[Change]</a>
+            <?php } ?>
         </td>
     </tr>
     <tr>
