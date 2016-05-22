@@ -2998,7 +2998,7 @@ function getPuzzleToTest($uid) {
 function getTesterLimit($pid) {
     $tester_limit = 99;
 
-    if (USING_PER_PUZZLE_TESTER_LIMIT) {
+    if (USING_PER_PUZZLE_TESTER_LIMITS) {
         $sql = sprintf("SELECT tester_limit FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
         $tester_limit_elements = get_elements($sql);
         if (!$tester_limit_elements) {
