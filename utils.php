@@ -272,6 +272,10 @@ function isEditorChief($uid) {
     return isRole($uid, 9);
 }
 
+function isApprovalEditor($uid) {
+    return isRole($uid, 14);
+}
+
 function isCohesion($uid) {
     return isRole($uid, 15);
 }
@@ -2088,8 +2092,8 @@ function canChangeEditorsNeeded($uid, $pid) {
 }
 
 function canChangeTesterLimit($uid, $pid) {
-    return isEditorChief($uid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) ||
-        isTestingAdminOnPuzzle($uid, $pid);
+    return isEditorChief($uid) || isApprovalEditor($uid) || isCohesion($uid) ||
+        isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid);
 }
 
 function canChangeAnswers($uid) {
