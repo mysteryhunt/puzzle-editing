@@ -1984,6 +1984,9 @@ function changeTesterLimit($uid, $pid, $tester_limit) {
     $sql = sprintf("UPDATE puzzles SET tester_limit='%s' WHERE id='%s'",
         mysql_real_escape_string($tester_limit), mysql_real_escape_string($pid));
     query_db($sql);
+
+    $comment = "Changed tester limit to $tester_limit";
+    addComment($uid, $pid, $comment, TRUE);
 }
 
 function addApprovers($uid, $pid, $add) {
