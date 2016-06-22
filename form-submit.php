@@ -449,6 +449,15 @@ if (isset($_POST['checkAns'])) {
     exit(0);
 }
 
+if (isset($_POST['makeTester'])) {
+    $pid = $_POST['pid'];
+
+    addPuzzleToTestQueue($uid, $pid);
+
+    header("Location: " . URL . "/test.php?pid=$pid");
+    exit(0);
+}
+
 if (isset($_POST['feedback'])) {
     $pid = $_POST['pid'];
     $done = $_POST['done'];

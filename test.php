@@ -86,9 +86,25 @@ function maybeDisplayWarning($uid, $pid) {
     }
 ?>
         <div class="warning">
-                <strong class='impt'>WARNING:</strong> You are not marked as a current testsolver.<br>
-                Please use the puzzle version, and wiki page, that were current when you started solving, NOT the ones listed below (if they differ).<br/>
-                If in doubt, email <?php echo HELP_EMAIL; ?>
+                <strong class='impt'>WARNING:</strong> You are not marked as a current testsolver.<br/>
+                This may be because you previously testsolved this puzzle, or because you are a test admin.<br/>
+                If you have previously testsolved this puzzle, please use the puzzle version, and wiki page,
+                that were current when you started solving, NOT the ones listed below (if they differ).<br/>
+                If in doubt, email <?php echo HELP_EMAIL; ?><br/>
+<?php
+    if (hasTestAdminPermission($uid) &&
+        canTestPuzzle($uid, $pid) &&
+        !isTesterOnPuzzle($uid, $pid) &&
+        !isFormerTesterOnPuzzle($uid, $pid)) {
+?>
+                <form method="post" action="form-submit.php">
+                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                        <input type="submit" name="makeTester" value="Make me a tester on this puzzle!" />
+                </form>
+<?php
+    }
+?>
         </div>
 <?php
 }
