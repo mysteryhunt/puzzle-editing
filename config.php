@@ -73,7 +73,7 @@ define("TMPDIR", getenv('PTRON_TMPDIR'));
 
 ini_set('default_charset', 'UTF-8');
 ini_set('session.gc_maxlifetime','86400');
-ini_set('session.cookie_lifetime','86400');
+ini_set('session.cookie_lifetime','0');
 ini_set('session.save_path', getenv('PTRON_SESSION_CACHE_DIR'));
 
 session_start();
