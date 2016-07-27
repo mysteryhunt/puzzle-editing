@@ -466,10 +466,11 @@ if (isset($_POST['feedback'])) {
     $liked = $_POST['liked'];
     $breakthrough = $_POST['breakthrough'];
     $skills = $_POST['skills'];
+    $fishiness = $_POST['fishiness'];
     $fun = $_POST['fun'];
     $difficulty = $_POST['difficulty'];
     $when_return = $_POST['when_return'];
-    insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
+    insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $breakthrough, $fishiness, $fun, $difficulty, $when_return);
     $_SESSION['feedback'] = "Thank you for giving feedback on this puzzle!";
 
     if (strcmp($done, 'yes') == 0) {

@@ -225,7 +225,8 @@ function displayFeedbackForm($uid, $pid) {
             <input type="text" name="time" />
         </p>
         <p>
-            Describe what you tried. <br />
+            Describe what you tried when working on this puzzle.<br />
+            If you had a breakthrough point, describe in detail what in the puzzle led you to it.<br />
             <textarea style="width:50em; height: 10em;" name="tried"></textarea>
         </p>
         <p>
@@ -238,9 +239,17 @@ function displayFeedbackForm($uid, $pid) {
             Were there any special skills required to solve this puzzle?<br />
             <textarea style="width:50em; height: 3em;" name="skills"></textarea>
         </p>
+        <!--
         <p>
             Describe a breakthrough point and what in the puzzle lead you to it:<br />
             <textarea style="width:50em; height: 5em;" name="breakthrough"></textarea>
+        </p>
+        -->
+        <input type="hidden" name="breakthrough" value="" />
+        <p>
+            If you're testing a fish puzzle, it should be fun and accessible and have a difficulty of 1 or 2.<br />
+            Please comment on if the puzzle felt fishy, and if not describe what aspects of the puzzle weren't fishy.<br />
+            <textarea style="width:50em; height: 5em;" name="fishiness"></textarea>
         </p>
         <p>
             Rate the overall fun of this puzzle (where 1 is the least fun, and 5 is the most fun): <SELECT NAME="fun">
@@ -293,7 +302,7 @@ function displayPrevFeedback($uid, $pid) {
             $done = 'No, I\'ve solved it.';
         }
 
-        $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
+        $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fishiness'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
         $purifier = getHtmlPurifier();
         $cleanComment = $purifier->purify($feedback);
 

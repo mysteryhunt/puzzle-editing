@@ -3308,7 +3308,7 @@ function checkAnswer($pid, $attempt) {
     return FALSE;
 }
 
-function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return) {
+function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $breakthrough, $fishiness, $fun, $difficulty, $when_return) {
     mysql_query('START TRANSACTION');
 
     if (strcmp($done, 'yes') == 0) {
@@ -3340,7 +3340,7 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
         $done = 6;
     }
 
-    $comment = createFeedbackComment($donetext, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
+    $comment = createFeedbackComment($donetext, $time, $tried, $liked, $skills, $breakthrough, $fishiness, $fun, $difficulty, $when_return);
 
     $ncomment = "<p><strong>Testing Feedback</strong></p>";
     $ncomment .= "<p><a class='description' href='#'>[View Feedback]</a></p>";
@@ -3348,13 +3348,13 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
 
     addComment($uid, $pid, $ncomment, FALSE, TRUE, TRUE);
 
-    $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
-        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
+    $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fishiness, fun, difficulty, when_return)
+        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
             mysql_real_escape_string($uid), mysql_real_escape_string($pid),
             mysql_real_escape_string($done), mysql_real_escape_string($time),
             mysql_real_escape_string($tried), mysql_real_escape_string($liked),
             mysql_real_escape_string($skills), mysql_real_escape_string($breakthrough),
-            mysql_real_escape_string($fun),
+            mysql_real_escape_string($fishiness), mysql_real_escape_string($fun),
             mysql_real_escape_string($difficulty), mysql_real_escape_string($when_return));
     query_db($sql);
 
@@ -3372,7 +3372,7 @@ function setFormerTesterForPuzzle($uid, $pid) {
     query_db($sql);
 }
 
-function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return) {
+function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fishiness, $fun, $difficulty, $when_return) {
     $difficulty_text = $difficulty;
     if ($difficulty == 0) {
         $difficulty_text = "-";
@@ -3391,8 +3391,9 @@ function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthro
         <p><strong>How long did you spend on this puzzle (since your last feedback, if any)?</strong></p>
         <p>$time</p><br />
 
-        <p><strong>Describe what you tried.</p></strong>
-        <p>$tried</p><br />
+        <p><strong>Describe what you tried when working on this puzzle.</br>
+        If you had a breakthrough point, describe in detail what in the puzzle led you to it.</strong></p>
+        <p>$tried $breakthrough</p><br />
 
         <p><strong>What did you like/dislike about this puzzle? </br>
         Is there anything you think should be changed with the puzzle?</br>
@@ -3402,8 +3403,9 @@ function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthro
         <p><strong>Were there any special skills required to solve this puzzle?</strong></p>
         <p>$skills</p><br />
 
-        <p><strong>What was the breakthrough point for you in this puzzle?</strong></p>
-        <p>$breakthrough</p><br />
+        <p><strong>If you're testing a fish puzzle, it should be fun and accessible and have a difficulty of 1 or 2.</br>
+        Please comment on if the puzzle felt fishy, and if not describe what aspects of the puzzle weren't fishy.</strong></p>
+        <p>$fishiness</p><br />
 
         <p><strong>How fun was this puzzle?</p></strong></p>
         <p>$fun_text</p><br />
