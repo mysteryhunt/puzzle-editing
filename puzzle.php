@@ -213,6 +213,7 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo) {
         $description = '(no description)';
     }
     $codename = getCodename($pid);
+    $puzzleround = getPuzzleRound($pid);
 ?>
     <h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
     <p><strong><?php echo "Round: $puzzleround"; ?></strong></p>
