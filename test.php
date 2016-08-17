@@ -247,8 +247,8 @@ function displayFeedbackForm($uid, $pid) {
         -->
         <input type="hidden" name="breakthrough" value="" />
         <p>
-            If you're testing a fish puzzle, it should be fun and accessible and have a difficulty of 1 or 2.<br />
-            Please comment on if the puzzle felt fishy, and if not describe what aspects of the puzzle weren't fishy.<br />
+            If you're testing a character puzzle, it should be fun and accessible and have a difficulty of 1 or 2.<br />
+            Please comment on if the puzzle felt character-y, and if not describe what aspects of the puzzle weren't character-y.<br />
             <textarea style="width:50em; height: 5em;" name="fishiness"></textarea>
         </p>
         <p>

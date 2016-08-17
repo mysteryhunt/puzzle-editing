@@ -3403,8 +3403,8 @@ function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthro
         <p><strong>Were there any special skills required to solve this puzzle?</strong></p>
         <p>$skills</p><br />
 
-        <p><strong>If you're testing a fish puzzle, it should be fun and accessible and have a difficulty of 1 or 2.</br>
-        Please comment on if the puzzle felt fishy, and if not describe what aspects of the puzzle weren't fishy.</strong></p>
+        <p><strong>If you're testing a character puzzle, it should be fun and accessible and have a difficulty of 1 or 2.</br>
+        Please comment on if the puzzle felt character-y, and if not describe what aspects of the puzzle weren't character-y.</strong></p>
         <p>$fishiness</p><br />
 
         <p><strong>How fun was this puzzle?</p></strong></p>
