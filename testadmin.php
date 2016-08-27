@@ -81,7 +81,7 @@ function displayTestQueue($uid) {
     if (!$puzzles) {
         echo '<h3>No Puzzles Currently In Queue</h3>';
     } else {
-        displayQueue($uid, $puzzles, "notes answer summary testers", FALSE);
+        displayQueue($uid, $puzzles, "notes answer summary testers currentpuzzletestercount", FALSE);
     }
 }
 
