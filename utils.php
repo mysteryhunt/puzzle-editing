@@ -2582,12 +2582,30 @@ function uploadFiles($uid, $pid, $type, $file) {
         if (move_uploaded_file($file['tmp_name'], $target_path)) {
             if (USING_AWS) {
                 $key = $target_path;
+
+                $extension = pathinfo($target_path, PATHINFO_EXTENSION);
+                $content_type = "application/octet-stream";
+                if ($extension == "html" || $extension == "htm") {
+                    $content_type = "text/html";
+                } else if ($extension == "pdf") {
+                    $content_type = "application/pdf";
+                } else if ($extension == "txt") {
+                    $content_type = "text/plain";
+                } else if ($extension == "jpeg" || $extension == "jpg") {
+                    $content_type = "image/jpeg";
+                } else if ($extension == "png") {
+                    $content_type = "image/png";
+                } else if ($extension == "gif") {
+                    $content_type = "image/gif";
+                }
+
                 // TODO: Nobody is reading this result; the site proceeds to
                 // link to the bucket on the assumption that this succeeded.
                 $result = $client->putObject(array(
                     'Bucket' => AWS_BUCKET,
                     'Key'    => $key,
                     'Body'   => file_get_contents($target_path),
+                    'ContentType' => $content_type,
                     'ContentDisposition' => 'inline'));
             }
 
