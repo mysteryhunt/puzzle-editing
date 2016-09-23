@@ -662,6 +662,16 @@ function displayTesters($uid, $pid) {
             <strong>Number of testers during this testsolving cycle:</strong> <?php echo getCurrentPuzzleTesterCount($pid); ?>
         </td>
     </tr>
+    <tr>
+        <td class='peopleInfo'>
+            <strong>Fun Ratings:</strong> Median <?php echo getMedianFeedback($pid, 'fun'); ?>, Mode <?php echo getModeFeedback($pid, 'fun'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td class='peopleInfo'>
+            <strong>Difficulty Ratings:</strong> Median <?php echo getMedianFeedback($pid, 'difficulty'); ?>, Mode <?php echo getModeFeedback($pid, 'difficulty'); ?>
+        </td>
+    </tr>
 <?php
 }
 
