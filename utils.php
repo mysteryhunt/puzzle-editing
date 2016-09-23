@@ -3882,8 +3882,10 @@ function getFinalLink($title) {
 }
 
 function getMedianFeedback($pid, $column_name) {
-  $sql = sprintf("SELECT %s FROM testing_feedback WHERE pid='%s'",
-      mysql_real_escape_string($column_name), mysql_real_escape_string($pid));
+  $sql = sprintf("SELECT %s FROM testing_feedback WHERE pid='%s' AND %s <> 0",
+      mysql_real_escape_string($column_name),
+      mysql_real_escape_string($pid),
+      mysql_real_escape_string($column_name));
   $arr = get_elements($sql);
   sort($arr);
   $count = count($arr); //total numbers in array
@@ -3902,8 +3904,10 @@ function getMedianFeedback($pid, $column_name) {
 }
 
 function getModeFeedback($pid, $column_name) {
-  $sql = sprintf("SELECT %s FROM testing_feedback WHERE pid='%s'",
-      mysql_real_escape_string($column_name), mysql_real_escape_string($pid));
+  $sql = sprintf("SELECT %s FROM testing_feedback WHERE pid='%s' AND %s <> 0",
+      mysql_real_escape_string($column_name),
+      mysql_real_escape_string($pid),
+      mysql_real_escape_string($column_name));
   $arr = get_elements($sql);
   if (count($arr) <= 0) {
     return "--";
