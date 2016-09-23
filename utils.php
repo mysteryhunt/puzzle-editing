@@ -3887,6 +3887,9 @@ function getMedianFeedback($pid, $column_name) {
   $arr = get_elements($sql);
   sort($arr);
   $count = count($arr); //total numbers in array
+  if ($count <= 0) {
+    return "--";
+  }
   $middleval = floor(($count-1)/2); // find the middle value, or the lowest middle value
   if($count % 2) { // odd number, middle is the median
       $median = $arr[$middleval];
@@ -3902,6 +3905,9 @@ function getModeFeedback($pid, $column_name) {
   $sql = sprintf("SELECT %s FROM testing_feedback WHERE pid='%s'",
       mysql_real_escape_string($column_name), mysql_real_escape_string($pid));
   $arr = get_elements($sql);
+  if (count($arr) <= 0) {
+    return "--";
+  }
   
   $count = array();
   foreach ($arr as $item) {
