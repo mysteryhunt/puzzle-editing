@@ -3880,3 +3880,48 @@ function getBetaLink($title) {
 function getFinalLink($title) {
     return POSTPROD_URLPREFIX . "puzzle/" . postprodCanon($title) . "/";
 }
+
+function getMedianFeedback($pid, $column_name) {
+  $sql = sprintf("SELECT %s FROM testing_feedback WHERE pid='%s'",
+      mysql_real_escape_string($column_name), mysql_real_escape_string($pid));
+  $arr = get_elements($sql);
+  sort($arr);
+  $count = count($arr); //total numbers in array
+  $middleval = floor(($count-1)/2); // find the middle value, or the lowest middle value
+  if($count % 2) { // odd number, middle is the median
+      $median = $arr[$middleval];
+  } else { // even number, calculate avg of 2 medians
+      $low = $arr[$middleval];
+      $high = $arr[$middleval+1];
+      $median = (($low+$high)/2);
+  }
+  return $median;
+}
+
+function getModeFeedback($pid, $column_name) {
+  $sql = sprintf("SELECT %s FROM testing_feedback WHERE pid='%s'",
+      mysql_real_escape_string($column_name), mysql_real_escape_string($pid));
+  $arr = get_elements($sql);
+  
+  $count = array();
+  foreach ($arr as $item) {
+    if (isset($count[$item])) {
+      $count[$item]++;
+    } else {
+      $count[$item] = 1;
+    };
+  };
+  $mostcommon = array();
+  $iter = 0;
+  foreach ($count as $k => $v) {
+    if ($v > $iter) {
+      $mostcommon = array();
+    }
+    if ($v >= $iter) {
+      array_push($mostcommon, $k);
+      $iter = $v;
+    };
+  };
+  sort($mostcommon);
+  return implode(",", $mostcommon);
+}
