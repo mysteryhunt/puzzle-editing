@@ -594,10 +594,26 @@ if (isset($_POST['setPuzzleTestTeam'])) {
 //-------------------------------------
 
 head();
-echo '<div class="errormsg">An unknown error seems to have occurred. <br />';
-echo 'Please try again, or contact <a href="mailto:';
-echo HELP_EMAIL;
-echo '">the Server Administrators</a> for help.</div>';
+
+echo '<div class="errormsg">';
+
+$max_upload_size = 1048576 * ((int)ini_get('post_max_size'));
+if (isset($_SERVER['CONTENT_LENGTH']) && ((int)$_SERVER['CONTENT_LENGTH']) > $max_upload_size) {
+    echo 'The file upload was too large. The uploaded file was ';
+    echo $_SERVER['CONTENT_LENGTH'];
+    echo ' bytes, and the maximum supported upload size is ';
+    echo $max_upload_size;
+    echo ' bytes.<br />';
+    echo 'Please reduce the file size if possible. If your puzzle truly requires a large upload, contact <a href="mailto:';
+    echo HELP_EMAIL;
+    echo '">the Server Administrators</a> for help.';
+} else {
+    echo 'An unknown error seems to have occurred. <br />';
+    echo 'Please try again, or contact <a href="mailto:';
+    echo HELP_EMAIL;
+    echo '">the Server Administrators</a> for help.';
+}
+echo '</div>';
 
 foot();
 
