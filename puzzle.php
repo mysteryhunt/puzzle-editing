@@ -161,10 +161,12 @@ displayFiles($uid, $pid);
 echo "</div>";
 
 // Link to post-prod site
+/*
 echo "<br />";
 echo "<div class='postProd'>";
 displayPostProd($uid, $pid, isStatusInPostProd($puzzleInfo['pstatus']));
 echo "</div>";
+*/
 
 echo "<br />";
 echo "<div class='puzzApproval'>";
