@@ -1,0 +1,129 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "AWS network resources for a server group.",
+
+  "Parameters" : {
+    "Domain" : {
+      "Type": "String",
+      "Description": "DNS zone which this group lives in, managed by Route 53.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
+    },
+    "ServerGroup" : {
+      "Type": "String",
+      "Description": "A group of servers that the bucket is associated with; becomes part of the bucket name.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "BackupBucketName": {
+      "Type": "String",
+      "Description": "Name of the S3 bucket where the backups should be stored.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
+    }
+  },
+
+  "Mappings" : {
+  },
+
+  "Resources" : {
+    "SingleServerRole" : {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [ {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [ "ec2.amazonaws.com" ]
+            },
+            "Action": [ "sts:AssumeRole" ]
+          } ]
+        },
+        "Path": "/",
+        "Policies": [ {
+          "PolicyName": "AccessBackupBucket",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": ["s3:ListBucket"],
+                "Resource" : [{ "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "BackupBucketName" } ]]}]
+              },
+              {
+                "Effect": "Allow",
+                "Action": ["s3:GetObject", "s3:PutObject"],
+                "Resource" : [{ "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "BackupBucketName" },
+                                                   "/puzzletron-db-backup.sql.gz" ]]}]
+              },
+              {
+                "Effect": "Allow",
+                "Action": ["s3:GetObject", "s3:PutObject"],
+                "Resource" : [{ "Fn::Join": [ "", ["arn:aws:s3:::", { "Ref": "BackupBucketName" },
+                                                   "/puzzletron-files-backup.tgz" ]]}]
+              }
+            ]
+          }
+        }]
+      }
+    },
+
+    "SingleInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          { "Ref": "SingleServerRole" }
+        ]
+      }
+    },
+
+    "SingleSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Group for Single servers; SSH and HTTP(S)",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ],
+        "Tags": [
+          { "Key": "Domain", "Value": { "Ref": "Domain" }},
+          { "Key": "Group", "Value": { "Ref": "ServerGroup" }}
+        ]
+      }
+    }
+  },
+  
+  "Outputs" : {
+    "Region" : {
+      "Value": { "Ref" : "AWS::Region" }
+    },
+    "SingleInstanceProfile": {
+      "Value": { "Ref": "SingleInstanceProfile" }
+    },
+    "SingleSecurityGroupID": {
+      "Value": { "Fn::GetAtt": [ "SingleSecurityGroup", "GroupId" ]}
+    }
+  }
+}

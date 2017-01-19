@@ -24,4 +24,3 @@ foreach ($puzzles as $pid) {
     }
 }
 print json_encode($exportdata) . "\n";
-?>

@@ -1,0 +1,221 @@
+---
+- name: Create MySQL DB.
+  sudo: yes
+  mysql_db:
+    name={{ site.db_name }}
+    collation=utf8_general_ci
+    encoding=utf8
+    state=present
+
+- name: Create MySQL user.
+  sudo: yes
+  mysql_user:
+    name={{ site.db_username }}
+    password={{ site.db_password }}
+    priv="{{ site.db_name }}.*:ALL"
+    state=present
+
+# The build phase.
+
+# Create a build working directory on the remote machine.
+#
+# Check out the code into the build working directory, clearing out
+# any old code that may be there, and otherwise prepare that directory
+# for the build.
+
+- debug: msg="Building version {{ build_version }}."
+
+- name: Install deploy key.
+  copy:
+    content: "{{ site.git_deploy_key_private }}"
+    dest: "/home/{{ build_username }}/.ssh/git-deploy-key"
+    owner: "{{ build_username }}"
+    group: "{{ build_username }}"
+    mode: 0600
+  when: site.git_repo_url is defined
+
+- name: Install the Git server host keys
+  lineinfile:
+    state: present
+    create: yes
+    dest: "/home/{{ build_username }}/.ssh/known_hosts"
+    regexp: "^{{ site.git_server_hostname }} ssh-rsa"
+    line: "{{ site.git_server_host_key }}"
+  when: site.git_repo_url is defined
+
+- name: Clone the source code into the build directory.
+  git:
+    repo: "{{ site.git_repo_url }}"
+    key_file: "/home/{{ build_username }}/.ssh/git-deploy-key"
+    dest: "{{ build_working_directory }}"
+    version: "{{ build_version }}"
+    force: yes
+    update: yes
+  when: site.git_repo_url is defined
+
+- name: Clean old build artifacts from the build directory.
+  command: "git clean -f -d -x"
+  args:
+    chdir: "{{ build_working_directory }}"
+  when: site.git_repo_url is defined
+
+- name: Run Composer.
+  sudo: yes
+  sudo_user: "{{ build_username }}"
+  command: >
+    /usr/local/bin/composer install
+    chdir={{ build_working_directory }}
+
+# The release phase.
+- name: Create site Unix user if necessary.
+  sudo: yes
+  user:
+    name: "{{ unix_username }}"
+    shell: "/bin/bash"
+    comment: "Web app owner"
+    state: present
+
+- name: Create directory to hold docroots.
+  sudo: yes
+  file:
+    path: "{{ docroots_directory }}"
+    state: directory
+    owner: "{{ unix_username }}"
+    group: www-data
+    mode: 0750
+  when: docroots_directory is defined
+
+- name: Create a shared storage directory and its subdirectories.
+  sudo: yes
+  file:
+    path: "{{ shared_storage_dir }}{{ item }}"
+    state: directory
+    owner: "{{ unix_username }}"
+    group: www-data
+    mode: 0770
+  with_items: shared_storage_subdirs
+
+- name: Copy the code to the site docroot.
+  sudo: yes
+  delegate_to: "{{ inventory_hostname }}"
+  synchronize: >-
+    src={{ build_working_directory }}/
+    dest={{ docroot }}
+    rsync_opts=--exclude=uploads,--exclude=.git,--exclude=.gitignore
+  when: docroots_directory is defined
+
+- name: Set permissions for directories beneath the docroot.
+  sudo: yes
+  shell: find {{ docroot }} -type d -print0 | xargs -0 chmod -c 0750
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  when: docroots_directory is defined
+
+- name: Set permissions for files beneath the docroot.
+  sudo: yes
+  shell: find {{ docroot }} -type f -print0 | xargs -0 chmod -c 0640
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  when: docroots_directory is defined
+
+- name: Set owner and group for everything in docroot.
+  sudo: yes
+  file:
+    path: "{{ docroot }}"
+    state: directory
+    recurse: yes
+    owner: "{{ unix_username }}"
+    group: www-data
+  when: docroots_directory is defined
+
+- name: Remove the uploads dir from docroot in case it is still there.
+  sudo: yes
+  file:
+    state: absent
+    path: "{{ docroot }}/uploads"
+
+- name: Link docroot to its uploads dir.
+  sudo: yes
+  file:
+    state: link
+    path: "{{ docroot }}/uploads"
+    src: "{{ shared_storage_dir }}/uploads"
+
+# The phpdotenv library requires a .env file in the docroot,
+# even if that file is empty and unused.
+- name: Touch dotenv file in the docroot.
+  sudo: yes
+  file: >-
+    state=touch
+    path="{{ docroot }}/.env"
+    owner="{{ unix_username }}"
+    group=www-data
+    mode=0644
+
+- name: Install dotenv file in the docroot.
+  sudo: yes
+  template:
+    src="dotenv.j2"
+    dest="{{ docroot }}/.env"
+    owner="{{ unix_username }}"
+    group=www-data
+    mode=0644
+  when: write_dotenv_file
+
+- name: Install site SSL cert.
+  sudo: yes
+  copy: >-
+    content="{{ site.ssl_cert }}"
+    dest=/etc/apache2/ssl.crt/{{ site.url }}.crt
+    owner=root
+    group=root
+    mode=0400
+  when: site.ssl_cert is defined
+  notify:
+    - reload apache
+
+- name: Install site SSL cert key.
+  sudo: yes
+  copy: >-
+    content="{{ site.ssl_cert_key }}"
+    dest=/etc/apache2/ssl.key/{{ site.url }}.key
+    owner=root
+    group=root
+    mode=0400
+  when: site.ssl_cert_key is defined
+  notify:
+    - reload apache
+
+- name: Install site Apache config.
+  sudo: yes
+  template:
+    src="apache-site.conf.j2"
+    dest="/etc/apache2/sites-available/{{ release_id }}.conf"
+    owner=root
+    group=root
+    mode=0600
+  notify:
+    - reload apache
+
+- name: Install Apache htpasswd file.
+  sudo: yes
+  template:
+    src: htpasswd.j2
+    dest: /etc/apache2/sites-available/{{ site.name }}_htpasswd
+    owner: root
+    group: www-data
+    mode: 0640
+  when: site.htpasswd_passwords is defined
+  notify:
+    - reload apache
+
+- name: Create site log directories.
+  sudo: yes
+  file:
+    path=/var/log/apache2/{{ site.name }}
+    state=directory
+    owner=root
+    group=adm
+    mode=0750
+  notify:
+    - reload apache

@@ -1,0 +1,48 @@
+---
+- name: Compute the release ID.
+  set_fact:
+    release_id: "{{ site.name }}_{{ site.build_version }}"
+
+- name: Inherit the docroots directory.
+  set_fact:
+    docroots_directory: "{{ site.docroots_directory }}"
+    docroot: "{{ site.docroots_directory }}/{{ release_id }}"
+  when: site.docroots_directory is defined
+
+- name: Inherit the docroot.
+  set_fact:
+    docroot: "{{ site.docroot }}"
+  when: site.docroot is defined
+
+- name: Build the release.
+  include: site_release.yml
+  vars:
+    build_working_directory: "{{ site.build_working_directory }}"
+    build_version: "{{ site.build_version }}"
+    unix_username: "{{ site.unix_username }}"
+    shared_storage_dir: "{{ site.shared_storage_dir }}"
+    shared_storage_subdirs:
+      - ""
+      - "/uploads"
+      - "/uploads/pictures"
+      - "/uploads/pictures/thumbs"
+      - "/uploads/puzzle_files"
+      - "/purifier-cache"
+      - "/logs"
+      - "/tmp"
+
+- name: Enable the release we just built.
+  include: enable_release.yml
+  vars:
+    unix_username: "{{ site.unix_username }}"
+
+- name: Register the DNS CNAME.
+  delegate_to: localhost
+  route53:
+    command: create
+    overwrite: yes
+    type: CNAME
+    record: "{{ site.url }}"
+    value: "{{ ec2_public_dns_name }}"
+    zone: "{{ dns_zone }}"
+  when: ec2_public_dns_name is defined

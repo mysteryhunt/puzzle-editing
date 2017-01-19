@@ -17,17 +17,13 @@ if (!USING_APPROVERS) {
 }
 
 // Check for editor permissions
-if (!isApprover($uid) && !isEditorChief($uid)) {
+if (!hasApproverPermission($uid) && !isEditorChief($uid)) {
     echo "<div class='errormsg'>You do not have permission for this page.</div>";
     foot();
     exit(1);
 }
 
-if (array_key_exists('failedToAddEdit', $_SESSION) and $_SESSION['failedToAddEdit'] == TRUE){
-    echo "<div class='errormsg'>Failed to add puzzle to your editing queue<br/>";
-    echo "Perhaps you are an author, are testsolving it, or are already editing it?</div>";
-    unset($_SESSION['failedToAddEdit']);
-}
+echo addEditFailureHtml();
 
 displayPuzzleStats($uid);
 
@@ -51,4 +47,3 @@ if (ALLOW_EDITOR_PICK) {
 echo '<br>(Hiding dead puzzles)<br>';
 // End HTML
 foot();
-?>

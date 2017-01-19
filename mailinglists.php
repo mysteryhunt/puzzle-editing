@@ -61,16 +61,13 @@ print "<h2>Subscriptions for " . $moira_entity . " (" . $email . ")</h2>";
 ?>
 
     <script>
-    function toggle(list)
-    {
+    function toggle(list) {
         var elm = document.getElementById(list);
         var elmbutton = document.getElementById(list.concat('-button'));
-        if (elm.style.display == '')
-        {
+        if (elm.style.display == '') {
             elm.style.display = 'none'
                 elmbutton.innerHTML = "Show Membership List"
-        } else if (elm.style.display == 'none')
-        {
+        } elseif (elm.style.display == 'none') {
             elm.style.display = ''
                 elmbutton.innerHTML = "Hide Membership List"
         }
@@ -127,4 +124,3 @@ foreach ($mailing_lists as $list => $description) {
 <?php
 // End HTML
 foot();
-?>

@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("admin");
 
 // Check for admin bits
-if (!isServerAdmin($uid)) {
+if (!hasServerAdminPermission($uid)) {
     echo "<div class='errormsg'>You do not have permissions for this page.</div>";
     foot();
     exit(1);
@@ -19,7 +19,7 @@ if (!isServerAdmin($uid)) {
 
 if (isset($_POST['newmotd'])) {
     $result = postMotdForm($_POST['newmotd'], $_POST['username']);
-    if ($result == NULL){
+    if ($result == NULL) {
         echo "<div class='errormsg'>Error Posting New Message</div>";
     }
 }
@@ -41,9 +41,8 @@ echo "\">Go To phpMyAdmin</a> (manipulate MySQL database)</p><br>";
     </form>
     </p>
 <?php
-function postMotdForm($newmotd, $username)
-{
-    if ($newmotd == ''){
+function postMotdForm($newmotd, $username) {
+    if ($newmotd == '') {
         echo "<div class='errormsg'>Empty MOTD is unacceptable.</div>";
         return (NULL);
     }
@@ -53,4 +52,3 @@ function postMotdForm($newmotd, $username)
 }
 // End HTML
 foot();
-?>

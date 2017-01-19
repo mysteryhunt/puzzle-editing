@@ -1,0 +1,15 @@
+---
+- name: Install Ansible apt dependencies
+  sudo: yes
+  apt: pkg={{item}} state=installed
+  with_items:
+    - python-pycurl
+
+# Perform package upgrades
+- name: Upgrade packages
+  sudo: yes
+  apt:
+    upgrade: dist
+    update_cache: true
+    cache_valid_time: "{{ apt_cache_time }}"
+  when: upgrade_packages

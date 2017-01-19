@@ -1,0 +1,7 @@
+This is a temporary directory for the use of people who want to develop
+Puzzletron using a local PHP/MySQL stack on their computer.
+
+This isn't used in production at all, nor by the Vagrant VM
+development environment.
+
+It needs to be writable by PHP and/or Apache.

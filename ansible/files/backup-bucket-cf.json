@@ -1,0 +1,61 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "An S3 bucket associated with a server group.",
+
+  "Parameters" : {
+    "Domain" : {
+      "Type": "String",
+      "Description": "DNS zone which this group lives in, managed by Route 53.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9.]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, dots, or dashes"
+    },
+    "Group" : {
+      "Type": "String",
+      "Description": "A group of servers that the bucket is associated with; becomes part of the bucket name.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    },
+    "Name": {
+      "Type": "String",
+      "Description": "A prefix for the bucket name, specifying what it is for.",
+      "MinLength": "1",
+      "AllowedPattern": "[-a-z0-9]+",
+      "ConstraintDescription": "Must contain only lowercase letters, numbers, or dashes"
+    }
+  },
+
+  "Mappings" : {
+  },
+
+  "Resources" : {
+    "GroupBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": { "Fn::Join": ["", [ {"Ref": "Name"}, ".", {"Ref": "Group"}, ".", {"Ref": "Domain"} ]]},
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        },
+        "Tags": [
+          { "Key": "BucketName", "Value": { "Ref": "Name" } },
+          { "Key": "Group", "Value": { "Ref": "Group" } },
+          { "Key": "Domain", "Value": { "Ref": "Domain" } }
+        ]
+      }
+    }
+  },
+
+  "Outputs" : {
+    "Region" : {
+      "Value": { "Ref" : "AWS::Region" }
+    },
+    "BucketName": {
+      "Value": { "Ref": "GroupBucket" }
+    },
+    "DomainName": {
+      "Value": { "Fn::GetAtt": [ "GroupBucket", "DomainName" ]}
+    }
+  }
+}

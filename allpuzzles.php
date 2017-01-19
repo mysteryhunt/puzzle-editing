@@ -10,8 +10,8 @@ $uid = isLoggedIn();
 // Start HTML
 head("allpuzzles", "All Puzzles");
 echo '<style type="text/css">.puzzideasummary {background-color: #000000;}</style>';
-// Check for lurker permissions
-if (!canSeeAllPuzzles($uid) && !isApprover($uid)) {
+
+if (!canSeeAllPuzzles($uid) && !hasApproverPermission($uid)) {
     echo "<div class='errormsg'>You do not have permissions for this page.</div>";
     foot();
     exit(1);
@@ -51,7 +51,9 @@ displayPuzzleStats($uid);
         <option value='-'>-</option>
         <?php
             $editors = getAllEditors();
-            if (USING_APPROVERS) { $editors = getAllApprovalEditors(); }
+            if (USING_APPROVERS) {
+                $editors = getAllApprovalEditors();
+            }
             asort($editors);
             foreach ($editors as $uid => $fullname) {
                 $slct = selected('approver', $uid);
@@ -96,8 +98,7 @@ displayPuzzleStats($uid);
 $puzzles = getAllPuzzles();
 $uid = isLoggedIn();
 echo "(Hiding dead puzzles by default)<br><br>";
-displayQueue($uid, $puzzles, "notes answer summary editornotes tags authorsandeditors", FALSE, $filt);
+displayQueue($uid, $puzzles, "notes answer summary editornotes tags authorsandeditors currentpuzzletestercount", FALSE, $filt);
 
 // End HTML
 foot();
-?>

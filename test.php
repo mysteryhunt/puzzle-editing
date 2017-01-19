@@ -21,7 +21,7 @@ $pid = $_GET['pid'];
 head("", "Puzzle $pid: Testsolving");
 
 // Check permissions
-if (!isTestingAdmin($uid)) {
+if (!hasTestAdminPermission($uid)) {
     if (!isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid)) {
         if (!canTestPuzzle($uid, $pid)) {
             echo "You do not have permission to test this puzzle.";
@@ -34,9 +34,9 @@ if (!isTestingAdmin($uid)) {
 }
 
 $title = getTitle($pid);
-if ($title == NULL)
+if ($title == NULL) {
     $title = '(untitled)';
-
+}
 echo "<h2>Puzzle $pid &mdash; $title</h2>";
 echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
     need it!</b><br><br> When you are done, PLEASE leave feedback indicating
@@ -80,22 +80,36 @@ foot();
 
 //------------------------------------------------------------------------
 
-function maybeDisplayWarning($uid, $pid)
-{
+function maybeDisplayWarning($uid, $pid) {
     if (isTesterOnPuzzle($uid, $pid)) {
         return;
     }
 ?>
         <div class="warning">
-                <strong class='impt'>WARNING:</strong> You are not marked as a current testsolver.<br>
-                Please use the puzzle version, and wiki page, that were current when you started solving, NOT the ones listed below (if they differ).<br/>
-                If in doubt, email <?php echo HELP_EMAIL; ?>
+                <strong class='impt'>WARNING:</strong> You are not marked as a current testsolver.<br/>
+                This may be because you previously testsolved this puzzle, or because you are a test admin.<br/>
+                If you have previously testsolved this puzzle, please use the puzzle version, and wiki page,
+                that were current when you started solving, NOT the ones listed below (if they differ).<br/>
+                If in doubt, email <?php echo HELP_EMAIL; ?><br/>
+<?php
+    if (hasTestAdminPermission($uid) &&
+        canTestPuzzle($uid, $pid) &&
+        !isTesterOnPuzzle($uid, $pid) &&
+        !isFormerTesterOnPuzzle($uid, $pid)) {
+?>
+                <form method="post" action="form-submit.php">
+                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                        <input type="submit" name="makeTester" value="Make me a tester on this puzzle!" />
+                </form>
+<?php
+    }
+?>
         </div>
 <?php
 }
 
-function displayWikiPage($pid)
-{
+function displayWikiPage($pid) {
     echo '<div>';
     $page = getWikiPage($pid);
     if ($page == NULL) {
@@ -106,8 +120,7 @@ function displayWikiPage($pid)
     echo '</div>';
 }
 
-function displayDraft($pid)
-{
+function displayDraft($pid) {
     echo '<div>';
     $draft = getMostRecentDraftForPuzzle($pid);
 
@@ -115,17 +128,17 @@ function displayDraft($pid)
         echo '<span class="testempty">No Draft</span>';
     } else {
         $finfo = pathinfo($draft['filename']);
-        if (isset($finfo['extension']))
+        if (isset($finfo['extension'])) {
             $ext = $finfo['extension'];
-        else
+        } else {
             $ext = 'folder';
-
+        }
         if (strpos($draft['filename'], 'http') !== false || !USING_AWS) {
             $link = $draft['filename'];
-        } else if (strpos($draft['filename'], '_dir', strlen($draft['filename']) - 4) !== false) {
-            $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $draft['filename'];
+        } elseif (strpos($draft['filename'], '_dir', strlen($draft['filename']) - 4) !== false) {
+            $link = AWS_ENDPOINT . AWS_BUCKET . '/' . $draft['filename'] . '/index.html';
         } else {
-            $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $draft['filename'];
+            $link = AWS_ENDPOINT . AWS_BUCKET . '/' . $draft['filename'];
         }
 ?>
         <span class="testdata">
@@ -138,8 +151,7 @@ function displayDraft($pid)
     echo '</div>';
 }
 
-function checkAnsForm($uid, $pid)
-{
+function checkAnsForm($uid, $pid) {
 ?>
     <form method="post" action="form-submit.php">
         Check an answer:
@@ -152,16 +164,15 @@ function checkAnsForm($uid, $pid)
 <?php
 }
 
-function displayPrevAns($uid, $pid)
-{
+function displayPrevAns($uid, $pid) {
     $answers = getAnswerAttempts($uid, $pid);
-    if (!$answers)
+    if (!$answers) {
         return;
-
+    }
     $correct = getCorrectSolves($uid, $pid);
-    if ($correct)
+    if ($correct) {
         echo "<h3>Correct Answers: $correct</h3>";
-
+    }
     echo '<h3>Attempted Answers:</h3>';
     echo '<ul>';
 
@@ -171,8 +182,7 @@ function displayPrevAns($uid, $pid)
     echo '</ul>';
 }
 
-function displayFeedbackForm($uid, $pid)
-{
+function displayFeedbackForm($uid, $pid) {
 ?>
         <h3>Feedback Form</h3>
 <?php
@@ -215,7 +225,8 @@ function displayFeedbackForm($uid, $pid)
             <input type="text" name="time" />
         </p>
         <p>
-            Describe what you tried. <br />
+            Describe what you tried when working on this puzzle.<br />
+            If you had a breakthrough point, describe in detail what in the puzzle led you to it.<br />
             <textarea style="width:50em; height: 10em;" name="tried"></textarea>
         </p>
         <p>
@@ -228,12 +239,20 @@ function displayFeedbackForm($uid, $pid)
             Were there any special skills required to solve this puzzle?<br />
             <textarea style="width:50em; height: 3em;" name="skills"></textarea>
         </p>
+        <!--
         <p>
             Describe a breakthrough point and what in the puzzle lead you to it:<br />
             <textarea style="width:50em; height: 5em;" name="breakthrough"></textarea>
         </p>
+        -->
+        <input type="hidden" name="breakthrough" value="" />
         <p>
-            Rate the overall fun of this puzzle. <SELECT NAME="fun">
+            If you're testing a character puzzle, it should be fun and accessible and have a difficulty of 1 or 2.<br />
+            Please comment on if the puzzle felt character-y, and if not describe what aspects of the puzzle weren't character-y.<br />
+            <textarea style="width:50em; height: 5em;" name="fishiness"></textarea>
+        </p>
+        <p>
+            Rate the overall fun of this puzzle (where 1 is the least fun, and 5 is the most fun): <SELECT NAME="fun">
                 <OPTION VALUE="0" SELECTED>-</OPTION>
                 <OPTION>1</OPTION>
                 <OPTION>2</OPTION>
@@ -243,7 +262,7 @@ function displayFeedbackForm($uid, $pid)
             </SELECT>
         </p>
         <p>
-            Rate the overall difficulty of this puzzle. <SELECT NAME="difficulty">
+            Rate the overall difficulty of this puzzle (where 1 is the easiest, and 5 is the most difficult): <SELECT NAME="difficulty">
                 <OPTION VALUE="0" SELECTED>-</OPTION>
                 <OPTION>1</OPTION>
                 <OPTION>2</OPTION>
@@ -258,33 +277,33 @@ function displayFeedbackForm($uid, $pid)
 <?php
 }
 
-function displayPrevFeedback($uid, $pid)
-{
+function displayPrevFeedback($uid, $pid) {
     $prevFeedback = getPreviousFeedback($uid, $pid);
-    if (!$prevFeedback)
+    if (!$prevFeedback) {
         return;
-
+    }
     echo '<h3>Previous Feedback</h3>';
     echo '<table>';
 
     foreach ($prevFeedback as $pf) {
-        if ($pf['done'] == 0)
+        if ($pf['done'] == 0) {
             $done = 'Yes';
-        else if ($pf['done'] == 1)
+        } elseif ($pf['done'] == 1) {
             $done = 'No';
-        else if ($pf['done'] == 2)
+        } elseif ($pf['done'] == 2) {
             $done = 'No, this isn\'t a puzzle type I like.';
-        else if ($pf['done'] == 3)
+        } elseif ($pf['done'] == 3) {
             $done = 'No, I\'m not sure what to do and don\'t feel like working on it anymore.';
-        else if ($pf['done'] == 4)
+        } elseif ($pf['done'] == 4) {
             $done = 'No, I think I know what to do but it isn\'t fun/I\'m not making progress.';
-        else if ($pf['done'] == 5)
+        } elseif ($pf['done'] == 5) {
             $done = 'No, I was already spoiled on this puzzle';
-        else if ($pf['done'] == 6)
+        } elseif ($pf['done'] == 6) {
             $done = 'No, I\'ve solved it.';
+        }
 
-        $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
-        $purifier = new HTMLPurifier();
+        $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fishiness'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
+        $purifier = getHtmlPurifier();
         $cleanComment = $purifier->purify($feedback);
 
         echo '<tr class="feedback">';
@@ -295,4 +314,3 @@ function displayPrevFeedback($uid, $pid)
 
     echo '</table>';
 }
-?>

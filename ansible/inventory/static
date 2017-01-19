@@ -1,0 +1,16 @@
+[localhost]
+localhost   ansible_connection=local
+
+# 'prod' is a dynamic group, defined by tags applied to AWS EC2 servers.
+[prod:children]
+tag_Group_prod
+
+# 'single' is a dynamic group, defined by tags applied to AWS EC2 servers.
+[single:children]
+tag_Class_single
+
+# These are dynamic groups; the ec2 inventory script will fill them in.
+[tag_Group_prod]
+
+[tag_Class_single]
+

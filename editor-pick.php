@@ -11,17 +11,13 @@ $uid = isLoggedIn();
 head("editor", "Discussion Editor (add new puzzles)");
 
 // Check for editor permissions
-if (!isEditor($uid)) {
+if (!hasEditorPermission($uid)) {
     echo "<div class='errormsg'>You do not have permission for this page.</div>";
     foot();
     exit(1);
 }
 
-if ($_SESSION['failedToAddEdit'] == TRUE){
-    echo "<div class='errormsg'>Failed to add puzzle to your editing queue<br/>";
-    echo "Perhaps you are an author, are testsolving it, or are already editing it?</div>";
-    unset($_SESSION['failedToAddEdit']);
-}
+echo addEditFailureHtml();
 
 displayPuzzleStats($uid);
 
@@ -55,4 +51,3 @@ echo '<br/>';
 
 // End HTML
 foot();
-?>

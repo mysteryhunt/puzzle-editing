@@ -6,8 +6,10 @@ function generateRandomString($bytelen) {
     return bin2hex(openssl_random_pseudo_bytes($bytelen));
 }
 function addAndSendToken($email) {
-    $user = get_row_null(sprintf("SELECT * FROM user_info WHERE email='%s'", mysql_real_escape_string($email)));
-    if (!$user) { return FALSE; }
+    $user = get_row_null(sprintf("SELECT * FROM users WHERE email='%s'", mysql_real_escape_string($email)));
+    if (!$user) {
+        return FALSE;
+    }
     $uid = $user["uid"];
     $token = generateRandomString(16);
     $escaped_token = mysql_real_escape_string($token);
@@ -42,22 +44,25 @@ function resetPassword($row, $toUid) {
     sendEmail($toUid, $subject, $message, $link);
 }
 function resetPasswordByToken($token) {
-    $row = get_row_null(sprintf("SELECT * FROM reset_password_tokens LEFT JOIN user_info ON reset_password_tokens.uid = user_info.uid WHERE reset_password_tokens.token='%s';", mysql_real_escape_string($token)));
-    if (!$row) return FALSE;
-
+    $row = get_row_null(sprintf("SELECT * FROM reset_password_tokens LEFT JOIN users ON reset_password_tokens.uid = users.uid WHERE reset_password_tokens.token='%s';", mysql_real_escape_string($token)));
+    if (!$row) {
+        return FALSE;
+    }
     // check for token expiry
     $now = time();
     $tokentime = strtotime($row["timestamp"]);
-    if ($now - $tokentime > 24 * 60 * 60) return FALSE;
-
+    if ($now - $tokentime > 24 * 60 * 60) {
+        return FALSE;
+    }
     resetPassword($row, NULL);
     query_db(sprintf("DELETE FROM reset_password_tokens WHERE token='%s';", mysql_real_escape_string($token)));
     return TRUE;
 }
 function adminResetPasswordByUsername($username, $adminUid) {
-    $row = get_row_null(sprintf("SELECT * FROM user_info WHERE username='%s';", mysql_real_escape_string($username)));
-    if (!$row) return FALSE;
+    $row = get_row_null(sprintf("SELECT * FROM users WHERE username='%s';", mysql_real_escape_string($username)));
+    if (!$row) {
+        return FALSE;
+    }
     resetPassword($row, $adminUid);
     return TRUE;
 }
-?>

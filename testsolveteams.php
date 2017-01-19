@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("testsolveteams");
 
 // Check for permissions
-if (!isTestingAdmin($uid)) {
+if (!hasTestAdminPermission($uid)) {
     echo "<div class='errormsg'>Sorry, you're not a testing admin.</div>";
     foot();
     exit(1);
@@ -27,7 +27,9 @@ foreach ($puzzles as $pid => $testteam) {
     echo "<input type='hidden' name='pid' value='$pid'>\n";
     echo "<input type='hidden' name='notfrompuzzle' value='YES'>";
     echo "<SELECT NAME='tid'>\n";
-    if ($testteam == NULL) echo "<option value=''>";
+    if ($testteam == NULL) {
+        echo "<option value=''>";
+    }
     $testteams = getTestTeams();
     foreach ($testteams as $t) {
         $tid = $t['tid'];
@@ -54,13 +56,17 @@ foreach ($people as $uid => $testteam) {
     echo "<td><form method='post' action='form-submit.php'>\n";
     echo "<input type='hidden' name='uid' value='$uid'>\n";
     echo "<SELECT NAME='tid'>\n";
-    if ($teamid == NULL) echo "<option value=''>";
+    if ($teamid == NULL) {
+        echo "<option value=''>";
+    }
     $testteams = getTestTeams();
     foreach ($testteams as $t) {
         $tid = $t['tid'];
         $teamname = $t['name'];
         echo "<option value='$tid' ";
-        if ($tid == $teamid) { echo "SELECTED "; }
+        if ($tid == $teamid) {
+            echo "SELECTED ";
+        }
         echo ">$teamname\n";
     }
     echo "</select><input type='submit' value='set' name='setUserTestTeam'></form></td><tr>\n";
@@ -70,7 +76,7 @@ echo "</table>";
 
 foot();
 
-function getPeopleTeamsList(){
+function getPeopleTeamsList() {
     $people = getPeople();
     foreach ($people as $p) {
         $uid = $p['uid'];
@@ -82,7 +88,7 @@ function getPeopleTeamsList(){
     return($teamassignments);
 }
 
-function getPuzzleTeamsList(){
+function getPuzzleTeamsList() {
     $puzzles = getPuzzlesInTesting();
     foreach ($puzzles as $p) {
         $pid = $p;
@@ -93,4 +99,3 @@ function getPuzzleTeamsList(){
     asort($teamassignments);
     return($teamassignments);
 }
-?>

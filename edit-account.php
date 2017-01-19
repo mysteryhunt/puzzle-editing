@@ -32,13 +32,13 @@ $data = getPerson($uid);
         if (f.fullname.value == "") {
             alert("You must enter a first name.");
             return false;
-        } else if (f.email.value == "") {
+        } elseif (f.email.value == "") {
             alert("You must enter an email address.");
             return false;
-        } else if (f.username.value == "") {
+        } elseif (f.username.value == "") {
             alert("You must enter a username.");
             return false;
-        } else if (TRUST_REMOTE_USER) {
+        } elseif (TRUST_REMOTE_USER) {
             return true;
         }
         return true;
@@ -84,7 +84,7 @@ $data = getPerson($uid);
         </tr>
 <?php
 // Start by getting the list of rows of user_info_keys into arrays.
-$sql = "SELECT id, shortname, longname FROM user_info_key";
+$sql = "SELECT id, shortname, longname FROM user_info_keys";
 $result = get_rows($sql);
 foreach ($result as $r) {
     $shortname = $r['shortname'];
@@ -93,9 +93,13 @@ foreach ($result as $r) {
     $sql = sprintf("SELECT value FROM user_info_values WHERE person_id = '%s' AND user_info_key_id = '%s'",
         mysql_real_escape_string($uid), mysql_real_escape_string($user_key_id));
     $res = get_rows($sql);
-    $lastvalue = $res[0]['value'];
-    if (isset($_POST[$shortname]))
+    $lastvalue = '';
+    if (count($res) > 0) {
+        $lastvalue = $res[0]['value'];
+    }
+    if (isset($_POST[$shortname])) {
         $lastvalue = $_POST[$shortname];
+    }
 ?>
         <tr>
             <td><?php echo $longname; ?></td>
@@ -108,21 +112,22 @@ foreach ($result as $r) {
         <input type="submit" name="editAccount" value="Submit" />
     </form>
 <?php
-function editAccount($uid)
-{
+function editAccount($uid) {
     $user = getPerson($uid);
     $picture = $_FILES['picture'];
 
-    if ($_POST['email'] == "")
+    if ($_POST['email'] == "") {
         return "Email may not be empty";
-    if ($_POST['fullname'] == "")
+    }
+    if ($_POST['fullname'] == "") {
         return "Full name may not be empty";
+    }
     if ($picture['name'] != '') {
         $pic = pictureHandling($uid, $picture);
     } else {
         $pic = getPic($uid);
     }
-    $purifier = new HTMLPurifier();
+    $purifier = getHtmlPurifier();
     $fullname = $purifier->purify($_POST['fullname']);
     $pic = $purifier->purify($pic);
     $email_level = $purifier->purify($_POST['email_pref']);
@@ -130,22 +135,25 @@ function editAccount($uid)
     mysql_query('START TRANSACTION');
     $failed = 0;
 
-    $sql = sprintf("UPDATE user_info SET fullname='%s', picture='%s', email_level='%s' WHERE uid='%s'",
+    $sql = sprintf("UPDATE users SET fullname='%s', picture='%s', email_level='%s' WHERE uid='%s'",
         mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string(($email_level)), mysql_real_escape_string($uid));
 
     $result = mysql_query($sql);
-    if ($result == FALSE)
+    if ($result == FALSE) {
         $failed = 1;
+    }
 
     $sql = sprintf("DELETE from user_info_values WHERE person_id = '%s'", mysql_real_escape_string($uid));
     $result = mysql_query($sql);
-    if ($result == FALSE)
+    if ($result == FALSE) {
         $failed = 1;
+    }
 
-    $sql = sprintf("SELECT id, shortname, longname FROM user_info_key");
+    $sql = sprintf("SELECT id, shortname, longname FROM user_info_keys");
     $result = get_rows($sql);
-    if (!$result)
+    if (!$result) {
         $failed = 1;
+    }
 
     foreach ($result as $r) {
         $shortname = $r['shortname'];
@@ -160,8 +168,9 @@ function editAccount($uid)
                 mysql_real_escape_string($user_key_id),
                 mysql_real_escape_string($value));
             $res = mysql_query($sql);
-            if ($res == FALSE)
+            if ($res == FALSE) {
                 $failed = 1;
+            }
         }
     }
 
@@ -173,4 +182,3 @@ function editAccount($uid)
         return TRUE;
     }
 }
-?>

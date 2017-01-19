@@ -64,13 +64,13 @@ LOCK TABLES `answers` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `answers_rounds`
+-- Table structure for table `answer_round`
 --
 
-DROP TABLE IF EXISTS `answers_rounds`;
+DROP TABLE IF EXISTS `answer_round`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `answers_rounds` (
+CREATE TABLE `answer_round` (
   `aid` int(11) NOT NULL COMMENT 'Answer ID',
   `rid` int(11) NOT NULL COMMENT 'Round ID',
   PRIMARY KEY (`aid`,`rid`)
@@ -78,22 +78,22 @@ CREATE TABLE `answers_rounds` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `answers_rounds`
+-- Dumping data for table `answer_round`
 --
 
-LOCK TABLES `answers_rounds` WRITE;
-/*!40000 ALTER TABLE `answers_rounds` DISABLE KEYS */;
-/*!40000 ALTER TABLE `answers_rounds` ENABLE KEYS */;
+LOCK TABLES `answer_round` WRITE;
+/*!40000 ALTER TABLE `answer_round` DISABLE KEYS */;
+/*!40000 ALTER TABLE `answer_round` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `authors`
+-- Table structure for table `author_links`
 --
 
-DROP TABLE IF EXISTS `authors`;
+DROP TABLE IF EXISTS `author_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `authors` (
+CREATE TABLE `author_links` (
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   `uid` int(11) NOT NULL COMMENT 'Author User ID',
   PRIMARY KEY (`pid`,`uid`)
@@ -101,22 +101,22 @@ CREATE TABLE `authors` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `authors`
+-- Dumping data for table `author_links`
 --
 
-LOCK TABLES `authors` WRITE;
-/*!40000 ALTER TABLE `authors` DISABLE KEYS */;
-/*!40000 ALTER TABLE `authors` ENABLE KEYS */;
+LOCK TABLES `author_links` WRITE;
+/*!40000 ALTER TABLE `author_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `author_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `comment_type`
+-- Table structure for table `comment_types`
 --
 
-DROP TABLE IF EXISTS `comment_type`;
+DROP TABLE IF EXISTS `comment_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `comment_type` (
+CREATE TABLE `comment_types` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
@@ -125,13 +125,13 @@ CREATE TABLE `comment_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comment_type`
+-- Dumping data for table `comment_types`
 --
 
-LOCK TABLES `comment_type` WRITE;
-/*!40000 ALTER TABLE `comment_type` DISABLE KEYS */;
-INSERT INTO `comment_type` VALUES (3,'Author'),(4,'Discuss Editor'),(7,'Lurker'),(1,'Server'),(6,'TestingAdmin'),(2,'Testsolver'),(8,'Unknown'),(5,'EIC'),(9,'Approver'),(10,'Cohesion'),(11,'Director'),(12,'Factchecker');
-/*!40000 ALTER TABLE `comment_type` ENABLE KEYS */;
+LOCK TABLES `comment_types` WRITE;
+/*!40000 ALTER TABLE `comment_types` DISABLE KEYS */;
+INSERT INTO `comment_types` VALUES (3,'Author'),(4,'Discuss Editor'),(7,'Lurker'),(1,'Server'),(6,'TestingAdmin'),(2,'Testsolver'),(8,'Unknown'),(5,'EIC'),(9,'Approver'),(10,'Cohesion'),(11,'Director'),(12,'Factchecker'),(13, 'Round Captain');
+/*!40000 ALTER TABLE `comment_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -163,13 +163,13 @@ LOCK TABLES `comments` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `doneTesting`
+-- Table structure for table `former_tester_links`
 --
 
-DROP TABLE IF EXISTS `doneTesting`;
+DROP TABLE IF EXISTS `former_tester_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `doneTesting` (
+CREATE TABLE `former_tester_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -178,22 +178,22 @@ CREATE TABLE `doneTesting` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `doneTesting`
+-- Dumping data for table `former_tester_links`
 --
 
-LOCK TABLES `doneTesting` WRITE;
-/*!40000 ALTER TABLE `doneTesting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doneTesting` ENABLE KEYS */;
+LOCK TABLES `former_tester_links` WRITE;
+/*!40000 ALTER TABLE `former_tester_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `former_tester_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `editor_queue`
+-- Table structure for table `editor_links`
 --
 
-DROP TABLE IF EXISTS `editor_queue`;
+DROP TABLE IF EXISTS `editor_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `editor_queue` (
+CREATE TABLE `editor_links` (
   `uid` int(11) NOT NULL COMMENT 'User ID of Editor',
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   PRIMARY KEY (`pid`,`uid`)
@@ -201,12 +201,12 @@ CREATE TABLE `editor_queue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `editor_queue`
+-- Dumping data for table `editor_links`
 --
 
-LOCK TABLES `editor_queue` WRITE;
-/*!40000 ALTER TABLE `editor_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `editor_queue` ENABLE KEYS */;
+LOCK TABLES `editor_links` WRITE;
+/*!40000 ALTER TABLE `editor_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `editor_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -235,13 +235,13 @@ LOCK TABLES `email_outbox` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `email_sub`
+-- Table structure for table `subscriber_links`
 --
 
-DROP TABLE IF EXISTS `email_sub`;
+DROP TABLE IF EXISTS `subscriber_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `email_sub` (
+CREATE TABLE `subscriber_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`pid`)
@@ -249,22 +249,22 @@ CREATE TABLE `email_sub` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `email_sub`
+-- Dumping data for table `subscriber_links`
 --
 
-LOCK TABLES `email_sub` WRITE;
-/*!40000 ALTER TABLE `email_sub` DISABLE KEYS */;
-/*!40000 ALTER TABLE `email_sub` ENABLE KEYS */;
+LOCK TABLES `subscriber_links` WRITE;
+/*!40000 ALTER TABLE `subscriber_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `subscriber_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `factcheck_queue`
+-- Table structure for table `factchecker_links`
 --
 
-DROP TABLE IF EXISTS `factcheck_queue`;
+DROP TABLE IF EXISTS `factchecker_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `factcheck_queue` (
+CREATE TABLE `factchecker_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   KEY `uid` (`uid`),
@@ -273,45 +273,45 @@ CREATE TABLE `factcheck_queue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `factcheck_queue`
+-- Dumping data for table `factchecker_links`
 --
 
-LOCK TABLES `factcheck_queue` WRITE;
-/*!40000 ALTER TABLE `factcheck_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `factcheck_queue` ENABLE KEYS */;
+LOCK TABLES `factchecker_links` WRITE;
+/*!40000 ALTER TABLE `factchecker_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `factchecker_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `jobs`
+-- Table structure for table `user_role`
 --
 
-DROP TABLE IF EXISTS `jobs`;
+DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `jobs` (
+CREATE TABLE `user_role` (
   `uid` int(11) NOT NULL,
-  `jid` int(11) NOT NULL,
-  PRIMARY KEY (`uid`,`jid`)
+  `role_id` int(11) NOT NULL,
+  PRIMARY KEY (`uid`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `jobs`
+-- Dumping data for table `user_role`
 --
 
-LOCK TABLES `jobs` WRITE;
-/*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
+LOCK TABLES `user_role` WRITE;
+/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `last_visit`
+-- Table structure for table `visitor_links`
 --
 
-DROP TABLE IF EXISTS `last_visit`;
+DROP TABLE IF EXISTS `visitor_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `last_visit` (
+CREATE TABLE `visitor_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `date` datetime NOT NULL,
@@ -320,22 +320,22 @@ CREATE TABLE `last_visit` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `last_visit`
+-- Dumping data for table `visitor_links`
 --
 
-LOCK TABLES `last_visit` WRITE;
-/*!40000 ALTER TABLE `last_visit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `last_visit` ENABLE KEYS */;
+LOCK TABLES `visitor_links` WRITE;
+/*!40000 ALTER TABLE `visitor_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `visitor_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_puzzle_settings`
+-- Table structure for table `flagger_links`
 --
 
-DROP TABLE IF EXISTS `user_puzzle_settings`;
+DROP TABLE IF EXISTS `flagger_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_puzzle_settings` (
+CREATE TABLE `flagger_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `flag` tinyint(1) NOT NULL DEFAULT 0,
@@ -344,22 +344,22 @@ CREATE TABLE `user_puzzle_settings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_puzzle_settings`
+-- Dumping data for table `flagger_links`
 --
 
-LOCK TABLES `user_puzzle_settings` WRITE;
-/*!40000 ALTER TABLE `user_puzzle_settings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_puzzle_settings` ENABLE KEYS */;
+LOCK TABLES `flagger_links` WRITE;
+/*!40000 ALTER TABLE `flagger_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `flagger_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `motd`
+-- Table structure for table `motds`
 --
 
-DROP TABLE IF EXISTS `motd`;
+DROP TABLE IF EXISTS `motds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `motd` (
+CREATE TABLE `motds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `message` text NOT NULL,
@@ -370,48 +370,60 @@ CREATE TABLE `motd` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `motd`
+-- Dumping data for table `motds`
 --
 
-LOCK TABLES `motd` WRITE;
-/*!40000 ALTER TABLE `motd` DISABLE KEYS */;
-/*!40000 ALTER TABLE `motd` ENABLE KEYS */;
+LOCK TABLES `motds` WRITE;
+/*!40000 ALTER TABLE `motds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `motds` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `priv`
+-- Table structure for table `roles`
 --
 
-DROP TABLE IF EXISTS `priv`;
+DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `priv` (
-  `jid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `seeAllPuzzles` tinyint(1) NOT NULL,
-  `addToEditingQueue` tinyint(1) NOT NULL,
-  `changeServer` tinyint(1) NOT NULL,
-  `canEditAll` tinyint(1) NOT NULL,
-  `seeTesters` tinyint(1) NOT NULL,
-  `isBlind` tinyint(1) NOT NULL,
-  `isLurker` tinyint(1) NOT NULL,
-  `changeStatus` tinyint(1) NOT NULL,
-  `autoSubEditor` tinyint(1) NOT NULL,
-  `addToRoundCaptainQueue` tinyint(1) NOT NULL,
-  `isApprover` tinyint(1) NOT NULL,
-  PRIMARY KEY (`jid`),
+  `becomeEditor` tinyint(1) NOT NULL,
+  `administerServer` tinyint(1) NOT NULL,
+  `changeAnswers` tinyint(1) NOT NULL,
+  `beTestAdmin` tinyint(1) NOT NULL,
+  `beBlind` tinyint(1) NOT NULL,
+  `beLurker` tinyint(1) NOT NULL,
+  `changePuzzleStatus` tinyint(1) NOT NULL,
+  `autoSubWhenEditing` tinyint(1) NOT NULL,
+  `becomeRoundCaptain` tinyint(1) NOT NULL,
+  `becomeApprover` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `priv`
+-- Dumping data for table `roles`
 --
 
-LOCK TABLES `priv` WRITE;
-/*!40000 ALTER TABLE `priv` DISABLE KEYS */;
-INSERT INTO `priv` VALUES (2,'Puzzle Herder',1,0,0,0,0,0,1,0,0,0,0),(3,'Director',1,1,1,1,1,0,1,1,1,1,1),(4,'Discussion Editor',0,1,0,0,0,0,1,1,1,0,0),(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0,0,0),(7,'Producer',1,0,0,0,0,0,1,0,0,1,0),(8,'Server Admin',1,0,1,0,1,0,1,1,0,0,0),(9,'Editor in Chief',1,1,0,1,1,0,1,1,1,1,1),(10,'Server Maintainer',0,0,1,0,0,0,1,0,0,0,0),(13,'Testing Admin',0,0,0,0,1,0,1,0,0,0,0),(14,'Approval Editor',0,1,0,0,0,0,1,1,1,0,1),(15,'Cohesion Editor',1,1,0,1,0,0,1,1,1,0,1);
-/*!40000 ALTER TABLE `priv` ENABLE KEYS */;
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES
+(2,'Puzzle Herder',1,0,0,0,0,0,1,0,0,0,0),
+(3,'Director',1,1,1,1,1,0,1,1,1,1,1),
+(4,'Discussion Editor',0,1,0,0,0,0,1,1,1,0,0),
+(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0,0,0),
+(7,'Producer',1,0,0,0,0,0,1,0,0,1,0),
+(8,'Server Admin',1,0,1,0,1,0,1,1,0,0,0),
+(9,'Editor in Chief',1,1,0,1,1,0,1,1,1,1,1),
+(10,'Server Maintainer',0,0,1,0,0,0,1,0,0,0,0),
+(13,'Testing Admin',0,0,0,0,1,0,1,0,0,0,0),
+(14,'Approval Editor',0,1,0,0,0,0,1,1,1,0,1),
+(15,'Cohesion Editor',1,1,0,1,0,0,1,1,1,0,1),
+(16,'Round Captain',0,0,0,0,0,0,0,0,0,1,0);
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -448,13 +460,13 @@ INSERT INTO `pstatus` VALUES (1,'Initial Idea',1,0,1,1,0,0,0,0),(2,'In Testing',
 UNLOCK TABLES;
 
 --
--- Table structure for table `puzzle_approve`
+-- Table structure for table `approver_links`
 --
 
-DROP TABLE IF EXISTS `puzzle_approve`;
+DROP TABLE IF EXISTS `approver_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `puzzle_approve` (
+CREATE TABLE `approver_links` (
   `pid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
   `approve` smallint(6) NOT NULL,
@@ -463,22 +475,22 @@ CREATE TABLE `puzzle_approve` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `puzzle_approve`
+-- Dumping data for table `approver_links`
 --
 
-LOCK TABLES `puzzle_approve` WRITE;
-/*!40000 ALTER TABLE `puzzle_approve` DISABLE KEYS */;
-/*!40000 ALTER TABLE `puzzle_approve` ENABLE KEYS */;
+LOCK TABLES `approver_links` WRITE;
+/*!40000 ALTER TABLE `approver_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `approver_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `puzzle_idea`
+-- Table structure for table `puzzles`
 --
 
-DROP TABLE IF EXISTS `puzzle_idea`;
+DROP TABLE IF EXISTS `puzzles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `puzzle_idea` (
+CREATE TABLE `puzzles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `summary` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -492,18 +504,19 @@ CREATE TABLE `puzzle_idea` (
   `runtime_info` varchar(255) NOT NULL DEFAULT '',
   `needed_editors` int(11) NOT NULL DEFAULT '2',
   `priority` int(11) NOT NULL DEFAULT '0',
+  `tester_limit` int(11) NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`),
   KEY `pstatus` (`pstatus`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `puzzle_idea`
+-- Dumping data for table `puzzles`
 --
 
-LOCK TABLES `puzzle_idea` WRITE;
-/*!40000 ALTER TABLE `puzzle_idea` DISABLE KEYS */;
-/*!40000 ALTER TABLE `puzzle_idea` ENABLE KEYS */;
+LOCK TABLES `puzzles` WRITE;
+/*!40000 ALTER TABLE `puzzles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `puzzles` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -556,13 +569,13 @@ LOCK TABLES `rounds` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `spoiled`
+-- Table structure for table `spoiled_user_links`
 --
 
-DROP TABLE IF EXISTS `spoiled`;
+DROP TABLE IF EXISTS `spoiled_user_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `spoiled` (
+CREATE TABLE `spoiled_user_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`pid`,`uid`)
@@ -570,22 +583,22 @@ CREATE TABLE `spoiled` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `spoiled`
+-- Dumping data for table `spoiled_user_links`
 --
 
-LOCK TABLES `spoiled` WRITE;
-/*!40000 ALTER TABLE `spoiled` DISABLE KEYS */;
-/*!40000 ALTER TABLE `spoiled` ENABLE KEYS */;
+LOCK TABLES `spoiled_user_links` WRITE;
+/*!40000 ALTER TABLE `spoiled_user_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `spoiled_user_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `testAdminQueue`
+-- Table structure for table `test_admin_links`
 --
 
-DROP TABLE IF EXISTS `testAdminQueue`;
+DROP TABLE IF EXISTS `test_admin_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `testAdminQueue` (
+CREATE TABLE `test_admin_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`pid`)
@@ -593,22 +606,22 @@ CREATE TABLE `testAdminQueue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `testAdminQueue`
+-- Dumping data for table `test_admin_links`
 --
 
-LOCK TABLES `testAdminQueue` WRITE;
-/*!40000 ALTER TABLE `testAdminQueue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `testAdminQueue` ENABLE KEYS */;
+LOCK TABLES `test_admin_links` WRITE;
+/*!40000 ALTER TABLE `test_admin_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_admin_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `test_call`
+-- Table structure for table `test_oncalls`
 --
 
-DROP TABLE IF EXISTS `test_call`;
+DROP TABLE IF EXISTS `test_oncalls`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `test_call` (
+CREATE TABLE `test_oncalls` (
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   `on_call` int(11) NOT NULL COMMENT 'User ID of Editor on Call',
   `put_by` int(11) NOT NULL COMMENT 'User ID who Put Editor on Call',
@@ -617,22 +630,22 @@ CREATE TABLE `test_call` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `test_call`
+-- Dumping data for table `test_oncalls`
 --
 
-LOCK TABLES `test_call` WRITE;
-/*!40000 ALTER TABLE `test_call` DISABLE KEYS */;
-/*!40000 ALTER TABLE `test_call` ENABLE KEYS */;
+LOCK TABLES `test_oncalls` WRITE;
+/*!40000 ALTER TABLE `test_oncalls` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_oncalls` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `test_queue`
+-- Table structure for table `tester_links`
 --
 
-DROP TABLE IF EXISTS `test_queue`;
+DROP TABLE IF EXISTS `tester_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `test_queue` (
+CREATE TABLE `tester_links` (
   `uid` int(11) NOT NULL COMMENT 'User ID of Tester',
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   PRIMARY KEY (`uid`,`pid`)
@@ -640,12 +653,12 @@ CREATE TABLE `test_queue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `test_queue`
+-- Dumping data for table `tester_links`
 --
 
-LOCK TABLES `test_queue` WRITE;
-/*!40000 ALTER TABLE `test_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `test_queue` ENABLE KEYS */;
+LOCK TABLES `tester_links` WRITE;
+/*!40000 ALTER TABLE `tester_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tester_links` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -665,6 +678,7 @@ CREATE TABLE `testing_feedback` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `breakthrough` varchar(255) DEFAULT NULL,
   `skills` varchar(255) DEFAULT NULL,
+  `fishiness` text DEFAULT NULL,
   `fun` int(11) NOT NULL DEFAULT '0',
   `difficulty` int(11) NOT NULL DEFAULT '0',
   `when_return` text,
@@ -707,13 +721,13 @@ LOCK TABLES `testsolve_requests` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `testsolve_team`
+-- Table structure for table `testsolve_teams`
 --
 
-DROP TABLE IF EXISTS `testsolve_team`;
+DROP TABLE IF EXISTS `testsolve_teams`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `testsolve_team` (
+CREATE TABLE `testsolve_teams` (
   `tid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`tid`)
@@ -721,22 +735,22 @@ CREATE TABLE `testsolve_team` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `testsolve_team`
+-- Dumping data for table `testsolve_teams`
 --
 
-LOCK TABLES `testsolve_team` WRITE;
-/*!40000 ALTER TABLE `testsolve_team` DISABLE KEYS */;
-/*!40000 ALTER TABLE `testsolve_team` ENABLE KEYS */;
+LOCK TABLES `testsolve_teams` WRITE;
+/*!40000 ALTER TABLE `testsolve_teams` DISABLE KEYS */;
+/*!40000 ALTER TABLE `testsolve_teams` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `testsolve_team_queue`
+-- Table structure for table `puzzle_testsolve_team`
 --
 
-DROP TABLE IF EXISTS `testsolve_team_queue`;
+DROP TABLE IF EXISTS `puzzle_testsolve_team`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `testsolve_team_queue` (
+CREATE TABLE `puzzle_testsolve_team` (
   `tid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`pid`),
@@ -745,12 +759,12 @@ CREATE TABLE `testsolve_team_queue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `testsolve_team_queue`
+-- Dumping data for table `puzzle_testsolve_team`
 --
 
-LOCK TABLES `testsolve_team_queue` WRITE;
-/*!40000 ALTER TABLE `testsolve_team_queue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `testsolve_team_queue` ENABLE KEYS */;
+LOCK TABLES `puzzle_testsolve_team` WRITE;
+/*!40000 ALTER TABLE `puzzle_testsolve_team` DISABLE KEYS */;
+/*!40000 ALTER TABLE `puzzle_testsolve_team` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -782,20 +796,20 @@ LOCK TABLES `uploaded_files` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_info`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `user_info`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_info` (
+CREATE TABLE `users` (
   `uid` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
   `password` blob NOT NULL DEFAULT '' COMMENT 'AES_ENCRYPT(''password'',''usernamepassword'')',
   `email` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL DEFAULT '',
   `picture` varchar(255) DEFAULT NULL,
-  `email_level` tinyint(1) DEFAULT '2',
+  `email_level` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`uid`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
@@ -803,22 +817,22 @@ CREATE TABLE `user_info` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_info`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `user_info` WRITE;
-/*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_info_key`
+-- Table structure for table `user_info_keys`
 --
 
-DROP TABLE IF EXISTS `user_info_key`;
+DROP TABLE IF EXISTS `user_info_keys`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_info_key` (
+CREATE TABLE `user_info_keys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shortname` varchar(255) NOT NULL,
   `longname` varchar(255) NOT NULL,
@@ -827,13 +841,13 @@ CREATE TABLE `user_info_key` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_info_key`
+-- Dumping data for table `user_info_keys`
 --
 
-LOCK TABLES `user_info_key` WRITE;
-/*!40000 ALTER TABLE `user_info_key` DISABLE KEYS */;
-INSERT INTO `user_info_key` VALUES (3,'location','Location'),(4,'phone','Phone Number'),(6,'expertise','What are your areas of interest and/or expertise?'),(7,'favorite','What are your favorite puzzle types?');
-/*!40000 ALTER TABLE `user_info_key` ENABLE KEYS */;
+LOCK TABLES `user_info_keys` WRITE;
+/*!40000 ALTER TABLE `user_info_keys` DISABLE KEYS */;
+INSERT INTO `user_info_keys` VALUES (3,'location','Location'),(4,'phone','Phone Number'),(6,'expertise','What are your areas of interest and/or expertise?'),(7,'favorite','What are your favorite puzzle types?');
+/*!40000 ALTER TABLE `user_info_keys` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -896,14 +910,14 @@ UNLOCK TABLES;
 
 -- Dump completed on 2013-11-04  3:42:30
 
-DROP TABLE IF EXISTS `approver_queue`;
-CREATE TABLE `approver_queue` (
+DROP TABLE IF EXISTS `approval_editor_links`;
+CREATE TABLE `approval_editor_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 
-DROP TABLE IF EXISTS `round_captain_queue`;
-CREATE TABLE `round_captain_queue` (
+DROP TABLE IF EXISTS `round_captain_links`;
+CREATE TABLE `round_captain_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
@@ -915,6 +929,12 @@ CREATE TABLE `codenames` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 
+LOCK TABLES `codenames` WRITE;
+/*!40000 ALTER TABLE `codenames` DISABLE KEYS */;
+INSERT INTO `codenames` (`name`) VALUES ('Saint Helens'),('Mesa'),('Vaughan'),('Sunnyvale'),('Lubbock'),('Montreal'),('Aberdeen'),('Brownsville'),('Long Beach'),('Daly City'),('Winnipeg'),('Norwalk'),('Houston'),('West Valley City'),('Santa Clarita'),('San Jose'),('Slough'),('Pembroke Pines'),('Oceanside'),('Bridgeport'),('Roanoke'),('Elgin'),('Providence'),('Santa Clara'),('Rochdale'),('Davenport'),('Boston'),('Beaumont'),('Lowell'),('Corpus Christi'),('Hialeah'),('Ann Arbor'),('Orlando'),('Cheltenham'),('San Diego'),('Jacksonville'),('Wollongong'),('Derby'),('Cape Coral'),('Escondido'),('Chattanooga'),('Chandler'),('Columbus'),('Paradise'),('Irving'),('Stoke-on-Trent'),('Laredo'),('Tucson'),('Colorado Springs'),('Northampton'),('Ontario'),('Newport News'),('San Mateo'),('Tulsa'),('Hobart'),('Oxnard'),('Amarillo'),('Fort Lauderdale'),('Richmond'),('Chelmsford'),('Little Rock'),('Orange'),('Eugene'),('Phoenix'),('Waco'),('Fontana'),('Huntsville'),('Wichita'),('Oldham'),('Huddersfield'),('Clarksville'),('Delta'),('Clearwater'),('Hamilton'),('Fremont'),('Gilbert'),('El Monte'),('Canberra'),('Leeds'),('Atlanta'),('Hampton'),('Oxford'),('Glendale'),('Peoria'),('Lansing'),('Markham'),('Sunrise Manor'),('Virginia Beach'),('Kenosha'),('Denver'),('Fullerton'),('Waitakere'),('Plymouth'),('Henderson'),('Westminster'),('Austin'),('Birmingham'),('Athens'),('Hollywood'),('Cardiff'),('Brighton'),('Minneapolis'),('Syracuse'),('Cape Breton'),('Liverpool'),('Colchester'),('Elizabeth'),('Peterborough'),('Sheffield'),('Boise City'),('Naperville'),('Dundee'),('Modesto'),('Metairie'),('New Bedford'),('East York'),('Lancaster'),('South Bend'),('Wellington'),('Erie'),('Fresno'),('Cary'),('Abilene'),('Green Bay'),('Topeka'),('Norman'),('Townsville'),('Thunder Bay'),('Barrie'),('Fall River'),('Gatineau'),('Ottawa'),('San Buenaventura'),('Reading'),('Leicester'),('Sacramento'),('Evansville'),('Midland'),('Springfield'),('Fayetteville'),('Joliet'),('Norfolk'),('Geelong'),('Jersey City'),('Downey'),('Bradford'),('Kansas City'),('Burnaby'),('Nashville'),('Newcastle'),('Bellevue'),('Berkeley'),('Stamford'),('Cairns'),('Blackpool'),('Lexington'),('Kitchener'),('Mississauga'),('Quebec'),('Basildon'),('Fairfield'),('Coventry'),('Scarborough'),('Billings'),('Thousand Oaks'),('Stockton'),('Provo'),('Dudley'),('Santa Monica'),('Swindon'),('Eastbourne'),('Livonia'),('Anchorage'),('Akron'),('Poole'),('Macon'),('Spokane'),('Mission Viejo'),('Central Coast'),('Citrus Heights'),('Charlotte'),('Chicago'),('Greensboro'),('Moreno Valley'),('Coral Springs'),('Worthing'),('Riverside'),('Palmdale'),('Saint Petersburg'),('Garden Grove'),('Madison'),('Gloucester'),('Hartlepool'),('Newark'),('Burbank'),('Brampton'),('Oldbury'),('Guelph'),('Reno'),('Albuquerque'),('Douglas'),('London'),('Edmonton'),('Blackburn'),('Halifax'),('Huntington Beach'),('McAllen'),('Simi Valley'),('Omaha'),('Columbia'),('Grand Prairie'),('Honolulu'),('Augusta'),('Shreveport'),('Middlesbrough'),('Torrance'),('Walsall'),('Ipswich'),('Irvine'),('Lincoln'),('Bristol'),('Garland'),('Sterling Heights'),('Bolton'),('Southend-on-Sea'),('Cleveland'),('Chesapeake'),('North York'),('Tampa'),('Saskatoon'),('New Haven'),('Oklahoma City'),('Carrollton'),('Birkenhead'),('Sunderland'),('Carson'),('Las Vegas'),('Indianapolis'),('Norwich'),('Solihull'),('Visalia'),('El Cajon'),('Boulder'),('Charleston'),('Nepean'),('Baton Rouge'),('Jackson'),('Durham'),('Costa Mesa'),('Concord'),('Dunedin'),('Salinas'),('Grimsby'),('Oshawa'),('Anaheim'),('Scottsdale'),('Fort Collins'),('Cedar Rapids'),('Santa Ana'),('Plano'),('Worcester'),('Preston'),('San Bernardino'),('Arvada'),('Exeter'),('Hartford'),('Fort Worth'),('Tacoma'),('Christchurch'),('Arden-Arcade'),('Longueuil'),('Adelaide'),('Corona'),('Southampton'),('Saint Catharines'),('Montgomery'),('Independence'),('Paterson'),('Saint Louis'),('Toledo'),('Hayward'),('Mobile'),('Santa Rosa'),('Sutton Coldfield'),('Stockport'),('Buffalo'),('Portsmouth'),('Fort Wayne'),('Baltimore'),('Alexandria'),('Crawley'),('Wichita Falls'),('Los Angeles'),('New York'),('Allentown'),('Perth'),('Burlington'),('Lafayette'),('Pittsburgh'),('Melbourne'),('Gainesville'),('Overland Park'),('Odessa'),('Saanich'),('Glasgow'),('Dayton'),('San Francisco'),('Gold Coast'),('Manchester'),('New Orleans'),('Salt Lake City'),('Etobicoke'),('Manukau'),('Edinburgh'),('Belfast'),('Regina'),('San Antonio'),('Swansea'),('Vancouver'),('West Covina'),('Compton'),('Cambridge'),('Windsor'),('Rotherham'),('Maidstone'),('Sandy'),('Des Moines'),('Pomona'),('Arlington'),('Pasadena'),('Cincinnati'),('Milwaukee'),('Rochester'),('Seattle'),('Flint'),('Coquitlam'),('Auckland'),('Luton'),('Newport'),('Warren'),('Inglewood'),('Knoxville'),('Saint Paul'),('Savannah'),('Sioux Falls'),('Aurora'),('Philadelphia'),('Woking'),('York'),('Salem'),('Nottingham'),('Watford'),('Winston-Salem'),('Tempe'),('Surrey'),('Wolverhampton'),('Saint Helier'),('Southport'),('Detroit'),('Sudbury'),('Miami Beach'),('Gary'),('Yonkers'),('Portland'),('North Shore'),('Toronto'),('Washington'),('Oakville'),('Sydney'),('Albany'),('Miami'),('Vallejo'),('Rancho Cucamonga'),('Rockford'),('Louisville'),('Waterbury'),('Laval'),('Pueblo'),('Gillingham'),('Kingston'),('Chula Vista'),('Grand Rapids'),('Bournemouth'),('Tallahassee'),('Lakewood'),('Bakersfield'),('Mesquite'),('Lower Hutt'),('Brockton'),('El Paso'),('Abbotsford'),('Oakland'),('Kelowna'),('West Bromwich'),('Calgary'),('Memphis'),('Brisbane'),('Dallas'),('Raleigh');
+/*!40000 ALTER TABLE `codenames` ENABLE KEYS */;
+UNLOCK TABLES;
+
 DROP TABLE IF EXISTS `reset_password_tokens`;
 CREATE TABLE `reset_password_tokens` (
   `uid` int(11) NOT NULL,
@@ -923,19 +943,19 @@ CREATE TABLE `reset_password_tokens` (
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 
-DROP TABLE IF EXISTS `puzzle_tags`;
+DROP TABLE IF EXISTS `puzzle_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `puzzle_tags` (
+CREATE TABLE `puzzle_tag` (
   `pid` int(11) NOT NULL,
   `tid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `tag_names`;
+DROP TABLE IF EXISTS `tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tag_names` (
+CREATE TABLE `tags` (
   `id` int(11) NOT NULL,
   `name` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;

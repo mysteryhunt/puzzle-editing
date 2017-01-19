@@ -1,9 +1,10 @@
 *~
-secret.php
-config.php
-config-prod.php
-config-dev.php
-config-prac.php
-uploads/*
-mmblanche/*
+/uploads/*
+/mmblanche/*
 puzzletron-keytab
+.vagrant
+vendor
+/.env
+composer.phar
+composer.lock
+/tmp/sess_*

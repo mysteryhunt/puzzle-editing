@@ -5,10 +5,13 @@ require_once "db-func.php";
 require_once "utils.php";
 
 // Redirect to the login page, if not logged in
-isLoggedIn();
+$uid = isLoggedIn();
 
 // Start HTML
 head("people");
+
+print themePeopleMenu($uid);
+
 $people = getPeople();
 
 if (!$people) {
@@ -20,3 +23,13 @@ foreach ($people as $p) {
 }
 // End HTML
 foot();
+
+
+function themePeopleMenu($uid) {
+    $html = "<ul>\n";
+    if (hasServerAdminPermission($uid)) {
+        $html .= "<li><a href=\"user-roles.php\">Manage User Roles</a></li>\n";
+    }
+    $html .= "</ul>\n";
+    return $html;
+}

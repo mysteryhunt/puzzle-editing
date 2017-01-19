@@ -1,0 +1,72 @@
+<VirtualHost *:80>
+        ServerName {{ site.url }}
+{% if site.https_only %}
+        Redirect permanent / https://{{ site.url }}/
+</VirtualHost>
+
+<VirtualHost *:443>
+        ServerName {{ site.url }}
+
+        # HSTS: Force web clients to use HTTPS.
+        Header always set Strict-Transport-Security "max-age=31536000;includeSubDomains"
+
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl.crt/{{ site.url }}.crt
+        SSLCertificateKeyFile /etc/apache2/ssl.key/{{ site.url }}.key
+        # Defend against POODLE
+        SSLProtocol all -SSLv2 -SSLv3
+{% endif %}
+
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot {{ docroot }}
+
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+
+ {% if site.shared_storage_dir is defined %}
+        <Directory {{ site.shared_storage_dir }}>
+        {% if site.htpasswd_authname is defined %}
+                AuthType basic
+                AuthName "{{ site.htpasswd_authname }}"
+                AuthUserFile /etc/apache2/sites-available/{{ site.name }}_htpasswd
+                AuthBasicProvider file
+                Require valid-user
+        {% else %}
+                Require all granted
+        {% endif %}
+        </Directory>
+{% endif %}
+        <Directory {{ docroot }}>
+                Options FollowSymLinks
+                AllowOverride All
+        {% if site.htpasswd_authname is defined %}
+                AuthType basic
+                AuthName "{{ site.htpasswd_authname }}"
+                AuthUserFile /etc/apache2/sites-available/{{ site.name }}_htpasswd
+                AuthBasicProvider file
+                Require valid-user
+        {% else %}
+                Require all granted
+        {% endif %}
+
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/{{ site.name }}/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/{{ site.name }}/access.log combined
+
+        # Environment variables
+        {% if not write_dotenv_file %}
+        {% for env in site.environment %}
+        SetEnv {{ env.key }} "{{ env.value }}"
+        {% endfor %}
+        {% endif %}
+
+</VirtualHost>

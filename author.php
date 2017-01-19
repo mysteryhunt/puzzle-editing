@@ -19,4 +19,3 @@ displayQueue($uid, $puzzles, "notes summary editornotes answer authorsandeditors
 
 // End the HTML
 foot();
-?>

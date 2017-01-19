@@ -1,0 +1,26 @@
+---
+- name: Install PHP.
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - php5
+    - php5-mysql
+    - php5-curl
+    - php5-gd
+    - php5-mcrypt
+    - php5-json
+
+- name: Enable PHP mcrypt extension for CLI.
+  sudo: yes
+  command:
+    "/usr/sbin/php5enmod -s cli mcrypt creates=/etc/php5/cli/conf.d/20-mcrypt.ini"
+
+- name: Custom php.ini for Apache.
+  sudo: yes
+  template:
+    src=php.ini.j2
+    dest=/etc/php5/apache2/php.ini
+    owner=root
+    group=root
+    mode=0644
+

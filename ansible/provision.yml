@@ -1,0 +1,86 @@
+---
+# Launch cloud infrastructure.
+#
+# You need to provide a server_group on the Ansible command line like
+# this (e.g.): -e server_group=prod
+- name: Provision a server group in Amazon.
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Load secrets.
+      include_vars: "secrets.yml"
+
+    - name: Convert the domain to a legal stack name by substituting for dots.
+      delegate_to: localhost
+      shell: >-
+        echo "{{ servers[server_group].domain }}" | tr "." "-"
+      register: dashed_domain
+
+    - name: Provision the backup bucket.
+      cloudformation:
+        stack_name: "backup-{{ server_group }}-{{ dashed_domain.stdout }}"
+        state: "present"
+        region: "{{ servers[server_group].aws_region }}"
+        template: files/backup-bucket-cf.json
+        template_parameters:
+          Domain: "{{ servers[server_group].domain }}"
+          Group: "{{ server_group }}"
+          Name: "backups"
+        tags:
+          "Group": "{{ server_group }}"
+          "Domain": "{{ servers[server_group].domain }}"
+      register: backup_stack
+
+    - name: Print the bucket name.
+      debug: msg="Created backup bucket {{backup_stack.stack_outputs.BucketName}}"
+
+    - name: Provision AWS security groups, roles, etc.
+      cloudformation:
+        stack_name: "security-{{ server_group }}-{{ dashed_domain.stdout }}"
+        state: "present"
+        region: "{{ servers[server_group].aws_region }}"
+        template: files/security-cf.json
+        template_parameters:
+          Domain: "{{ servers[server_group].domain }}"
+          ServerGroup: "{{ server_group }}"
+          BackupBucketName: "{{ backup_stack.stack_outputs.BucketName }}"
+        tags:
+          "Group": "{{ server_group }}"
+          "Domain": "{{ servers[server_group].domain }}"
+      register: security_stack
+
+    - name: Lookup an official Ubuntu image
+      ec2_ami_search: distro=ubuntu release=trusty region={{ servers[server_group].aws_region }} store=ebs virt=hvm
+      register: ubuntu_image
+
+    - name: Provision a single instance to hold all the apps in this server group.
+      cloudformation:
+        stack_name: "single-{{ server_group }}-{{ dashed_domain.stdout }}"
+        state: "present"
+        region: "{{ servers[server_group].aws_region }}"
+        template: files/server-cf.json
+        template_parameters:
+          Domain: "{{ servers[server_group].domain }}"
+          Group: "{{ server_group }}"
+          Hostname: "single-1"
+          Class: "single"
+          InstanceType: "t2.micro"
+          AMI: "{{ ubuntu_image.ami }}"
+          KeyName: "{{ servers[server_group].aws_keypair }}"
+          InstanceProfile: "{{ security_stack.stack_outputs.SingleInstanceProfile }}"
+          SecurityGroupId: "{{ security_stack.stack_outputs.SingleSecurityGroupID }}"
+        tags:
+          "Group": "{{ server_group }}"
+          "Domain": "{{ servers[server_group].domain }}"
+      register: single_stack
+
+    - name: Wait for single SSH to come up
+      wait_for:
+        host="{{ single_stack.stack_outputs.PublicDnsName }}"
+        port=22
+        delay=2
+        timeout=320
+        state=started
+
+    - name: Echo the name of the new single instance.
+      debug: msg="Your single instance is ready - {{ single_stack.stack_outputs.PublicDnsName }} ({{ single_stack.stack_outputs.InstanceId }})"

@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("testadmin", "Test Admin");
 
 // Check for permissions
-if (!isTestingAdmin($uid)) {
+if (!hasTestAdminPermission($uid)) {
     echo "<div class='errormsg'>Sorry, you're not a testing admin.</div>";
     foot();
     exit(1);
@@ -35,7 +35,7 @@ echo "There are currently <strong>$inTesting puzzles</strong> in testing<br/>";
 echo "<strong>$numNeedAdmin puzzles</strong> need a testing admin</strong>";
 echo "<br /><br />";
 
-if (isTestingAdmin($uid)) {
+if (hasTestAdminPermission($uid)) {
 
     if (getPuzzleForTestAdminQueue($uid) == FALSE) {
         echo '<div class="emptylist">No Puzzles To Add</div><br/>';
@@ -57,7 +57,7 @@ $testPuzzles = getPuzzlesNeedTestAdmin();
 // Should we show "testers" identities? No,
 // but we've gotten lazy about using the testadmin system, which means
 // I need to see testers for puzzles that have no testadmin.
-displayQueue($uid, $puzzles, "notes summary testers", FALSE);
+displayQueue($uid, $testPuzzles, "notes summary testers", FALSE);
 
 echo "<h2>Testing Feed</h2>";
 echo "<table>";
@@ -73,8 +73,7 @@ displayTestingSummary();
 foot();
 
 //------------------------------------------------------------------------
-function displayTestQueue($uid)
-{
+function displayTestQueue($uid) {
     $puzzles = getInTestAdminQueue($uid);
 
     $puzzles = sortByLastCommentDate($puzzles);
@@ -82,13 +81,12 @@ function displayTestQueue($uid)
     if (!$puzzles) {
         echo '<h3>No Puzzles Currently In Queue</h3>';
     } else {
-        displayQueue($uid, $puzzles, "notes answer summary testers", FALSE);
+        displayQueue($uid, $puzzles, "notes answer summary testers currentpuzzletestercount", FALSE);
     }
 }
 
-function displayTestingSummary()
-{
-    $sql = sprintf("SELECT uid, pid from test_queue");
+function displayTestingSummary() {
+    $sql = sprintf("SELECT uid, pid from tester_links");
     $result = get_rows($sql);
 
     if (!$result) {
@@ -106,18 +104,19 @@ function displayTestingSummary()
         $uid = $r['uid'];
         $pid = $r['pid'];
 
-        if (isset($currqueue[$uid]))
+        if (isset($currqueue[$uid])) {
             $currqueue[$uid] .= "$pid ";
-        else
+        } else {
             $currqueue[$uid] = "$pid ";
+        }
         $currclass = ".a$uid-$pid";
         echo ".testingtable $currclass, .testingtable $currclass a {color: #000000; }\n";
     }
     echo "</style>\n";
 
-    $sql = sprintf("SELECT user_info.uid, user_info.username, comments.id, type, timestamp, pid FROM comments
-        LEFT JOIN user_info on comments.uid = user_info.uid WHERE comments.type = 5
-        ORDER BY user_info.username, comments.pid");
+    $sql = sprintf("SELECT users.uid, users.username, comments.id, type, timestamp, pid FROM comments
+        LEFT JOIN users on comments.uid = users.uid WHERE comments.type = 5
+        ORDER BY users.username, comments.pid");
     $result = query_db($sql);
     $r = mysql_fetch_assoc($result);
 
@@ -156,12 +155,12 @@ function displayTestingSummary()
             $r = mysql_fetch_assoc($result);
         }
     }
-    if (!$arr) echo "<div class='emptylist'>No comments</div>";
-
+    if (!$arr) {
+        echo "<div class='emptylist'>No comments</div>";
+    }
     echo "<table class=\"testingtable\">\n";
     foreach ($arr as $key => $value) {
         echo $value . "\n";
     }
     echo "</table>\n\n";
 }
-?>

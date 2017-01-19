@@ -1,0 +1,32 @@
+---
+- name: Enable site.
+  sudo: yes
+  file:
+    state: link
+    path: "/etc/apache2/sites-enabled/{{ site.name }}.conf"
+    src: "/etc/apache2/sites-available/{{ release_id }}.conf"
+  notify:
+    - reload apache
+
+- name: Explicitly reload Apache.
+  debug: msg="Reloading Apache explicitly"
+  changed_when: true
+  notify: reload apache
+  when: always_reload
+
+- name: Setup the site cron job environment.
+  sudo: yes
+  template:
+    src="dotenv.j2"
+    dest="/home/{{ unix_username }}/.{{ site.name }}.cron.env"
+    owner="{{ unix_username }}"
+    group="{{ unix_username }}"
+    mode=0600
+
+- name: Setup the site cron job.
+  sudo: yes
+  cron:
+    user: "{{ unix_username }}"
+    name: "{{ site.cronjob_name }}"
+    state: present
+    job: "ENVDIR=/home/{{ unix_username }} ENVFILE=.{{ site.name }}.cron.env /usr/bin/php {{ docroot }}/{{ site.cronjob_path }}"

@@ -37,9 +37,9 @@ if (!isEditorChief($uid) && !isCohesion($uid)) {
     addSpoiledUserQuietly($uid, $pid);
     if ($_GET['discuss'] && isEditorAvailable($uid, $pid) && !isEditorChief($uid)) {
         changeEditors($uid, $pid, array($uid), array());
-    } else if ($_GET['approve'] && isApproverAvailable($uid, $pid) && !isEditorChief($uid)) {
+    } elseif ($_GET['approve'] && isApproverAvailable($uid, $pid) && !isEditorChief($uid)) {
         changeApprovers($uid, $pid, array($uid), array());
-    } else if ($_GET['factcheck'] && isFactcheckerAvailable($uid, $pid) && !isEditorChief($uid)) {
+    } elseif ($_GET['factcheck'] && isFactcheckerAvailable($uid, $pid) && !isEditorChief($uid)) {
         changeFactcheckers($uid, $pid, array($uid), array());
     }
 }
@@ -50,14 +50,14 @@ if (isAnyAuthorBlind($pid)) {
 }
 
 // Hide puzzle info from testing admins, to prevent spoilage
-$hidePuzzleInfo = ((isServerAdmin($uid) || isTestingAdmin($uid)) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid));
+$hidePuzzleInfo = ((hasServerAdminPermission($uid) || hasTestAdminPermission($uid)) && !isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid));
 
 // If Testing Admin, hide answer, summary, and description
 if ($hidePuzzleInfo) {
     echo '<style type="text/css">.hideFromTest {display: none;}</style>';
 }
 
-// Get all information about the puzzle (from puzzle_idea table)
+// Get all information about the puzzle (from puzzles table)
 $puzzleInfo = getPuzzleInfo($pid);
 
 // Edit the summary and description?
@@ -111,7 +111,7 @@ displayRuntime($uid, $pid);
 echo "</div>";
 
 // List credits
-if (USING_CREDITS){
+if (USING_CREDITS) {
     echo "<div class='creditsInfo'>";
     displayCredits($uid, $pid);
     echo "</div>";
@@ -130,20 +130,24 @@ if (USING_TESTSOLVE_REQUESTS) {
 }
 
 // TestsolveTeam Stuff
-if (USING_TESTSOLVE_TEAMS){
+if (USING_TESTSOLVE_TEAMS) {
     echo "<form method='post' action='form-submit.php'>";
     echo "<div class='testsolveInfo'>";
     echo "<strong>TestSolve Team:</strong>\n";
     echo "<input type='hidden' name='pid' value='$pid'>\n";
     echo "<SELECT NAME='tid'>\n";
     $teamid = getPuzzleTestTeam($pid);
-    if ($teamid == NULL) echo "<option value=''>";
+    if ($teamid == NULL) {
+        echo "<option value=''>";
+    }
     $testteams = getTestTeams();
     foreach ($testteams as $t) {
         $tid = $t['tid'];
         $teamname = $t['name'];
         echo "<option value='$tid' ";
-        if ($tid == $teamid) { echo "SELECTED "; }
+        if ($tid == $teamid) {
+            echo "SELECTED ";
+        }
         echo ">$teamname\n";
     }
 
@@ -157,10 +161,12 @@ displayFiles($uid, $pid);
 echo "</div>";
 
 // Link to post-prod site
+/*
 echo "<br />";
 echo "<div class='postProd'>";
 displayPostProd($uid, $pid, isStatusInPostProd($puzzleInfo['pstatus']));
 echo "</div>";
+*/
 
 echo "<br />";
 echo "<div class='puzzApproval'>";
@@ -195,21 +201,21 @@ echo "</div>";
 foot();
 
 //------------------------------------------------------
-function displayPuzzleInfo($uid, $pid, $puzzleInfo)
-{
+function displayPuzzleInfo($uid, $pid, $puzzleInfo) {
     $title = nl2br2($puzzleInfo['title']);
-    if ($title == NULL)
+    if ($title == NULL) {
         $title = '(untitled)';
-
+    }
     $summary = nl2br2($puzzleInfo['summary']);
-    if ($summary == NULL)
+    if ($summary == NULL) {
         $summary = '(no summary)';
-
+    }
     $description = nl2br2($puzzleInfo['description']);
-    if ($description == NULL)
+    if ($description == NULL) {
         $description = '(no description)';
-
+    }
     $codename = getCodename($pid);
+    $puzzleround = getPuzzleRound($pid);
 ?>
     <h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
     <p><strong><?php echo "Round: $puzzleround"; ?></strong></p>
@@ -223,8 +229,7 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo)
 <?php
 }
 
-function displayAnswers($uid, $pid)
-{
+function displayAnswers($uid, $pid) {
     $currentAnswers =  getAnswersForPuzzle($pid);
     $availableAnswers = getAvailableAnswers();
 ?>
@@ -278,8 +283,7 @@ function displayAnswers($uid, $pid)
 <?php
 }
 
-function editTitleSummaryDescription($uid, $pid, $title, $summary, $description)
-{
+function editTitleSummaryDescription($uid, $pid, $title, $summary, $description) {
 ?>
     <form method="post" action="form-submit.php">
         <h2>Puzzle <?php echo $pid; ?></h2>
@@ -297,8 +301,7 @@ function editTitleSummaryDescription($uid, $pid, $title, $summary, $description)
 <?php
 }
 
-function displayPeople($uid, $pid)
-{
+function displayPeople($uid, $pid) {
 ?>
     <table>
         <?php displayAuthors($uid, $pid); ?>
@@ -309,13 +312,13 @@ function displayPeople($uid, $pid)
         <?php displayFactcheckers($uid, $pid); ?>
         <?php displayTags($uid, $pid); ?>
         <?php if (canSeeTesters($uid, $pid)) {displayTesters($uid, $pid);} ?>
+        <?php if (USING_PER_PUZZLE_TESTER_LIMITS) {displayTesterLimit($uid, $pid);} ?>
         <?php displayTestingAdmin($uid, $pid); ?>
     </table>
 <?php
 }
 
-function displayAuthors($uid, $pid)
-{
+function displayAuthors($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
@@ -350,20 +353,17 @@ function displayAuthors($uid, $pid)
 <?php
 }
 
-function displayRemoveAuthor($pid, $uid)
-{
+function displayRemoveAuthor($pid, $uid) {
     $authors = getAuthorsForPuzzle($pid);
     makeOptionElements($authors, 'removeAuth', $uid);
 }
 
-function displayAddAuthor($pid, $uid)
-{
+function displayAddAuthor($pid, $uid) {
     $authors = getAvailableAuthorsForPuzzle($pid);
     makeOptionElements($authors, 'addAuth', $uid);
 }
 
-function displaySpoiled($uid, $pid)
-{
+function displaySpoiled($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
@@ -398,20 +398,17 @@ function displaySpoiled($uid, $pid)
 <?php
 }
 
-function displayRemoveSpoiledUsers($pid, $uid)
-{
+function displayRemoveSpoiledUsers($pid, $uid) {
     $spoiled = getSpoiledUsersForPuzzle($pid);
     makeOptionElements($spoiled, 'removeSpoiledUser', $uid);
 }
 
-function displayAddSpoiledUsers($pid, $uid)
-{
+function displayAddSpoiledUsers($pid, $uid) {
     $spoiled = getAvailableSpoiledUsersForPuzzle($pid);
     makeOptionElements($spoiled, 'addSpoiledUser', $uid);
 }
 
-function displayRoundCaptain($uid, $pid)
-{
+function displayRoundCaptain($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
@@ -446,20 +443,17 @@ function displayRoundCaptain($uid, $pid)
 <?php
 }
 
-function displayRemoveRoundCaptain($pid, $uid)
-{
+function displayRemoveRoundCaptain($pid, $uid) {
     $capts = getRoundCaptainsForPuzzle($pid);
     makeOptionElements($capts, 'removeRoundCaptain', $uid);
 }
 
-function displayAddRoundCaptain($pid, $uid)
-{
+function displayAddRoundCaptain($pid, $uid) {
     $capts = getAvailableRoundCaptainsForPuzzle($pid);
     makeOptionElements($capts, 'addRoundCaptain', $uid);
 }
 
-function displayEditors($uid, $pid)
-{
+function displayEditors($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
@@ -504,25 +498,22 @@ function displayEditors($uid, $pid)
 <?php
 }
 
-function displayRemoveEditor($pid, $uid)
-{
+function displayRemoveEditor($pid, $uid) {
     $editors = getEditorsForPuzzle($pid);
     makeOptionElements($editors, 'removeEditor', $uid);
 }
 
-function displayAddEditor($pid, $uid)
-{
+function displayAddEditor($pid, $uid) {
     $editors = getAvailableEditorsForPuzzle($pid);
     makeOptionElements($editors, 'addEditor', $uid);
 }
 
-function displayApprovers($uid, $pid)
-{
+function displayApprovers($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
             <strong>Approval Editors:</strong> <?php echo getApproversAsList($pid); ?>&nbsp;&nbsp;
-    <?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+    <?php if (!isAuthorOnPuzzle($uid, $pid) || isEditorChief($uid) || hasServerAdminPermission($uid)) { ?><a href="#" class="changeLink">[Change]</a>
         </td>
     </tr>
     <tr>
@@ -554,20 +545,17 @@ function displayApprovers($uid, $pid)
 <?php
 }
 
-function displayRemoveApprover($pid, $uid)
-{
+function displayRemoveApprover($pid, $uid) {
     $approvers = getApproversForPuzzle($pid);
     makeOptionElements($approvers, 'removeApprover', $uid);
 }
 
-function displayAddApprover($pid, $uid)
-{
+function displayAddApprover($pid, $uid) {
     $approvers = getAvailableApproversForPuzzle($pid);
     makeOptionElements($approvers, 'addApprover', $uid);
 }
 
-function displayFactcheckers($uid, $pid)
-{
+function displayFactcheckers($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
@@ -602,25 +590,22 @@ function displayFactcheckers($uid, $pid)
 <?php
 }
 
-function displayRemoveFactchecker($pid, $uid)
-{
+function displayRemoveFactchecker($pid, $uid) {
     $factcheckers = getFactcheckersForPuzzle($pid);
     makeOptionElements($factcheckers, 'removeFactchecker', $uid);
 }
 
-function displayAddFactchecker($pid, $uid)
-{
+function displayAddFactchecker($pid, $uid) {
     $factcheckers = getAvailableFactcheckersForPuzzle($pid);
     makeOptionElements($factcheckers, 'addFactchecker', $uid);
 }
 
-function displayTags($uid, $pid)
-{
+function displayTags($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
             <strong>Tags:</strong> <?php echo getTagsAsList($pid); ?>&nbsp;&nbsp;
-    <?php if (isCohesion($uid) || isEditorChief($uid) || isServerAdmin($uid)) { ?><a href="#" class="changeLink">[Change]</a>
+    <?php if (isCohesion($uid) || isEditorChief($uid) || hasServerAdminPermission($uid)) { ?><a href="#" class="changeLink">[Change]</a>
         </td>
     </tr>
     <tr>
@@ -652,20 +637,17 @@ function displayTags($uid, $pid)
 <?php
 }
 
-function displayRemoveTags($pid)
-{
+function displayRemoveTags($pid) {
     $tags = getTagsForPuzzle($pid);
     makeOptionElements($tags, 'removeTag');
 }
 
-function displayAddTags($pid)
-{
+function displayAddTags($pid) {
     $tags = getAvailableTagsForPuzzle($pid);
     makeOptionElements($tags, 'addTag');
 }
 
-function displayTesters($uid, $pid)
-{
+function displayTesters($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
@@ -682,11 +664,46 @@ function displayTesters($uid, $pid)
             <strong>Number of testers during this testsolving cycle:</strong> <?php echo getCurrentPuzzleTesterCount($pid); ?>
         </td>
     </tr>
+    <tr>
+        <td class='peopleInfo'>
+            <strong>Fun Ratings:</strong> Median <?php echo getMedianFeedback($pid, 'fun'); ?>, Mode <?php echo getModeFeedback($pid, 'fun'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td class='peopleInfo'>
+            <strong>Difficulty Ratings:</strong> Median <?php echo getMedianFeedback($pid, 'difficulty'); ?>, Mode <?php echo getModeFeedback($pid, 'difficulty'); ?>
+        </td>
+    </tr>
 <?php
 }
 
-function displayTestingAdmin($uid, $pid)
-{
+function displayTesterLimit($uid, $pid) {
+?>
+    <tr>
+        <td class='peopleInfo'>
+            <strong>Tester Limit:</strong> <?php echo getTesterLimit($pid); ?>&nbsp;
+            <?php if (canChangeTesterLimit($uid, $pid)) { ?>
+            <a href="#" class="changeLink">[Change]</a>
+            <?php } ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php if (canChangeTesterLimit($uid, $pid)) { ?>
+            <div>
+            <form method="post" action="form-submit.php">
+                <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                Change maximum number of testers: <input type="text" name="tester_limit" value="<?php echo getTesterLimit($pid); ?>" class="shortin" /> <input type="submit" name="changeTesterLimit" value="Go" />
+            </form>
+            </div>
+            <?php } ?>
+        </td>
+    </tr>
+<?php
+}
+
+function displayTestingAdmin($uid, $pid) {
 ?>
     <tr>
         <td class='peopleInfo'>
@@ -696,8 +713,7 @@ function displayTestingAdmin($uid, $pid)
 <?php
 }
 
-function displayStatus($uid, $pid)
-{
+function displayStatus($uid, $pid) {
     $status = getStatusNameForPuzzle($pid);
 
 ?>
@@ -711,8 +727,7 @@ function displayStatus($uid, $pid)
             </td>
         </tr>
     <?php
-    if (canChangeStatus($uid))
-    {
+    if (canChangeStatus($uid)) {
     ?>
         <tr>
             <td colspan='3'>
@@ -728,7 +743,7 @@ function displayStatus($uid, $pid)
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" name="changeStatus" value="Change Status" />
+                            <input type="submit" name="changePuzzleStatus" value="Change Status" />
                         </td>
                     </tr>
                 </form>
@@ -742,8 +757,7 @@ function displayStatus($uid, $pid)
 <?php
 }
 
-function displayTestsolveRequests($uid, $pid)
-{
+function displayTestsolveRequests($uid, $pid) {
     $reqs = getTestsolveRequestsForPuzzle($pid);
 
 ?>
@@ -754,8 +768,7 @@ function displayTestsolveRequests($uid, $pid)
             </td>
             <td class='testsolveInfo'>
 <?php
-    if (canRequestTestsolve($uid, $pid))
-    {
+    if (canRequestTestsolve($uid, $pid)) {
         ?><a href="#" class="changeLink">[Request]</a><?php
     } else {
         ?><i class="smallText">[Put in testing first]</i><?php
@@ -777,8 +790,7 @@ function displayTestsolveRequests($uid, $pid)
             </td>
         </tr>
 <?php
-    if (canRequestTestsolve($uid, $pid))
-    {
+    if (canRequestTestsolve($uid, $pid)) {
 ?>
         <tr>
             <td colspan='3'>
@@ -798,8 +810,7 @@ function displayTestsolveRequests($uid, $pid)
 <?php
 }
 
-function displayCredits($uid, $pid)
-{
+function displayCredits($uid, $pid) {
     $notes = htmlspecialchars(getCredits($pid));
 
 ?>
@@ -825,8 +836,7 @@ function displayCredits($uid, $pid)
     </table>
 <?php
 }
-function displayNotes($uid, $pid)
-{
+function displayNotes($uid, $pid) {
     $notes = getNotes($pid);
 
 ?>
@@ -852,8 +862,7 @@ function displayNotes($uid, $pid)
     </table>
 <?php
 }
-function displayEditorNotes($uid, $pid)
-{
+function displayEditorNotes($uid, $pid) {
     $notes = getEditorNotes($pid);
 
 ?>
@@ -879,8 +888,7 @@ function displayEditorNotes($uid, $pid)
     </table>
 <?php
 }
-function displayRuntime($uid, $pid)
-{
+function displayRuntime($uid, $pid) {
     $notes = getRuntime($pid);
 
 ?>
@@ -907,8 +915,7 @@ function displayRuntime($uid, $pid)
 <?php
 }
 
-function displayWikiPage($uid, $pid)
-{
+function displayWikiPage($uid, $pid) {
     $page = getWikiPage($pid);
 
 ?>
@@ -935,21 +942,20 @@ function displayWikiPage($uid, $pid)
 <?php
 }
 
-function displayChangePuzzleStatus($pid)
-{
+function displayChangePuzzleStatus($pid) {
     $statuses = getPuzzleStatuses();
     $current = getStatusForPuzzle($pid);
 
     foreach ($statuses as $sid => $name) {
         echo "<input type ='radio' name='status' value='$sid'";
-        if ($sid == $current)
+        if ($sid == $current) {
             echo ' checked';
+        }
         echo " />&nbsp;&nbsp;$name<br />";
     }
 }
 
-function displayFiles($uid, $pid)
-{
+function displayFiles($uid, $pid) {
 ?>
     <table>
         <?php displayFileList($uid, $pid, 'draft'); ?>
@@ -976,10 +982,10 @@ function displayFileList ($uid, $pid, $type) {
         $filename = $finfo['basename'];
         if (strpos($file['filename'], 'http') !== false || !USING_AWS) {
             $link = $file['filename'];
-        } else if (strpos($file['filename'], '_dir', strlen($file['filename']) - 4) !== false) {
-            $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/list.html?prefix=' . $file['filename'];
+        } elseif (strpos($file['filename'], '_dir', strlen($file['filename']) - 4) !== false) {
+            $link = AWS_ENDPOINT . AWS_BUCKET . '/' . $file['filename'] . '/index.html';
         } else {
-            $link = 'https://' . AWS_BUCKET . '.s3.amazonaws.com/' . $file['filename'];
+            $link = AWS_ENDPOINT . AWS_BUCKET . '/' . $file['filename'];
         }
 
         $date = $file['date'];
@@ -1050,14 +1056,14 @@ function displayFileList ($uid, $pid, $type) {
 <?php
         }
 
-        if ($first)
+        if ($first) {
             $first = FALSE;
+        }
     }
 }
 
-function displayKillPuzzle($uid, $pid)
-{
-    if ((isAuthorOnPuzzle($uid, $pid)) && !(isPuzzleDead($pid))){
+function displayKillPuzzle($uid, $pid) {
+    if ((isAuthorOnPuzzle($uid, $pid)) && !(isPuzzleDead($pid))) {
 ?>
     <table style="border:1px solid black;">
         <tr>
@@ -1076,8 +1082,7 @@ function displayKillPuzzle($uid, $pid)
     return;
 }
 
-function displayMarkAsUnseen($uid, $pid)
-{
+function displayMarkAsUnseen($uid, $pid) {
 ?>
     <form method="post" action="form-submit.php">
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
@@ -1092,8 +1097,7 @@ or simply
     return;
 }
 
-function displayPostProd($uid, $pid, $pp)
-{
+function displayPostProd($uid, $pid, $pp) {
     $rinfo = getRoundForPuzzle($pid);
     $urlprefix = POSTPROD_URLPREFIX;
     $beta_urlprefix = POSTPROD_BETA_URLPREFIX;
@@ -1142,24 +1146,23 @@ function displayPostProd($uid, $pid, $pp)
     }
 }
 
-function displayComments($uid, $pid, $lastVisit)
-{
+function displayComments($uid, $pid, $lastVisit) {
     $comments = getComments($pid);
-    if (!$comments)
+    if (!$comments) {
         return;
+    }
 
-    foreach ($comments as $comment)
-    {
+    foreach ($comments as $comment) {
         $id = $comment['id'];
         $timestamp = $comment['timestamp'];
         $type = $comment['name'];
         $user = $comment['uid'];
 
-        if ($user == 0)
+        if ($user == 0) {
             $name = 'Server';
-        else
+        } else {
             $name = getUserName($user);
-
+        }
         if ($lastVisit == NULL || strtotime($lastVisit) < strtotime($timestamp)) {
             echo "<tr class='comment-new' id='comm$id'>";
         } else {
@@ -1173,15 +1176,16 @@ function displayComments($uid, $pid, $lastVisit)
                 echo $name . '<br />';
             }
             echo 'Testsolver '.substr(md5(strval($pid).strval($user)), 0, 8);
-        } else
+        } else {
             echo $name;
-
+        }
         echo "<br />$timestamp<br />$type <small>(Comment #$id)</small>";
         echo "<td class='$type" . "Comment'>";
 
+// TODO: Is this really the best we can do? Markdown, anyone?
         $pcomment = preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2">\\2</a>', ($comment['comment']));
         if (USING_AWS) {
-            $pcomment = str_replace("=\"uploads/", "=\"https://" . AWS_BUCKET . ".s3.amazonaws.com/uploads/", $pcomment);
+            $pcomment = str_replace("=\"uploads/", "=\"" . AWS_ENDPOINT . AWS_BUCKET . "/uploads/", $pcomment);
         }
         echo nl2br2($pcomment);
         echo '</td>';
@@ -1189,8 +1193,7 @@ function displayComments($uid, $pid, $lastVisit)
     }
 }
 
-function addCommentForm($uid, $pid)
-{
+function addCommentForm($uid, $pid) {
     if (canComment($uid, $pid)) {
 ?>
         <form action="form-submit.php" method="post">
@@ -1207,10 +1210,8 @@ function addCommentForm($uid, $pid)
     }
 }
 
-function emailSubButton($uid, $pid)
-{
-    if (isSubbedOnPuzzle($uid, $pid))
-    {
+function emailSubButton($uid, $pid) {
+    if (isSubbedOnPuzzle($uid, $pid)) {
 ?>
         <form action="form-submit.php" method="post">
             <tr class="comment">
@@ -1237,8 +1238,7 @@ function emailSubButton($uid, $pid)
     }
 }
 
-function displayPuzzApproval($uid, $pid)
-{
+function displayPuzzApproval($uid, $pid) {
     $approvals = getPuzzApprovals($pid);
 ?>
         <b>Editor approval (required to change puzzle status):</b> <br/>
@@ -1267,23 +1267,22 @@ function displayPuzzApproval($uid, $pid)
         }
 
     //everyone gets to see approval table
-    if ($approvals == NULL){
+    if ($approvals == NULL) {
         echo "<tr><td colspan=3>No existing editor feedback at this stage yet.</td></tr><br>";
-    }
-    else if (!isEditorOnPuzzle($uid, $pid)) {
+    } elseif (!isEditorOnPuzzle($uid, $pid)) {
         echo "<tr><td>Approve</td><td>Revise</td></td>";
     }
-    foreach ($approvals as $fullname => $approve){
+    foreach ($approvals as $fullname => $approve) {
         echo "<tr><td align=center>";
 
         //check if approved
-        if ($approve == 1){
+        if ($approve == 1) {
             echo "<b>X</b>";
         }
         echo "</td><td align=center>";
 
         //check if notapproved
-        if ($approve == 0){
+        if ($approve == 0) {
             echo "<b>X</b>";
         }
 
@@ -1294,8 +1293,7 @@ function displayPuzzApproval($uid, $pid)
 <?php
 }
 
-function displayPuzzPriority($uid, $pid)
-{
+function displayPuzzPriority($uid, $pid) {
     $priority = getPriority($pid);
     //only display approval form itself if you are an editor/approver on this puzzle
     if (canChangeStatus($uid)) {
@@ -1323,4 +1321,3 @@ function displayPuzzPriority($uid, $pid)
 <?php
     }
 }
-?>

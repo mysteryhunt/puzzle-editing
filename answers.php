@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("answers", "Answers");
 
 // Check for answers permissions
-if (!canChangeAnswers($uid) && !isApprover($uid)) {
+if (!canChangeAnswers($uid) && !hasApproverPermission($uid)) {
     echo "<div class='errormsg'>You do not have permission for this page.</div>";
     foot();
     exit(1);
@@ -35,8 +35,7 @@ foot();
 
 //------------------------------------------------------------------------
 
-function displayAnswers($uid)
-{
+function displayAnswers($uid) {
     $rounds = getRounds();
     if (!$rounds) {
 ?>
@@ -102,8 +101,7 @@ function displayAnswers($uid)
 <?php
 }
 
-function submitAnswersForm($newAnswer, $round)
-{
+function submitAnswersForm($newAnswer, $round) {
     if ($newAnswer == "") {
         echo("<div class='errormsg'>Blank Answer is unacceptable. Try again</div>\n");
         return FALSE;
@@ -114,8 +112,7 @@ function submitAnswersForm($newAnswer, $round)
     return TRUE;
 }
 
-function submitNewRound($roundname, $roundanswer)
-{
+function submitNewRound($roundname, $roundanswer) {
     if ($roundname == "") {
         printf("<div class='errormsg'>Blank Round Name is unacceptable. Try again</div>\n");
         return FALSE;
@@ -129,4 +126,3 @@ function submitNewRound($roundname, $roundanswer)
     printf("<div class='okmsg'>Added new Round: %s with meta answer: %s</div>\n", htmlspecialchars($roundname), htmlspecialchars($roundanswer));
     return TRUE;
 }
-?>

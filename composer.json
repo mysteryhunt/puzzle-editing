@@ -1,0 +1,8 @@
+{
+  "require": {
+    "aws/aws-sdk-php": "2.*",
+    "ezyang/htmlpurifier": "dev-master",
+    "mailgun/mailgun-php": "~1.7.2",
+    "vlucas/phpdotenv": "~1.1.0"
+  }
+}

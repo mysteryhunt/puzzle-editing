@@ -39,4 +39,3 @@ if ($motd != NULL) {
 <?
 // End HTML
 foot();
-?>

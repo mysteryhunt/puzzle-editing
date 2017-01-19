@@ -11,7 +11,7 @@ $uid = isLoggedIn();
 head("roundcaptain");
 
 // Check for editor permissions
-if (!isRoundCaptain($uid)) {
+if (!hasRoundCaptainPermission($uid)) {
     echo "<div class='errormsg'>You do not have permissions for this page.</div>";
     foot();
     exit(1);
@@ -25,4 +25,3 @@ displayQueue($uid, $puzzles, "notes answer summary authorsandeditors", FALSE);
 // End HTML
 foot();
 
-?>
