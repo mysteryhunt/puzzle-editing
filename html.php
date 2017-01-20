@@ -14,7 +14,7 @@ function echoNav1($selnav, $name, $linktext, $condition) {
 }
 
 function fullTitle() {
-    return 'MH2017 puzzletron authoring server (' . (DEVMODE ? 'test/dev' : (PRACMODE ? 'practice' : 'actual mystery hunt-writing')) . ' instance)';
+    return 'MH' . HUNT_YEAR . ' puzzletron authoring server (' . (DEVMODE ? 'test/dev' : (PRACMODE ? 'practice' : 'actual mystery hunt-writing')) . ' instance)';
 }
 
 function head($selnav = "", $title = -1) {
