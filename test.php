@@ -247,11 +247,6 @@ function displayFeedbackForm($uid, $pid) {
         -->
         <input type="hidden" name="breakthrough" value="" />
         <p>
-            If you're testing a character puzzle, it should be fun and accessible and have a difficulty of 1 or 2.<br />
-            Please comment on if the puzzle felt character-y, and if not describe what aspects of the puzzle weren't character-y.<br />
-            <textarea style="width:50em; height: 5em;" name="fishiness"></textarea>
-        </p>
-        <p>
             Rate the overall fun of this puzzle (where 1 is the least fun, and 5 is the most fun): <SELECT NAME="fun">
                 <OPTION VALUE="0" SELECTED>-</OPTION>
                 <OPTION>1</OPTION>
@@ -302,7 +297,7 @@ function displayPrevFeedback($uid, $pid) {
             $done = 'No, I\'ve solved it.';
         }
 
-        $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fishiness'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
+        $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
         $purifier = getHtmlPurifier();
         $cleanComment = $purifier->purify($feedback);
 

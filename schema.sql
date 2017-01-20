@@ -678,7 +678,6 @@ CREATE TABLE `testing_feedback` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `breakthrough` varchar(255) DEFAULT NULL,
   `skills` varchar(255) DEFAULT NULL,
-  `fishiness` text DEFAULT NULL,
   `fun` int(11) NOT NULL DEFAULT '0',
   `difficulty` int(11) NOT NULL DEFAULT '0',
   `when_return` text,
