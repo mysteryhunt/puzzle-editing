@@ -804,7 +804,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `uid` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
-  `password` blob NOT NULL DEFAULT '' COMMENT 'AES_ENCRYPT(''password'',''usernamepassword'')',
+  `password` blob NOT NULL DEFAULT '' COMMENT 'password_hash(''password'')',
   `email` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL DEFAULT '',
   `picture` varchar(255) DEFAULT NULL,
