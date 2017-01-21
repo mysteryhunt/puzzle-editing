@@ -3,7 +3,7 @@
 Software for editing/testing puzzles for the
 [MIT Mystery Hunt](http://www.mit.edu/~puzzle/)
 
-Currently being hacked by Death and Mayhem in preparation for the 2019
+Currently being hacked by Death and Mayhem in preparation for the 2018
 Hunt. Many thanks to our predecessors Setec Astronomy (2017), Team
 Luck (2016), Random Fish (2015), Alice Shrugged (2014), and the long
 line of programmers who came before them.
