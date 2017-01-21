@@ -2686,23 +2686,40 @@ function change_password($uid, $oldpass, $pass1, $pass2) {
     if ($username == NULL) {
         return 'error';
     }
-    if (checkPassword($username, $oldpass) == TRUE) {
+    if (checkPassword($username, $oldpass) == FALSE) {
+        return 'wrong';
+    } else {
         $err = newPass($uid, $username, $pass1, $pass2);
         return $err;
-    } else {
-        return 'wrong';
     }
 }
 
 function checkPassword($username, $password) {
-    $sql = sprintf("SELECT uid FROM users WHERE
-        username='%s' AND
-        password=AES_ENCRYPT('%s', '%s%s')",
-            mysql_real_escape_string($username),
-            mysql_real_escape_string($password),
-            mysql_real_escape_string($username),
-            mysql_real_escape_string($password));
-    return has_result($sql);
+    $sql = sprintf("SELECT uid, password FROM users WHERE username='%s'",
+        mysql_real_escape_string($username));
+    $row = get_row_null($sql);
+    if ($row == NULL) {
+        return FALSE;
+    }
+
+    $uid = $row[0];
+    $dbhash = $row[1];
+
+    if ($dbhash[0] == "$") {
+        return password_verify($password, $dbhash) ? $uid : FALSE;
+    } else {
+        // Replicate AES_ENCRYPT's key derivation
+        $final_key = str_repeat("\x00", 16);
+        $key = $username . $password;
+        for ($i = 0; $i < strlen($key); $i++) {
+            $final_key[$i % 16] = chr(ord($final_key[$i % 16]) ^ ord($key[$i]));
+        }
+
+        $encrypted = openssl_encrypt($password, "AES-128-ECB", $final_key, OPENSSL_RAW_DATA);
+        return $dbhash == $encrypted ? $uid : FALSE;
+    }
+
+    return FALSE;
 }
 
 function newPass($uid, $username, $pass1, $pass2) {
@@ -2715,12 +2732,9 @@ function newPass($uid, $username, $pass1, $pass2) {
     if (strlen($pass1) < 6) {
         return 'short';
     }
-    $sql = sprintf("UPDATE users SET password=AES_ENCRYPT('%s', '%s%s')
-        WHERE uid='%s'",
-        mysql_real_escape_string($pass1),
-        mysql_real_escape_string($username),
-        mysql_real_escape_string($pass1),
-        mysql_real_escape_string($uid));
+    $sql = sprintf("UPDATE users SET password='%s' WHERE uid='%s'",
+                   mysql_real_escape_string(password_hash($pass1, PASSWORD_DEFAULT)),
+                   mysql_real_escape_string($uid));
     mysql_query($sql);
 
     if (mysql_error()) {

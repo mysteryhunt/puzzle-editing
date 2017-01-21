@@ -5,9 +5,12 @@
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
-(2,'abel', AES_ENCRYPT('abelpass', 'abelabelpass'), 'abel@example.com','Abel','',2),
-(3,'baker', AES_ENCRYPT('bakerpass', 'bakerbakerpass'), 'baker@example.com','Baker','',1),
-(4,'charlie', AES_ENCRYPT('charliepass', 'charliecharliepass'),'charlie@example.com','Charlie','',1);
+/* password is password_hash("abelpass", PASSWORD_DEFAULT) */
+(2,'abel','$2y$10$7Pi5PD87P5bZyqwwP9O81e5tBZCk9tQNTn0OW3lc0L4tK7zC8gjRm','abel@example.com','Abel','',2),
+/* password is password_hash("bakerpass", PASSWORD_DEFAULT) */
+(3,'baker','$2y$10$S7gBUVnHOlo5M5CdhFsMr.Ws98Pv4NasxITmtcFkZJDnsUKxb5Kka','baker@example.com','Baker','',1),
+/* password is password_hash("charliepass", PASSWORD_DEFAULT) */
+(4,'charlie','$2y$10$buVVorYaf0XDr7ce0NHIzeVwyjWYjtsbuFkidqHBONF9swBILkeaC','charlie@example.com','Charlie','',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

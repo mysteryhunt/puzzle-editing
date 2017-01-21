@@ -71,27 +71,24 @@ function loginForm() {
 // Redirects to main page if successful
 function login($username, $pass) {
     if (!TRUST_REMOTE_USER) {
-        $sql = sprintf("SELECT uid FROM users WHERE
-            username='%s'
-            AND password=AES_ENCRYPT('%s', '%s%s')",
-                mysql_real_escape_string($username),
-                mysql_real_escape_string($pass),
-                mysql_real_escape_string($username),
-                mysql_real_escape_string($pass));
+        $uid = checkPassword($username, $pass);
+        if ($uid == FALSE) {
+            return FALSE;
+        }
     } else {
         $sql = sprintf("SELECT uid FROM users WHERE
             username='%s'",
             mysql_real_escape_string($username));
-    }
-    $result = query_db($sql);
-    if (mysql_num_rows($result) != 1) {
-        // Username/password combination not in database
-        return FALSE;
+        $result = query_db($sql);
+        if (mysql_num_rows($result) != 1) {
+            return FALSE;
+        }
+        $r = mysql_fetch_assoc($result);
+        $uid = $r['uid'];
     }
 
     // Store uid in SESSION
-    $r = mysql_fetch_assoc($result);
-    $_SESSION['uid'] = $r['uid'];
+    $_SESSION['uid'] = $uid;
     $_SESSION['SITEURL'] = URL;
 
     if (isset($_SESSION['redirect_to'])) {
