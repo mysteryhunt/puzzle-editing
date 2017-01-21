@@ -33,6 +33,7 @@ Dotenv::required(array(
     'PTRON_HELP_EMAIL',
     'PTRON_WIKI_URL',
     'PTRON_BUGTRACK_URL',
+    'PTRON_LICENSEE_NAME',
     'PTRON_MAILGUN_API_URL',
     'PTRON_MAILGUN_API_KEY',
     'PTRON_TRUST_REMOTE_USER',
@@ -102,6 +103,8 @@ define("PHPMYADMIN_URL", getenv('PTRON_PHPMYADMIN_URL'));
 define("HELP_EMAIL", getenv('PTRON_HELP_EMAIL'));
 define("WIKI_URL", getenv('PTRON_WIKI_URL'));
 define("BUGTRACK_URL", getenv('PTRON_BUGTRACK_URL'));
+
+define("LICENSEE_NAME", getenv('PTRON_LICENSEE_NAME'));
 
 define('MAILGUN_API_URL', getenv('PTRON_MAILGUN_API_URL'));
 define('MAILGUN_API_KEY', getenv('PTRON_MAILGUN_API_KEY'));

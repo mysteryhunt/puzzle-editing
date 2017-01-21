@@ -84,6 +84,16 @@ function newIdeaForm($uid, $summary = '', $description = '') {
 ?>
     <h2>Puzzle Idea Submission</h2>
 
+    <p>Because running the Mystery Hunt and publishing the Hunt archive
+    effectively constitute redistributions of your copyrighted content, we need
+    to make sure we have the rights to do so. Authors will generally retain
+    creative control over their puzzles.</p>
+
+    <p>By submitting any puzzle-related content to Puzzletron, you agree to
+    grant <?php print LICENSEE_NAME ?> a perpetual, irrevocable, non-exclusive,
+    worldwide license to publish, modify, adapt, or relicense the Content in
+    any form.</p>
+
     <form method="post" action="submit-new.php">
         <p> Puzzle Title (NO SPOILERS):</p>
         <input type='text' name='title' maxlength='255' class="longin" />

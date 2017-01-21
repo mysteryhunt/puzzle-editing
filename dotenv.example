@@ -71,6 +71,11 @@ PTRON_WIKI_URL="https://sites.google.com/site/blahblahblah"
 # This appears at the bottom of the homepage.
 PTRON_BUGTRACK_URL="https://github.com/mysteryhunt/puzzle-editing/issues"
 
+# When submitting new puzzles, authors will have to agree to license
+# their puzzles for redistribution. This specifies who they license
+# them to
+PTRON_LICENSEE_NAME="Alyssa P. Hacker"
+
 # Define these to use Mailgun for outgoing email.
 PTRON_MAILGUN_API_URL="https://api.mailgun.net/v2/your.mail.domain.here.example.com"
 PTRON_MAILGUN_API_KEY="key-3141592etcetc"
