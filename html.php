@@ -87,8 +87,10 @@ if ($now > $hunt) {
         </div>
         <div id="navbar">
             <ul class="nav">
+<?php if (!empty(WIKI_URL)) { ?>
                 <li class="nav"><a class="nav wikinav" target="_blank" href="<?php echo WIKI_URL; ?> ">Wiki</a></li>
-<?php
+<?php }
+
 echoNav($selnav == "home", "index.php", "Home", true);
 
 if (isset($_SESSION['uid'])) {
