@@ -66,7 +66,8 @@ PTRON_POSTPROD_BETA_URLPREFIX="https://xxxmysteryhunt.com/"
 PTRON_PHPMYADMIN_URL="https://scripts.mit.edu/~sql/phpMyAdmin/"
 # Error pages and the like ask the unhappy user to email this address:
 PTRON_HELP_EMAIL="systems-help@example.org"
-# This appears as the target of the Wiki link in the navbar.
+# This appears as the target of the Wiki link in the navbar. If it's
+# an empty string, that nav element is hidden
 PTRON_WIKI_URL="https://sites.google.com/site/blahblahblah"
 # This appears at the bottom of the homepage.
 PTRON_BUGTRACK_URL="https://github.com/mysteryhunt/puzzle-editing/issues"
