@@ -3381,7 +3381,7 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
     addComment($uid, $pid, $ncomment, FALSE, TRUE, TRUE);
 
     $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
-        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
+        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
             mysql_real_escape_string($uid), mysql_real_escape_string($pid),
             mysql_real_escape_string($done), mysql_real_escape_string($time),
             mysql_real_escape_string($tried), mysql_real_escape_string($liked),
