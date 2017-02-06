@@ -455,7 +455,7 @@ CREATE TABLE `pstatus` (
 
 LOCK TABLES `pstatus` WRITE;
 /*!40000 ALTER TABLE `pstatus` DISABLE KEYS */;
-INSERT INTO `pstatus` VALUES (1,'Initial Idea',1,0,1,1,0,0,0,0),(2,'In Testing',3,1,1,0,1,0,0,0),(3,'Awaiting Final Test Approval',4,0,0,0,1,0,0,0),(4,'Needs Fact Check',5,0,0,0,0,0,0,0),(5,'Post Production',6,0,0,0,0,0,1,0),(6,'Awaiting Final Approval',7,0,0,0,0,0,1,1),(7,'Done',8,0,0,0,0,0,0,0),(8,'Dead',9,0,0,0,0,0,0,0),(10,'In Revision',10,0,1,1,0,0,0,0),(22,'Writing (Answer Assigned)',2,0,1,1,0,0,0,0);
+INSERT INTO `pstatus` VALUES (1,'Initial Idea',1,0,1,1,0,0,0,0),(2,'In Testing',4,1,1,0,1,0,0,0),(3,'Awaiting Final Test Approval',5,0,0,0,1,0,0,0),(4,'Needs Fact Check',6,0,0,0,0,0,0,0),(5,'Post Production',7,0,0,0,0,0,1,0),(6,'Awaiting Final Approval',8,0,0,0,0,0,1,1),(7,'Done',9,0,0,0,0,0,0,0),(8,'Dead',10,0,0,0,0,0,0,0),(10,'In Revision',11,0,1,1,0,0,0,0),(22,'Writing (Answer Assigned)',3,0,1,1,0,0,0,0),(23,'Awaiting Answer (Idea Approved)',2,0,1,1,0,0,0,0);
 /*!40000 ALTER TABLE `pstatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
