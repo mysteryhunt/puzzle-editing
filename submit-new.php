@@ -52,12 +52,15 @@ if (isset($_POST) && isset($_POST['newIdea'])) {
         mysql_real_escape_string($uid));
     query_db($sql);
 
+    addSpoiledUserQuietly($uid, $id);
+
     foreach ($coauthors as $author) {
         if ($author != $uid) {
             $sql = sprintf("INSERT INTO author_links (pid, uid) VALUES ('%s', '%s')",
                 mysql_real_escape_string($id),
                 mysql_real_escape_string($author));
             query_db($sql);
+            addSpoiledUserQuietly($author, $id);
         }
     }
 
