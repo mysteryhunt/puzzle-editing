@@ -71,7 +71,7 @@ h1 { margin: 0; }
 
 h2 { margin: 0.3em 0; }
 
-p, h3, table { margin: 0; }
+h3, table { margin: 0; }
 
 table {
     border-style: none;
