@@ -1152,7 +1152,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $i
 
     foreach ($users as $user) {
         if ($user != $uid) {
-            if ((getEmailLevel($user) > 0 && $isImportant) || getEmailLevel($user) > 1) {
+            if ($isImportant || getEmailLevel($user) > 1) {
                 sendEmail($user, $subject, $message, $link);
             }
         }
@@ -1163,7 +1163,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $i
         // author/editor/etc., they will get mail twice. This is
         // arguably not great, but we'll live with it.
         if ($user != $uid) {
-            if ((getEmailLevel($user) > 0 && $isImportant) || getEmailLevel($user) > 1) {
+            if ($isImportant || getEmailLevel($user) > 1) {
                 sendEmail($user, "[Testsolve] $subject", $message, $link);
             }
         }
