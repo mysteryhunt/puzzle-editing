@@ -28,6 +28,12 @@ if (isset($_POST['newRound'])) {
         echo '<div class="errormsg">Error in submitting new round</div>';
     }
 }
+if (isset($_POST['deleteAnswer'])) {
+    $result = submitDeleteAnswer($_POST['deleteAnswer']);
+    if ($result == FALSE) {
+        echo '<div class="errormsg">Error in deleting answer</div>';
+    }
+}
 displayAnswers($uid);
 
 // End HTML
@@ -46,8 +52,9 @@ function displayAnswers($uid) {
         $answers = getAnswersForRound($round['rid']);
 ?>
         <table class="boxed">
-        <tr><th colspan="6"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></th></tr>
+        <tr><th colspan="7"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></th></tr>
             <tr>
+                <td></td>
                 <td><b>Answer</b></td>
                 <td><b>ID</b></td>
                 <td><b>Title</b></td>
@@ -64,7 +71,20 @@ function displayAnswers($uid) {
         foreach ($answers as $answer) {
             $pid = $answer['pid'];
     ?>
-            <tr><td><?php echo $answer['answer'] ?></td>
+            <tr>
+                <td>
+          <?php
+            if (!$pid) {
+          ?>
+                  <form method="post" action="answers.php" />
+                    <input type="hidden" name="deleteAnswer" value='<?php echo $answer['aid']; ?>'/>
+                    <input type="submit" value="Delete" />
+                  </form>
+          <?php
+            }
+          ?>
+                </td>
+                <td><?php echo $answer['answer'] ?></td>
                 <td><?php echo ($pid ? "<a href=\"puzzle.php?pid=$pid\">".$pid."</a>" : "unassigned") ?></td>
                 <td><?php echo ($pid ? getTitle($pid) : "") ?></td>
                 <td><?php echo ($pid ? getStatusNameForPuzzle($pid) : "") ?></td>
@@ -77,7 +97,7 @@ function displayAnswers($uid) {
 
             <tr>
                 <form method="post" action="answers.php" />
-                <td><input type="text" name="newAnswer" />
+                <td colspan="2"><input type="text" name="newAnswer" />
                 <input type="hidden" name="round" value='<?php echo $round['rid']; ?>'/></td>
                 <td colspan="5"><input type="submit" value='Add Answer For Round <?php echo ($round['rid']); ?>' /></td></form>
             </tr>
@@ -124,5 +144,11 @@ function submitNewRound($roundname, $roundanswer) {
 
     createRound ($roundname, $roundanswer);
     printf("<div class='okmsg'>Added new Round: %s with meta answer: %s</div>\n", htmlspecialchars($roundname), htmlspecialchars($roundanswer));
+    return TRUE;
+}
+
+function submitDeleteAnswer($aid) {
+    deleteAnswer ($aid);
+    printf("<div class='okmsg'>Deleted Answer</div>\n");
     return TRUE;
 }

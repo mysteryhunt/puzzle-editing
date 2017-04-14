@@ -1095,6 +1095,12 @@ function createRound($round, $roundanswer) {
     return ($result);
 }
 
+function deleteAnswer($aid) {
+    $sql = sprintf("DELETE FROM answers WHERE aid='%s' AND pid IS NULL", $aid);
+    $result = query_db($sql);
+    return TRUE;
+}
+
 function addNewMotd($message) {
     $sql = sprintf("INSERT INTO motds (message, uid) VALUES ('%s', '%s')",
         mysql_real_escape_string($message), $_SESSION['uid']);
