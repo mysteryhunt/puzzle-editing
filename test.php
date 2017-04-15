@@ -204,8 +204,8 @@ function displayFeedbackForm($uid, $pid) {
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
         <p>
-            Were you in any way already spoiled on this puzzle before starting this test solve?
-            <input type="text" name="spoilage" />
+            Were you in any way already spoiled on this puzzle before starting this test solve?<br/>
+            <textarea style="width:50em; height: 10em;" name="spoilage"></textarea>
         </p>
         <p>
             Do you intend to return to this puzzle?<br/>
