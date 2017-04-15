@@ -461,6 +461,7 @@ if (isset($_POST['makeTester'])) {
 if (isset($_POST['feedback'])) {
     $pid = $_POST['pid'];
     $done = $_POST['done'];
+    $spoilage = $_POST['spoilage']
     $time = $_POST['time'];
     $tried = $_POST['tried'];
     $liked = $_POST['liked'];
@@ -469,7 +470,7 @@ if (isset($_POST['feedback'])) {
     $fun = $_POST['fun'];
     $difficulty = $_POST['difficulty'];
     $when_return = $_POST['when_return'];
-    insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
+    insertFeedback($uid, $pid, $done, $spoilage, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
     $_SESSION['feedback'] = "Thank you for giving feedback on this puzzle!";
 
     if (strcmp($done, 'yes') == 0) {

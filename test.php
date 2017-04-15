@@ -204,6 +204,10 @@ function displayFeedbackForm($uid, $pid) {
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
         <p>
+            Were you in any way already spoiled on this puzzle before starting this test solve?
+            <input type="text" name="spoilage" />
+        </p>
+        <p>
             Do you intend to return to this puzzle?<br/>
             <input type="radio" name="done" value="yes" /> Yes<br/>
             <input type="radio" name="done" value="notype" /> No, this isn't a puzzle type I like.<br/>
@@ -297,7 +301,7 @@ function displayPrevFeedback($uid, $pid) {
             $done = 'No, I\'ve solved it.';
         }
 
-        $feedback = createFeedbackComment($done, $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
+        $feedback = createFeedbackComment($done, $pf['spoilage'], $pf['how_long'], $pf['tried'], $pf['liked'], $pf['skills'], $pf['breakthrough'], $pf['fun'], $pf['difficulty'], $pf['when_return']);
         $purifier = getHtmlPurifier();
         $cleanComment = $purifier->purify($feedback);
 

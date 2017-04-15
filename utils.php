@@ -3344,7 +3344,7 @@ function checkAnswer($pid, $attempt) {
     return FALSE;
 }
 
-function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return) {
+function insertFeedback($uid, $pid, $done, $spoilage, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return) {
     mysql_query('START TRANSACTION');
 
     if (strcmp($done, 'yes') == 0) {
@@ -3376,7 +3376,7 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
         $done = 6;
     }
 
-    $comment = createFeedbackComment($donetext, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
+    $comment = createFeedbackComment($donetext, $spoilage, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return);
 
     $ncomment = "<p><strong>Testing Feedback</strong></p>";
     $ncomment .= "<p><a class='description' href='#'>[View Feedback]</a></p>";
@@ -3384,14 +3384,14 @@ function insertFeedback($uid, $pid, $done, $time, $tried, $liked, $skills, $brea
 
     addComment($uid, $pid, $ncomment, FALSE, TRUE, TRUE);
 
-    $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
-        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
+    $sql = sprintf("INSERT INTO testing_feedback (uid, pid, done, spoilage, how_long, tried, liked, skills, breakthrough, fun, difficulty, when_return)
+        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')",
             mysql_real_escape_string($uid), mysql_real_escape_string($pid),
-            mysql_real_escape_string($done), mysql_real_escape_string($time),
-            mysql_real_escape_string($tried), mysql_real_escape_string($liked),
-            mysql_real_escape_string($skills), mysql_real_escape_string($breakthrough),
-            mysql_real_escape_string($fun), mysql_real_escape_string($difficulty),
-            mysql_real_escape_string($when_return));
+            mysql_real_escape_string($done), mysql_real_escape_string($spoilage),
+            mysql_real_escape_string($time), mysql_real_escape_string($tried),
+            mysql_real_escape_string($liked), mysql_real_escape_string($skills),
+            mysql_real_escape_string($breakthrough), mysql_real_escape_string($fun),
+            mysql_real_escape_string($difficulty), mysql_real_escape_string($when_return));
     query_db($sql);
 
     mysql_query('COMMIT');
@@ -3408,7 +3408,7 @@ function setFormerTesterForPuzzle($uid, $pid) {
     query_db($sql);
 }
 
-function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return) {
+function createFeedbackComment($done, $spoilage, $time, $tried, $liked, $skills, $breakthrough, $fun, $difficulty, $when_return) {
     $difficulty_text = $difficulty;
     if ($difficulty == 0) {
         $difficulty_text = "-";
@@ -3418,6 +3418,9 @@ function createFeedbackComment($done, $time, $tried, $liked, $skills, $breakthro
         $fun_text = "-";
     }
     $comment = "
+        <p><strong>Were you in any way already spoiled on this puzzle before starting this test solve?</strong></p>
+        <p>$spoilage</p><br/>
+
         <p><strong>Do you intend to return to this puzzle?</strong></p>
         <p>$done</p><br />
 
