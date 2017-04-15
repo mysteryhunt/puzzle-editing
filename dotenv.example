@@ -98,6 +98,10 @@ PTRON_MIN_EDITORS="2"
 # Used in conjunction with ALLOW_EDITOR_PICK and USING_APPROVERS
 PTRON_MIN_APPROVERS="2"
 
+# If a puzzle has this many approvals, then it's eligible to be
+# advanced to the next state
+PTRON_APROVALS_REQUIRED="2"
+
 # date of the next hunt - used to run the countdown on the home page
 PTRON_HUNT_YEAR="2017"
 # DOM = "Day of Month" - that month is January, of course
