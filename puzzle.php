@@ -217,7 +217,7 @@ function displayPuzzleInfo($uid, $pid, $puzzleInfo) {
     $codename = getCodename($pid);
     $puzzleround = getPuzzleRound($pid);
 ?>
-    <h2><?php echo "$codename (puzzle #$pid): $title";?></h2>
+    <h2><?php echo USING_CODENAMES ? "$codename (puzzle #$pid): $title" : "$title (puzzle #$pid)" ;?></h2>
     <p><strong><?php echo "Round: $puzzleround"; ?></strong></p>
     <p><table><?php displayAnswers($uid, $pid); ?></table></p>
     <div class='hideFromTest puzzledesc'>
