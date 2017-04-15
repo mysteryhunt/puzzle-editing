@@ -70,6 +70,13 @@ if (isset($_GET['edit'])) {
 
 echo "<div class='puzzleInfo'>";
 
+if (canChangeStatus($uid)) {
+    $approvalCount = countPuzzApprovals($pid);
+    if ($approvalCount >= APPROVALS_REQUIRED) {
+        echo "<div class='okmsg'>This puzzle has $approvalCount approvals. That probably means that it's clear to move on to the next puzzle status - make sure to move it if appropriate.</div>";
+    }
+}
+
 // Display puzzle number, title, answer, summary, description.
 displayPuzzleInfo($uid, $pid, $puzzleInfo);
 
