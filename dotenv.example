@@ -140,6 +140,9 @@ PTRON_UNZIP_ZIP_UPLOADS="TRUE"
 # If enabled, then a different limit for the maximum number of testers
 # can be configured for each puzzle.
 PTRON_USING_PER_PUZZLE_TESTER_LIMITS="FALSE"
+# Used in conjunction with USING_PER_PUZZLE_TESTER_LIMITS. If
+# per-puzzle limits are enabled, this sets the default limit.
+PTRON_DEFAULT_PER_PUZZLE_TESTER_LIMIT="3"
 
 ### MIT-specific mailing list features; not tested for at least a year.
 PTRON_MAILING_LISTS="FALSE"

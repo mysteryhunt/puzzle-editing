@@ -3047,9 +3047,7 @@ function getTesterLimit($pid) {
         $sql = sprintf("SELECT tester_limit FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
         $tester_limit_elements = get_elements($sql);
         if (!$tester_limit_elements) {
-            // This shouldn't happen, because we should get a default value from the database schema.
-            // But set a default value here just in case.
-            $tester_limit = 3;
+            $tester_limit = DEFAULT_PER_PUZZLE_TESTER_LIMIT;
         } else {
             $tester_limit = (int)$tester_limit_elements[0];
         }
