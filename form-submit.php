@@ -461,7 +461,7 @@ if (isset($_POST['makeTester'])) {
 if (isset($_POST['feedback'])) {
     $pid = $_POST['pid'];
     $done = $_POST['done'];
-    $spoilage = $_POST['spoilage']
+    $spoilage = $_POST['spoilage'];
     $time = $_POST['time'];
     $tried = $_POST['tried'];
     $liked = $_POST['liked'];
