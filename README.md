@@ -93,6 +93,11 @@ puzzles, etc.) there needs to be a cron job that runs
 frequency. The Vagrant box and the deployment scripts set this up
 automatically, but you might have to set it up by hand.
 
+### To get idle puzzle reminder notifications working:
+
+If reminder emails are enabled (using `PTRON_REMINDER_EMAIL_DAYS`),
+there also needs to be a cronjob that runs `reminder_cronjob.php`
+script at some regular frequency.
 
 # How does Puzzletron work?
 

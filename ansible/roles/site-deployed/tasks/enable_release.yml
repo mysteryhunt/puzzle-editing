@@ -29,4 +29,12 @@
     user: "{{ unix_username }}"
     name: "{{ site.cronjob_name }}"
     state: present
-    job: "ENVDIR=/home/{{ unix_username }} ENVFILE=.{{ site.name }}.cron.env /usr/bin/php {{ docroot }}/{{ site.cronjob_path }}"
+    job: "ENVDIR=/home/{{ unix_username }} ENVFILE=.{{ site.name }}.cron.env /usr/bin/php {{ docroot }}/email_cronjob.php"
+
+- name: Setup the reminder cron job.
+  sudo: yes
+  cron:
+    user: "{{ unix_username }}"
+    name: "{{ site.cronjob_name }}"
+    state: present
+    job: "ENVDIR=/home/{{ unix_username }} ENVFILE=.{{ site.name }}.cron.env /usr/bin/php {{ docroot }}/reminder_cronjob.php"
