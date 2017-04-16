@@ -102,6 +102,11 @@ PTRON_MIN_APPROVERS="2"
 # advanced to the next state
 PTRON_APROVALS_REQUIRED="2"
 
+# If set to a non-0 value, puzzletron will send a reminder email
+# asking for updates to puzzles that seem to have been blocked on
+# authors for this many days
+PTRON_REMINDER_EMAIL_DAYS="0"
+
 # date of the next hunt - used to run the countdown on the home page
 PTRON_HUNT_YEAR="2017"
 # DOM = "Day of Month" - that month is January, of course

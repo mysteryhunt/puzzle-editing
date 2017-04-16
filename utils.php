@@ -3952,3 +3952,35 @@ function getModeFeedback($pid, $column_name) {
   sort($mostcommon);
   return implode(",", $mostcommon);
 }
+
+function sendReminderEmails() {
+    if (REMINDER_EMAIL_DAYS == 0) {
+        return;
+    }
+
+    // Find puzzles that:
+    // - Are still in a draftable state (i.e. author can reasonably action them)
+    // - Have an editor assigned
+    // - Have not had a comment in the last week
+    // - Most recent comment was not from the author
+    $sql = sprintf("SELECT p.id FROM puzzles p
+        LEFT OUTER JOIN pstatus s ON p.pstatus = s.id
+        INNER JOIN comments c ON p.id = c.pid
+        LEFT OUTER JOIN comments c2 ON p.id = c2.pid AND (c.timestamp < c2.timestamp OR (c.timestamp = c2.timestamp AND c.id < c2.id))
+        INNER JOIN (SELECT * FROM editor_links GROUP BY pid) el ON p.id = el.pid
+        LEFT OUTER JOIN author_links al ON al.pid = p.id AND c.uid = al.uid
+        WHERE c2.id IS NULL
+        AND s.acceptDrafts = 1
+        AND c.timestamp < DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL '%d 23' DAY_HOUR)
+        AND al.uid IS NULL
+        ORDER BY c.timestamp DESC",
+        REMINDER_EMAIL_DAYS - 1);
+    $puzzles = get_elements($sql);
+
+    foreach ($puzzles as $pid) {
+        $comment = "<p>This is a periodic automated reminder.</p>
+            <p>It doesn't look like there's been any activity on this puzzle recently. Please help out by responding to feedback so that we can keep puzzles moving through the pipeline.</p>
+            <p>If there's nothing to update, it helps to at least set expectations on when you expect to have an update.</p>";
+        addComment(0, $pid, $comment, TRUE, FALSE, TRUE);
+    }
+}
