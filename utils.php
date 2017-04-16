@@ -1140,7 +1140,7 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $i
     if ($isTestsolveComment && ANON_TESTERS) {
         $name = "Anonymous Testsolver";
     } else if ($uid == 0) {
-        $name = "Server"
+        $name = "Server";
     } else  {
         $name = getUserName($uid);
     }
