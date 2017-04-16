@@ -1139,7 +1139,9 @@ function clearTestsolveRequests($pid) {
 function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE, $isImportant = FALSE) {
     if ($isTestsolveComment && ANON_TESTERS) {
         $name = "Anonymous Testsolver";
-    } else {
+    } else if ($uid == 0) {
+        $name = "Server"
+    } else  {
         $name = getUserName($uid);
     }
     $message = "$name commented on puzzle $pid:\n";
