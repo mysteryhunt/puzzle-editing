@@ -3980,9 +3980,11 @@ function sendReminderEmails() {
     $puzzles = get_elements($sql);
 
     foreach ($puzzles as $pid) {
-        $comment = "<p>This is a periodic automated reminder.</p>
-            <p>It doesn't look like there's been any activity on this puzzle recently. Please help out by responding to feedback so that we can keep puzzles moving through the pipeline.</p>
-            <p>If there's nothing to update, it helps to at least set expectations on when you expect to have an update.</p>";
+        $comment = "This is a periodic automated reminder.
+
+It doesn't look like there's been any activity on this puzzle recently. Please help out by responding to feedback so that we can keep puzzles moving through the pipeline.
+
+If there's nothing to update, it helps to at least set expectations on when you expect to have an update.";
         addComment(0, $pid, $comment, TRUE, FALSE, TRUE);
     }
 }
