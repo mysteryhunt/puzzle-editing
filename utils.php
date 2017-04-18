@@ -3047,11 +3047,9 @@ function getTesterLimit($pid) {
 
     if (USING_PER_PUZZLE_TESTER_LIMITS) {
         $sql = sprintf("SELECT tester_limit FROM puzzles WHERE id='%s'", mysql_real_escape_string($pid));
-        $tester_limit_elements = get_elements($sql);
-        if (!$tester_limit_elements) {
+        $tester_limit = get_element_null($sql);
+        if ($tester_limit == NULL) {
             $tester_limit = DEFAULT_PER_PUZZLE_TESTER_LIMIT;
-        } else {
-            $tester_limit = (int)$tester_limit_elements[0];
         }
     }
 
@@ -3062,14 +3060,13 @@ function canUseMoreTesters($pid) {
     $tester_limit = getTesterLimit($pid);
 
     $sql = sprintf("SELECT tester_count FROM puzzle_tester_count WHERE pid='%s'", mysql_real_escape_string($pid));
-    $tester_count = get_elements($sql);
-
-    if (!$tester_count) {
+    $tester_count = get_element_null($sql);
+    if ($tester_count == NULL) {
         // No entry in the DB means 0 testers.
-        return 1;
+        $tester_count = 0;
     }
 
-    if ((int)$tester_count[0] >= $tester_limit) {
+    if ((int)$tester_count >= $tester_limit) {
         // We already have enough testers on this puzzle.
         return NULL;
     }
