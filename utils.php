@@ -3969,6 +3969,7 @@ function sendReminderEmails() {
         INNER JOIN (SELECT * FROM editor_links GROUP BY pid) el ON p.id = el.pid
         LEFT OUTER JOIN author_links al ON al.pid = p.id AND c.uid = al.uid
         WHERE c2.id IS NULL
+        AND s.name != 'Awaiting Answer (Idea Approved)'
         AND s.acceptDrafts = 1
         AND c.timestamp < DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL '%d 23' DAY_HOUR)
         AND al.uid IS NULL
