@@ -2350,7 +2350,7 @@ function changePuzzleStatus($uid, $pid, $status) {
         if (getTestsolveRequestsForPuzzle($pid) == 0) {
             requestTestsolve($uid, $pid, "Automatic testsolve request.");
         }
-        if (getWikiPage($pid) == "" || getWikiPage($pid) == NULL) {
+        if ((getWikiPage($pid) == "" || getWikiPage($pid) == NULL) && TESTSOLVE_WIKI != "") {
             $newpage = defaultWikiPageForPuzzle($pid);
             updateWikiPage($uid, $pid, "", $newpage);
         }

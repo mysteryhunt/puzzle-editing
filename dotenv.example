@@ -69,6 +69,9 @@ PTRON_HELP_EMAIL="systems-help@example.org"
 # This appears as the target of the Wiki link in the navbar. If it's
 # an empty string, that nav element is hidden
 PTRON_WIKI_URL="https://sites.google.com/site/blahblahblah"
+# This is used as the prefix URL for the testsolving wiki, if you have
+# one. If it's blank, on testsolve wiki URL is generated.
+PTRON_TESTSOLVE_WIKI="https://some.mediawiki.install/wiki"
 # This appears at the bottom of the homepage.
 PTRON_BUGTRACK_URL="https://github.com/mysteryhunt/puzzle-editing/issues"
 
