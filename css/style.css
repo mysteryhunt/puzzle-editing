@@ -215,6 +215,7 @@ td.p_info {
 
 td.summ { width: 150px; }
 
+.comment td { word-break: break-word; }
 td.AuthorComment { background-color:#E0B4BD; }
 td.EditorComment { background-color:#B4C1E0; }
 td.ApproverComment { background-color:#22D0E0; }
