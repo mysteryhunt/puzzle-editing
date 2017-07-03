@@ -84,6 +84,10 @@ PTRON_LICENSEE_NAME="Alyssa P. Hacker"
 PTRON_MAILGUN_API_URL="https://api.mailgun.net/v2/your.mail.domain.here.example.com"
 PTRON_MAILGUN_API_KEY="key-3141592etcetc"
 
+# If this is set, Puzzletron will send a Slack webhook for certain
+# events worthy of team celebration
+PTRON_SLACK_WEBHOOK_URL="https://yourorg.slack.com/services/etc"
+
 # Use internal puzzletron authentication.
 # This is if you're behind an SSO system / apache proxy that does auth.
 #

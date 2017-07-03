@@ -2323,10 +2323,11 @@ function changePuzzleStatus($uid, $pid, $status) {
     }
     mysql_query('COMMIT');
 
-    $sql = sprintf("SELECT pstatus.inTesting FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus =
+    $sql = sprintf("SELECT pstatus.inTesting as inTesting, pstatus.acceptDrafts as acceptDrafts FROM puzzles LEFT JOIN pstatus ON puzzles.pstatus =
         pstatus.id WHERE puzzles.id='%s'", mysql_real_escape_string($pid));
-    query_db($sql);
-    $inTesting_after = get_element($sql);
+    $row = get_row($sql);
+    $inTesting_after = $row['inTesting'];
+    $acceptDrafts_after = $row['acceptDrafts'];
 
     //      echo "<br>inTesting_after is $inTesting_after<br>";
 
@@ -2342,6 +2343,10 @@ function changePuzzleStatus($uid, $pid, $status) {
         }
         // Now, reset the number-of-testers count for the puzzle.
         resetPuzzleTesterCount($pid);
+
+        if ($acceptDrafts_after == "0") {
+            sendMovedOnFromTestingMessage($pid);
+        }
     }
 
     if ($inTesting_before == "0" && $inTesting_after == "1") {
@@ -3985,4 +3990,32 @@ It doesn't look like there's been any activity on this puzzle recently. Please h
 If there's nothing to update, it helps to at least set expectations on when you expect to have an update.";
         addComment(0, $pid, $comment, TRUE, FALSE, TRUE);
     }
+}
+
+function sendMovedOnFromTestingMessage($pid) {
+    $authors = getAuthorsForPuzzle($pid);
+    $editors = getEditorsForPuzzle($pid);
+    $authorsText = implode(", ", array_values($authors));
+    $editorsText = implode(", ", array_values($editors));
+    $message = ":tada: Puzzle $pid moved on from testing. Congrats to the author(s) $authorsText and editors $editorsText!";
+    sendSlackMessage($message);
+}
+
+function sendSlackMessage($message) {
+    if (SLACK_WEBHOOK_URL == "") {
+        return;
+    }
+
+    $request = json_encode(array("text" => $message));
+
+    $curl = curl_init(SLACK_WEBHOOK_URL);
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($request))
+    );
+
+    curl_exec($curl);
 }
