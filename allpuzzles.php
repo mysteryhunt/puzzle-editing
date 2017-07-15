@@ -46,14 +46,27 @@ displayPuzzleStats($uid);
         <input type="submit" value="Filter status">
     </form>
     <form method="get" action="allpuzzles.php" class="inlform">
-        <input type="hidden" name="filterkey" value="approver">
+        <input type="hidden" name="filterkey" value="editor">
         <select name="filtervalue">
         <option value='-'>-</option>
         <?php
             $editors = getAllEditors();
-            if (USING_APPROVERS) {
-                $editors = getAllApprovalEditors();
+            asort($editors);
+            foreach ($editors as $uid => $fullname) {
+                $slct = selected('editor', $uid);
+                echo "<option value='$uid' $slct>$fullname</option>";
             }
+        ?>
+        </select>
+        <input type="submit" value="Filter approver">
+    </form>
+<?php if (USING_APPROVERS) { ?>
+    <form method="get" action="allpuzzles.php" class="inlform">
+        <input type="hidden" name="filterkey" value="approver">
+        <select name="filtervalue">
+        <option value='-'>-</option>
+        <?php
+            $editors = getAllApprovalEditors();
             asort($editors);
             foreach ($editors as $uid => $fullname) {
                 $slct = selected('approver', $uid);
@@ -63,6 +76,7 @@ displayPuzzleStats($uid);
         </select>
         <input type="submit" value="Filter approver">
     </form>
+<?php } ?>
     <form method="get" action="allpuzzles.php" class="inlform">
         <input type="hidden" name="filterkey" value="author">
         <select name="filtervalue">
