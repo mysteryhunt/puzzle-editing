@@ -470,7 +470,7 @@ function displayEditors($uid, $pid) {
     </tr>
     <tr>
         <td>
-            <?php if (canChangeEditorsNeeded($uid, $pid)) { ?>
+            <?php if (canChangeEditorsNeeded($uid, $pid) && MIN_EDITORS >= 0) { ?>
             <div>
             <form method="post" action="form-submit.php">
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />

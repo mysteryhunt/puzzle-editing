@@ -100,7 +100,8 @@ PTRON_SLACK_WEBHOOK_URL="https://yourorg.slack.com/services/etc"
 # (The odds of this broken feature going away are high.)
 PTRON_TRUST_REMOTE_USER="FALSE"
 
-# Used in conjunction with ALLOW_EDITOR_PICK.
+# Used in conjunction with ALLOW_EDITOR_PICK. If set to a negative
+# number, don't display editor counts
 PTRON_MIN_EDITORS="2"
 # Used in conjunction with ALLOW_EDITOR_PICK and USING_APPROVERS
 PTRON_MIN_APPROVERS="2"

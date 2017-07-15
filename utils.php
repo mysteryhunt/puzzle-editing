@@ -588,10 +588,15 @@ function getEditorStatus($pid) {
     $need = getNeededEditors($pid); // warning: total needed, not additional
     $edc = count($eds);
 
+    $count = $edc;
+    if (MIN_EDITORS >= 0) {
+        $count .= "/$need";
+    }
+
     if ($eds) {
-        return array($edc . "/$need: " . implode(", ", $eds), $need - $edc);
+        return array("$count: " . implode(", ", $eds), $need - $edc);
     } else {
-        return array("<span class='emptylist'>0/$need</span>", $need - $edc);
+        return array("<span class='emptylist'>$count</span>", $need - $edc);
     }
 }
 
