@@ -483,6 +483,9 @@ function displayPuzzleStats($uid) {
                 </tr>
             </table>
         </td>
+<?php
+    if (USING_APPROVERS) {
+?>
         <td class="approval-ed-stats">
             <table>
                 <tr>
@@ -511,6 +514,7 @@ function displayPuzzleStats($uid) {
             </table>
         </td>
 <?php
+    }
 
     $puzzleStatuses = getPuzzleStatuses();
     $pstatusCol = ceil(count($puzzleStatuses) / $max_rows) * 2;
