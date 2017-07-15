@@ -247,7 +247,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
             <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
             <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Discussion Editors</th>';} ?>
             <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">D.Eds Needed</th>';} ?>
-            <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approval Editors</th>';} ?>
+            <?php if (USING_APPROVERS && $showAuthorsAndEditors) {echo '<th class="puzzidea">Approval Editors</th>';} ?>
             <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Approvals</th>';} ?>
             <?php if ($showNumTesters) {echo '<th class="puzzidea"># Testers</th>';} ?>
             <?php if ($showCurrentPuzzleTesterCount) {echo '<th class="puzzidea"># Current Testers';} ?>
@@ -339,7 +339,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
             echo "<td class='puzzidea'>" . $est[0] . "</td>";
             echo "<td class='puzzidea'>" . $est[1] . "</td>";
         } ?>
-        <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getApproversAsList($pid) . "</td>";} ?>
+        <?php if (USING_APPROVERS && $showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getApproversAsList($pid) . "</td>";} ?>
         <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . countPuzzApprovals($pid) . "</td>";} ?>
         <?php if ($showNumTesters) {echo "<td class='puzzidea'>" . getNumTesters($pid) . "</td>";} ?>
         <?php if ($showCurrentPuzzleTesterCount) {echo "<td class='puzzidea'>" . getCurrentPuzzleTesterCount($pid) . "</td>";} ?>
