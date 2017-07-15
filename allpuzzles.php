@@ -74,7 +74,7 @@ displayPuzzleStats($uid);
             }
         ?>
         </select>
-        <input type="submit" value="Filter approver">
+        <input type="submit" value="Filter editor">
     </form>
 <?php } ?>
     <form method="get" action="allpuzzles.php" class="inlform">
