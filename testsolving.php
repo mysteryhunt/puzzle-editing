@@ -54,7 +54,7 @@ if ($availPuzzles != NULL) {
     $availPuzzles = array_keys($sort);
     $availPuzzles = array_reverse($availPuzzles);
 }
-displayQueue($uid, $availPuzzles, "notes summary numtesters", TRUE);
+displayQueue($uid, $availPuzzles, "summary numtesters", TRUE);
 
 ?>
     <br/>
@@ -78,7 +78,7 @@ if (USING_TESTSOLVE_TEAMS == 'TRUE') {
         if (!$teampuzzles) {
             echo "This testsolving team has no puzzles assigned at this time.";
         } else {
-            displayQueue($uid, $teampuzzles, "notes summary numtesters", TRUE);
+            displayQueue($uid, $teampuzzles, "summary numtesters", TRUE);
         }
     }
 } ?>
@@ -99,14 +99,14 @@ if (USING_TESTSOLVE_TEAMS == 'TRUE') {
 */
 
 $testPuzzles = getActivePuzzlesInTestQueue($uid);
-displayQueue($uid, $testPuzzles, "notes summary numtesters", TRUE);
+displayQueue($uid, $testPuzzles, "summary numtesters", TRUE);
 
 echo '<br />';
 echo '<br />';
 
 echo '<h3>Finished Testing</h3>';
 $donePuzzles = getActiveDoneTestingPuzzlesForUser($uid);
-displayQueue($uid, $donePuzzles, "notes summary", TRUE);
+displayQueue($uid, $donePuzzles, "summary", TRUE);
 
 echo '<br />';
 echo '<br />';
