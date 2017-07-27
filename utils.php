@@ -3465,7 +3465,7 @@ function getRounds() {
 }
 
 function getAnswersForRound($rid) {
-    $sql = sprintf("SELECT * FROM answer_round JOIN answers ON answers.aid=answer_round.aid WHERE answer_round.rid='%s'", mysql_real_escape_string($rid));
+    $sql = sprintf("SELECT * FROM answer_round JOIN answers ON answers.aid=answer_round.aid WHERE answer_round.rid='%s' ORDER BY answer", mysql_real_escape_string($rid));
     return get_rows($sql);
 }
 
