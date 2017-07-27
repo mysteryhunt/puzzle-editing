@@ -73,7 +73,12 @@ $(document).ready(function()
 		return false;
 	})
 
-	$(".tablesorter").tablesorter();
+	$(".tablesorter").tablesorter({
+                textExtraction: function(node, table, cellIndex) {
+                        var n = $(node);
+                        return n.attr('data-sort-value') || n.text();
+                }
+	});
 
 	$('textarea').one('keyup',function() {
 		$(window).bind('beforeunload',function() { return 'Leaving this page will cause any unsaved data to be lost.'; });

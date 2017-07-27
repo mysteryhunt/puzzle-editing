@@ -223,6 +223,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
         return;
     }
     $statuses = getPuzzleStatuses();
+    $statusSort = get_assoc_array("SELECT id, ord FROM pstatus", "id", "ord");
 
     $deadstatusid = getDeadStatusId();
     $flaggedPuzzles = getFlaggedPuzzles($uid);
@@ -297,6 +298,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
         $lastCommenter = getLastCommenter($pid);
         $lastVisit = getLastVisit($uid, $pid);
         $flagged = in_array($pid, $flaggedPuzzles);
+        $status = $puzzleInfo["pstatus"];
 
         if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test) {
             echo '<tr class="puzz-new">';
@@ -314,7 +316,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
 ?>
         <?php if (USING_CODENAMES) {echo '<td class="puzzidea">' . $codename . '</th>';} ?>
         <td class='puzzidea'><?php echo $title; ?></td>
-        <td class='puzzidea'><?php echo $statuses[$puzzleInfo["pstatus"]]; ?></td>
+        <td class='puzzidea' data-sort-value='<?php echo $statusSort[$status] ?>'><?php echo $statuses[$status]; ?></td>
         <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>
         <?php if ($showSummary) {echo "<td class='puzzideasecure'>" . $puzzleInfo["summary"] . "</td>";} ?>
         <?php if ($showEditorNotes) {echo "<td class='puzzideasecure'>" . $puzzleInfo["editor_notes"] . "</td>";} ?>
