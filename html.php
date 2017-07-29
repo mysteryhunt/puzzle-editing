@@ -131,7 +131,7 @@ function foot() {
 
         For technical assistance, please contact the <a href="mailto:<?php echo HELP_EMAIL; ?>">Server Administrators</a>.<br/>
 
-        This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.<br/>
+        This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/" target="_blank">on GitHub</a> under the Simplified BSD license.<br/>
         The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
     </div>
 </div>
@@ -352,7 +352,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
         <?php if ($showTesters) {echo "<td class='puzzidea'>" . getCurrentTestersAsList($pid) . "</td>";} ?>
         <?php if ($showTesters) {echo "<td class='puzzidea'>" .  getLastTestReportDate($pid) . "</td>";} ?>
         <?php if (($showTesters) && (USING_TESTSOLVE_REQUESTS)) {echo "<td class='puzzidea'>" .  getTestsolveRequestsForPuzzle($pid) . "</td>";} ?>
-        <?php if ($showFinalLinks) {echo "<td class='puzzidea'><a href='" .  getBetaLink($title) . "'>beta</a> <a href='". getFinalLink($title)."'.>final</a></td>";} ?>
+        <?php if ($showFinalLinks) {echo "<td class='puzzidea'><a href='" .  getBetaLink($title) . "' target='_blank'>beta</a> <a href='". getFinalLink($title)."' target='_blank'>final</a></td>";} ?>
 
     </tr>
 <?php

@@ -35,7 +35,7 @@ if ($motd != NULL) {
 ?>
     </div>
     <a href="updates.php">Past Updates</a><br />
-    <a href="<?php echo BUGTRACK_URL ?>">Submit Bugs/Feature Requests Here</a>
+    <a href="<?php echo BUGTRACK_URL ?>" target="_blank">Submit Bugs/Feature Requests Here</a>
 <?
 // End HTML
 foot();

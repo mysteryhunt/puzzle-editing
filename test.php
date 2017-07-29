@@ -115,7 +115,7 @@ function displayWikiPage($pid) {
     if ($page == NULL) {
         echo "<span class='testempty'>No Testsolve Wiki Page</span>";
     } else {
-        echo "<span class='testdesc'>Testsolve wiki page: <a href='$page'>$page</a></span>";
+        echo "<span class='testdesc'>Testsolve wiki page: <a href='$page' target='_blank'>$page</a></span>";
     }
     echo '</div>';
 }
@@ -142,7 +142,7 @@ function displayDraft($pid) {
         }
 ?>
         <span class="testdata">
-            Puzzle: <a href="<?php echo $link; ?>"><?php echo $finfo['basename']; ?></a>
+            Puzzle: <a href="<?php echo $link; ?>" target="_blank"><?php echo $finfo['basename']; ?></a>
             <br/>
             Uploaded on <?php echo $draft['date']; ?>
         </span>

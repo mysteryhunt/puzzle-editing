@@ -2586,9 +2586,9 @@ function uploadFiles($uid, $pid, $type, $file) {
             query_db($sql);
 
             if (USING_AWS) {
-                addComment($uid, $pid, "A new <a href=\"" . AWS_ENDPOINT . AWS_BUCKET . "/$new_path/index.html\">$type</a> has been uploaded.", TRUE);
+                addComment($uid, $pid, "A new <a href=\"" . AWS_ENDPOINT . AWS_BUCKET . "/$new_path/index.html\" target=\"_blank\">$type</a> has been uploaded.", TRUE);
             } else {
-                addComment($uid, $pid, "A new <a href=\"$new_path\">$type</a> has been uploaded.", TRUE);
+                addComment($uid, $pid, "A new <a href=\"$new_path\" target=\"_blank\">$type</a> has been uploaded.", TRUE);
             }
         } else {
             $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited)";
@@ -2633,9 +2633,9 @@ function uploadFiles($uid, $pid, $type, $file) {
             query_db($sql);
 
             if (USING_AWS) {
-                addComment($uid, $pid, "A new <a href=\"" . AWS_ENDPOINT . AWS_BUCKET . "/$target_path\">$type</a> has been uploaded.", TRUE);
+                addComment($uid, $pid, "A new <a href=\"" . AWS_ENDPOINT . AWS_BUCKET . "/$target_path\" target=\"_blank\">$type</a> has been uploaded.", TRUE);
             } else {
-                addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.", TRUE);
+                addComment($uid, $pid, "A new <a href=\"$target_path\" target=\"_blank\">$type</a> has been uploaded.", TRUE);
             }
         } else {
             $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file max size may be limited) " . serialize($file);

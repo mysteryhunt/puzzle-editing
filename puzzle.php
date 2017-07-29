@@ -1026,7 +1026,7 @@ function displayFileList ($uid, $pid, $type) {
         } else {
 ?>
                 <td class='<?php echo $class; ?>'>
-                    <?php echo "<a href='$link'/>$filename</a>"; ?>
+                    <?php echo "<a href='$link'/ target='_blank'>$filename</a>"; ?>
                 </td>
                 <td class='<?php echo $class; ?>'>
                     <?php echo "$date"; ?>
@@ -1130,7 +1130,7 @@ function displayPostProd($uid, $pid, $pp) {
     if ($pp) {
 ?>
         <strong>Final Fact Check Beta Link: </strong>
-        <a href="<?php echo $url ?>">View postprod (as pushed from puzzletron)</a>.  <--  Use this to perform final fact check!  Username/password is jarthur/random17.  If it gives a 404, push the button below (which takes a minute).
+        <a href="<?php echo $url ?>" target="_blank">View postprod (as pushed from puzzletron)</a>.  <--  Use this to perform final fact check!  Username/password is jarthur/random17.  If it gives a 404, push the button below (which takes a minute).
         <br>
 <?php
     if ($pp) {
@@ -1147,7 +1147,7 @@ function displayPostProd($uid, $pid, $pp) {
     $url .= "/" . postprodCanon($title) . "/";
 ?>
     <strong>Actually Final Link: </strong>
-    <a href="<?php echo $url ?>">View postprod (version installed as final, doesn't work yet)</a>
+    <a href="<?php echo $url ?>" target="_blank">View postprod (version installed as final, doesn't work yet)</a>
     <br>
 <?php
     }
@@ -1190,7 +1190,7 @@ function displayComments($uid, $pid, $lastVisit) {
         echo "<td class='$type" . "Comment'>";
 
 // TODO: Is this really the best we can do? Markdown, anyone?
-        $pcomment = preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2">\\2</a>', ($comment['comment']));
+        $pcomment = preg_replace('#(\A|[^=\]\'"a-zA-Z0-9])(http[s]?://(.+?)/[^()<>\s]*)#i', '\\1<a href="\\2" target="_blank">\\2</a>', ($comment['comment']));
         if (USING_AWS) {
             $pcomment = str_replace("=\"uploads/", "=\"" . AWS_ENDPOINT . AWS_BUCKET . "/uploads/", $pcomment);
         }
