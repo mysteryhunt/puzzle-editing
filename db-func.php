@@ -10,7 +10,7 @@ if (($db = mysql_connect(DB_SERVER, DB_USER, DB_PASS)) == FALSE) {
 }
 
 // Use UTF-8 character set for connection
-if (!mysql_set_charset('utf8')) {
+if (!mysql_set_charset('utf8mb4')) {
     echo '<div class="errormsg">Could not set character set.</div>';
     foot();
     exit(1);

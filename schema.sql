@@ -25,8 +25,8 @@ DROP TABLE IF EXISTS `answer_attempts`;
 CREATE TABLE `answer_attempts` (
   `pid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
-  `answer` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+  `answer` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,11 +47,11 @@ DROP TABLE IF EXISTS `answers`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `answers` (
   `aid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Answer ID',
-  `answer` varchar(255) NOT NULL COMMENT 'Answer Text',
+  `answer` varchar(250) NOT NULL COMMENT 'Answer Text',
   `pid` int(11) DEFAULT NULL,
   `batch` int(11) DEFAULT NULL,
   PRIMARY KEY (`aid`)
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `answer_round` (
   `aid` int(11) NOT NULL COMMENT 'Answer ID',
   `rid` int(11) NOT NULL COMMENT 'Round ID',
   PRIMARY KEY (`aid`,`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE `author_links` (
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   `uid` int(11) NOT NULL COMMENT 'Author User ID',
   PRIMARY KEY (`pid`,`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +121,7 @@ CREATE TABLE `comment_types` (
   `name` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `comments` (
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`,`timestamp`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,7 +174,7 @@ CREATE TABLE `former_tester_links` (
   `pid` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`,`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +197,7 @@ CREATE TABLE `editor_links` (
   `uid` int(11) NOT NULL COMMENT 'User ID of Editor',
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   PRIMARY KEY (`pid`,`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,11 +218,11 @@ DROP TABLE IF EXISTS `email_outbox`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `email_outbox` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `address` varchar(255) NOT NULL,
-  `subject` varchar(255) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `subject` varchar(250) NOT NULL,
   `message` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60919 DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB AUTO_INCREMENT=60919 DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `subscriber_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,7 +269,7 @@ CREATE TABLE `factchecker_links` (
   `pid` int(11) NOT NULL,
   KEY `uid` (`uid`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,7 +292,7 @@ CREATE TABLE `user_role` (
   `uid` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,7 +316,7 @@ CREATE TABLE `visitor_links` (
   `pid` int(11) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`uid`,`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +340,7 @@ CREATE TABLE `flagger_links` (
   `pid` int(11) NOT NULL,
   `flag` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`uid`,`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +366,7 @@ CREATE TABLE `motds` (
   `uid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `time` (`time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -401,7 +401,7 @@ CREATE TABLE `roles` (
   `becomeApprover` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,7 +446,7 @@ CREATE TABLE `pstatus` (
   `finalFactcheck` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order` (`ord`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -471,7 +471,7 @@ CREATE TABLE `approver_links` (
   `uid` int(11) NOT NULL,
   `approve` smallint(6) NOT NULL,
   PRIMARY KEY (`pid`,`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -492,22 +492,22 @@ DROP TABLE IF EXISTS `puzzles`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `puzzles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `summary` varchar(255) NOT NULL,
+  `summary` varchar(250) NOT NULL,
   `description` text NOT NULL,
   `pstatus` int(11) NOT NULL DEFAULT '1',
-  `title` varchar(255) NOT NULL DEFAULT '',
+  `title` varchar(250) NOT NULL DEFAULT '',
   `update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `notes` varchar(512) NOT NULL DEFAULT '',
   `editor_notes` varchar(512) NOT NULL DEFAULT '',
   `wikipage` varchar(512) NOT NULL DEFAULT '',
-  `credits` varchar(255) NOT NULL DEFAULT '',
-  `runtime_info` varchar(255) NOT NULL DEFAULT '',
+  `credits` varchar(250) NOT NULL DEFAULT '',
+  `runtime_info` varchar(250) NOT NULL DEFAULT '',
   `needed_editors` int(11) NOT NULL DEFAULT '2',
   `priority` int(11) NOT NULL DEFAULT '0',
   `tester_limit` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `pstatus` (`pstatus`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -530,7 +530,7 @@ CREATE TABLE `puzzle_tester_count` (
   `pid` int(11) NOT NULL,
   `tester_count` int(11) NOT NULL,
   PRIMARY KEY (`pid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -553,10 +553,10 @@ CREATE TABLE `rounds` (
   `rid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Round ID',
   `name` varchar(32) NOT NULL COMMENT 'Name of Round',
   `display` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Display Round?',
-  `answer` varchar(255) NOT NULL COMMENT 'Answer of Round Meta',
+  `answer` varchar(250) NOT NULL COMMENT 'Answer of Round Meta',
   `unlock_at` double DEFAULT NULL,
   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -579,7 +579,7 @@ CREATE TABLE `spoiled_user_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`pid`,`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -602,7 +602,7 @@ CREATE TABLE `test_admin_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -626,7 +626,7 @@ CREATE TABLE `test_oncalls` (
   `on_call` int(11) NOT NULL COMMENT 'User ID of Editor on Call',
   `put_by` int(11) NOT NULL COMMENT 'User ID who Put Editor on Call',
   PRIMARY KEY (`pid`,`on_call`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -649,7 +649,7 @@ CREATE TABLE `tester_links` (
   `uid` int(11) NOT NULL COMMENT 'User ID of Tester',
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
   PRIMARY KEY (`uid`,`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -672,18 +672,18 @@ CREATE TABLE `testing_feedback` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
   `done` tinyint(11) NOT NULL DEFAULT '0',
-  `how_long` varchar(255) DEFAULT NULL,
+  `how_long` varchar(250) DEFAULT NULL,
   `tried` text,
   `liked` text,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `breakthrough` varchar(255) DEFAULT NULL,
-  `skills` varchar(255) DEFAULT NULL,
+  `breakthrough` varchar(250) DEFAULT NULL,
+  `skills` varchar(250) DEFAULT NULL,
   `fun` int(11) NOT NULL DEFAULT '0',
   `difficulty` int(11) NOT NULL DEFAULT '0',
   `when_return` text,
   `spoilage` text,
   PRIMARY KEY (`uid`,`pid`,`time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -729,9 +729,9 @@ DROP TABLE IF EXISTS `testsolve_teams`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `testsolve_teams` (
   `tid` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(250) NOT NULL,
   PRIMARY KEY (`tid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -755,7 +755,7 @@ CREATE TABLE `puzzle_testsolve_team` (
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`pid`),
   KEY `tid` (`tid`,`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -775,7 +775,7 @@ DROP TABLE IF EXISTS `uploaded_files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `uploaded_files` (
-  `filename` varchar(255) NOT NULL,
+  `filename` varchar(250) NOT NULL,
   `pid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
   `cid` int(11) NOT NULL,
@@ -783,7 +783,7 @@ CREATE TABLE `uploaded_files` (
   `type` enum('draft','solution','misc','postprod') NOT NULL,
   PRIMARY KEY (`filename`),
   KEY `pid` (`pid`,`type`,`date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -806,14 +806,14 @@ CREATE TABLE `users` (
   `uid` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
   `password` blob NOT NULL DEFAULT '' COMMENT 'password_hash(''password'')',
-  `email` varchar(255) NOT NULL,
-  `fullname` varchar(255) NOT NULL DEFAULT '',
-  `picture` varchar(255) DEFAULT NULL,
+  `email` varchar(150) NOT NULL,
+  `fullname` varchar(250) NOT NULL DEFAULT '',
+  `picture` varchar(250) DEFAULT NULL,
   `email_level` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`uid`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -834,10 +834,10 @@ DROP TABLE IF EXISTS `user_info_keys`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_info_keys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `shortname` varchar(255) NOT NULL,
-  `longname` varchar(255) NOT NULL,
+  `shortname` varchar(250) NOT NULL,
+  `longname` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -863,7 +863,7 @@ CREATE TABLE `user_info_values` (
   `value` varchar(511) DEFAULT NULL,
   KEY `person_id` (`person_id`),
   KEY `user_info_key_id` (`user_info_key_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -887,7 +887,7 @@ CREATE TABLE `user_testsolve_team` (
   `tid` int(11) NOT NULL,
   PRIMARY KEY (`uid`),
   KEY `uid` (`uid`,`tid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -914,20 +914,20 @@ DROP TABLE IF EXISTS `approval_editor_links`;
 CREATE TABLE `approval_editor_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 
 DROP TABLE IF EXISTS `round_captain_links`;
 CREATE TABLE `round_captain_links` (
   `uid` int(11) NOT NULL,
   `pid` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 
 DROP TABLE IF EXISTS `codenames`;
 CREATE TABLE `codenames` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 
 LOCK TABLES `codenames` WRITE;
 /*!40000 ALTER TABLE `codenames` DISABLE KEYS */;
@@ -938,10 +938,10 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `reset_password_tokens`;
 CREATE TABLE `reset_password_tokens` (
   `uid` int(11) NOT NULL,
-  `token` varchar(255) NOT NULL,
+  `token` varchar(250) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 
 DROP TABLE IF EXISTS `puzzle_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -949,7 +949,7 @@ DROP TABLE IF EXISTS `puzzle_tag`;
 CREATE TABLE `puzzle_tag` (
   `pid` int(11) NOT NULL,
   `tid` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 DROP TABLE IF EXISTS `tags`;
@@ -959,5 +959,5 @@ CREATE TABLE `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
