@@ -2321,7 +2321,7 @@ function changePuzzleStatus($uid, $pid, $status) {
     $oldName = getPuzzleStatusName($old);
     $newName = getPuzzleStatusName($status);
     $comment = "Puzzle status changed from $oldName to $newName. <br />";
-    addComment($uid, $pid, $comment, TRUE);
+    addComment($uid, $pid, $comment, TRUE, FALSE, TRUE);
 
     if (isStatusInTesting($old)) {
         emailTesters($pid, $status);
