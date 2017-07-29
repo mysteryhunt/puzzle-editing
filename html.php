@@ -245,6 +245,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
             <?php if ($showAnswer) {echo '<th class="puzzidea">Answer</th>';} ?>
             <?php if (!$test) { echo '<th class="puzzidea">Last Commenter</th>';} ?>
             <?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
+            <?php if (!$test){ echo '<th class="puzzidea">Last Status Change</th>';}?>
             <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
             <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Discussion Editors</th>';} ?>
             <?php if (MIN_EDITORS >= 0 && $showAuthorsAndEditors) {echo '<th class="puzzidea">D.Eds Needed</th>';} ?>
@@ -335,6 +336,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
         } ?>
         <?php if (!$test) {echo "<td class='puzzidea'>$lastCommenter</td>";} ?>
         <?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
+        <?php if (!$test) {echo "<td class='puzzidea'>" . getLastStatusChangeDate($pid). "</td>";} ?>
         <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
         <?php if ($showAuthorsAndEditors) {
             $est = getEditorStatus($pid);

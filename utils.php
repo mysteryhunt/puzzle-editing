@@ -2792,6 +2792,11 @@ function getLastCommentDate($pid) {
     return get_element_null($sql);
 }
 
+function getLastStatusChangeDate($pid) {
+    $sql = sprintf("SELECT MAX(timestamp) FROM comments WHERE pid='%s' AND comments.comment LIKE 'Puzzle status changed from %%'", mysql_real_escape_string($pid));
+    return get_element_null($sql);
+}
+
 function getLastTestReportDate($pid) {
     $sql = sprintf("SELECT MAX(time) FROM testing_feedback WHERE pid='%s'", mysql_real_escape_string($pid));
     return get_element_null($sql);
