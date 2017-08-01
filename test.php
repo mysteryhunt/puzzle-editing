@@ -17,68 +17,100 @@ if (!isset($_GET['pid'])) {
 
 $pid = $_GET['pid'];
 
-// Start HTML
 head("", "Puzzle $pid: Testsolving");
 
 // Check permissions
-if (!hasTestAdminPermission($uid)) {
-    if (!isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid)) {
-        if (!canTestPuzzle($uid, $pid)) {
-            echo "You do not have permission to test this puzzle.";
-            foot();
-            exit(1);
-        } else {
-            addPuzzleToTestQueue($uid, $pid);
-        }
-    }
+if (hasTestAdminPermission($uid) || isTesterOnPuzzle($uid, $pid) || isFormerTesterOnPuzzle($uid, $pid)) {
+    displayTestingPage($uid, $pid);
+} else if (canTestPuzzle($uid, $pid)) {
+    displayTestingConfirmation($uid, $pid);
+} else {
+    echo "You do not have permission to test this puzzle.";
 }
 
-$title = getTitle($pid);
-if ($title == NULL) {
-    $title = '(untitled)';
-}
-echo "<h2>Puzzle $pid &mdash; $title</h2>";
-echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
-    need it!</b><br><br> When you are done, PLEASE leave feedback indicating
-    that you do not intend to return, <b>even if the rest is blank</b>. This
-    removes you as a tester on this puzzle, so we can track who's still
-    working.\n";
-echo "<br><br>\n";
-
-if (isset($_SESSION['feedback'])) {
-    echo '<p><strong>' . $_SESSION['feedback'] . '</strong></p>';
-    unset($_SESSION['feedback']);
-}
-
-maybeDisplayWarning($uid, $pid);
-displayWikiPage($pid);
-displayDraft($pid);
-echo '<br />';
-
-$otherTesters = getCurrentTestersAsEmailList($pid);
-echo "<p>Current Testsolvers: $otherTesters</p>";
-echo '<br />';
-
-checkAnsForm($uid, $pid);
-
-if (isset($_SESSION['answer'])) {
-    echo $_SESSION['answer'];
-    unset($_SESSION['answer']);
-}
-
-displayPrevAns($uid, $pid);
-
-echo '<br />';
-
-displayFeedbackForm($uid, $pid);
-
-echo '<br />';
-displayPrevFeedback($uid, $pid);
-
-// End HTML
 foot();
 
+
+
 //------------------------------------------------------------------------
+
+function displayTestingPage($uid, $pid) {
+    $title = getTitle($pid);
+    if ($title == NULL) {
+        $title = '(untitled)';
+    }
+    echo "<h2>Puzzle $pid &mdash; $title</h2>";
+    echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
+        need it!</b><br><br> When you are done, PLEASE leave feedback indicating
+        that you do not intend to return, <b>even if the rest is blank</b>. This
+        removes you as a tester on this puzzle, so we can track who's still
+        working.\n";
+    echo "<br><br>\n";
+
+    if (isset($_SESSION['feedback'])) {
+        echo '<p><strong>' . $_SESSION['feedback'] . '</strong></p>';
+        unset($_SESSION['feedback']);
+    }
+
+    maybeDisplayWarning($uid, $pid);
+    displayWikiPage($pid);
+    displayDraft($pid);
+    echo '<br />';
+
+    $otherTesters = getCurrentTestersAsEmailList($pid);
+    echo "<p>Current Testsolvers: $otherTesters</p>";
+    echo '<br />';
+
+    checkAnsForm($uid, $pid);
+
+    if (isset($_SESSION['answer'])) {
+        echo $_SESSION['answer'];
+        unset($_SESSION['answer']);
+    }
+
+    displayPrevAns($uid, $pid);
+
+    echo '<br />';
+
+    displayFeedbackForm($uid, $pid);
+
+    echo '<br />';
+    displayPrevFeedback($uid, $pid);
+}
+
+function displayTestingConfirmation($uid, $pid) {
+    $puzzleInfo = getPuzzleInfo($pid);
+
+    $title = $puzzleInfo['title'];
+    if ($title == NULL) {
+        $title = '(untitled)';
+    }
+
+    $summary = $puzzleInfo['summary'];
+    if ($summary == NULL) {
+        $summary = '(no summary)';
+    }
+
+?>
+    <div class="msg">
+        <h2>You're about to testsolve</h2>
+        <p>Puzzle: <?php echo $title ?></p>
+        <p>Summary: <?php echo $summary ?></p>
+        <ul>
+            <li>You should only click the button to start testsolving if you're planing to testsolve <strong>RIGHT NOW</strong>.</li>
+            <li>Clicking on the button below will mark you as a testsolver on this puzzle and remove it from the list of available puzzles.  You will need to share the link with your buddies so that they can access the puzzle and be marked as testsolvers too.</li>
+            <li>If you do click it, you are expected to fill out a testsolving report within 48 hours.  (It's ok if you haven't finished the puzzle by then, and just report your progress so far, or if you decide not to solve it after all and say so in the report.)  Please only click if you intend to fill out a testsolving report promptly!!</li>
+        </ul>
+
+    </div>
+
+    <form method="post" action="form-submit.php">
+        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+        <input type="submit" name="makeTester" class="confirm-testsolve-btn" value="I want to test this puzzle RIGHT NOW and I promise I will fill out the feedback form within 48 hours!" />
+    </form>
+<?php
+}
 
 function maybeDisplayWarning($uid, $pid) {
     if (isTesterOnPuzzle($uid, $pid)) {

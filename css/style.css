@@ -431,3 +431,7 @@ a.goto { font-size: 108%; font-weight: bold; }
 .corr { background-color: #090; }
 .incorr { background-color: #c00; }
 td.highlightkey { background-color: #E2E9EB; border: 1px solid #999; }
+
+.confirm-testsolve-btn {
+    font-size: 2em;
+}
