@@ -17,68 +17,90 @@ if (!isset($_GET['pid'])) {
 
 $pid = $_GET['pid'];
 
-// Start HTML
 head("", "Puzzle $pid: Testsolving");
 
 // Check permissions
-if (!hasTestAdminPermission($uid)) {
-    if (!isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid)) {
-        if (!canTestPuzzle($uid, $pid)) {
-            echo "You do not have permission to test this puzzle.";
-            foot();
-            exit(1);
-        } else {
-            addPuzzleToTestQueue($uid, $pid);
-        }
-    }
+if (hasTestAdminPermission($uid) || isTesterOnPuzzle($uid, $pid) || isFormerTesterOnPuzzle($uid, $pid)) {
+    displayTestingPage($uid, $pid);
+} else if (canTestPuzzle($uid, $pid)) {
+    displayTestingConfirmation($uid, $pid);
+} else {
+    echo "You do not have permission to test this puzzle.";
 }
 
-$title = getTitle($pid);
-if ($title == NULL) {
-    $title = '(untitled)';
-}
-echo "<h2>Puzzle $pid &mdash; $title</h2>";
-echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
-    need it!</b><br><br> When you are done, PLEASE leave feedback indicating
-    that you do not intend to return, <b>even if the rest is blank</b>. This
-    removes you as a tester on this puzzle, so we can track who's still
-    working.\n";
-echo "<br><br>\n";
-
-if (isset($_SESSION['feedback'])) {
-    echo '<p><strong>' . $_SESSION['feedback'] . '</strong></p>';
-    unset($_SESSION['feedback']);
-}
-
-maybeDisplayWarning($uid, $pid);
-displayWikiPage($pid);
-displayDraft($pid);
-echo '<br />';
-
-$otherTesters = getCurrentTestersAsEmailList($pid);
-echo "<p>Current Testsolvers: $otherTesters</p>";
-echo '<br />';
-
-checkAnsForm($uid, $pid);
-
-if (isset($_SESSION['answer'])) {
-    echo $_SESSION['answer'];
-    unset($_SESSION['answer']);
-}
-
-displayPrevAns($uid, $pid);
-
-echo '<br />';
-
-displayFeedbackForm($uid, $pid);
-
-echo '<br />';
-displayPrevFeedback($uid, $pid);
-
-// End HTML
 foot();
 
+
+
 //------------------------------------------------------------------------
+
+function displayTestingPage($uid, $pid) {
+    $title = getTitle($pid);
+    if ($title == NULL) {
+        $title = '(untitled)';
+    }
+    echo "<h2>Puzzle $pid &mdash; $title</h2>";
+    echo "<strong class='impt'>IMPORTANT:</strong> <b>Please leave feedback! We
+        need it!</b><br><br> When you are done, PLEASE leave feedback indicating
+        that you do not intend to return, <b>even if the rest is blank</b>. This
+        removes you as a tester on this puzzle, so we can track who's still
+        working.\n";
+    echo "<br><br>\n";
+
+    if (isset($_SESSION['feedback'])) {
+        echo '<p><strong>' . $_SESSION['feedback'] . '</strong></p>';
+        unset($_SESSION['feedback']);
+    }
+
+    maybeDisplayWarning($uid, $pid);
+    displayWikiPage($pid);
+    displayDraft($pid);
+    echo '<br />';
+
+    $otherTesters = getCurrentTestersAsEmailList($pid);
+    echo "<p>Current Testsolvers: $otherTesters</p>";
+    echo '<br />';
+
+    checkAnsForm($uid, $pid);
+
+    if (isset($_SESSION['answer'])) {
+        echo $_SESSION['answer'];
+        unset($_SESSION['answer']);
+    }
+
+    displayPrevAns($uid, $pid);
+
+    echo '<br />';
+
+    displayFeedbackForm($uid, $pid);
+
+    echo '<br />';
+    displayPrevFeedback($uid, $pid);
+}
+
+function displayTestingConfirmation($uid, $pid) {
+    $title = getTitle($pid);
+    if ($title == NULL) {
+        $title = '(untitled)';
+    }
+
+?>
+    <div class="msg">
+        <h2>You're about to testsolve: <?php echo $title ?></h2>
+        <ul>
+            <li>You should only click the button to start testsolving if you're planing to testsolve <strong>RIGHT NOW</strong>.</li>
+            <li>When you stop testsolving, PLEASE fill out the feedback form so the authors, editors, and testsolving admins know where you're at. You should do this even if you didn't solve the puzzle, are going to come back to it, or didn't do anything because you got interrupted or didn't like the puzzle.</li>
+        </ul>
+
+    </div>
+
+    <form method="post" action="form-submit.php">
+        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+        <input type="submit" name="makeTester" value="I want to test this puzzle RIGHT NOW and I promise I will fill out the feedback form when I stop testsolving!" />
+    </form>
+<?php
+}
 
 function maybeDisplayWarning($uid, $pid) {
     if (isTesterOnPuzzle($uid, $pid)) {
