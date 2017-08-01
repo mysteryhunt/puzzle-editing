@@ -79,17 +79,27 @@ function displayTestingPage($uid, $pid) {
 }
 
 function displayTestingConfirmation($uid, $pid) {
-    $title = getTitle($pid);
+    $puzzleInfo = getPuzzleInfo($pid);
+
+    $title = $puzzleInfo['title'];
     if ($title == NULL) {
         $title = '(untitled)';
     }
 
+    $summary = $puzzleInfo['summary'];
+    if ($summary == NULL) {
+        $summary = '(no summary)';
+    }
+
 ?>
     <div class="msg">
-        <h2>You're about to testsolve: <?php echo $title ?></h2>
+        <h2>You're about to testsolve</h2>
+        <p>Puzzle: <?php echo $title ?></p>
+        <p>Summary: <?php echo $summary ?></p>
         <ul>
             <li>You should only click the button to start testsolving if you're planing to testsolve <strong>RIGHT NOW</strong>.</li>
-            <li>When you stop testsolving, PLEASE fill out the feedback form so the authors, editors, and testsolving admins know where you're at. You should do this even if you didn't solve the puzzle, are going to come back to it, or didn't do anything because you got interrupted or didn't like the puzzle.</li>
+            <li>Clicking on the button below will mark you as a testsolver on this puzzle and remove it from the list of available puzzles.  You will need to share the link with your buddies so that they can access the puzzle and be marked as testsolvers too.</li>
+            <li>If you do click it, you are expected to fill out a testsolving report within 48 hours.  (It's ok if you haven't finished the puzzle by then, and just report your progress so far, or if you decide not to solve it after all and say so in the report.)  Please only click if you intend to fill out a testsolving report promptly!!</li>
         </ul>
 
     </div>
@@ -97,7 +107,7 @@ function displayTestingConfirmation($uid, $pid) {
     <form method="post" action="form-submit.php">
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
-        <input type="submit" name="makeTester" value="I want to test this puzzle RIGHT NOW and I promise I will fill out the feedback form when I stop testsolving!" />
+        <input type="submit" name="makeTester" class="confirm-testsolve-btn" value="I want to test this puzzle RIGHT NOW and I promise I will fill out the feedback form within 48 hours!" />
     </form>
 <?php
 }
