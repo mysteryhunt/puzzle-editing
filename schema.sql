@@ -455,7 +455,7 @@ CREATE TABLE `pstatus` (
 
 LOCK TABLES `pstatus` WRITE;
 /*!40000 ALTER TABLE `pstatus` DISABLE KEYS */;
-INSERT INTO `pstatus` VALUES (1,'Initial Idea',1,0,1,1,0,0,0,0),(2,'In Testing',4,1,1,0,1,0,0,0),(3,'Awaiting Final Test Approval',5,0,0,0,1,0,0,0),(4,'Needs Fact Check',6,0,0,0,0,0,0,0),(5,'Post Production',7,0,0,0,0,0,1,0),(6,'Awaiting Final Approval',8,0,0,0,0,0,1,1),(7,'Done',9,0,0,0,0,0,0,0),(8,'Dead',10,0,0,0,0,0,0,0),(10,'In Revision',11,0,1,1,0,0,0,0),(22,'Writing (Answer Assigned)',3,0,1,1,0,0,0,0),(23,'Awaiting Answer (Idea Approved)',2,0,1,1,0,0,0,0);
+INSERT INTO `pstatus` VALUES (1,'Initial Idea',1,0,1,1,0,0,0,0),(2,'In Testing',5,1,1,0,1,0,0,0),(3,'Awaiting Final Test Approval',7,0,0,0,1,0,0,0),(4,'Needs Fact Check',8,0,0,0,0,0,0,0),(5,'Post Production',9,0,0,0,0,0,1,0),(6,'Awaiting Final Approval',10,0,0,0,0,0,1,1),(7,'Done',11,0,0,0,0,0,0,0),(8,'Dead',12,0,0,0,0,0,0,0),(10,'In Revision',6,0,1,1,0,0,0,0),(22,'Writing (Answer Assigned)',4,0,1,1,0,0,0,0),(23,'Awaiting Answer (Idea Approved)',3,0,1,1,0,0,0,0),(24,'Idea in Development',2,0,1,1,0,0,0,0);
 /*!40000 ALTER TABLE `pstatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
