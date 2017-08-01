@@ -51,6 +51,13 @@ and because transactional email services are free at small
 volumes. Set up a Mailgun account and point Puzzletron at it using the
 `MAILGUN` configuration settings in `ansible/secrets.yml`.
 
+## Docker
+
+- Install [Docker](https://www.docker.com/community-edition#/download)
+- `cp ./docker/.env ./.env`
+- Edit `.env` to add e.g. mailgun settings if desired
+- `docker-compose up`
+- Head to http://localhost:8000
 
 ## On your local machine using a LAMP stack
 
