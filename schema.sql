@@ -648,6 +648,7 @@ DROP TABLE IF EXISTS `tester_links`;
 CREATE TABLE `tester_links` (
   `uid` int(11) NOT NULL COMMENT 'User ID of Tester',
   `pid` int(11) NOT NULL COMMENT 'Puzzle ID',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Time at which the user began testsolving',
   PRIMARY KEY (`uid`,`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
 /*!40101 SET character_set_client = @saved_cs_client */;
