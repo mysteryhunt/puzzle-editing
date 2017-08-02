@@ -3943,7 +3943,7 @@ function getModeFeedback($pid, $column_name) {
   if (count($arr) <= 0) {
     return "--";
   }
-  
+
   $count = array();
   foreach ($arr as $item) {
     if (isset($count[$item])) {
@@ -4028,4 +4028,45 @@ function sendSlackMessage($message) {
     );
 
     curl_exec($curl);
+}
+
+function sendTestsolvingReminders() {
+    if (TESTSOLVE_REMINDER_HOURS == 0) {
+        return;
+    }
+
+    // Find puzzles that:
+    // - Are still in a draftable state (i.e. author can reasonably action them)
+    // - Have an editor assigned
+    // - Have not had a comment in the last week
+    // - Most recent comment was not from the author
+    $sql = sprintf("
+        SELECT
+            users.uid AS uid,
+            users.fullname AS user_fullname,
+            puzzles.id AS pid,
+            puzzles.title AS puzzle_title
+        FROM tester_links
+            LEFT JOIN users ON tester_links.uid = users.uid
+            LEFT JOIN puzzles ON tester_links.pid = puzzles.id
+        WHERE tester_links.created_at < DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL '%d' HOUR)
+    ", TESTSOLVE_REMINDER_HOURS);
+
+    $reminders = get_row_dicts($sql);
+
+    foreach ($reminders as $reminder) {
+        $subject = sprintf("Reminder: Please submit a testsolving report for %s", $reminder['puzzle_title']);
+        $message = sprintf("Hello %s,
+
+You started testsolving the puzzle \"%s\" more than %d hours ago, but you
+haven't submitted a testsolving report. To help the authors, editors, and
+testsolving admins keep track of testsolving, please complete a testsolving
+report as soon as possible. It's ok if you haven't finished the puzzle, or if
+you've decided not to work on it -- just report your progress so far, or that
+you're not going to work on it.
+", $reminder['user_fullname'], $reminder['puzzle_title'], TESTSOLVE_REMINDER_HOURS);
+
+        $link = URL . "/test.php?pid=" . $reminder['pid'];
+        sendEmail($reminder['uid'], $subject, $message, $link);
+    }
 }

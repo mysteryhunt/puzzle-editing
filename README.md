@@ -59,6 +59,11 @@ volumes. Set up a Mailgun account and point Puzzletron at it using the
 - `docker-compose up`
 - Head to http://localhost:8000
 
+The docker environment does not run the cronjobs. To test running one of the
+PHP scripts that's designed to run as a cronjob, run `docker ps` and note the
+name of the `puzzleediting_php` container (likely `puzzleediting_php_1`) and
+then run `docker exec puzzleediting_php_1 php testsolve_reminder_cronjob.php`
+
 ## On your local machine using a LAMP stack
 
 If you're willing to contemplate running PHP, MySQL, and Apache on

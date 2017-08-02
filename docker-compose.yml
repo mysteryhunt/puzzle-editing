@@ -19,7 +19,7 @@ services:
       - ./docker/mysqldb:/var/lib/mysql
       - ./mysql:/etc/mysql/conf.d
     ports:
-      - "3306:3006"
+      - "3306:3306"
   composer:
     image: "composer:1.4.1"
     volumes:

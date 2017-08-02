@@ -115,6 +115,11 @@ PTRON_APROVALS_REQUIRED="2"
 # authors for this many days
 PTRON_REMINDER_EMAIL_DAYS="0"
 
+# If set to a non-0 value, puzzletron will send a reminder email to anyone
+# who has been a testsolver on a puzzle for this many hours without
+# submitting a test report
+PTRON_TESTSOLVE_REMINDER_HOURS="48"
+
 # date of the next hunt - used to run the countdown on the home page
 PTRON_HUNT_YEAR="2017"
 # DOM = "Day of Month" - that month is January, of course
