@@ -2572,6 +2572,10 @@ function uploadFiles($uid, $pid, $type, $file) {
             #echo "new_path is $new_path<br>";
             $res = exec("/usr/bin/unzip $target_path -d $new_path");
 
+            if (USING_AWS && !file_exists($new_path . "/index.html")) {
+                $_SESSION['upload_error'] = "You uploaded a ZIP file, but it does not contain an index.html file, so it won't be visible. Make sure there's an index.html, and that it's not in a directory";
+            }
+
             if (USING_AWS) {
                 $result = $client->uploadDirectory($new_path, AWS_BUCKET, $new_path, array(
                     'params' => array('ACL' => 'public-read')));
