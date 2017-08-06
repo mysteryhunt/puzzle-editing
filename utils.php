@@ -3331,6 +3331,8 @@ function makeAnswerAttempt($uid, $pid, $answer) {
     } else {
         $comment = "Correct answer attempt: $cleanAnswer";
         $_SESSION['answer'] = "<div class='msg'>$check is <span class='corr'>correct</span></div>";
+
+        sendSuccessfulTestsolveMessage($pid, $uid);
     }
 
     mysql_query('START TRANSACTION');
@@ -4012,6 +4014,38 @@ function sendMovedOnFromTestingMessage($pid) {
     $authorsText = implode(", ", array_values($authors));
     $editorsText = implode(", ", array_values($editors));
     $message = ":tada: Puzzle $pid moved on from testing. Congrats to the author(s) $authorsText and editors $editorsText!";
+    sendSlackMessage($message);
+}
+
+function sendSuccessfulTestsolveMessage($pid) {
+    // Assume that only one group is testsolving at once
+    $testers = array_keys(getCurrentTestersForPuzzle($pid));
+
+    // No idea how this could happen, but just in case
+    if (count($testers) == 0) {
+        return;
+    }
+
+    // See if they've already gotten the answer right - i.e. if we've
+    // already congratulated them
+    foreach ($testers as $tester) {
+        $sql = sprintf("SELECT answer FROM answer_attempts WHERE pid='%s' AND uid='%s'",
+                       mysql_real_escape_string($pid), mysql_real_escape_string($tester));
+        $answers = get_elements($sql);
+        foreach ($answers as $answer) {
+            if (checkAnswer($pid, $answer)) {
+                return;
+            }
+        }
+    }
+
+    // Still here? OK let's post something
+    $testersNames = array();
+    foreach ($testers as $tester) {
+        $testersNames[] = getUserName($tester);
+    }
+    $testersText = implode(", ", array_values($testersNames));
+    $message = ":leftshark: Successful test solve of puzzle $pid by $testersText!";
     sendSlackMessage($message);
 }
 
