@@ -107,6 +107,21 @@ displayPuzzleStats($uid);
         </select>
         <input type="submit" value="Filter tag">
     </form>
+    <form method="get" action="allpuzzles.php" class="inlform">
+        <input type="hidden" name="filterkey" value="round">
+        <select name="filtervalue">
+        <option value='-'>-</option>
+        <?php
+        $rounds = getRounds();
+        asort($rounds);
+        foreach ($rounds as $round) {
+            $slct = selected('round', $round['rid']);
+            echo "<option value='".$round['rid']."' $slct>".$round['name']."</option>";
+        }
+        ?>
+        </select>
+        <input type="submit" value="Filter round">
+    </form>
     </div>
 <?php
 $puzzles = getAllPuzzles();

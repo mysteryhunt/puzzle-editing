@@ -58,11 +58,17 @@ function validPuzzleId($uid) {
     return has_result($sql);
 }
 
+function validRoundId($rid) {
+    $sql = sprintf("SELECT 1 FROM rounds WHERE rid='%s'", mysql_real_escape_string($rid));
+    return has_result($sql);
+}
+
 function isValidPuzzleFilter() {
     if (isset($_GET['filterkey']) && isset($_GET['filtervalue'])) {
         $key = $_GET['filterkey'];
         if ($key != "status" && $key != "author" &&
-            $key != "editor" && $key != "approver" && $key != "tag") {
+            $key != "editor" && $key != "approver" &&
+            $key != "tag" && $key != "round") {
             echo "<div class='errormsg'>Invalid sort key. What did you even do?</div>";
             foot();
             exit(1);
@@ -80,6 +86,11 @@ function isValidPuzzleFilter() {
         }
         if (($key == "tag") && !validTag($val)) {
             echo "<div class='errormsg'>Invalid tag ID.</div>";
+            foot();
+            exit(1);
+        }
+        if (($key == "round") && !validRoundId($val)) {
+            echo "<div class='errormsg'>Invalid round ID.</div>";
             foot();
             exit(1);
         }

@@ -264,6 +264,8 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
     foreach ($puzzles as $pid) {
         $puzzleInfo = getPuzzleInfo($pid);
         $tags = getTagsAsList($pid);
+        $roundDict = getRoundDictForPuzzle($pid);
+        $rounds = array_map(function($r) {return $r['rid'];}, $roundDict);
         // This is totally the wrong way to do this. The right way involves
         // writing SQL.
         if ($filter) {
@@ -280,6 +282,9 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
                 continue;
             }
             if ($filter[0] == "tag" && !isTagOnPuzzle($filter[1], $pid)) {
+                continue;
+            }
+            if ($filter[0] == "round" && !in_array($filter[1], $rounds)) {
                 continue;
             }
             if ($filter[0] != "status" && $hidedeadpuzzles && $puzzleInfo["pstatus"] == $deadstatusid) {
