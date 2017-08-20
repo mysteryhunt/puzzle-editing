@@ -252,8 +252,25 @@ function displayFeedbackForm($uid, $pid) {
 <?php
     }
 ?>
+        <script type="text/javascript">
+                function validateTestFeedback() {
+                        var missing = [];
+                        if ($('select[name=fun]').val() == '0') {
+                                missing.push('fun');
+                        }
+                        if ($('select[name=difficulty]').val() == '0') {
+                                missing.push('difficulty');
+                        }
 
-        <form method="post" action="form-submit.php" class="boxedform">
+                        if (missing.length === 0) {
+                                return true;
+                        }
+
+                        return confirm("You're haven't rated this puzzle for: " + missing.join(", ") + "\n\nEven if you weren't able to solve the puzzle, we still want to hear your opinions. Do you want to submit anyway?");
+                }
+        </script>
+
+        <form method="post" action="form-submit.php" class="boxedform" onsubmit="return validateTestFeedback()">
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
         <p>
