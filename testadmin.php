@@ -93,7 +93,7 @@ function displayCurrentTesters() {
     foreach ($testers as $tester) {
 ?>
         <tr class="puzz-new">
-            <td class="puzzidea"><?php echo $tester['pid']; ?></td>
+            <td class="puzzidea"><a href="puzzle.php?pid=<?php echo $tester['pid']; ?>"><?php echo $tester['pid']; ?></a></td>
             <td class="puzzidea"><?php echo getTitle($tester['pid']); ?></td>
             <td class="puzzidea"><?php echo getUserName($tester['uid']); ?></td>
             <td class="puzzidea"><?php echo $tester['created_at']; ?></td>
