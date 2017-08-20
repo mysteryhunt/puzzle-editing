@@ -412,6 +412,12 @@ td.sd {
     background-color: #faa;
     padding: 10px;
 }
+.testwarning {
+    border: 1px solid black;
+    background-color: #f8f8f8;
+    padding: 10px;
+    margin-bottom: 15px;
+}
 
 table.boxed { border: 3px solid black; }
 .puzzledesc { padding: 5px; background-color: #F0E8E0; margin-bottom: 5px; }

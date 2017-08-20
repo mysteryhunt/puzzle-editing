@@ -91,8 +91,28 @@ function displayTestingConfirmation($uid, $pid) {
         $summary = '(no summary)';
     }
 
+    $currentlyTesting = getPuzzlesInTestQueue($uid);
+
+    if (!empty($currentlyTesting)) {
 ?>
-    <div class="msg">
+    <div class="errormsg">
+        <p>You haven't filled out a testsolve report for puzzle(s):</p>
+        <ul>
+<?php
+        foreach ($currentlyTesting as $testingPid) {
+?>
+            <li><a href="<?php echo URL . "/test.php?pid=" . $testingPid; ?>"><?php echo getTitle($testingPid); ?></a></li>
+<?php
+        }
+?>
+        </ul>
+
+      <p><strong>Before</strong> starting any new test solves, please submit a testing report for the puzzles you are currently testing.</p>
+    </div>
+<?php
+    }
+?>
+    <div class="testwarning">
         <h2>You're about to testsolve</h2>
         <p>Puzzle: <?php echo $title ?></p>
         <p>Summary: <?php echo $summary ?></p>
@@ -100,7 +120,7 @@ function displayTestingConfirmation($uid, $pid) {
             <li>You should only click the button to start testsolving if you're planning to testsolve <strong>RIGHT NOW</strong>.</li>
             <li>Have you gathered your testing buddies? We want testing groups of <strong>at least 2</strong>.</li>
             <li>Clicking on the button below will mark you as a testsolver on this puzzle and remove it from the list of available puzzles.  You will need to share the link with your buddies so that they can access the puzzle and be marked as testsolvers too.</li>
-            <li>If you do click it, you are expected to fill out a testsolving report within 48 hours.  (It's ok if you haven't finished the puzzle by then, and just report your progress so far, or if you decide not to solve it after all and say so in the report.)  Please only click if you intend to fill out a testsolving report promptly!!</li>
+            <li>If you do click it, you are expected to fill out a testsolving report <strong>within 48 hours</strong>.  (It's ok if you haven't finished the puzzle by then, and just report your progress so far, or if you decide not to solve it after all and say so in the report.)  Please only click if you intend to fill out a testsolving report promptly!!</li>
         </ul>
 
     </div>
