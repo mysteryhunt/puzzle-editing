@@ -59,6 +59,9 @@ $testPuzzles = getPuzzlesNeedTestAdmin();
 // I need to see testers for puzzles that have no testadmin.
 displayQueue($uid, $testPuzzles, "notes summary testers", FALSE);
 
+echo "<h2>Current Testers</h2>";
+displayCurrentTesters();
+
 echo "<h2>Testing Feed</h2>";
 echo "<table>";
 echo "<div class='comments'>";
@@ -73,6 +76,36 @@ displayTestingSummary();
 foot();
 
 //------------------------------------------------------------------------
+function displayCurrentTesters() {
+    $sql = 'SELECT uid, pid, created_at FROM tester_links ORDER BY created_at ASC';
+    $testers = get_row_dicts($sql);
+?>
+    <table class="tablesorter">
+        <thead>
+            <tr>
+                <th class="puzzidea">PID</th>
+                <th class="puzzidea">Title</th>
+                <th class="puzzidea">Tester</th>
+                <th class="puzzidea">Started at</th>
+            </tr>
+        </thead>
+<?php
+    foreach ($testers as $tester) {
+?>
+        <tr class="puzz-new">
+            <td class="puzzidea"><?php echo $tester['pid']; ?></td>
+            <td class="puzzidea"><?php echo getTitle($tester['pid']); ?></td>
+            <td class="puzzidea"><?php echo getUserName($tester['uid']); ?></td>
+            <td class="puzzidea"><?php echo $tester['created_at']; ?></td>
+        </tr>
+<?php
+    }
+?>
+    </table>
+<?php
+
+}
+
 function displayTestQueue($uid) {
     $puzzles = getInTestAdminQueue($uid);
 
