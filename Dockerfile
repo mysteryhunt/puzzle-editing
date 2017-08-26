@@ -31,6 +31,10 @@ RUN a2dissite default-ssl.conf || true && \
     a2enmod auth_form
 
 RUN touch /var/www/html/.env
+RUN mkdir /tmp/purifier-cache
+
+# Configure PHP
+ADD ./docker/prod/php-config.ini /usr/local/etc/php/conf.d/
 
 # Set up entrypoint
 ADD ./docker/prod/entrypoint.sh /entrypoint.sh
