@@ -31,8 +31,8 @@ RUN a2dissite default-ssl.conf || true && \
     a2enmod auth_form
 
 RUN touch /var/www/html/.env
-RUN mkdir /tmp/purifier-cache
-RUN mkdir -p /var/www/html/uploads/pictures/thumbs /var/www/html/uploads/puzzle_files
+RUN mkdir -p /tmp/purifier-cache /var/www/html/uploads/pictures/thumbs /var/www/html/uploads/puzzle_files && \
+    chown -R www-data: /tmp/purifier-cache /var/www/html/uploads
 
 # Configure PHP
 ADD ./docker/prod/php-config.ini /usr/local/etc/php/conf.d/
