@@ -6,6 +6,5 @@ puzzletron-keytab
 vendor
 /.env
 composer.phar
-composer.lock
 /tmp/sess_*
 .DS_Store
