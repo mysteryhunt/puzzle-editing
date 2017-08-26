@@ -1,0 +1,2 @@
+* * * * * root ENVDIR=/var/www/html ENVFILE=.env php /var/www/html/email_cronjob.php
+*/5 * * * * root ENVDIR=/var/www/html ENVFILE=.env php /var/www/html/reminder_cronjob.php

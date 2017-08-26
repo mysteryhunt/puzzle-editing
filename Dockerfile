@@ -39,6 +39,15 @@ RUN mkdir -p /tmp/purifier-cache /var/www/html/uploads/pictures/thumbs /var/www/
 # Configure PHP
 ADD ./docker/prod/php-config.ini /usr/local/etc/php/conf.d/
 
+# Add cron
+ADD ./docker/prod/ptron-cron /etc/cron.d/
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/ptron-cron && \
+    touch /var/log/cron.log && \
+    apt-get update && \
+    apt-get -y install cron
+
 # Set up entrypoint
 ADD ./docker/prod/entrypoint.sh /entrypoint.sh
 CMD /entrypoint.sh
