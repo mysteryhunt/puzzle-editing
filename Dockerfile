@@ -32,6 +32,7 @@ RUN a2dissite default-ssl.conf || true && \
 
 RUN touch /var/www/html/.env
 RUN mkdir /tmp/purifier-cache
+RUN mkdir /var/www/html/uploads
 
 # Configure PHP
 ADD ./docker/prod/php-config.ini /usr/local/etc/php/conf.d/
