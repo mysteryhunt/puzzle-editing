@@ -1,1 +1,6 @@
 docker/mysqldb/
+.vagrant
+ansible
+kube
+tmp
+vendor

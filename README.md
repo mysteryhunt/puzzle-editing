@@ -54,7 +54,7 @@ volumes. Set up a Mailgun account and point Puzzletron at it using the
 ## Docker
 
 - Install [Docker](https://www.docker.com/community-edition#/download)
-- `cp ./docker/.env ./.env`
+- `cp ./docker/dev/.env ./.env`
 - Edit `.env` to add e.g. mailgun settings if desired
 - `docker-compose up`
 - Head to http://localhost:8000
