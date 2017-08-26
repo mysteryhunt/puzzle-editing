@@ -1498,7 +1498,7 @@ function addSpoiledUser($uid, $pid, $addUser) {
         $codename = getCodename($pid);
         $subject = "Spoiled on $codename (puzzle $pid)";
         $message = "$name added you as spoiled on $title (puzzle $pid).";
-        $link = URL . "/puzzle?pid=$pid";
+        $link = URL . "/puzzle.php?pid=$pid";
         sendEmail($user, $subject, $message, $link);
     }
 
@@ -1609,7 +1609,7 @@ function addFactcheckers($uid, $pid, $add) {
         $codename = getCodename($pid);
         $subject = "Factchecker on $codename (puzzle $pid)";
         $message = "$name added you as a factchecker on $title (puzzle $pid).";
-        $link = URL . "/puzzle?pid=$pid";
+        $link = URL . "/puzzle.php?pid=$pid";
         sendEmail($fc, $subject, $message, $link);
 
         // Subscribe factcheckers to comments on their puzzles
@@ -1785,7 +1785,7 @@ function addRoundCaptains($uid, $pid, $add) {
         $codename = getCodename($pid);
         $subject = "Round Captain on $codename (puzzle $pid)";
         $message = "$name added you as a round captain to $title (puzzle $pid).";
-        $link = URL . "/puzzle?pid=$pid";
+        $link = URL . "/puzzle.php?pid=$pid";
         sendEmail($roundcaptain, $subject, $message, $link);
 
         // Subscribe round captains to comments on their puzzles
