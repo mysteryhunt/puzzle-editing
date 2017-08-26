@@ -30,6 +30,8 @@ RUN a2dissite default-ssl.conf || true && \
     a2enmod request && \
     a2enmod auth_form
 
+RUN touch /var/www/html/.env
+
 # Set up entrypoint
 ADD ./docker/prod/entrypoint.sh /entrypoint.sh
 CMD /entrypoint.sh
