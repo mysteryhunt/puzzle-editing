@@ -44,7 +44,7 @@ function session_handler_destroy($id) {
 
 function session_handler_gc($lifetime) {
     $sql = sprintf(
-        "DELETE FROM sessions WHERE timestamp < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL %d SECOND",
+        "DELETE FROM sessions WHERE timestamp < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL %d SECOND)",
         mysql_real_escape_string($lifetime));
     query_db($sql);
 }
