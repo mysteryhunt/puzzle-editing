@@ -82,8 +82,6 @@ ini_set('session.gc_maxlifetime','86400');
 ini_set('session.cookie_lifetime','0');
 ini_set('session.save_path', getenv('PTRON_SESSION_CACHE_DIR'));
 
-session_start();
-
 //stuff you probably don't need to change
 define("SELF", "$_SERVER[PHP_SELF]");
 define("PICPATH", getenv('PTRON_PICPATH'));
