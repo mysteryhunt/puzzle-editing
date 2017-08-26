@@ -9,6 +9,8 @@ FROM php:5.6.31-apache
 # Add PHP mysql
 RUN docker-php-ext-install mysql
 
+RUN apt-get update && apt-get install -qy zip
+
 # Add files
 ADD . /var/www/html
 RUN rm -rf /var/log/www/html/docker
