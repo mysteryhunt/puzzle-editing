@@ -3961,7 +3961,7 @@ function getModeFeedback($pid, $column_name) {
   if (count($arr) <= 0) {
     return "--";
   }
-  
+
   $count = array();
   foreach ($arr as $item) {
     if (isset($count[$item])) {
@@ -3999,7 +3999,7 @@ function sendReminderEmails() {
         LEFT OUTER JOIN pstatus s ON p.pstatus = s.id
         INNER JOIN comments c ON p.id = c.pid
         LEFT OUTER JOIN comments c2 ON p.id = c2.pid AND (c.timestamp < c2.timestamp OR (c.timestamp = c2.timestamp AND c.id < c2.id))
-        INNER JOIN (SELECT * FROM editor_links GROUP BY pid) el ON p.id = el.pid
+        INNER JOIN (SELECT pid FROM editor_links GROUP BY pid) el ON p.id = el.pid
         LEFT OUTER JOIN author_links al ON al.pid = p.id AND c.uid = al.uid
         WHERE c2.id IS NULL
         AND s.name != 'Awaiting Answer (Idea Approved)'
