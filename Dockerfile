@@ -49,5 +49,6 @@ RUN chmod 0644 /etc/cron.d/ptron-cron && \
     apt-get -y install cron
 
 # Set up entrypoint
+ADD ./docker/prod/cron-entrypoint.sh /cron-entrypoint.sh
 ADD ./docker/prod/entrypoint.sh /entrypoint.sh
 CMD /entrypoint.sh
