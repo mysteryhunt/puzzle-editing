@@ -235,7 +235,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
             <?php if (USING_CODENAMES) {echo '<th class="puzzidea">Codename</th>';} ?>
             <th class="puzzidea">Title</th>
             <th class="puzzidea">Puzzle Status</th>
-            <th class="puzzidea">Round</th>
+            <th class="puzzidea">Round(s)</th>
             <?php if ($showSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
             <?php if ($showEditorNotes) {echo '<th class="puzzidea">Editor Notes</th>';} ?>
             <?php if ($showTags) {echo '<th class="puzzidea">Tags</th>';} ?>
@@ -323,7 +323,7 @@ function displayQueue($uid, $puzzles, $fields, $test, $filter = array(), $addLin
         <?php if (USING_CODENAMES) {echo '<td class="puzzidea">' . $codename . '</th>';} ?>
         <td class='puzzidea'><?php echo $title; ?></td>
         <td class='puzzidea' data-sort-value='<?php echo $statusSort[$status] ?>'><?php echo $statuses[$status]; ?></td>
-        <td class='puzzidea'><?php echo getPuzzleRound($pid); ?></td>
+        <td class='puzzidea'><?php echo implode(', ', array_map(function($r) {return $r['name'];}, $roundDict)); ?></td>
         <?php if ($showSummary) {echo "<td class='puzzideasecure'>" . $puzzleInfo["summary"] . "</td>";} ?>
         <?php if ($showEditorNotes) {echo "<td class='puzzideasecure'>" . $puzzleInfo["editor_notes"] . "</td>";} ?>
         <?php if ($showTags) {echo "<td class='puzzidea'>" . $tags . "</td>";} ?>
