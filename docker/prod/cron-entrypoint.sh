@@ -2,6 +2,9 @@
 # our environment to .env
 env > /var/www/html/.env
 
+# Load the crontab
+crontab /ptron-cron
+
 # Start cron and tail all the cron logs
 touch /var/log/cron.log
 touch /var/log/cron-email.out
