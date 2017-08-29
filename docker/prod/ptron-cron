@@ -1,2 +1,2 @@
-* * * * * root ENVDIR=/var/www/html ENVFILE=.env /usr/local/bin/php /var/www/html/email_cronjob.php > /var/log/cron-email.out 2>&1
-*/5 * * * * root ENVDIR=/var/www/html ENVFILE=.env /usr/local/bin/php /var/www/html/reminder_cronjob.php > /var/log/cron-reminder.out 2>&1
+* * * * * ENVDIR=/var/www/html ENVFILE=.env /usr/local/bin/php /var/www/html/email_cronjob.php > /var/log/cron-email.out 2>&1
+*/5 * * * * ENVDIR=/var/www/html ENVFILE=.env /usr/local/bin/php /var/www/html/reminder_cronjob.php > /var/log/cron-reminder.out 2>&1
