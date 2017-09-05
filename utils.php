@@ -1037,7 +1037,7 @@ function getCommentTypeName($uid, $pid) {
     if (isAuthorOnPuzzle($uid, $pid)) {
         return "Author";
     } elseif (isApprovalEditor($uid, $pid)) {
-        return "Approval Editor";
+        return "Approver";
     } elseif (isEditorOnPuzzle($uid, $pid)) {
         return "Discuss Editor";
     } elseif (isCohesion($uid)) {
