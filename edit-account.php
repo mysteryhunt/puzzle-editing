@@ -128,14 +128,15 @@ function editAccount($uid) {
     }
     $purifier = getHtmlPurifier();
     $fullname = $purifier->purify($_POST['fullname']);
+    $email = $_POST['email'];
     $pic = $purifier->purify($pic);
     $email_level = $purifier->purify($_POST['email_pref']);
 
     mysql_query('START TRANSACTION');
     $failed = 0;
 
-    $sql = sprintf("UPDATE users SET fullname='%s', picture='%s', email_level='%s' WHERE uid='%s'",
-        mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string(($email_level)), mysql_real_escape_string($uid));
+    $sql = sprintf("UPDATE users SET fullname='%s', picture='%s', email_level='%s', email='%s' WHERE uid='%s'",
+        mysql_real_escape_string($fullname), mysql_real_escape_string($pic), mysql_real_escape_string(($email_level)), mysql_real_escape_string(($email)), mysql_real_escape_string($uid));
 
     $result = mysql_query($sql);
     if ($result == FALSE) {
