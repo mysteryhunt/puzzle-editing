@@ -1036,8 +1036,8 @@ function getAnswerWord($aid) {
 function getCommentTypeName($uid, $pid) {
     if (isAuthorOnPuzzle($uid, $pid)) {
         return "Author";
-    } elseif (isApproverOnPuzzle($uid, $pid)) {
-        return "Approver";
+    } elseif (isApprovalEditor($uid, $pid)) {
+        return "Approval Editor";
     } elseif (isEditorOnPuzzle($uid, $pid)) {
         return "Discuss Editor";
     } elseif (isCohesion($uid)) {
