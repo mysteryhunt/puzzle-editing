@@ -503,7 +503,7 @@ CREATE TABLE `puzzles` (
   `credits` varchar(250) NOT NULL DEFAULT '',
   `runtime_info` varchar(250) NOT NULL DEFAULT '',
   `needed_editors` int(11) NOT NULL DEFAULT '2',
-  `priority` int(11) NOT NULL DEFAULT '0',
+  `priority` int(11) NOT NULL DEFAULT '3',
   `tester_limit` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `pstatus` (`pstatus`)
