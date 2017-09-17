@@ -254,6 +254,11 @@ function displayFeedbackForm($uid, $pid) {
 ?>
         <script type="text/javascript">
                 function validateTestFeedback() {
+                        if ($('input[name=done]:checked').val() === undefined) {
+                                alert("You haven't specified whether you intend to return to this puzzle. That field is required");
+                                return false;
+                        }
+
                         var missing = [];
                         if ($('select[name=fun]').val() == '0') {
                                 missing.push('fun');
