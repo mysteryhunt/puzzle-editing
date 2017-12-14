@@ -3920,11 +3920,11 @@ function deleteFromMailmanList($list, $email) {
 }
 
 function getBetaLink($title) {
-    return POSTPROD_BETA_URLPREFIX . "puzzle/" . postprodCanon($title) . "/";
+    return POSTPROD_BETA_URLPREFIX . "puzzle/" . postprodCanon($title);
 }
 
 function getFinalLink($title) {
-    return POSTPROD_URLPREFIX . "puzzle/" . postprodCanon($title) . "/";
+    return POSTPROD_URLPREFIX . "puzzle/" . postprodCanon($title);
 }
 
 function getMedianFeedback($pid, $column_name) {
