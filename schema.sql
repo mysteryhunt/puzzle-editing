@@ -399,6 +399,7 @@ CREATE TABLE `roles` (
   `autoSubWhenEditing` tinyint(1) NOT NULL,
   `becomeRoundCaptain` tinyint(1) NOT NULL,
   `becomeApprover` tinyint(1) NOT NULL,
+  `factcheck` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;;
@@ -411,18 +412,19 @@ CREATE TABLE `roles` (
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT INTO `roles` VALUES
-(2,'Puzzle Herder',1,0,0,0,0,0,1,0,0,0,0),
-(3,'Director',1,1,1,1,1,0,1,1,1,1,1),
-(4,'Discussion Editor',0,1,0,0,0,0,1,1,1,0,0),
-(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0,0,0),
-(7,'Producer',1,0,0,0,0,0,1,0,0,1,0),
-(8,'Server Admin',1,0,1,0,1,0,1,1,0,0,0),
-(9,'Editor in Chief',1,1,0,1,1,0,1,1,1,1,1),
-(10,'Server Maintainer',0,0,1,0,0,0,1,0,0,0,0),
-(13,'Testing Admin',0,0,0,0,1,0,1,0,0,0,0),
-(14,'Approval Editor',0,1,0,0,0,0,1,1,1,0,1),
-(15,'Cohesion Editor',1,1,0,1,0,0,1,1,1,0,1),
-(16,'Round Captain',0,0,0,0,0,0,0,0,0,1,0);
+(2,'Puzzle Herder',1,0,0,0,0,0,1,0,0,0,0,0),
+(3,'Director',1,1,0,1,1,0,1,1,1,1,1,1),
+(4,'Discussion Editor',0,1,0,0,0,0,1,1,1,0,0,0),
+(6,'Chief Testing Admin',1,0,0,0,1,0,1,1,0,0,0,0),
+(7,'Producer',1,0,0,0,0,0,1,0,0,1,0,0),
+(8,'Server Admin',1,0,1,0,1,0,1,1,0,0,0,0),
+(9,'Editor in Chief',1,1,0,1,1,0,1,1,1,1,1,1),
+(10,'Server Maintainer',0,0,1,0,0,0,1,0,0,0,0,0),
+(13,'Testing Admin',0,0,0,0,1,0,1,0,0,0,0,0),
+(14,'Approval Editor',0,1,0,0,0,0,1,1,1,0,1,1),
+(15,'Cohesion Editor',1,1,0,1,0,0,1,1,1,0,1,0),
+(16,'Round Captain',0,0,0,0,0,0,0,0,0,1,0,0),
+(17,'Fact Checker',0,0,0,0,0,0,0,0,0,0,0,1);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
