@@ -2358,7 +2358,7 @@ function changePuzzleStatus($uid, $pid, $status) {
         // Now, reset the number-of-testers count for the puzzle.
         resetPuzzleTesterCount($pid);
 
-        if ($acceptDrafts_after == "0") {
+        if ($acceptDrafts_after == "0" && $status != getDeadStatusId()) {
             sendMovedOnFromTestingMessage($pid);
         }
     }
